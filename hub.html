@@ -107,12 +107,21 @@
 /* ── 교재별 갈래 표 (textbook · supplement) ── */
 #sl-hub .hb-grp{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:14px}
 #sl-hub .hb-grp > .ttl{display:flex;align-items:baseline;gap:9px;margin-bottom:14px}
-#sl-hub .hb-grp > .ttl h4{margin:0;font-size:16px;font-weight:850}
-#sl-hub .hb-grp > .ttl a{font-size:12px;color:var(--pink);font-weight:750}
+#sl-hub .hb-grp > .ttl .nm{margin:0;font-size:16px;font-weight:850}
+#sl-hub .hb-grp > .ttl a{color:inherit}
+#sl-hub .hb-grp > .ttl a:hover{color:var(--pink-d)}
+#sl-hub .nm em{font-style:normal;font-size:12px;color:var(--pink);font-weight:750;margin-left:5px}
+#sl-hub .hb-pill i{font-style:normal;font-size:10.5px;font-weight:800;color:var(--pink);margin-left:5px}
+#sl-hub .hb-pill:hover i{color:#fff}
+#sl-hub .hb-pill i.z{color:var(--gray);font-weight:600}
+#sl-hub .hb-pill.off{color:var(--gray);background:#fbfdff}
+#sl-hub .hb-pill.off:hover{border-color:var(--gray);background:#f4f7fb;color:var(--navy-l)}
+#sl-hub .hb-pill.off:hover i.z{color:var(--navy-l)}
 #sl-hub .hb-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 #sl-hub .hb-col{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fbfdff}
-#sl-hub .hb-col > a.bk{display:block;font-size:14px;font-weight:800;margin-bottom:9px}
-#sl-hub .hb-col > a.bk:hover{color:var(--pink-d)}
+#sl-hub .hb-col > .nm{display:block;font-size:14px;font-weight:800;margin-bottom:9px}
+#sl-hub .hb-col > .nm a{color:inherit}
+#sl-hub .hb-col > .nm a:hover{color:var(--pink-d)}
 #sl-hub .hb-pills{display:flex;flex-wrap:wrap;gap:6px}
 #sl-hub .hb-pill{display:inline-block;border:1px solid var(--line);background:#fff;border-radius:100px;
   padding:5px 11px;font-size:12px;font-weight:600;color:var(--navy-l);transition:.12s;white-space:nowrap}
@@ -154,7 +163,7 @@
   /* 메뉴에서 뽑아 넣습니다 — build-hub.py 가 여기에 채웁니다.
      손으로 적었다가 올림포스 네 교재를 한 상자에 묶어 버린 적이 있어,
      이제 사이트 메뉴(parts/menu.json)를 그대로 씁니다. */
-  var MENU = {"mock": {"eye": "모의고사 자료", "h1": "어느 모의고사를 찾으시나요?", "sub": "회차를 고르시면 변형문제·지문분석·워크북 자료로 이어집니다.", "groups": [{"t": "[최신](2026) 모의고사", "u": "/mockexam-2026", "items": [["(2026) 고1 모의고사", "/mockexam1-2026-pdf"], ["(2026) 고2 모의고사", "/mockexam2-2026-pdf"], ["(2026) 고3 모의고사", "/mockexam3-2026-pdf"], ["이전 모의고사 모음 (24년~)", "/old-exam"]]}, {"t": "[이전](2025)모의고사", "u": "/mockexam-2025", "items": [["(2025) 고1 모의고사", "/mockexam1-2025"], ["(2025)고2 모의고사", "/mockexam2-2025"], ["(2025) 고3 모의고사", "/mockexam3-2025"]]}], "bot": []}, "textbook": {"eye": "교과서", "h1": "쓰시는 교과서를 골라 주세요", "sub": "출판사를 고르시면 그 교과서의 변형문제·지문분석·워크북 자료가 나옵니다.", "groups": [{"t": "1학년 교과서", "u": "/91", "cols": [{"t": "공통영어 1", "u": "/textbook1", "items": [["능률 (오선영)", "/textbook1-no"], ["능률 (민병천)", "/textbook1-nm"], ["YBM (박준언)", "/textbook1-ybmb"], ["YBM (김은형)", "/textbook1-ybmk"], ["천재 (강상구)", "/textbook1-ck"], ["천재 (조수경)", "/textbook1-cj"], ["동아 (이병민)", "/textbook1-dl"], ["미래엔 (김성연)", "/textbook1-mk"], ["지학사 (신상근)", "/textbook1-js"]]}, {"t": "공통영어 2", "u": "/textbook2", "items": [["능률 (오선영)", "/textbook2-no"], ["능률 (민병천)", "/texbook2-nm"], ["YBM (박준언)", "/textbook2-ybmb"], ["YBM (김은형)", "/textbook2-ybmk"], ["천재 (강상구)", "/textbook2-ck"], ["천재 (조수경)", "/textbook2-cj"], ["동아 (이병민)", "/textbook2-dl"], ["미래엔 (김성연)", "/textbook2-mk"], ["지학사 (신상근)", "/textbook2-js"]]}]}, {"t": "2학년 교과서", "u": "/146", "cols": [{"t": "고등영어 1", "u": "/147", "items": [["YBM(박준언)", "/181"], ["능률(오선영)", "/180"], ["천재(강상구)", "/149"], ["천재(조수경)", "/150"], ["미래엔(김성연)", "/151"], ["동아(박용예)", "/152"], ["지학사(신상근)", "/402"]]}, {"t": "고등영어 2", "u": "/148", "items": [["능률(오선영)", "/440"], ["YBM(박준언)", "/441"], ["천재(강상구)", "/442"], ["천재(조수경)", "/443"], ["미래엔(김성연)", "/444"], ["동아(박용예)", "/445"], ["지학사(신상근)", "/446"]]}, {"t": "영어독해와작문", "u": "/161", "items": [["능률(민병천)", "/198"], ["YBM(김은형)", "/199"], ["미래엔(김대진)", "/162"], ["천재(윤성호)", "/163"], ["동아(이병민)", "/200"]]}]}], "bot": []}, "supplement": {"eye": "부교재", "h1": "어떤 교재의 자료를 찾으시나요?", "sub": "교재를 고르신 뒤 필요한 자료 종류를 눌러 주세요.", "groups": [{"t": "(2027)EBS 수능특강 시리즈", "u": "/ebs-series-2027", "cols": [{"t": "(2027) 수능특강 영어", "u": "/ebsenglish2027pdf", "items": [["핵심요약노트", "/172"], ["변형문제", "/173"], ["고난도변형(서술형)", "/387"], ["워크북", "/174"], ["지문분석", "/175"], ["직전보강", "/388"]]}, {"t": "(2027) 수능특강 영어독해연습", "u": "/ebs-reading-2027-pdf", "items": [["핵심요약노트", "/176"], ["변형문제", "/177"], ["워크북", "/178"], ["지문분석", "/179"], ["직전보강", "/393"]]}]}, {"t": "(2026) 수특라이트 영어", "u": "/suneong-light-2026-pdf", "items": [["핵심요약", "/133"], ["변형문제", "/130"], ["지문분석", "/132"], ["워크북", "/131"], ["직전보강", "/370"], ["[HWP 교사용] 수특라이트 영어", "/240"]]}, {"t": "(2026) 수특라이트 영어독해연습", "u": "/suneong-reading-light-2026-pdf", "items": [["핵심요약", "/137"], ["변형문제", "/134"], ["지문분석", "/136"], ["워크북", "/135"], ["직전보강", "/376"], ["[HWP 교사용] 수특라이트 영어독해연습", "/244"]]}, {"t": "(2026) 올림포스 연합평가 기출 고1", "u": "/olympos-exam1", "items": [["핵심요약", "/1591866571"], ["변형문제", "/245"], ["워크북", "/246"], ["지문분석", "/247"], ["직전보강", "/381"]]}, {"t": "(2026) 올림포스 연합평가 기출 고2", "u": "/olympos-exam2", "items": [["핵심요약", "/248"], ["변형문제", "/249"], ["워크북", "/250"], ["지문분석", "/251"], ["직전보강", "/386"]]}, {"t": "올림포스 영어독해의 기본 1", "u": "/olympos-basic1", "items": [["핵심요약", "/377"], ["변형문제", "/378"], ["워크북", "/379"], ["직전보강", "/380"], ["변형문제", "/463"]]}, {"t": "올림포스 영어독해의 기본 2", "u": "/olympos-basic2", "items": [["변형문제", "/465"], ["핵심요약", "/464"], ["직전보강", "/1931520107"]]}, {"t": "[과거](2026)EBS 수능특강 시리즈", "u": "/ebs-series-2026", "items": [["(2026)EBS 수능특강 영어독해연습", "/ebs-reading-2026-pdf"]]}], "bot": []}, "special": {"eye": "수능대비 / 방학특강", "h1": "특강 자료를 찾으시나요?", "sub": "PDF 로 바로 쓰시거나, 한글파일로 받아 고쳐 쓰실 수 있습니다.", "groups": [], "bot": [{"ic": "📄", "t": "[PDF]방학특강", "d": "", "u": "/speciallesson"}, {"ic": "📝", "t": "[HWP편집가능] 방학특강", "d": "", "u": "/speciallesson-hwp"}, {"ic": "📄", "t": "[PDF]수능대비", "d": "", "u": "/suneong"}, {"ic": "📝", "t": "[HWP] 수능대비", "d": "", "u": "/suneong-hwp"}]}} || {};
+  var MENU = {"mock": {"eye": "모의고사 자료", "h1": "어느 모의고사를 찾으시나요?", "sub": "회차를 고르시면 변형문제·지문분석·워크북 자료로 이어집니다.", "groups": [{"t": "[최신](2026) 모의고사", "n": 0, "items": [["(2026) 고1 모의고사", "/mockexam1-2026-pdf", 12], ["(2026) 고2 모의고사", "/mockexam2-2026-pdf", 14], ["(2026) 고3 모의고사", "/mockexam3-2026-pdf", 19], ["이전 모의고사 모음 (24년~)", "/old-exam", 1]]}, {"t": "[이전](2025)모의고사", "n": 0, "items": [["(2025) 고1 모의고사", "/mockexam1-2025", 16], ["(2025)고2 모의고사", "/mockexam2-2025", 14], ["(2025) 고3 모의고사", "/mockexam3-2025", 11]]}], "bot": []}, "textbook": {"eye": "교과서", "h1": "쓰시는 교과서를 골라 주세요", "sub": "출판사를 고르시면 그 교과서의 변형문제·지문분석·워크북 자료가 나옵니다.", "groups": [{"t": "1학년 교과서", "n": 0, "cols": [{"t": "공통영어 1", "n": 0, "items": [["능률 (오선영)", "/textbook1-no", 12], ["능률 (민병천)", "/textbook1-nm", 12], ["YBM (박준언)", "/textbook1-ybmb", 8], ["YBM (김은형)", "/textbook1-ybmk", 8], ["천재 (강상구)", "/textbook1-ck", 6], ["천재 (조수경)", "/textbook1-cj", 10], ["동아 (이병민)", "/textbook1-dl", 7], ["미래엔 (김성연)", "/textbook1-mk", 18], ["지학사 (신상근)", "/textbook1-js", 2]]}, {"t": "공통영어 2", "n": 0, "items": [["능률 (오선영)", "/textbook2-no", 20], ["능률 (민병천)", "/texbook2-nm", 34], ["YBM (박준언)", "/textbook2-ybmb", 22], ["YBM (김은형)", "/textbook2-ybmk", 20], ["천재 (강상구)", "/textbook2-ck", 10], ["천재 (조수경)", "/textbook2-cj", 11], ["동아 (이병민)", "/textbook2-dl", 6], ["미래엔 (김성연)", "/textbook2-mk", 10], ["지학사 (신상근)", "/textbook2-js", 6]]}]}, {"t": "2학년 교과서", "n": 0, "cols": [{"t": "고등영어 1", "n": 0, "items": [["YBM(박준언)", "/181", 10], ["능률(오선영)", "/180", 18], ["천재(강상구)", "/149", 6], ["천재(조수경)", "/150", 6], ["미래엔(김성연)", "/151", 2], ["동아(박용예)", "/152", 2], ["지학사(신상근)", "/402", 0]]}, {"t": "고등영어 2", "n": 0, "items": [["능률(오선영)", "/440", 18], ["YBM(박준언)", "/441", 20], ["천재(강상구)", "/442", 18], ["천재(조수경)", "/443", 21], ["미래엔(김성연)", "/444", 15], ["동아(박용예)", "/445", 0], ["지학사(신상근)", "/446", 6]]}, {"t": "영어독해와작문", "n": 0, "items": [["능률(민병천)", "/198", 16], ["YBM(김은형)", "/199", 6], ["미래엔(김대진)", "/162", 0], ["천재(윤성호)", "/163", 0], ["동아(이병민)", "/200", 0]]}]}], "bot": []}, "supplement": {"eye": "부교재", "h1": "어떤 교재의 자료를 찾으시나요?", "sub": "교재를 고르신 뒤 필요한 자료 종류를 눌러 주세요.", "groups": [{"t": "(2027)EBS 수능특강 시리즈", "n": 0, "cols": [{"t": "(2027) 수능특강 영어", "n": 98, "items": [["핵심요약노트", "/172", 31], ["변형문제", "/173", 31], ["고난도변형(서술형)", "/387", 28], ["워크북", "/174", 31], ["지문분석", "/175", 31], ["직전보강", "/388", 30]], "u": "/ebsenglish2027pdf"}, {"t": "(2027) 수능특강 영어독해연습", "n": 78, "items": [["핵심요약노트", "/176", 16], ["변형문제", "/177", 16], ["워크북", "/178", 15], ["지문분석", "/179", 16], ["직전보강", "/393", 15]], "u": "/ebs-reading-2027-pdf"}]}, {"t": "(2026) 수특라이트 영어", "n": 98, "u": "/suneong-light-2026-pdf", "items": [["핵심요약", "/133", 22], ["변형문제", "/130", 22], ["지문분석", "/132", 22], ["워크북", "/131", 14], ["직전보강", "/370", 21], ["[HWP 교사용] 수특라이트 영어", "/240", 44]]}, {"t": "(2026) 수특라이트 영어독해연습", "n": 98, "u": "/suneong-reading-light-2026-pdf", "items": [["핵심요약", "/137", 16], ["변형문제", "/134", 24], ["지문분석", "/136", 16], ["워크북", "/135", 3], ["직전보강", "/376", 15], ["[HWP 교사용] 수특라이트 영어독해연습", "/244", 32]]}, {"t": "(2026) 올림포스 연합평가 기출 고1", "n": 34, "u": "/olympos-exam1", "items": [["핵심요약", "/1591866571", 17], ["변형문제", "/245", 17], ["워크북", "/246", 0], ["지문분석", "/247", 0], ["직전보강", "/381", 0]]}, {"t": "(2026) 올림포스 연합평가 기출 고2", "n": 12, "u": "/olympos-exam2", "items": [["핵심요약", "/248", 0], ["변형문제", "/249", 11], ["워크북", "/250", 0], ["지문분석", "/251", 0], ["직전보강", "/386", 1]]}, {"t": "올림포스 영어독해의 기본 1", "n": 88, "u": "/olympos-basic1", "items": [["핵심요약", "/377", 18], ["변형문제", "/378", 18], ["워크북", "/379", 18], ["직전보강", "/380", 18], ["변형문제", "/463", 0]]}, {"t": "올림포스 영어독해의 기본 2", "n": 26, "u": "/olympos-basic2", "items": [["변형문제", "/465", 9], ["핵심요약", "/464", 0], ["직전보강", "/1931520107", 17]]}, {"t": "[과거](2026)EBS 수능특강 시리즈", "n": 0, "items": [["(2026)EBS 수능특강 영어독해연습", "/ebs-reading-2026-pdf", 15]]}], "bot": []}, "special": {"eye": "수능대비 / 방학특강", "h1": "특강 자료를 찾으시나요?", "sub": "PDF 로 바로 쓰시거나, 한글파일로 받아 고쳐 쓰실 수 있습니다.", "groups": [], "bot": [{"ic": "📄", "t": "[PDF]방학특강", "u": "/speciallesson", "n": 22}, {"ic": "📝", "t": "[HWP편집가능] 방학특강", "u": "/speciallesson-hwp", "n": 22}, {"ic": "📄", "t": "[PDF]수능대비", "u": "/suneong", "n": 22}, {"ic": "📝", "t": "[HWP] 수능대비", "u": "/suneong-hwp", "n": 22}]}} || {};
 
   var HUB = {
     info: {
@@ -192,22 +201,35 @@
       '</div>';
   }
 
+  /* 손님이 사는 곳은 맨 끝(말단) 페이지입니다. 갈래마다 [이름, 주소, 상품수] 로 오는데,
+     상품 수를 옆에 적어 두면 「여기 자료가 있구나」가 눌러 보기 전에 보입니다.
+     상품이 없는 곳(경유 페이지·빈 게시판)은 흐리게 두고 「준비 중」이라고 적습니다. */
   function pills(items) {
     return '<div class="hb-pills">' + items.map(function (it) {
-      return '<a class="hb-pill" href="' + esc(it[1]) + '">' + esc(it[0]) + '</a>';
+      var n = it[2] || 0;
+      return '<a class="hb-pill' + (n ? '' : ' off') + '" href="' + esc(it[1]) + '">' +
+        esc(it[0]) + (n ? '<i>' + n + '</i>' : '<i class="z">준비 중</i>') + '</a>';
     }).join('') + '</div>';
+  }
+
+  /* 제목 줄 — 그 페이지에 상품이 있을 때만 누를 수 있게 합니다.
+     상품 0개인 곳으로 보내면 손님이 한 번 더 눌러야 하니 제목으로만 씁니다. */
+  function ttl(o, big) {
+    var name = esc(o.t);
+    var tag = big ? 'h4' : 'span';
+    if (!o.u) return '<' + tag + ' class="nm">' + name + '</' + tag + '>';
+    return '<' + tag + ' class="nm"><a href="' + esc(o.u) + '">' + name +
+      ' <em>전체 ' + o.n + '개 →</em></a></' + tag + '>';
   }
 
   if (C.groups && C.groups.length) {
     html += C.groups.map(function (g) {
       var inner = g.cols
         ? '<div class="hb-cols">' + g.cols.map(function (c) {
-            return '<div class="hb-col"><a class="bk" href="' + esc(c.u) + '">' + esc(c.t) + ' →</a>' +
-              pills(c.items) + '</div>';
+            return '<div class="hb-col">' + ttl(c, false) + pills(c.items) + '</div>';
           }).join('') + '</div>'
         : pills(g.items || []);
-      return '<div class="hb-grp"><div class="ttl"><h4>' + esc(g.t) + '</h4>' +
-        '<a href="' + esc(g.u) + '">전체 보기 →</a></div>' + inner + '</div>';
+      return '<div class="hb-grp"><div class="ttl">' + ttl(g, true) + '</div>' + inner + '</div>';
     }).join('');
   }
 
@@ -225,8 +247,9 @@
     }).join('') + '</div>';
 
   function btn(b) {
+    var sub = (b.d !== undefined) ? b.d : (b.n ? '자료 ' + b.n + '개' : '준비 중');
     return '<a class="hb-btn" href="' + esc(b.u) + '"><div class="ic">' + b.ic + '</div>' +
-      '<div><h4>' + esc(b.t) + '</h4><p>' + esc(b.d) + '</p></div><div class="aw">→</div></a>';
+      '<div><h4>' + esc(b.t) + '</h4><p>' + esc(sub) + '</p></div><div class="aw">→</div></a>';
   }
 
   box.innerHTML = html;
