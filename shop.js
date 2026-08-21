@@ -331,6 +331,11 @@ x.classList.toggle('on', x.dataset.v === pick[k]);
 });
 apply();
 });
+var want = decodeURIComponent((location.hash || '').replace(/^#sl=/, ''));
+if (want && location.hash.indexOf('#sl=') === 0) {
+var hit = bar.querySelector('[data-k="kind"][data-v="' + want.replace(/"/g, '') + '"]');
+if (hit && !hit.disabled) hit.click();
+}
 }
 build();
 window.addEventListener('load', build);
