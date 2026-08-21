@@ -1,0 +1,222 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     대치동시크릿 「공지사항 / 후기 / FAQ」 대문 (허브 페이지)
+
+     전에는 이미지 맵 한 장이었습니다. 그림이라 휴대폰에서 글자가 작아지고,
+     검색엔진이 글을 못 읽고, 한 줄 고치려면 그림을 다시 만들어야 했습니다.
+     여기서는 전부 진짜 글자와 단추입니다.
+
+     공지와 후기는 **그 자리에서 사이트를 읽어** 채웁니다 —
+     사장님이 공지를 올리시거나 후기를 갈아 끼우시면 여기도 저절로 바뀝니다.
+       공지 : /notice 게시판 목록에서 앞 3건
+       후기 : /reviews 의 베스트 후기 카드(article.iw-card)에서 앞 2건
+     못 받아 오면 아래 적어 둔 예시가 그대로 남아 화면이 비지 않습니다.
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="sl-hub">
+<style>
+#sl-hub{
+  --pink:#e85a8a; --pink-d:#c33e6d; --pink-l:#fdeef3; --pink-b:#f2b8cd;
+  --navy:#1d3a5e; --navy-l:#46617f; --gray:#93a5bd; --line:#e6ecf4;
+  max-width:1240px; margin:0 auto; padding:0 20px 70px;
+  font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif; color:var(--navy);
+  -webkit-font-smoothing:antialiased;
+}
+#sl-hub *{box-sizing:border-box}
+#sl-hub a{text-decoration:none;color:inherit}
+/* 아임웹 글꼴·색 규칙이 흘러들어오지 못하게 막습니다 (셈 1,0,1) */
+#sl-hub span, #sl-hub p, #sl-hub h1, #sl-hub h3, #sl-hub h4, #sl-hub li{
+  font-family:inherit; letter-spacing:-.02em;
+}
+
+#sl-hub .hb-hd{text-align:center;padding:36px 0 30px}
+#sl-hub .hb-eye{font-size:12.5px;font-weight:800;color:var(--pink);letter-spacing:.08em}
+#sl-hub .hb-hd h1{margin:8px 0 10px;font-size:31px;font-weight:900;letter-spacing:-.045em;line-height:1.25}
+#sl-hub .hb-hd p{margin:0;font-size:14.5px;color:var(--navy-l);line-height:1.7}
+
+#sl-hub .hb-top{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+#sl-hub .hb-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+#sl-hub .hb-cap{display:flex;align-items:center;gap:9px;margin-bottom:14px}
+#sl-hub .hb-cap .ic{width:34px;height:34px;border-radius:10px;background:var(--pink-l);
+  display:grid;place-items:center;font-size:17px;flex:none}
+#sl-hub .hb-cap h3{margin:0;font-size:15.5px;font-weight:850;flex:1}
+#sl-hub .hb-cap a{font-size:12px;color:var(--pink);font-weight:750;white-space:nowrap}
+
+#sl-hub .hb-notice{list-style:none;margin:0;padding:0}
+#sl-hub .hb-notice li{display:flex;gap:9px;align-items:baseline;padding:8px 0;
+  font-size:13px;border-bottom:1px solid #f2f6fb}
+#sl-hub .hb-notice li:last-child{border-bottom:0}
+#sl-hub .hb-notice .tg{font-size:10.5px;font-weight:800;color:#fff;background:var(--pink);
+  border-radius:5px;padding:2px 6px;flex:none;line-height:1.5}
+#sl-hub .hb-notice .tt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#sl-hub .hb-notice a:hover .tt{color:var(--pink-d);text-decoration:underline}
+#sl-hub .hb-notice .dd{color:var(--gray);font-size:11.5px;flex:none}
+#sl-hub .hb-notice a{display:flex;gap:9px;align-items:baseline;width:100%}
+
+#sl-hub .hb-rev{display:flex;flex-direction:column;gap:10px}
+#sl-hub .hb-q{background:#fbfdff;border:1px solid var(--line);border-radius:11px;padding:11px 13px;
+  font-size:12.5px;line-height:1.65;color:var(--navy-l)}
+#sl-hub .hb-q .st{color:#f5a623;font-size:12px;letter-spacing:1px}
+#sl-hub .hb-q .tx{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#sl-hub .hb-q .who{font-size:11px;color:var(--gray);margin-top:5px}
+
+#sl-hub .hb-bot{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+#sl-hub .hb-btn{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;
+  display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:13px;align-items:center;transition:.14s}
+#sl-hub .hb-btn:hover{border-color:var(--pink-b);background:#fffafc;transform:translateY(-2px)}
+#sl-hub .hb-btn .ic{width:38px;height:38px;border-radius:11px;background:var(--pink-l);
+  display:grid;place-items:center;font-size:18px}
+#sl-hub .hb-btn h4{margin:0 0 2px;font-size:15px;font-weight:800}
+#sl-hub .hb-btn p{margin:0;font-size:11.5px;color:var(--navy-l)}
+#sl-hub .hb-btn .aw{color:var(--pink-b)}
+
+#sl-hub .hb-sec{display:flex;align-items:baseline;gap:10px;margin:42px 0 14px}
+#sl-hub .hb-sec h3{margin:0;font-size:16.5px;font-weight:800}
+#sl-hub .hb-sec span{font-size:12.5px;color:var(--gray)}
+
+#sl-hub .hb-links{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+#sl-hub .hb-link{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 16px;
+  display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:12px;transition:.14s}
+#sl-hub .hb-link:hover{border-color:var(--pink-b);background:#fffafc;transform:translateY(-2px)}
+#sl-hub .hb-link .mk{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;
+  font-size:15px;font-weight:900}
+#sl-hub .hb-link h4{margin:0 0 3px;font-size:14px;font-weight:800}
+#sl-hub .hb-link p{margin:0;font-size:11.5px;color:var(--navy-l);line-height:1.5}
+#sl-hub .hb-link .ex{color:var(--gray);font-size:13px}
+#sl-hub .hb-link .hot{font-size:10px;font-weight:800;color:#fff;background:var(--pink);
+  border-radius:100px;padding:3px 8px;white-space:nowrap;line-height:1.4}
+
+@media (max-width:1100px){ #sl-hub .hb-links{grid-template-columns:1fr 1fr} }
+@media (max-width:900px){
+  #sl-hub .hb-top{grid-template-columns:1fr}
+  #sl-hub .hb-bot{grid-template-columns:1fr}
+  #sl-hub .hb-hd h1{font-size:25px}
+}
+</style>
+
+<div class="hb-hd">
+  <div class="hb-eye">DAECHI SECRET</div>
+  <h1>무엇을 도와드릴까요?</h1>
+  <p>공지사항부터 자료 샘플까지, 필요하신 곳으로 바로 가실 수 있습니다.</p>
+</div>
+
+<div class="hb-top">
+  <div class="hb-card">
+    <div class="hb-cap"><div class="ic">📢</div><h3>공지사항</h3><a href="/notice">전체보기 →</a></div>
+    <ul class="hb-notice" id="hb-notice">
+      <li><span class="tg">중요</span><span class="tt">공지사항을 불러오는 중입니다…</span></li>
+    </ul>
+  </div>
+  <div class="hb-card">
+    <div class="hb-cap"><div class="ic">💬</div><h3>선생님들의 후기</h3><a href="/reviews">전체보기 →</a></div>
+    <div class="hb-rev" id="hb-rev">
+      <div class="hb-q"><div class="tx">후기를 불러오는 중입니다…</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="hb-bot">
+  <a class="hb-btn" href="/contact"><div class="ic">✉️</div>
+    <div><h4>문의 게시판</h4><p>자료·수업 문의는 여기로</p></div><div class="aw">→</div></a>
+  <a class="hb-btn" href="/faq"><div class="ic">❓</div>
+    <div><h4>자주 묻는 질문</h4><p>결제·다운로드·저작권 관련 안내</p></div><div class="aw">→</div></a>
+  <a class="hb-btn" href="/sample"><div class="ic">📄</div>
+    <div><h4>자료 샘플 확인</h4><p>사기 전에 미리 훑어보세요</p></div><div class="aw">→</div></a>
+</div>
+
+<div class="hb-sec"><h3>대치동시크릿 더 알아보기</h3><span>바깥 채널로 이어집니다</span></div>
+<div class="hb-links">
+  <a class="hb-link" href="https://pf.kakao.com/_xjJSxbn" target="_blank" rel="noopener">
+    <span class="mk" style="background:#FEE500;color:#3C1E1E">💬</span>
+    <span><h4>카카오톡 플러스친구</h4><p>바로 문의하세요</p></span>
+    <span class="hot">가장 빠른 답변</span></a>
+  <a class="hb-link" href="https://blog.naver.com/bsh_english" target="_blank" rel="noopener">
+    <span class="mk" style="background:#03C75A;color:#fff">N</span>
+    <span><h4>네이버 블로그</h4><p>지문별 무료 해설 보러가기</p></span>
+    <span class="ex">↗</span></a>
+  <a class="hb-link" href="https://cafe.naver.com/daechisecret" target="_blank" rel="noopener">
+    <span class="mk" style="background:#2DB400;color:#fff">C</span>
+    <span><h4>네이버 카페</h4><p>선생님과 학생을 위한 무료 자료창고</p></span>
+    <span class="ex">↗</span></a>
+  <a class="hb-link" href="https://solvook.com/@daechisecret?referral=3553" target="_blank" rel="noopener">
+    <span class="mk" style="background:#3E6BFF;color:#fff">S</span>
+    <span><h4>쏠북 브랜드홈</h4><p>교과서 자료는 여기에서</p></span>
+    <span class="ex">↗</span></a>
+</div>
+
+<script>
+(function () {
+  var esc = function (s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  };
+  if (!window.fetch || !window.DOMParser) return;
+
+  function get(u) {
+    return fetch(u, { credentials: 'same-origin' })
+      .then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); })
+      .then(function (h) { return new DOMParser().parseFromString(h, 'text/html'); });
+  }
+
+  /* ── 공지사항 : /notice 게시판 목록을 그대로 읽습니다 ── */
+  get('/notice').then(function (doc) {
+    var wraps = doc.querySelectorAll('.widget.board._list_wrap .post_link_wrap');
+    var out = [];
+    for (var i = 0; i < wraps.length && out.length < 4; i++) {
+      var w = wraps[i], a = w.querySelector('a.title_link');
+      if (!a) continue;
+      /* 제목 안에 '공지' 딱지 글자가 섞여 있어 떼어 냅니다 */
+      var c = a.cloneNode(true), st = c.querySelectorAll('.sticker');
+      for (var j = 0; j < st.length; j++) st[j].parentNode.removeChild(st[j]);
+      var title = (c.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!title) continue;
+      var t = w.querySelector('.time');
+      out.push({
+        t: title,
+        u: a.getAttribute('href') || '/notice',
+        d: t ? (t.textContent || '').trim() : '',
+        pin: !!w.querySelector('.sticker.notice')
+      });
+    }
+    if (!out.length) return;
+    document.getElementById('hb-notice').innerHTML = out.map(function (n) {
+      return '<li><a href="' + esc(n.u) + '">' +
+        (n.pin ? '<span class="tg">중요</span>' : '') +
+        '<span class="tt">' + esc(n.t) + '</span>' +
+        '<span class="dd">' + esc(n.d) + '</span></a></li>';
+    }).join('');
+  }).catch(function () {
+    document.getElementById('hb-notice').innerHTML =
+      '<li><a href="/notice"><span class="tt">공지사항 보러 가기 →</span></a></li>';
+  });
+
+  /* ── 후기 : /reviews 위에 모아 두신 베스트 후기 카드에서 읽습니다 ──
+     그 카드들은 <article class="iw-card" data-rating="5"> 안에
+     .iw-name(글쓴이)과 .iw-content(본문)로 들어 있습니다. */
+  get('/reviews').then(function (doc) {
+    var cards = doc.querySelectorAll('article.iw-card');
+    var out = [];
+    for (var i = 0; i < cards.length && out.length < 2; i++) {
+      var c = cards[i];
+      var body = c.querySelector('.iw-content');
+      var name = c.querySelector('.iw-name');
+      var txt = body ? (body.textContent || '').replace(/\s+/g, ' ').trim() : '';
+      if (!txt) continue;
+      out.push({
+        tx: txt,
+        who: name ? (name.textContent || '').trim() : '',
+        star: parseInt(c.getAttribute('data-rating'), 10) || 5
+      });
+    }
+    if (!out.length) return;
+    document.getElementById('hb-rev').innerHTML = out.map(function (r) {
+      var s = '';
+      for (var k = 0; k < r.star; k++) s += '★';
+      return '<a class="hb-q" href="/reviews"><div class="st">' + s + '</div>' +
+        '<div class="tx">' + esc(r.tx) + '</div>' +
+        (r.who ? '<div class="who">' + esc(r.who) + ' 선생님</div>' : '') + '</a>';
+    }).join('');
+  }).catch(function () {
+    document.getElementById('hb-rev').innerHTML =
+      '<a class="hb-q" href="/reviews"><div class="tx">후기 보러 가기 →</div></a>';
+  });
+})();
+</script>
+</div>
