@@ -70,6 +70,7 @@
 .sl-lay-b .shop-item._shop_item .shop-title { font-size: 11.5px !important; }
 .sl-lay-b .shop-item._shop_item .pay { font-size: 13px !important; }
 .sl-lay-b .shop-item._shop_item .item-detail { padding: 8px 8px 10px; }
+.sl-grid .shop-item._shop_item.sl-off { display: none !important; }
 .sl-grid::before, .sl-grid::after { display: none !important; }
 .sl-grid.sl-lay-c { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
 .sl-lay-c .shop-item._shop_item { display: grid !important; grid-template-columns: 86px minmax(0, 1fr) 104px; width: auto !important; padding: 0 !important; align-items: center; overflow: hidden; }

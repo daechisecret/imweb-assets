@@ -305,7 +305,7 @@ var n = 0;
 items.forEach(function (el) {
 var ok = true;
 for (var k in pick) if (pick[k] && el.dataset['sl' + k] !== pick[k]) ok = false;
-el.style.display = ok ? '' : 'none';
+el.classList.toggle('sl-off', !ok);
 if (ok) n++;
 });
 out.textContent = n === items.length
