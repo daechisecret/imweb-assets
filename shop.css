@@ -94,3 +94,4 @@
  .sl-pillrow { flex-direction: column; gap: 5px; }
  .sl-plab { width: auto; padding-top: 0; }
  .sl-grid.sl-lay-a, .sl-grid.sl-lay-b { grid-template-columns: repeat(2, 1fr) !important; } }
+.sl-grid .shop-item._shop_item .pay.sl-ask { font-size: 12px !important; font-weight: 600 !important; color: #7c90a8 !important; letter-spacing: -.03em; }

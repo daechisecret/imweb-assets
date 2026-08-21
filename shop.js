@@ -5,7 +5,7 @@ var KIND_ORDER = ['패키지', '교사용 한글파일 (편집가능)', '변형�
 '지문분석', '직전보강', '핵심요약', '워크북', '특강자료'];
 var KIND_RULES = [
 ['교사용 한글파일 (편집가능)', /교사용\s*HWP|HWP\s*파일|한글\s*파일|HWP/i],
-['변형문제 (심화편)', /심화편|고난도|서술형편/],
+['변형문제 (심화편)', /심화편|심화\s*변형|고난도|서술형/],
 ['변형문제 (유형편)', /변형문제|유형편/],
 ['지문분석',        /지문\s*분석/],
 ['직전보강',        /직전\s*보강/],
@@ -337,6 +337,23 @@ var hit = bar.querySelector('[data-k="kind"][data-v="' + want.replace(/"/g, '') 
 if (hit && !hit.disabled) hit.click();
 }
 }
+function fixAsk() {
+var els = document.querySelectorAll('.pay, .sale_pay, ._prod_price, .prod_price');
+for (var i = 0; i < els.length; i++) {
+var e = els[i];
+if (e.children.length) continue;
+var t = (e.textContent || '').trim();
+if (t === '가격문의') {
+e.textContent = '본문 내 쏠북 링크 참고';
+e.classList.add('sl-ask');
+}
+}
+}
+fixAsk();
+window.addEventListener('load', fixAsk);
+setTimeout(fixAsk, 500);
+setTimeout(fixAsk, 1600);
+setTimeout(fixAsk, 3200);
 build();
 window.addEventListener('load', build);
 setTimeout(build, 400);
