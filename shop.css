@@ -1,0 +1,92 @@
+.sl-pills { background: #fff; border: 1px solid #e6ecf4; border-radius: 12px; padding: 13px 15px; margin: 0 0 18px; box-shadow: 0 1px 2px rgba(29,58,94,.06), 0 8px 24px rgba(29,58,94,.06); font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif; }
+.sl-pillrow { display: flex; gap: 10px; align-items: flex-start; padding: 4px 0; }
+.sl-plab { flex: none; width: 56px; padding-top: 6px; font-size: 12px; font-weight: 800; color: #1d3a5e; letter-spacing: -.03em; }
+.sl-pset { display: flex; gap: 5px; flex-wrap: wrap; min-width: 0; align-items: center; }
+.sl-pill { border: 1px solid #e6ecf4; background: #fff; color: #46617f; border-radius: 100px; padding: 6px 12px; font-size: 12.5px; font-weight: 700; letter-spacing: -.03em; cursor: pointer; transition: all .13s; line-height: 1.35; white-space: nowrap; }
+.sl-pill em { font-style: normal; font-size: 10.5px; font-weight: 700; color: #b6c4d6; margin-left: 5px; }
+.sl-pill:hover { border-color: #f2b8cd; background: #fffafc; color: #c33e6d; }
+.sl-pill.on { background: #e85a8a; border-color: #e85a8a; color: #fff; font-weight: 800; box-shadow: 0 2px 8px rgba(232,90,138,.3); }
+.sl-pill.on em { color: rgba(255,255,255,.8); }
+.sl-books { border-top: 1px solid #f0f4f9; margin-top: 6px; padding-top: 10px; }
+.sl-bhead { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+.sl-bhead .sl-plab { padding-top: 0; }
+.sl-bgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.sl-bcol { min-width: 0; }
+.sl-bgt { font-size: 10.5px; font-weight: 800; letter-spacing: .06em; color: #b6c4d6; padding: 0 0 5px 2px; border-bottom: 1px solid #f0f4f9; margin-bottom: 5px; }
+.sl-bitem { display: flex; align-items: center; gap: 5px; width: 100%; border: 1px solid transparent; background: none; border-radius: 8px; padding: 6px 8px; font-size: 12px; font-weight: 650; color: #46617f; text-align: left; cursor: pointer; transition: all .12s; letter-spacing: -.03em; }
+.sl-bitem .nm { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sl-bitem .yr { font-size: 9.5px; font-weight: 700; color: #b6c4d6; flex: none; }
+.sl-bitem .cn { font-size: 10.5px; font-weight: 800; color: #c8a3b3; flex: none; min-width: 14px; text-align: right; }
+.sl-bitem:hover:not(.off) { border-color: #f2b8cd; background: #fffafc; color: #c33e6d; }
+.sl-bitem.on { background: #e85a8a; border-color: #e85a8a; color: #fff; font-weight: 800; }
+.sl-bitem.on .yr, .sl-bitem.on .cn { color: rgba(255,255,255,.8); }
+.sl-bitem.off { color: #cfdae8; cursor: default; }
+.sl-bitem.off .yr, .sl-bitem.off .cn { color: #e3eaf3; }
+.sl-pillcount { margin-top: 8px; font-size: 12px; font-weight: 700; color: #c33e6d; text-align: right; }
+.sl-grid .shop-item._shop_item { border: 1px solid #e6ecf4; border-radius: 10px; overflow: hidden; background: #fff; transition: box-shadow .16s, transform .16s, border-color .16s; }
+.sl-grid .shop-item._shop_item:hover { border-color: #f2b8cd; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(29,58,94,.09), 0 16px 34px rgba(29,58,94,.09); }
+.sl-grid .shop-item._shop_item .item-detail { padding: 9px 10px 11px; }
+.sl-grid .shop-item._shop_item .shop-title { font-size: 12.5px !important; font-weight: 700 !important; line-height: 1.42 !important; color: #1d3a5e !important; letter-spacing: -.03em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 0 0 6px !important; }
+.sl-grid .shop-item._shop_item .item-pay-detail { margin: 0; }
+.sl-grid .shop-item._shop_item .pay { font-size: 14.5px !important; font-weight: 800 !important; color: #1d3a5e !important; margin-right: 5px !important; }
+.sl-grid .shop-item._shop_item .sale_pay { font-size: 11.5px !important; color: #93a5bd !important; text-decoration: line-through; font-weight: 500 !important; }
+.sl-grid .shop-item._shop_item .ns-icon { display: none !important; }
+.sl-grid .shop-item._shop_item .prod_icon { display: none !important; }
+.sl-kindtag { display: inline-block; align-self: flex-start; font-size: 10.5px; font-weight: 800; letter-spacing: -.03em; padding: 3px 9px; border-radius: 100px; white-space: nowrap; line-height: 1.5; margin: 0 0 6px; background: #1d3a5e; color: #fff; }
+.sl-kindtag.k0 { background: #e01b24; color: #fff; } /* 패키지 — 빨강 */
+.sl-kindtag.k1 { background: #0a86c4; color: #fff; } /* 교사용 한글파일 — 파랑 */
+.sl-kindtag.k2 { background: #e0197a; color: #fff; } /* 변형문제 (유형편) — 진한 핑크 */
+.sl-kindtag.k3 { background: #16305a; color: #fff; } /* 변형문제 (심화편) — 네이비 */
+.sl-kindtag.k4 { background: #e3d6f7; color: #5b2a91; } /* 지문분석 — 연보라 */
+.sl-kindtag.k5 { background: #ffd83d; color: #6b4e00; } /* 직전보강 — 노랑 */
+.sl-kindtag.k6 { background: #ffd7e6; color: #b21f5e; } /* 핵심요약 — 연핑크 */
+.sl-kindtag.k7 { background: #f97316; color: #fff; } /* 워크북 — 주황 */
+.sl-kindtag.k8 { background: #d6f2a8; color: #3d6b0a; } /* 특강자료 — 연두 */
+.sl-grid .shop-item._shop_item .shop-item-thumb { overflow: hidden; display: block; position: relative; }
+.sl-grid .shop-item._shop_item .shop-item-thumb img { transition: transform .28s; }
+.sl-grid .shop-item._shop_item:hover .shop-item-thumb img { transform: scale(1.04); }
+.sl-go { display: inline-block; vertical-align: middle; margin-left: 3px; background: #fdeef3; color: #c33e6d !important; border: 1px solid #f7d3e0; border-radius: 100px; padding: 2px 9px; font-size: 10.5px; font-weight: 750; letter-spacing: -.03em; text-decoration: none !important; white-space: nowrap; transition: all .13s; }
+.sl-go:hover { background: #e85a8a; border-color: #e85a8a; color: #fff !important; }
+.sl-acts { display: none; flex-direction: column; gap: 5px; align-self: stretch; justify-content: center; align-items: center; box-sizing: border-box; padding: 0 12px; border-left: 1px solid #eef2f8; }
+.sl-act { border: 1px solid #e6ecf4; background: #fff; color: #46617f; border-radius: 100px; padding: 4px 6px; font-size: 10.5px; font-weight: 750; white-space: nowrap; cursor: pointer; transition: all .13s; letter-spacing: -.04em; width: 100%; box-sizing: border-box; text-align: center; line-height: 1.55; }
+.sl-act:hover { border-color: #f2b8cd; background: #fffafc; color: #c33e6d; }
+.sl-act.cart { background: #e85a8a; border-color: #e85a8a; color: #fff; box-shadow: 0 2px 6px rgba(232,90,138,.28); }
+.sl-act.cart:hover { background: #c33e6d; border-color: #c33e6d; color: #fff; }
+.sl-act.wish.on { border-color: #e85a8a; color: #c33e6d; background: #fdeef3; }
+.sl-modal { position: fixed; inset: 0; z-index: 99999; background: rgba(13,24,38,.55); display: grid; place-items: center; padding: 24px; }
+.sl-modin { background: #fff; border-radius: 14px; width: min(900px,100%); height: min(88vh,100%); display: flex; flex-direction: column; overflow: hidden; }
+.sl-modhead { display: flex; align-items: center; gap: 10px; padding: 13px 16px; border-bottom: 1px solid #e8eef6; }
+.sl-modhead b { font-size: 14.5px; font-weight: 750; color: #1d3a5e; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sl-modx { margin-left: auto; border: 0; background: none; font-size: 17px; color: #7c90a8; cursor: pointer; padding: 2px 6px; }
+.sl-modbody { flex: 1; overflow: auto; background: #f4f7fb; padding: 14px; }
+.sl-modbody img { width: 100%; display: block; margin: 0 auto 10px; max-width: 760px; border-radius: 6px; background: #fff; }
+.sl-modwait { padding: 50px 20px; text-align: center; color: #93a5bd; font-size: 13.5px; line-height: 1.7; }
+.sl-modfoot { padding: 11px 16px; border-top: 1px solid #e8eef6; display: flex; gap: 7px; justify-content: flex-end; }
+.sl-modfoot .sl-act { width: auto; padding: 7px 16px; font-size: 12px; text-decoration: none; }
+.sl-grid.sl-lay-a { display: grid !important; grid-template-columns: repeat(5, 1fr) !important; gap: 14px !important; }
+.sl-grid.sl-lay-b { display: grid !important; grid-template-columns: repeat(6, 1fr) !important; gap: 11px !important; }
+.sl-lay-b .shop-item._shop_item .shop-title { font-size: 11.5px !important; }
+.sl-lay-b .shop-item._shop_item .pay { font-size: 13px !important; }
+.sl-lay-b .shop-item._shop_item .item-detail { padding: 8px 8px 10px; }
+.sl-grid.sl-lay-c { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+.sl-lay-c .shop-item._shop_item { display: grid; grid-template-columns: 86px minmax(0, 1fr) 104px; align-items: center; overflow: hidden; }
+.sl-lay-c .shop-item._shop_item .shop-item-thumb { width: 86px; height: 86px; }
+.sl-lay-c .shop-item._shop_item .shop-item-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.sl-lay-c .shop-item._shop_item .item-detail { min-width: 0; overflow: hidden; padding: 10px 10px 10px 12px; display: flex; flex-direction: column; justify-content: center; }
+.sl-lay-c .shop-item._shop_item .shop-title { -webkit-line-clamp: 2; font-size: 12.5px !important; word-break: break-all; }
+.sl-lay-c .sl-acts { display: flex; }
+.sl-grid.sl-lay-d { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+.sl-lay-d .shop-item._shop_item { display: grid; grid-template-columns: 74px minmax(0, 1fr) 104px; align-items: center; overflow: hidden; }
+.sl-lay-d .shop-item._shop_item .shop-item-thumb { width: 74px; height: 74px; }
+.sl-lay-d .shop-item._shop_item .shop-item-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.sl-lay-d .shop-item._shop_item .item-detail { min-width: 0; overflow: hidden; padding: 10px 10px 10px 12px; display: flex; flex-direction: column; justify-content: center; }
+.sl-lay-d .shop-item._shop_item .shop-title { -webkit-line-clamp: 2; font-size: 12.5px !important; word-break: break-all; }
+.sl-lay-d .sl-acts { display: flex; }
+@media (max-width: 1100px) { .sl-bgrid { grid-template-columns: repeat(3, 1fr); }
+ .sl-grid.sl-lay-a { grid-template-columns: repeat(3, 1fr) !important; }
+ .sl-grid.sl-lay-b { grid-template-columns: repeat(4, 1fr) !important; }
+ .sl-grid.sl-lay-c, .sl-grid.sl-lay-d { grid-template-columns: 1fr !important; } }
+@media (max-width: 620px) { .sl-bgrid { grid-template-columns: repeat(2, 1fr); }
+ .sl-pillrow { flex-direction: column; gap: 5px; }
+ .sl-plab { width: auto; padding-top: 0; }
+ .sl-grid.sl-lay-a, .sl-grid.sl-lay-b { grid-template-columns: repeat(2, 1fr) !important; } }

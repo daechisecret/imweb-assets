@@ -1,0 +1,1850 @@
+<!--
+  ═══════════════════════════════════════════════════════════════
+   대치동시크릿 첫 화면 — 위쪽 (공지 · 새로 올라온 자료)
+   이 조각은 아래 자료실과 한 몸으로 붙습니다. dist/imweb-home.html 을 쓰십시오.
+  ═══════════════════════════════════════════════════════════════
+-->
+
+<div id="sl-home" class="sl">
+
+  <!-- ── 인사말 ── -->
+  <div class="hm-hero">
+    <p class="hm-eyebrow">대치동시크릿</p>
+    <h1>수업에 바로 쓰는 영어자료</h1>
+    <p class="hm-lede">EBS 수능특강, 수특라이트, 올림포스, 모의고사, 교과서, 어법/어휘 특강 자료까지!</p>
+
+    <!-- 파는 자료 여섯 갈래 — **평소에는 이름만 한 줄로** 늘어놓습니다.
+         설명까지 늘 펼쳐 두면 여섯 줄짜리 표가 화면 위쪽을 다 먹어,
+         정작 보여 드려야 할 공지와 새 자료가 아래로 밀려납니다.
+         궁금하신 분만 「자세히 보기」를 누르면 펴집니다 (details 라 자바스크립트가 필요 없습니다). -->
+    <details class="hm-lineup">
+      <summary>
+        <span class="lb">자료 라인업</span>
+        <span class="pills">
+          <b>변형문제 유형편</b><b>변형문제 심화편</b><b>핵심요약</b><b>직전보강</b><b>지문분석</b><b>워크북</b>
+        </span>
+        <span class="more">자세히 보기</span>
+      </summary>
+      <dl class="hm-lineup-desc">
+        <dt>변형문제 유형편</dt><dd>주제, 제목, 함축의미, 내용일치, 빈칸, 요약문, 어휘, 어법, 어법(2), 서술형</dd>
+        <dt>변형문제 심화편</dt><dd>어법/어휘 모두 고르기, 지문 변형, 조건 서술형 등 심화 난이도의 변형문제</dd>
+        <dt>핵심요약</dt><dd>길고 어려운 지문을 한 눈에 이해하기 쉽게 정리한 요약 노트</dd>
+        <dt>직전보강</dt><dd>삽화, 어법포인트, 통합실전문제까지 시험 직전 실력점검</dd>
+        <dt>지문분석</dt><dd>논리 흐름, 내용 요약, 문장별 상세 어휘와 어법 포인트 정리, 동의어·반의어·영영풀이, 빈칸채우기, 어법양자택일, 단어장, 동/반어 단어장까지!</dd>
+        <dt>워크북</dt><dd>단어 정리, 단어 체크, 어법 양자택일, 어휘 양자택일, 어형 변형, 빈칸 채우기, 한줄해석, 배열영작으로 완벽 암기용 자료</dd>
+      </dl>
+    </details>
+
+    <div class="hm-quick" id="hm-quick"></div>
+  </div>
+
+  <!-- ── 공지 · 새로 올라온 자료 ── -->
+  <div class="hm-two">
+    <section class="hm-card hm-notice">
+      <div class="hm-ch"><h2>공지사항</h2>
+        <span class="hm-right">
+          <a class="more" id="hm-notice-more" href="#">전체보기 →</a>
+          <span class="hm-nav">
+            <button type="button" data-nv="notice" data-d="-1" aria-label="앞 공지">‹</button>
+            <span class="pg sl-num" id="hm-notice-pg"></span>
+            <button type="button" data-nv="notice" data-d="1" aria-label="뒤 공지">›</button>
+          </span>
+        </span>
+      </div>
+      <ul id="hm-notices"></ul>
+    </section>
+
+    <section class="hm-card hm-fresh">
+      <div class="hm-ch"><h2>새로 올라온 자료</h2>
+        <span class="hm-right">
+          <span class="hm-nav">
+            <button type="button" data-nv="fresh" data-d="-1" aria-label="앞 자료">‹</button>
+            <span class="pg sl-num" id="hm-fresh-pg"></span>
+            <button type="button" data-nv="fresh" data-d="1" aria-label="뒤 자료">›</button>
+          </span>
+        </span>
+      </div>
+      <div class="hm-freshlist" id="hm-fresh"></div>
+    </section>
+  </div>
+
+  <!-- ── 자료실 들머리 ── -->
+  <div class="hm-lead" id="hm-lead">
+    <h2>찾으시는 교재를 바로 골라보세요!</h2>
+    <p>아래 메뉴에서 교재를 고르시면 교재의 자료 라인업을 모두 확인하실 수 있습니다.</p>
+  </div>
+</div>
+
+<script>
+/* ═══════════════ 공지 — 여기만 고치시면 됩니다 ═══════════════
+   위에서부터 차례로 보입니다. pin: true 를 적으면 분홍 '중요' 딱지가 붙습니다. */
+window.SL_NOTICES = [
+  { date: '2026-08-19', title: '올림포스 영어독해의 기본 1 — 전범위 자료 업데이트 완료', url: '', pin: true },
+  { date: '2026-08-12', title: '2027 수능특강 영어 패키지 할인 (최대 50%) 진행 중', url: '', pin: true },
+  { date: '2026-08-01', title: '교사용 한글파일(HWP) 순차 업로드 안내', url: '' },
+  { date: '2026-07-20', title: '자료 이용 가이드 · 1:1 문의 안내', url: '' },
+];
+
+/* 위쪽 바로가기 단추 — [보이는 글, 자료실에서 열 자리] */
+window.SL_QUICK = [
+  { label: '2027 수능특강 영어', cat: '부교재/EBS 수능특강' },
+  { label: '수능특강 라이트',     cat: '부교재/EBS 수능특강 라이트' },
+  { label: '올림포스',           cat: '부교재/EBS 올림포스' },
+  { label: '모의고사',           cat: '모의고사' },
+  { label: '교과서',             cat: '교과서' },
+  { label: '방학특강',           cat: '수능대비 · 방학특강' },
+];
+
+/* 공지 전체보기 주소 — 아임웹 게시판 주소를 적으십시오 */
+window.SL_NOTICE_BOARD = '/notice';
+</script>
+
+<style>
+/* ── 아임웹 CSS 가 위젯 안으로 새어 들어오는 것을 막습니다 ──
+   아임웹 사이트에도 `.num` 처럼 흔한 이름의 규칙이 있어, 우리 날짜·금액 칸에
+   분홍 딱지가 씌워지고 글자가 세로로 쪼개지는 일이 있었습니다.
+   이름을 바꾸는 것만으로는 다음에 또 겹칠 수 있어, 아예 바탕·테두리·그림자를
+   한 번 지우고 시작합니다.
+   `#sl-home span` 은 셈이 (1,0,1) 이라 아임웹의 `.무엇` (0,1,0) 을 이깁니다.
+   우리 규칙은 모두 반 이름을 함께 쓰므로(1,1,0 이상) 여기에 지워지지 않습니다.
+   맨 앞에 두어, 혹시 셈이 같은 우리 규칙이 있으면 뒤에 오는 쪽이 이기게 합니다. */
+#sl-home span, #sl-home i, #sl-home b, #sl-home em {
+  display: inline; background: none; border: 0; border-radius: 0;
+  box-shadow: none; padding: 0; margin: 0; float: none; text-shadow: none;
+  line-height: inherit; letter-spacing: inherit;
+}
+#sl-home div, #sl-home p, #sl-home ul, #sl-home ol, #sl-home li, #sl-home dl, #sl-home dt, #sl-home dd {
+  background: none; border: 0; border-radius: 0; box-shadow: none; float: none;
+}
+
+/* 아임웹 코드 위젯은 좌우 여백 없이 화면 끝까지 펼쳐집니다.
+   미리보기에서는 감싸는 틀이 여백을 줘서 몰랐는데, 실제 사이트에서는
+   글이 화면 왼쪽 끝에 붙습니다. 그래서 위젯이 스스로 폭을 잡습니다. */
+#sl-home.sl { max-width: 1240px; margin-left: auto; margin-right: auto; padding-left: 20px; padding-right: 20px; }
+
+#sl-home.sl {
+  --panel: #ffffff; --bg2: #eef2f8; --line: #d6e0ee; --line2: #e8eef6;
+  --ink: #1d3a5e; --ink2: #46617f; --mute: #7c90a8; --dim: #93a5bd;
+  --rose: #e85a8a; --rose2: #c33e6d; --roseb: #fdeef3;
+  --mist: #b0c8ef; --mistb: #eaf1fc;
+  --new: #2f8f6b; --newb: #e6f5ef;
+  --shadow: 0 1px 2px rgba(29,58,94,.06), 0 8px 24px rgba(29,58,94,.07);
+  --r: 12px;
+  color: var(--ink); font-size: 15px; line-height: 1.6; text-align: left;
+  font-family: Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+  display: block; margin-bottom: 26px;
+}
+#sl-home.sl *, #sl-home.sl *::before, #sl-home.sl *::after { box-sizing: border-box; }
+#sl-home.sl h1, #sl-home.sl h2 { margin: 0; letter-spacing: -.025em; text-wrap: balance; }
+#sl-home.sl p { margin: 0; }
+#sl-home.sl ul { margin: 0; padding: 0; list-style: none; }
+#sl-home.sl button { font: inherit; cursor: pointer; }
+#sl-home.sl a { text-decoration: none; color: inherit; }
+#sl-home.sl .sl-num { font-variant-numeric: tabular-nums; }
+
+/* ── 인사말 ── */
+#sl-home .hm-hero { padding: 6px 0 22px; }
+#sl-home .hm-eyebrow { font-size: 11.5px; font-weight: 800; letter-spacing: .16em; color: var(--rose); margin-bottom: 10px; }
+#sl-home .hm-hero h1 { font-size: 33px; font-weight: 800; line-height: 1.28; }
+#sl-home .hm-hero h1 em { font-style: normal; color: var(--rose); }
+/* 자료 라인업 — 평소에는 **이름만 한 줄**, 누르면 설명이 펴집니다.
+   예전에는 설명까지 늘 펼친 여섯 줄 표였는데 300px 가까이 먹어,
+   공지와 새 자료가 첫 화면 밖으로 밀려났습니다. 지금은 40px 남짓입니다. */
+#sl-home .hm-lineup { margin-top: 16px; }
+#sl-home .hm-lineup summary {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  cursor: pointer; list-style: none; padding: 2px 0;
+}
+#sl-home .hm-lineup summary::-webkit-details-marker { display: none; }
+#sl-home .hm-lineup .lb {
+  font-size: 11px; font-weight: 800; letter-spacing: .08em; color: #c8a3b3; flex: none;
+}
+#sl-home .hm-lineup .pills { display: flex; gap: 5px; flex-wrap: wrap; min-width: 0; }
+#sl-home .hm-lineup .pills b {
+  font-size: 12.5px; font-weight: 750; color: var(--rose2);
+  background: var(--roseb); border: 1px solid #f7d3e0; border-radius: 100px;
+  padding: 5px 12px; white-space: nowrap; letter-spacing: -.03em;
+}
+#sl-home .hm-lineup .more {
+  font-size: 11.5px; font-weight: 700; color: #b6c4d6; flex: none;
+  border-bottom: 1px dashed #d8e0ea;
+}
+#sl-home .hm-lineup summary:hover .more { color: var(--rose2); border-bottom-color: #f2b8cd; }
+#sl-home .hm-lineup[open] .more { color: var(--rose2); }
+#sl-home .hm-lineup[open] .more::after { content: ' 접기'; }
+
+#sl-home .hm-lineup-desc {
+  margin-top: 10px; border: 1px solid #f7d3e0; border-radius: 10px; overflow: hidden;
+  background: #fffafc;
+}
+#sl-home .hm-lineup-desc dt {
+  float: left; clear: left; width: 118px; padding: 10px 0 10px 14px;
+  font-size: 12.5px; font-weight: 800; color: var(--rose2); letter-spacing: -.04em; word-break: keep-all;
+}
+#sl-home .hm-lineup-desc dd {
+  padding: 10px 14px 10px 132px; border-bottom: 1px solid #fbe4ec;
+  font-size: 12.5px; color: #7b5665; line-height: 1.5; word-break: keep-all;
+}
+#sl-home .hm-lineup-desc dd:last-child { border-bottom: 0; }
+
+@media (max-width: 620px) {
+  #sl-home .hm-lineup-desc dt { float: none; width: auto; padding: 10px 14px 0; }
+  #sl-home .hm-lineup-desc dd { padding: 2px 14px 10px; }
+}
+#sl-home .hm-lede { margin-top: 13px; color: var(--ink2); font-size: 14px; }
+#sl-home .hm-lede b { color: var(--ink); font-weight: 750; font-variant-numeric: tabular-nums; }
+#sl-home .hm-quick { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
+#sl-home .hm-quick button {
+  border: 1px solid var(--line); background: var(--panel); color: var(--ink2);
+  border-radius: 100px; padding: 7px 14px; font-size: 13px; font-weight: 650;
+  transition: all .13s; box-shadow: var(--shadow);
+}
+#sl-home .hm-quick button:hover { border-color: var(--rose); color: var(--rose2); background: var(--roseb); }
+
+/* ── 공지 · 새 자료 ── */
+#sl-home .hm-two { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.25fr); gap: 14px; }
+#sl-home .hm-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; }
+#sl-home .hm-ch { display: flex; align-items: center; gap: 10px; padding: 14px 16px 11px; border-bottom: 1px solid var(--line2); }
+#sl-home .hm-ch h2 { font-size: 15px; font-weight: 780; }
+#sl-home .hm-ch .hm-right { margin-left: auto; display: flex; align-items: center; gap: 8px; flex: none; }
+#sl-home .hm-ch .more { border: 0; background: none; color: var(--rose2); font-size: 12.5px; font-weight: 650; padding: 2px 4px; }
+#sl-home .hm-ch .more:hover { text-decoration: underline; }
+/* 앞뒤로 넘겨 보는 화살표 — 목록을 길게 늘어놓는 대신 칸을 고정해 둡니다 */
+#sl-home .hm-nav { display: flex; align-items: center; gap: 2px; }
+#sl-home .hm-nav button {
+  width: 22px; height: 22px; line-height: 1; border: 1px solid var(--line);
+  background: var(--panel); color: var(--ink2); border-radius: 6px;
+  font-size: 13px; font-weight: 800; padding: 0; transition: all .13s;
+}
+#sl-home .hm-nav button:hover:not(:disabled) { border-color: var(--rose); color: var(--rose2); background: var(--roseb); }
+#sl-home .hm-nav button:disabled { color: #cfdae8; cursor: default; }
+#sl-home .hm-nav .pg { font-size: 11px; color: var(--dim); min-width: 34px; text-align: center; }
+
+/* 공지사항은 첫 화면에서 제일 먼저 눈에 들어와야 합니다 — 분홍 머리띠를 두릅니다 */
+#sl-home .hm-notice { border-color: #f3c6d8; }
+#sl-home .hm-notice .hm-ch { background: var(--roseb); border-bottom-color: #f3c6d8; }
+#sl-home .hm-notice .hm-ch h2 { color: var(--rose2); font-size: 15.5px; }
+#sl-home .hm-notice .hm-ch h2::before { content: '📢'; margin-right: 6px; }
+#sl-home .hm-notice li { display: flex; align-items: center; gap: 9px; padding: 11px 16px; border-bottom: 1px solid var(--line2); font-size: 13.5px; }
+#sl-home .hm-notice li:last-child { border-bottom: 0; }
+/* 중요한 공지는 줄 전체를 연분홍으로 깔아 둡니다 */
+#sl-home .hm-notice li.hot { background: #fef6f9; }
+#sl-home .hm-notice li.hot .t { color: var(--ink); font-weight: 700; }
+#sl-home .hm-notice .pin { font-size: 9.5px; font-weight: 800; color: #fff; background: var(--rose); border-radius: 5px; padding: 2px 6px; flex: none; }
+#sl-home .hm-notice .t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink2); }
+#sl-home .hm-notice li:hover .t { color: var(--ink); }
+#sl-home .hm-notice .d { margin-left: auto; font-size: 11.5px; color: var(--dim); flex: none; font-variant-numeric: tabular-nums; }
+
+#sl-home .hm-freshlist { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px,1fr)); gap: 1px; background: var(--line2); }
+#sl-home .hm-fr {
+  background: var(--panel); border: 0; text-align: left; padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 3px; transition: background .12s; width: 100%;
+}
+#sl-home .hm-fr:hover { background: var(--mistb); }
+#sl-home .hm-fr .r1 { display: flex; align-items: center; gap: 6px; }
+#sl-home .hm-fr .nm { font-size: 13.5px; font-weight: 720; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+#sl-home .hm-fr .new { font-size: 9px; font-weight: 800; color: var(--new); background: var(--newb); border-radius: 4px; padding: 1px 5px; flex: none; }
+#sl-home .hm-fr .sb { font-size: 11.5px; color: var(--mute); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#sl-home .hm-fr .kd { font-size: 11px; color: var(--rose2); font-weight: 650; }
+
+/* ── 자료실 들머리 ── */
+#sl-home .hm-lead { margin-top: 30px; padding-top: 22px; border-top: 1px solid var(--line); }
+#sl-home .hm-lead h2 { font-size: 20px; font-weight: 780; }
+#sl-home .hm-lead p { margin-top: 6px; color: var(--mute); font-size: 13.5px; }
+
+@media (max-width: 860px) {
+  #sl-home .hm-two { grid-template-columns: 1fr; }
+  #sl-home .hm-hero h1 { font-size: 23px; }
+  #sl-home .hm-freshlist { grid-template-columns: 1fr; }
+}
+</style>
+
+<script>
+/* ═══════════════ 첫 화면 움직임 ═══════════════
+   자료실(#sl-store)이 먼저 열린 뒤에 붙습니다 — 자료를 그쪽에서 가져다 씁니다. */
+(function () {
+  var HOME = document.getElementById('sl-home');
+  if (!HOME || HOME.dataset.ready === '1') return;
+  HOME.dataset.ready = '1';
+
+  var DAY = 86400000;
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function ms(d) { var t = d ? new Date(d).getTime() : 0; return isNaN(t) ? 0 : t; }
+  function ago(t) {
+    if (!t) return '';
+    var d = Math.floor((Date.now() - t) / DAY);
+    if (d <= 0) return '오늘';
+    if (d === 1) return '어제';
+    if (d < 14) return d + '일 전';
+    var x = new Date(t);
+    return (x.getMonth() + 1) + '월 ' + x.getDate() + '일';
+  }
+
+  /* 예전 판이 남긴 찌꺼기를 치웁니다 (불러오기 코드가 v1 이던 시절 것) */
+  try { localStorage.removeItem('sl_home_v1'); } catch (e) {}
+
+  /* ── 공지 ── */
+  /* 공지·새 자료는 **한 번에 다 늘어놓지 않고 칸을 고정해** 앞뒤로 넘겨 봅니다.
+     첫 화면이 목록으로 길어지면 정작 아래 자료실이 화면 밖으로 밀려납니다. */
+  var NOTICES = [], NPAGE = 0, NPER = 6;
+
+  function paintNotices(list) {
+    if (list) { NOTICES = list; NPAGE = 0; }
+    list = NOTICES;
+    var pages = Math.max(1, Math.ceil(list.length / NPER));
+    if (NPAGE > pages - 1) NPAGE = pages - 1;
+    if (NPAGE < 0) NPAGE = 0;
+    var pg = document.getElementById('hm-notice-pg');
+    if (pg) pg.textContent = list.length ? (NPAGE + 1) + '/' + pages : '';
+    document.querySelectorAll('[data-nv="notice"]').forEach(function (b) {
+      b.disabled = b.dataset.d === '-1' ? NPAGE === 0 : NPAGE >= pages - 1;
+    });
+    document.getElementById('hm-notices').innerHTML = list.slice(NPAGE * NPER, NPAGE * NPER + NPER).map(function (n) {
+      var inner =
+        (n.pin ? '<span class="pin">중요</span>' : '') +
+        '<span class="t">' + esc(n.title) + '</span>' +
+        '<span class="d sl-num">' + esc(String(n.date || '').replace(/^\d{4}-/, '').replace('-', '.')) + '</span>';
+      return '<li' + ((n.hot === undefined ? n.pin : n.hot) ? ' class="hot"' : '') + '>' +
+        (n.url ? '<a href="' + esc(n.url) + '" style="display:contents">' + inner + '</a>' : inner) + '</li>';
+    }).join('') || '<li><span class="t" style="color:var(--dim)">올라온 공지가 없습니다</span></li>';
+  }
+  paintNotices(window.SL_NOTICES || []);
+
+  /* 진짜 공지사항 게시판(/notice)에서 그대로 읽어 옵니다.
+     같은 사이트 안이라 그냥 페이지를 받아 와 목록만 골라내면 됩니다 —
+     아임웹 게시판에 글을 올리시면 첫 화면도 저절로 바뀝니다.
+
+     못 받아 오면(미리보기처럼 다른 주소에서 열었을 때) 위에 적어 둔
+     SL_NOTICES 가 그대로 남으므로 화면이 비지는 않습니다. */
+  (function loadNotices() {
+    var board = window.SL_NOTICE_BOARD || '/notice';
+    if (!window.fetch || !window.DOMParser) return;
+    fetch(board, { credentials: 'same-origin' })
+      .then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var wraps = doc.querySelectorAll('.widget.board._list_wrap .post_link_wrap');
+        var out = [];
+        for (var i = 0; i < wraps.length && out.length < 30; i++) {
+          var w = wraps[i];
+          var a = w.querySelector('a.title_link');
+          if (!a) continue;
+          /* 제목 안에 '공지' 딱지 글자가 같이 들어 있어 떼어 냅니다 —
+             그대로 두면 '공지 공지 ...' 처럼 두 번 나옵니다 */
+          var c = a.cloneNode(true);
+          var st = c.querySelectorAll('.sticker');
+          for (var j = 0; j < st.length; j++) st[j].parentNode.removeChild(st[j]);
+          var title = (c.textContent || '').replace(/\s+/g, ' ').trim();
+          if (!title) continue;
+          var t = w.querySelector('.time');
+          out.push({
+            title: title,
+            url: a.getAttribute('href') || board,
+            date: t ? (t.textContent || '').trim() : '',
+            /* 게시판에서 '공지'로 올려 두신 글에 분홍 '중요' 딱지를 붙입니다.
+               다만 윗글이 죄다 공지라 줄 전체를 분홍으로 깔면 강조가 아니라 배경이 됩니다 —
+               분홍 바탕은 맨 위 두 줄까지만 (hot). */
+            pin: !!w.querySelector('.sticker.notice'),
+            hot: !!w.querySelector('.sticker.notice') && out.length < 2
+          });
+        }
+        if (out.length) paintNotices(out);
+      })
+      .catch(function () { /* 그대로 둡니다 */ });
+  })();
+
+  var board = document.getElementById('hm-notice-more');
+  if (window.SL_NOTICE_BOARD) board.href = window.SL_NOTICE_BOARD;
+  else board.style.display = 'none';
+
+  /* ── 자료실이 열리기를 기다렸다가 새 자료·바로가기를 답니다 ── */
+  function paintFromStore() {
+    var api = window.SL_STORE;
+    if (!api) return false;
+    var books = api.books();
+    if (!books.length) return false;
+
+    /* 셈 */
+    var items = 0, chapters = 0;
+    books.forEach(function (b) {
+      (b.chapters || []).forEach(function (c) { chapters++; items += Object.keys(c.items || {}).length; });
+    });
+    var nb = document.getElementById('hm-nbooks'), ni = document.getElementById('hm-nitems');
+    if (nb) nb.textContent = books.length;
+    if (ni) ni.textContent = items.toLocaleString('ko-KR');
+
+    /* 새로 올라온 자료 — **교재마다 한 줄씩**.
+       한 교재의 여러 강을 같은 날 올리시는 일이 잦아, 강을 그대로 늘어놓으면
+       목록이 한 교재로 도배됩니다. 그래서 교재별로 가장 최근 강만 세웁니다. */
+    var fresh = books.map(function (b) {
+      var best = null, n = 0;
+      (b.chapters || []).forEach(function (c) {
+        var t = ms(c.added);
+        if (!best || t > best.t) best = { c: c, t: t };
+        n++;
+      });
+      return best && { b: b, c: best.c, t: best.t, n: n };
+    }).filter(Boolean);
+    fresh.sort(function (x, y) { return y.t - x.t; });
+    var newest = fresh.length ? fresh[0].t : 0;
+
+    FRESH = fresh.slice(0, 30);   /* 최근 서른 개까지 */
+    FAPI = api;
+    FNEWEST = newest;
+    paintFresh();
+    paintQuick();
+    return true;
+  }
+
+  var FRESH = [], FPAGE = 0, FPER = 9, FAPI = null, FNEWEST = 0;
+
+  function paintFresh() {
+    var api = FAPI, newest = FNEWEST, fresh = FRESH;
+    var pages = Math.max(1, Math.ceil(fresh.length / FPER));
+    if (FPAGE > pages - 1) FPAGE = pages - 1;
+    if (FPAGE < 0) FPAGE = 0;
+    var pg = document.getElementById('hm-fresh-pg');
+    if (pg) pg.textContent = fresh.length ? (FPAGE + 1) + '/' + pages : '';
+    document.querySelectorAll('[data-nv="fresh"]').forEach(function (b) {
+      b.disabled = b.dataset.d === '-1' ? FPAGE === 0 : FPAGE >= pages - 1;
+    });
+    document.getElementById('hm-fresh').innerHTML = fresh.slice(FPAGE * FPER, FPAGE * FPER + FPER).map(function (f) {
+      var kinds = Object.keys(f.c.items || {});
+      var names = kinds.map(function (k) { return api.kindName(k); }).filter(Boolean);
+      var same = (f.b.chapters || []).filter(function (c) { return ms(c.added) === f.t; }).length;
+      return '<button type="button" class="hm-fr" data-book="' + esc(f.b.id) + '" data-kind="' + esc(kinds[0] || '') + '">' +
+        '<span class="r1"><span class="nm">' + esc(f.b.title) + '</span>' +
+        (newest - f.t < 7 * DAY ? '<span class="new">NEW</span>' : '') + '</span>' +
+        '<span class="sb">' + esc(same > 1 ? f.c.label + ' 외 ' + (same - 1) + '개 강' : f.c.label) +
+        ' · ' + esc(ago(f.t)) + '</span>' +
+        '<span class="kd">' + esc(names.slice(0, 3).join(' · ')) + (names.length > 3 ? ' 외 ' + (names.length - 3) : '') + '</span>' +
+        '</button>';
+    }).join('');
+  }
+
+  function paintQuick() {
+    var books = (window.SL_STORE || { books: function () { return []; } }).books();
+    /* 바로가기 — 자료실에 정말 있는 자리만 남깁니다 */
+    var have = {};
+    books.forEach(function (b) {
+      var acc = '';
+      (b.path || []).forEach(function (n) { acc = acc ? acc + '/' + n : n; have[acc] = true; });
+    });
+    document.getElementById('hm-quick').innerHTML = (window.SL_QUICK || [])
+      .filter(function (q) { return have[q.cat]; })
+      .map(function (q) {
+        return '<button type="button" data-cat="' + esc(q.cat) + '">' + esc(q.label) + '</button>';
+      }).join('');
+    return true;
+  }
+
+  /* 자료실은 밖에서 자료를 받아올 수도 있어 조금 기다립니다 */
+  var tries = 0;
+  (function wait() {
+    if (paintFromStore()) return;
+    if (++tries > 60) return;
+    setTimeout(wait, 100);
+  })();
+
+  /* ── 눌렀을 때 — 자료실로 데려갑니다 ── */
+  HOME.addEventListener('click', function (e) {
+    /* 앞뒤 화살표 — 자료실로 가지 않고 그 칸만 다시 그립니다 */
+    var nv = e.target.closest('[data-nv]');
+    if (nv) {
+      var d = nv.dataset.d === '-1' ? -1 : 1;
+      if (nv.dataset.nv === 'notice') { NPAGE += d; paintNotices(); }
+      else { FPAGE += d; paintFresh(); }
+      return;
+    }
+    var t = e.target.closest('[data-cat],[data-book],[data-jump]');
+    if (!t || !window.SL_STORE) return;
+    if (t.dataset.cat) window.SL_STORE.go({ cat: t.dataset.cat });
+    else if (t.dataset.book) window.SL_STORE.go({ book: t.dataset.book, kind: t.dataset.kind });
+    else window.SL_STORE.go({});
+  });
+})();
+</script>
+
+
+<!--
+  ═══════════════════════════════════════════════════════════════
+   시크릿루체 자료실 — 아임웹(imweb) 삽입용
+   secretluce.com/store 페이지의 HTML 위젯에 이 파일 전체를 붙여넣습니다.
+
+   붙이는 법은 README.md 를 보십시오. 요약하면:
+     1) 아임웹 관리자 > 사이트 편집 > /store 페이지
+     2) 섹션 추가 > 위젯 '코드(HTML)' 삽입
+     3) 이 파일 내용 전부를 붙여넣고 저장
+
+   자료를 늘리고 줄이는 곳은 아래 [교재 목록] 한 곳뿐입니다.
+   그 아래 CSS·스크립트는 건드릴 일이 없습니다.
+  ═══════════════════════════════════════════════════════════════
+-->
+
+<div id="sl-store" class="sl">
+  <div class="sl-boot">자료실을 여는 중입니다…</div>
+</div>
+
+<script>
+/* ═══════════════ ① 설정 ═══════════════ */
+window.SL_CONFIG = {
+  /**
+   * 교재 목록을 밖에서 받아올 주소.
+   * 비워 두면 아래 [교재 목록] 을 그대로 씁니다.
+   * 관리자 화면과 연동하시려면 여기에 JSON 주소를 적으십시오.
+   *   예) 'https://app.secretluce.com/api/catalog/public'
+   */
+  DATA_URL: '',
+
+  /** 위쪽 안내 띠 — 비우면 안 보입니다 */
+  NOTICE: '교과서 자료는 라이센스로 인해 쏠북에서 구매 가능하며 한글파일 구매는 불가능합니다. 각 교재별 샘플 파일을 확인하신 후 ‘쏠북에서 구매’ 를 누르시면 해당 자료 구매 링크로 연결됩니다.',
+};
+
+/* ═══ 여기 자료는 build-data.py 가 엑셀에서 만들어 넣었습니다 — 손으로 고치지 마십시오 ═══ */
+window.SL_KINDS = [
+ {
+  "id": "basic",
+  "name": "변형문제 유형편",
+  "short": "변형문제 유형편",
+  "desc": "주제·제목·요지·빈칸 등 12종",
+  "core": 1
+ },
+ {
+  "id": "advanced",
+  "name": "변형문제 심화편",
+  "short": "변형문제 심화편",
+  "desc": "어휘·어법·서술형 등",
+  "core": 1
+ },
+ {
+  "id": "summary",
+  "name": "핵심요약노트",
+  "short": "핵심요약",
+  "desc": "한 장으로 훑는 정리",
+  "core": 1
+ },
+ {
+  "id": "boost",
+  "name": "직전보강",
+  "short": "직전보강",
+  "desc": "삽화·통합문제까지 마무리",
+  "core": 1
+ },
+ {
+  "id": "analysis",
+  "name": "지문분석",
+  "short": "지문분석",
+  "desc": "구문·해석·어휘를 지문마다",
+  "core": 1
+ },
+ {
+  "id": "workbook",
+  "name": "워크북",
+  "short": "워크북",
+  "desc": "빈칸 채우기·배열·영작 연습",
+  "core": 1
+ },
+ {
+  "id": "package",
+  "name": "올인원 패키지",
+  "short": "올인원 패키지",
+  "desc": "한 회차 자료를 통째로 묶어 30% 할인"
+ },
+ {
+  "id": "vocab",
+  "name": "시크릿 어휘",
+  "short": "시크릿 어휘",
+  "desc": "다의어·반의어·동의어·테마어휘"
+ },
+ {
+  "id": "grammar",
+  "name": "시크릿 어법",
+  "short": "시크릿 어법",
+  "desc": "문장의 형식부터 관계사까지"
+ }
+];
+window.SL_PRE = ["https://solvook.com/products/", "https://daechisecret.com/240/", "https://daechisecret.com/244/", "https://daechisecret.com/174/", "https://daechisecret.com/173/", "https://daechisecret.com/172/", "https://daechisecret.com/175/", "https://daechisecret.com/388/", "https://daechisecret.com/387/", "https://daechisecret.com/134/", "https://daechisecret.com/132/", "https://daechisecret.com/133/", "https://daechisecret.com/130/", "https://daechisecret.com/370/", "https://daechisecret.com/speciallesson/", "https://daechisecret.com/speciallesson-hwp/", "https://daechisecret.com/377/", "https://daechisecret.com/379/", "https://daechisecret.com/380/", "https://daechisecret.com/463/", "https://daechisecret.com/1591866571/", "https://daechisecret.com/245/", "https://daechisecret.com/mockexam3-2026-pdf/", "https://daechisecret.com/mockexam1-2025/", "https://daechisecret.com/177/", "https://daechisecret.com/176/", "https://daechisecret.com/136/", "https://daechisecret.com/137/", "https://daechisecret.com/olympos-basic1/", "https://daechisecret.com/178/", "https://daechisecret.com/393/", "https://daechisecret.com/179/", "https://daechisecret.com/ebs-reading-2026-pdf/", "https://daechisecret.com/376/", "https://daechisecret.com/mockexam2-2025/", "https://daechisecret.com/mockexam1-2026-pdf/", "https://daechisecret.com/mockexam2-2026-pdf/", "https://daechisecret.com/mockexam3-2025/", "https://daechisecret.com/131/", "https://daechisecret.com/263/", "https://daechisecret.com/texbook2-nm/", "https://daechisecret.com/shop_view/", "https://cdn.imweb.me/thumbnail/20260815/"];
+window.SL_BANNERS = ["0afef8a784b7f.png","1a010c4f09689.png","1a641c4f7c73a.png","23663c1bdd598.png","4e41f42f15e89.png","55b2c56f8d96d.png","5a82dbd4c22d2.png","5dfa4873a9d36.png","6d7c7976b3d2d.png","9b349422ffa34.jpg","a7ae82fc7d1ab.png","afcb50cf3d6c9.png","bcd0fa7882b64.png","bedfd02e39d61.png","c615dd65bce82.jpg","c67972c7e8a18.png","fb0f8dc5de958.jpg","fcdf97e54f419.png"];
+window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6월 모의고사","path":["모의고사","1학년","2026년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20260612/01e5ba96eadd4192.jpg","chapters":[{"label":"전범위","items":{"package":{"pdf":"35|?idx=1073","price":30500,"off":30}},"added":"2026-06-07","no":1073,"pkg":1,"off":30},{"label":"[1학년] 2026년 6월 모의고사 전체 라인업","items":{"advanced":{"pdf":"35|?idx=1081","price":16900,"q":384},"workbook":{"pdf":"35|?idx=1068","price":9900},"analysis":{"pdf":"35|?idx=1066","price":9900},"boost":{"pdf":"22|?idx=1060","price":9900},"basic":{"pdf":"35|?idx=1057","price":13900,"q":324},"summary":{"pdf":"35|?idx=1056","price":9900}},"added":"2026-06-12","no":1081,"plain":true}],"tone":"pink","cshort":"6월 모의고사","ord":0},{"id":"모의고사1학년2026년3월모의고사","title":"3월 모의고사","path":["모의고사","1학년","2026년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20260413/0a5d5c43ab7d487c.jpg","chapters":[{"label":"전범위","items":{"package":{"pdf":"35|?idx=873","price":30500,"off":30}},"added":"2026-03-26","no":873,"pkg":1,"off":30},{"label":"[1학년] 2026년 3월 모의고사 전체 라인업","items":{"boost":{"pdf":"35|?idx=913","price":9900},"analysis":{"pdf":"35|?idx=871","price":9900},"workbook":{"pdf":"35|?idx=869","price":9900},"basic":{"pdf":"35|?idx=867","price":13900,"q":321},"summary":{"pdf":"35|?idx=864","price":9900}},"added":"2026-04-13","no":913,"plain":true}],"tone":"pink","cshort":"3월 모의고사","ord":1},{"id":"모의고사1학년2025년10월모의고사","title":"10월 모의고사","path":["모의고사","1학년","2025년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20251026/8063188e7bd2d.jpg","chapters":[{"label":"[1학년] 2025년 10월 모의고사 전체 라인업","items":{"basic":{"hwp":"23|?idx=199","hwpPrice":38000,"q":252,"pdf":"23|?idx=195","price":12000},"boost":{"pdf":"23|?idx=197","price":14000},"summary":{"pdf":"23|?idx=193","price":10000}},"added":"2025-10-26","no":199,"plain":true}],"tone":"pink","cshort":"10월 모의고사","ord":2},{"id":"모의고사1학년2025년9월모의고사","title":"9월 모의고사","path":["모의고사","1학년","2025년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20250923/8797820a39c58.png","chapters":[{"label":"[1학년] 2025년 9월 모의고사 전체 라인업","items":{"boost":{"pdf":"23|?idx=192","price":12000},"summary":{"hwp":"23|?idx=112","hwpPrice":37000,"q":120,"pdf":"23|?idx=102","price":12000},"workbook":{"hwp":"23|?idx=110","hwpPrice":40000,"pdf":"23|?idx=105","price":12000},"basic":{"hwp":"23|?idx=108","hwpPrice":38000,"q":252,"pdf":"23|?idx=104","price":12000}},"added":"2025-10-20","no":192,"plain":true}],"tone":"pink","cshort":"9월 모의고사","ord":3},{"id":"모의고사1학년2025년6월모의고사","title":"6월 모의고사","path":["모의고사","1학년","2025년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20250817/c5bc6dced4051.png","chapters":[{"label":"[1학년] 2025년 6월 모의고사 전체 라인업","items":{"basic":{"pdf":"23|?idx=81","price":13000,"q":240},"summary":{"pdf":"23|?idx=80","price":10000}},"added":"2025-08-17","no":81,"plain":true}],"tone":"pink","cshort":"6월 모의고사","ord":4},{"id":"모의고사1학년2025년3월모의고사","title":"3월 모의고사","path":["모의고사","1학년","2025년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20250726/37dd651c535f8.png","chapters":[{"label":"[1학년] 2025년 3월 모의고사 전체 라인업","items":{"basic":{"pdf":"23|?idx=42","price":11000,"q":217},"workbook":{"pdf":"23|?idx=205","price":13000},"summary":{"pdf":"23|?idx=201","price":10000}},"added":"2025-11-04","no":205,"plain":true}],"tone":"pink","cshort":"3월 모의고사","ord":5},{"id":"모의고사2학년2026년6월모의고사","title":"6월 모의고사","path":["모의고사","2학년","2026년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20260612/bb5289cc5d1c41b6.jpg","chapters":[{"label":"전범위","items":{"package":{"pdf":"39|?idx=1074","price":30500,"off":30}},"added":"2026-06-07","no":1074,"pkg":1,"off":30},{"label":"[2학년] 2026년 6월 모의고사 전체 라인업","items":{"advanced":{"pdf":"36|?idx=1082","price":16900,"q":384},"analysis":{"pdf":"36|?idx=1071","price":9900},"workbook":{"pdf":"36|?idx=1069","price":9900},"boost":{"pdf":"36|?idx=1064","price":9900},"basic":{"pdf":"36|?idx=1059","price":13900,"q":322},"summary":{"pdf":"36|?idx=1058","price":9900}},"added":"2026-06-12","no":1082,"plain":true}],"tone":"pink","cshort":"6월 모의고사","ord":6},{"id":"모의고사2학년2026년3월모의고사","title":"3월 모의고사","path":["모의고사","2학년","2026년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20260413/28dd9505ea154a51.jpg","chapters":[{"label":"전범위","items":{"package":{"pdf":"39|?idx=874","price":30500,"off":30}},"added":"2026-03-26","no":874,"pkg":1,"off":30},{"label":"[2학년] 2026년 3월 모의고사 전체 라인업","items":{"boost":{"pdf":"36|?idx=914","price":9900},"analysis":{"pdf":"36|?idx=872","price":9900},"workbook":{"pdf":"36|?idx=870","price":9900},"basic":{"pdf":"36|?idx=868","price":13900,"q":325},"summary":{"pdf":"36|?idx=865","price":9900}},"added":"2026-04-13","no":914,"plain":true}],"tone":"pink","cshort":"3월 모의고사","ord":7},{"id":"모의고사2학년2025년10월모의고사","title":"10월 모의고사","path":["모의고사","2학년","2025년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20251026/47355bffb6c29.jpg","chapters":[{"label":"[2학년] 2025년 10월 모의고사 전체 라인업","items":{"basic":{"hwp":"34|?idx=200","hwpPrice":38000,"q":252,"pdf":"34|?idx=196","price":12000},"summary":{"pdf":"34|?idx=194","price":10000}},"added":"2025-10-26","no":200,"plain":true}],"tone":"pink","cshort":"10월 모의고사","ord":8},{"id":"모의고사2학년2025년9월모의고사","title":"9월 모의고사","path":["모의고사","2학년","2025년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20250908/6276db369a84b.jpg","chapters":[{"label":"[2학년] 2025년 9월 모의고사 전체 라인업","items":{"summary":{"hwp":"34|?idx=113","hwpPrice":37000,"q":120,"pdf":"34|?idx=103","price":12000},"workbook":{"hwp":"34|?idx=111","hwpPrice":40000,"pdf":"34|?idx=107","price":12000},"basic":{"hwp":"34|?idx=109","hwpPrice":38000,"q":252,"pdf":"34|?idx=106","price":12000}},"added":"2025-10-20","no":113,"plain":true}],"tone":"pink","cshort":"9월 모의고사","ord":9},{"id":"모의고사2학년2025년6월모의고사","title":"6월 모의고사","path":["모의고사","2학년","2025년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20250817/010bc10296e62.png","chapters":[{"label":"[2학년] 2025년 6월 모의고사 전체 라인업","items":{"basic":{"pdf":"34|?idx=83","price":13000,"q":240},"summary":{"pdf":"34|?idx=82","price":10000}},"added":"2025-08-17","no":83,"plain":true}],"tone":"pink","cshort":"6월 모의고사","ord":10},{"id":"모의고사2학년2025년3월모의고사","title":"3월 모의고사","path":["모의고사","2학년","2025년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20251104/43c158eefd2b9.png","chapters":[{"label":"[2학년] 2025년 3월 모의고사 전체 라인업","items":{"basic":{"pdf":"34|?idx=209","price":13000},"workbook":{"pdf":"34|?idx=206","price":13000},"summary":{"pdf":"34|?idx=203","price":10000}},"added":"2025-11-04","no":209,"plain":true}],"tone":"pink","cshort":"3월 모의고사","ord":11},{"id":"모의고사2학년2024년10월모의고사","title":"10월 모의고사","path":["모의고사","2학년","2024년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20251116/a05c0b1d44391.jpg","chapters":[{"label":"[2학년] 2024년 10월 모의고사 전체 라인업","items":{"summary":{"pdf":"https://daechisecret.com/old-exam/?idx=233","price":10000}},"added":"2025-11-16","no":233,"plain":true}],"tone":"pink","cshort":"10월 모의고사","ord":12},{"id":"모의고사3학년2026년6월모의고사","title":"6월 모의고사","path":["모의고사","3학년","2026년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20260612/073aa3de540f4e9e.jpg","chapters":[{"label":"전범위","items":{"package":{"pdf":"39|?idx=1075","price":30500,"off":30}},"added":"2026-06-07","no":1075,"pkg":1,"off":30},{"label":"[3학년] 2026년 6월 모의고사 전체 라인업","items":{"advanced":{"pdf":"36|?idx=1083","price":16900,"q":387},"analysis":{"pdf":"22|?idx=1072","price":9900},"workbook":{"pdf":"22|?idx=1070","price":9900},"boost":{"pdf":"22|?idx=1065","price":9900},"basic":{"pdf":"22|?idx=1063","price":13900,"q":321},"summary":{"pdf":"22|?idx=1061","price":9900}},"added":"2026-06-12","no":1083,"plain":true}],"tone":"pink","cshort":"6월 모의고사","ord":13},{"id":"모의고사3학년2026년5월모의고사","title":"5월 모의고사","path":["모의고사","3학년","2026년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20260610/bd7dc7f963e841f7.png","chapters":[{"label":"전범위","items":{"package":{"pdf":"39|?idx=1076","price":30500,"off":30}},"added":"2026-06-10","no":1076,"pkg":1,"off":30},{"label":"[3학년] 2026년 5월 모의고사 전체 라인업","items":{"workbook":{"pdf":"22|?idx=1005","price":9900},"analysis":{"pdf":"22|?idx=1003","price":9900},"summary":{"pdf":"22|?idx=993","price":9900},"basic":{"pdf":"22|?idx=992","price":13900,"q":323},"boost":{"pdf":"22|?idx=991","price":9900}},"added":"2026-05-14","no":1005,"plain":true}],"tone":"pink","cshort":"5월 모의고사","ord":14},{"id":"모의고사3학년2026년3월모의고사","title":"3월 모의고사","path":["모의고사","3학년","2026년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20260413/30cf1003c1ac4c4e.jpg","chapters":[{"label":"전범위","items":{"package":{"pdf":"39|?idx=882","price":30500,"off":30}},"added":"2026-03-28","no":882,"pkg":1,"off":30},{"label":"[3학년] 2026년 3월 모의고사 전체 라인업","items":{"boost":{"pdf":"22|?idx=915","price":9900},"workbook":{"pdf":"22|?idx=881","price":9900},"analysis":{"pdf":"22|?idx=876","price":9900},"basic":{"pdf":"22|?idx=875","price":13900,"q":324},"summary":{"pdf":"22|?idx=866","price":9900}},"added":"2026-04-13","no":915,"plain":true}],"tone":"pink","cshort":"3월 모의고사","ord":15},{"id":"모의고사3학년2025년9월모의고사","title":"9월 모의고사","path":["모의고사","3학년","2025년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20250912/e7fd53666ecd9.jpg","chapters":[{"label":"[3학년] 2025년 9월 모의고사 전체 라인업","items":{"basic":{"hwp":"37|?idx=150","hwpPrice":38000,"q":240,"pdf":"37|?idx=147","price":12000},"workbook":{"hwp":"37|?idx=149","hwpPrice":40000,"pdf":"37|?idx=146","price":12000},"summary":{"hwp":"37|?idx=133","hwpPrice":37000,"q":116,"pdf":"37|?idx=132","price":9900}},"added":"2025-09-12","no":150,"plain":true}],"tone":"pink","cshort":"9월 모의고사","ord":16},{"id":"모의고사3학년2025년6월모의고사","title":"6월 모의고사","path":["모의고사","3학년","2025년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20250817/df9faf573dfde.png","chapters":[{"label":"[3학년] 2025년 6월 모의고사 전체 라인업","items":{"basic":{"pdf":"37|?idx=85","price":13000,"q":216},"summary":{"pdf":"37|?idx=84","price":10000}},"added":"2025-08-17","no":85,"plain":true}],"tone":"pink","cshort":"6월 모의고사","ord":17},{"id":"모의고사3학년2025년5월모의고사","title":"5월 모의고사","path":["모의고사","3학년","2025년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20251104/26a1bd9a9c9c2.png","chapters":[{"label":"[3학년] 2025년 5월 모의고사 전체 라인업","items":{"basic":{"pdf":"37|?idx=208","price":13000},"summary":{"pdf":"37|?idx=207","price":10000}},"added":"2025-11-04","no":208,"plain":true}],"tone":"pink","cshort":"5월 모의고사","ord":18},{"id":"모의고사3학년2025년3월모의고사","title":"3월 모의고사","path":["모의고사","3학년","2025년"],"cover":"mock","img":"https://cdn.imweb.me/thumbnail/20251104/3daec4dcea10d.png","chapters":[{"label":"[3학년] 2025년 3월 모의고사 전체 라인업","items":{"summary":{"pdf":"37|?idx=204","price":10000}},"added":"2025-11-04","no":204,"plain":true}],"tone":"pink","cshort":"3월 모의고사","ord":19},{"id":"교과서1학년공통영어1공통영어1ybm김","title":"공통영어 1 · YBM(김)","path":["교과서","[1학년] 공통영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260420/6bd6c6502503453c.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3875795462359352394"},"basic":{"pdf":"0|3794273819460371880","q":76}},"added":"2026-04-15","no":927},{"label":"2강","items":{"boost":{"pdf":"0|3875796053588444235"},"basic":{"pdf":"0|3794273819460371880","q":94}},"added":"2026-04-15","no":928},{"label":"3강","items":{"boost":{"pdf":"0|3879143803889649512"},"basic":{"pdf":"0|3627682489775949467","q":90}},"added":"2026-04-20","no":953},{"label":"4강","items":{"boost":{"pdf":"0|3879144865635764075"},"basic":{"pdf":"0|3627683487080777372","q":93}},"added":"2026-04-20","no":954}],"tone":"green","cshort":"공통영어 1\nYBM(김)","ord":20},{"id":"교과서1학년공통영어1공통영어1ybm박","title":"공통영어 1 · YBM(박)","path":["교과서","[1학년] 공통영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260420/27464742ea694b3e.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3875642886120801299"},"basic":{"pdf":"0|3585698581601846407","q":62}},"added":"2026-04-15","no":925},{"label":"2강","items":{"boost":{"pdf":"0|3875643603959153684"},"basic":{"pdf":"0|3595073379775809071","q":79}},"added":"2026-04-15","no":926},{"label":"3강","items":{"boost":{"pdf":"0|3879361099572708364"},"basic":{"pdf":"0|3605950885554816239","q":91}},"added":"2026-04-20","no":955},{"label":"4강","items":{"boost":{"pdf":"0|3879361719406953486"},"basic":{"pdf":"0|3612625462376793320","q":77}},"added":"2026-04-20","no":956}],"tone":"green","cshort":"공통영어 1\nYBM(박)","ord":21},{"id":"교과서1학년공통영어1공통영어1능률민","title":"공통영어 1 · 능률(민)","path":["교과서","[1학년] 공통영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260616/8f8f2f61b4b54347.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3874843398661735984"},"basic":{"pdf":"0|3569804726927099752","q":63}},"added":"2026-04-15","no":923},{"label":"2강","items":{"boost":{"pdf":"0|3874843896911496753"},"basic":{"pdf":"0|3596778035115722660","q":48}},"added":"2026-04-15","no":924},{"label":"3강","items":{"boost":{"pdf":"0|3876431000858789224"},"basic":{"pdf":"0|3605297358809596966","q":61}},"added":"2026-04-16","no":936},{"label":"4강","items":{"boost":{"pdf":"0|3876431452308505961"},"basic":{"pdf":"0|3610984354450245034","q":62}},"added":"2026-04-16","no":937},{"label":"SL 1강","items":{"boost":{"pdf":"0|3920579835792983771"},"basic":{"pdf":"0|3794276516330735018","q":63}},"added":"2026-06-16","no":1096},{"label":"SL 2강","items":{"boost":{"pdf":"0|3920580231550731996"},"basic":{"pdf":"0|3794277337382520235","q":47}},"added":"2026-06-16","no":1097}],"tone":"green","cshort":"공통영어 1\n능률(민)","ord":22},{"id":"교과서1학년공통영어1공통영어1능률오","title":"공통영어 1 · 능률(오)","path":["교과서","[1학년] 공통영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260415/738d40db88d443a8.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3874823027153700381"},"workbook":{"pdf":"0|3817839127018079911"},"basic":{"pdf":"0|3562810233686329282","q":79}},"added":"2026-04-15","no":921},{"label":"2강","items":{"boost":{"pdf":"0|3874823567522661919"},"workbook":{"pdf":"0|3817840621196936874"},"basic":{"pdf":"0|3566336969870935497","q":78}},"added":"2026-04-15","no":922},{"label":"3강","items":{"workbook":{"pdf":"0|3817841453774669484"},"basic":{"pdf":"0|3570035032359700408","q":76}},"added":"2026-01-27","no":424},{"label":"4강","items":{"workbook":{"pdf":"0|3817842103128426158"},"basic":{"pdf":"0|3602440289588872470","q":78}},"added":"2026-01-27","no":425},{"label":"SL강","items":{"workbook":{"pdf":"0|3817842858103146160"},"basic":{"pdf":"0|3794279277340394924","q":64}},"added":"2026-01-27","no":426}],"tone":"green","cshort":"공통영어 1\n능률(오)","ord":23},{"id":"교과서1학년공통영어1공통영어1동아이","title":"공통영어 1 · 동아(이)","path":["교과서","[1학년] 공통영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260416/9a180bd727034348.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3876466008541627811"},"basic":{"pdf":"0|3840907274486810225","q":63}},"added":"2026-04-16","no":944},{"label":"2강","items":{"boost":{"pdf":"0|3876466126779057572"},"basic":{"pdf":"0|3840907427134310002","q":62}},"added":"2026-04-16","no":945},{"label":"3강","items":{"basic":{"pdf":"0|3840907580964603507","q":62}},"added":"2026-03-07","no":632},{"label":"4강","items":{"basic":{"pdf":"0|3840907580964603507","q":61}},"added":"2026-03-07","no":633},{"label":"SL강","items":{"basic":{"pdf":"0|3840907908397139573","q":62}},"added":"2026-03-07","no":634}],"tone":"green","cshort":"공통영어 1\n동아(이)","ord":24},{"id":"교과서1학년공통영어1공통영어1미래엔김","title":"공통영어 1 · 미래엔(김)","path":["교과서","[1학년] 공통영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260416/5dbbc6685fdc4885.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3876465742035551649"},"basic":{"pdf":"0|3843709011291538601","q":78},"summary":{"pdf":"0|3843709500481602733"},"analysis":{"pdf":"0|3843709877583086769"},"workbook":{"pdf":"0|3843710387795002549"}},"added":"2026-04-16","no":942},{"label":"2강","items":{"boost":{"pdf":"0|3876465878283322786"},"basic":{"pdf":"0|3843709131659674794","q":62},"summary":{"pdf":"0|3843709594190742702"},"analysis":{"pdf":"0|3843709968406545586"},"workbook":{"pdf":"0|3843710558679336118"}},"added":"2026-04-16","no":943},{"label":"3강","items":{"basic":{"pdf":"0|3843709256775763115","q":64},"summary":{"pdf":"0|3843709684703823023"},"analysis":{"pdf":"0|3843710056788919475"},"workbook":{"pdf":"0|3843710708449543351"}},"added":"2026-03-07","no":641},{"label":"4강","items":{"basic":{"pdf":"0|3843709404583036076","q":77},"summary":{"pdf":"0|3843709781382530224"},"analysis":{"pdf":"0|3843710160908321972"},"workbook":{"pdf":"0|3843710850779055288"}},"added":"2026-03-07","no":642}],"tone":"green","cshort":"공통영어 1\n미래엔(김)","ord":25},{"id":"교과서1학년공통영어1공통영어1지학사신","title":"공통영어 1 · 지학사(신)","path":["교과서","[1학년] 공통영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260417/6f2d4daa8cae405a.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3877017964444124640"}},"added":"2026-04-17","no":950},{"label":"2강","items":{"boost":{"pdf":"0|3877018482960762337"}},"added":"2026-04-17","no":951}],"tone":"green","cshort":"공통영어 1\n지학사(신)","ord":26},{"id":"교과서1학년공통영어1공통영어1천재강","title":"공통영어 1 · 천재(강)","path":["교과서","[1학년] 공통영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260416/a11e2477fee849d6.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3876465312303941021"},"basic":{"pdf":"0|3825630467504211049","q":78}},"added":"2026-04-16","no":938},{"label":"2강","items":{"boost":{"pdf":"0|3876465414854673822"},"basic":{"pdf":"0|3825630580406486122","q":91}},"added":"2026-04-16","no":939},{"label":"3강","items":{"basic":{"pdf":"https://solvook.com/products/3825630701202441323https://solvook.com/products/3825630701202441323","q":78}},"added":"2026-03-06","no":597},{"label":"4강","items":{"basic":{"pdf":"0|3825630826939286636","q":64}},"added":"2026-03-06","no":598}],"tone":"green","cshort":"공통영어 1\n천재(강)","ord":27},{"id":"교과서1학년공통영어1공통영어1천재조","title":"공통영어 1 · 천재(조)","path":["교과서","[1학년] 공통영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260427/16c35497426048b8.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3876465513798305183"},"basic":{"pdf":"0|3825643901054616687","q":77}},"added":"2026-04-16","no":940},{"label":"2강","items":{"boost":{"pdf":"0|3876465617464722848"},"basic":{"pdf":"0|3825644014871250032","q":90}},"added":"2026-04-16","no":941},{"label":"3강","items":{"boost":{"pdf":"0|3884225436120515980"},"basic":{"pdf":"0|3825644130793423985","q":79}},"added":"2026-04-27","no":982},{"label":"4강","items":{"boost":{"pdf":"0|3884225546531374477"},"basic":{"pdf":"0|3825644239719498866","q":77}},"added":"2026-04-27","no":983},{"label":"SL강","items":{"boost":{"pdf":"0|3884225658636731790"},"basic":{"pdf":"0|3825644354794423411","q":61}},"added":"2026-04-27","no":984}],"tone":"green","cshort":"공통영어 1\n천재(조)","ord":28},{"id":"교과서1학년공통영어2공통영어2ybm김","title":"공통영어 2 · YBM(김)","path":["교과서","[1학년] 공통영어 2"],"cover":"text","vendor":"쏠북","img":"42|1b7c2612dd0d45c4.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3964201178916455973"},"workbook":{"pdf":"0|3696579454391289604"},"basic":{"pdf":"0|3686441133119899338","q":159},"summary":{"pdf":"0|3696552601408505600"}},"added":"2026-08-16","no":1235},{"label":"2강","items":{"boost":{"pdf":"0|3964201561680250406"},"workbook":{"pdf":"0|3696580458885154565"},"basic":{"pdf":"0|3686442650778470098","q":220},"summary":{"pdf":"0|3696554352329099009"}},"added":"2026-08-16","no":1294},{"label":"3강","items":{"boost":{"pdf":"0|3964201881252660775"},"workbook":{"pdf":"0|3743048882553095458"},"basic":{"pdf":"0|3722598098279597093","q":161},"summary":{"pdf":"0|3743049909083833636"}},"added":"2026-08-16","no":1293},{"label":"4강","items":{"boost":{"pdf":"0|3964202256508651048"},"workbook":{"pdf":"0|3696580458885154565"},"basic":{"pdf":"0|3707623681296434644","q":217},"summary":{"pdf":"0|3761185716688652186"}},"added":"2026-08-16","no":1295}],"tone":"green","cshort":"공통영어 2\nYBM(김)","ord":29},{"id":"교과서1학년공통영어2공통영어2ybm박","title":"공통영어 2 · YBM(박)","path":["교과서","[1학년] 공통영어 2"],"cover":"text","vendor":"쏠북","img":"42|143ddea3402f4d1e.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3719087929520293481","q":142},"basic":{"pdf":"0|3685072885942060701","q":172},"workbook":{"pdf":"0|3696576883199051522"},"summary":{"pdf":"0|3696548765356787454"}},"added":"2026-08-16","no":1231},{"label":"2강","items":{"boost":{"pdf":"https://daechisecret.com/textbook2-ybmb/?idx=217"},"basic":{"pdf":"0|3685074346331604638","q":180},"workbook":{"pdf":"0|3696578307383363331"},"summary":{"pdf":"0|3696550650293782271"}},"added":"2026-08-16","no":1232},{"label":"3강","items":{"boost":{"pdf":"0|3719088493159253610","q":164},"basic":{"pdf":"0|3706758143959630993","q":198},"workbook":{"pdf":"0|3760575220096698215"},"summary":{"pdf":"0|3708346766295303834"}},"added":"2026-08-16","no":1296},{"label":"4강","items":{"boost":{"pdf":"https://daechisecret.com/textbook2-ybmb/?idx=219"},"basic":{"pdf":"0|3703804933464655583","q":256},"workbook":{"pdf":"0|3761006797821839212"},"summary":{"pdf":"0|3748090307640559496"}},"added":"2026-08-16","no":1297}],"tone":"green","cshort":"공통영어 2\nYBM(박)","ord":30},{"id":"교과서1학년공통영어2공통영어2능률민","title":"공통영어 2 · 능률(민)","path":["교과서","[1학년] 공통영어 2"],"cover":"text","vendor":"쏠북","img":"42|aa65e63d4e344ff3.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"40|?idx=210","q":130},"basic":{"pdf":"0|3684293827226502799","q":136},"workbook":{"pdf":"0|3693998984629585247"},"summary":{"pdf":"0|3689611750002394209"}},"added":"2026-08-16","no":1244},{"label":"2강","items":{"boost":{"pdf":"40|?idx=211","q":158},"basic":{"pdf":"0|3684295984818423440","q":247},"workbook":{"pdf":"0|3693998984629585247"},"summary":{"pdf":"0|3691469113894372490"}},"added":"2026-08-16","no":1245},{"label":"3강","items":{"boost":{"pdf":"40|?idx=212","q":84},"basic":{"pdf":"0|3703086200232347272","q":129},"workbook":{"pdf":"0|3708167378480137729"},"summary":{"pdf":"0|3708169655592945154"}},"added":"2026-08-16","no":1246},{"label":"4강","items":{"boost":{"pdf":"40|?idx=213","q":97},"basic":{"pdf":"0|3707730778537330161","q":222},"workbook":{"pdf":"0|3709705817084135180"},"summary":{"pdf":"0|3709704670227203851"}},"added":"2026-08-16","no":1247},{"label":"SL 1강","items":{"boost":{"pdf":"40|?idx=214"},"basic":{"pdf":"0|3703087391741838985","q":146},"workbook":{"pdf":"0|3709915200128812997"},"summary":{"pdf":"0|3709916173349947334"}},"added":"2026-08-16","no":1248},{"label":"SL 2강","items":{"boost":{"pdf":"40|?idx=215"},"basic":{"pdf":"0|3711888473158845652","q":129},"workbook":{"pdf":"0|3711889170621269205"},"summary":{"pdf":"0|3711889864258487510"}},"added":"2026-08-16","no":1249}],"tone":"green","cshort":"공통영어 2\n능률(민)","ord":31},{"id":"교과서1학년공통영어2공통영어2능률오","title":"공통영어 2 · 능률(오)","path":["교과서","[1학년] 공통영어 2"],"cover":"text","vendor":"쏠북","img":"42|77c631db269c46a2.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3964506603687773751"},"basic":{"pdf":"0|3682019348232274971","q":165},"workbook":{"pdf":"0|3693996823715775837"},"summary":{"pdf":"0|3689610450607015008"}},"added":"2026-08-16","no":1239},{"label":"2강","items":{"boost":{"pdf":"0|3964509201505453624"},"basic":{"pdf":"0|3682021014302098460","q":157},"workbook":{"pdf":"0|3693998098415093086"},"summary":{"pdf":"0|3689611750002394209"}},"added":"2026-08-16","no":1240},{"label":"3강","items":{"boost":{"pdf":"0|3964509393696851513"},"basic":{"pdf":"0|3703988336872916733","q":197},"workbook":{"pdf":"0|3704599503127447367"},"summary":{"pdf":"0|3704026764893226761"}},"added":"2026-08-16","no":1241},{"label":"4강","items":{"boost":{"pdf":"0|3964509740372854330"},"basic":{"pdf":"0|3704863992599021473","q":229},"workbook":{"pdf":"0|3704862629257283487"},"summary":{"pdf":"0|3704861329375365022"}},"added":"2026-08-16","no":1242},{"label":"SL강","items":{"boost":{"pdf":"0|3964510020804019771"},"basic":{"pdf":"0|3762728942595737580","q":159},"workbook":{"pdf":"0|3762679635465209835"},"summary":{"pdf":"0|3762677027103049706"}},"added":"2026-08-16","no":1243}],"tone":"green","cshort":"공통영어 2\n능률(오)","ord":32},{"id":"교과서1학년공통영어2공통영어2동아이","title":"공통영어 2 · 동아(이)","path":["교과서","[1학년] 공통영어 2"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20250915/5109f3f45f0fc.jpg","chapters":[{"label":"1강","items":{"basic":{"pdf":"0|3703891999800166125","q":157},"workbook":{"pdf":"0|3703885558825617129"},"summary":{"pdf":"0|3703889824273401579"}},"added":"2025-09-15","no":174},{"label":"2강","items":{"basic":{"pdf":"0|3703892853508802286","q":202},"workbook":{"pdf":"0|3703886291486639850"},"summary":{"pdf":"0|3703890537816786668"}},"added":"2025-09-15","no":175}],"tone":"green","cshort":"공통영어 2\n동아(이)","ord":33},{"id":"교과서1학년공통영어2공통영어2미래엔김","title":"공통영어 2 · 미래엔(김)","path":["교과서","[1학년] 공통영어 2"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260816/8ed0f65fb46d437d.jpg","chapters":[{"label":"1강","items":{"basic":{"pdf":"0|3703855502258603749","q":172},"summary":{"pdf":"0|3940202862981678563"},"workbook":{"pdf":"0|3703851190707029729"}},"added":"2026-08-16","no":1308},{"label":"2강","items":{"basic":{"pdf":"0|3703856357619795686","q":159},"summary":{"pdf":"0|3940202967050749412"},"workbook":{"pdf":"0|3703851830883649250"}},"added":"2026-08-16","no":1309},{"label":"3강","items":{"basic":{"pdf":"0|3722719700581352561","q":132},"summary":{"pdf":"0|3940203054460044773"}},"added":"2026-08-16","no":1312},{"label":"4강","items":{"basic":{"pdf":"0|3728640662317303798","q":190},"summary":{"pdf":"0|3940203141995169254"}},"added":"2026-08-16","no":1313}],"tone":"green","cshort":"공통영어 2\n미래엔(김)","ord":34},{"id":"교과서1학년공통영어2공통영어2비상홍","title":"공통영어 2 · 비상(홍)","path":["교과서","[1학년] 공통영어 2"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20250816/062f035464bab.jpg","chapters":[{"label":"1강","items":{"summary":{"pdf":"0|3697982236897839003"},"workbook":{"pdf":"0|3698843028220281934"},"basic":{"pdf":"0|3691629159190103233","q":186}},"added":"2025-08-16","no":70},{"label":"2강","items":{"summary":{"pdf":"0|3697982899849529244"},"workbook":{"pdf":"0|3698843781299176527"},"basic":{"pdf":"0|3691630287499822274"}},"added":"2025-08-16","no":71},{"label":"3강","items":{"basic":{"pdf":"0|3754651690750444905"}},"added":"2025-12-10","no":308},{"label":"4강","items":{"basic":{"pdf":"0|3754651690750444905"}},"added":"2025-12-10","no":309}],"tone":"green","cshort":"공통영어 2\n비상(홍)","ord":35},{"id":"교과서1학년공통영어2공통영어2지학사신","title":"공통영어 2 · 지학사(신)","path":["교과서","[1학년] 공통영어 2"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20250915/da609225f26e4.jpg","chapters":[{"label":"1강","items":{"summary":{"pdf":"0|3701632542504388031"},"workbook":{"pdf":"0|3701605742957036986"},"basic":{"pdf":"0|3700784745739715956","q":226}},"added":"2025-09-15","no":162},{"label":"2강","items":{"summary":{"pdf":"0|3701633893045110208"},"workbook":{"pdf":"0|3701607144508884412"},"basic":{"pdf":"0|3700787074685732213","q":178}},"added":"2025-09-15","no":163}],"tone":"green","cshort":"공통영어 2\n지학사(신)","ord":36},{"id":"교과서1학년공통영어2공통영어2천재강","title":"공통영어 2 · 천재(강)","path":["교과서","[1학년] 공통영어 2"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260816/af362f0273dc4d4a.jpg","chapters":[{"label":"1강","items":{"summary":{"pdf":"0|3940193745630135769"},"workbook":{"pdf":"0|3698848672771998800"},"basic":{"pdf":"0|3691633903719679171","q":220}},"added":"2026-08-16","no":76},{"label":"2강","items":{"summary":{"pdf":"0|3940193834918479322"},"workbook":{"pdf":"0|3698848672771998800"},"basic":{"pdf":"0|3691634942095131844","q":183}},"added":"2026-08-16","no":1305},{"label":"3강","items":{"summary":{"pdf":"0|3940193928837334491"},"basic":{"pdf":"0|3722625108968211500","q":194}},"added":"2026-08-16","no":1306},{"label":"4강","items":{"summary":{"pdf":"0|3940194021254628828"},"basic":{"pdf":"0|3747993797854758786","q":194}},"added":"2026-08-16","no":1307}],"tone":"green","cshort":"공통영어 2\n천재(강)","ord":37},{"id":"교과서1학년공통영어2공통영어2천재조","title":"공통영어 2 · 천재(조)","path":["교과서","[1학년] 공통영어 2"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20250816/b7d84d96f15d8.jpg","chapters":[{"label":"1강","items":{"workbook":{"pdf":"0|3698856340135871570"},"basic":{"pdf":"0|3691644275512050886","q":136},"summary":{"pdf":"0|3940203235570091495"}},"added":"2026-08-16","no":78},{"label":"2강","items":{"workbook":{"pdf":"0|3698857413533762643"},"basic":{"pdf":"0|3691646414380598471","q":148},"summary":{"pdf":"0|3940203323709195752"}},"added":"2026-08-16","no":79},{"label":"3강","items":{"basic":{"pdf":"0|3707638542428538340","q":197},"summary":{"pdf":"0|3940203412209010153"}},"added":"2026-08-16","no":1302},{"label":"4강","items":{"basic":{"pdf":"0|3748029093996660611","q":148},"summary":{"pdf":"0|3940203510674490858"}},"added":"2026-08-16","no":1303},{"label":"SL강","items":{"summary":{"pdf":"0|3940203600659088875"}},"added":"2026-08-16","no":1304}],"tone":"green","cshort":"공통영어 2\n천재(조)","ord":38},{"id":"교과서2학년고등영어1고등영어1ybm박","title":"고등영어 1 · YBM(박)","path":["교과서","[2학년] 고등영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260428/30a218e615e4499a.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3877016361943172574"},"basic":{"pdf":"0|3839234952751220202","q":120}},"added":"2026-04-17","no":946},{"label":"2강","items":{"boost":{"pdf":"0|3877016921261999583"},"basic":{"pdf":"0|3839235817230829035","q":108}},"added":"2026-04-17","no":947},{"label":"3강","items":{"boost":{"pdf":"0|3884987510245295798"},"basic":{"pdf":"0|3839236627276760557","q":120}},"added":"2026-04-28","no":985},{"label":"4강","items":{"boost":{"pdf":"0|3885017977677940413"},"basic":{"pdf":"0|3839237248469960176","q":107}},"added":"2026-04-28","no":986},{"label":"5강","items":{"boost":{"pdf":"0|3885018582404302527"},"basic":{"pdf":"0|3839238059732239857","q":110}},"added":"2026-04-28","no":987}],"tone":"green","cshort":"고등영어 1\nYBM(박)","ord":39},{"id":"교과서2학년고등영어1고등영어1능률오","title":"고등영어 1 · 능률(오)","path":["교과서","[2학년] 고등영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260429/dee141758c6e442a.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3877076011195565543"},"analysis":{"pdf":"0|3846883001099093445"},"basic":{"pdf":"0|3830622615056156106","q":181}},"added":"2026-04-17","no":948},{"label":"2강","items":{"boost":{"pdf":"0|3877076687208318440"},"analysis":{"pdf":"0|3846884036664362438"},"basic":{"pdf":"0|3830635824848831947","q":94}},"added":"2026-04-17","no":949},{"label":"3강","items":{"boost":{"pdf":"0|3877076687208318440"},"analysis":{"pdf":"0|3847273352683062937"},"basic":{"pdf":"0|3830636628838188492","q":151}},"added":"2026-04-17","no":952},{"label":"4강","items":{"boost":{"pdf":"0|3885656078855178081"},"analysis":{"pdf":"0|3847274209285768858"},"basic":{"pdf":"0|3830657292739544528","q":122}},"added":"2026-04-29","no":988},{"label":"5강","items":{"boost":{"pdf":"0|3885657326241187682"},"analysis":{"pdf":"0|3847274811470382747"},"basic":{"pdf":"0|3830750129321674355","q":166}},"added":"2026-04-29","no":989},{"label":"SL강","items":{"boost":{"pdf":"0|3885715272186725546"},"analysis":{"pdf":"0|3846888326028068295"},"basic":{"pdf":"0|3830751292452505204","q":109}},"added":"2026-04-29","no":990}],"tone":"green","cshort":"고등영어 1\n능률(오)","ord":40},{"id":"교과서2학년고등영어1고등영어1동아박","title":"고등영어 1 · 동아(박)","path":["교과서","[2학년] 고등영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260328/e97f235b2c8e4aaf.jpg","chapters":[{"label":"1강","items":{"basic":{"pdf":"0|3859788645632312862","q":107}},"added":"2026-03-28","no":879},{"label":"2강","items":{"basic":{"pdf":"0|3859788780588238367","q":92}},"added":"2026-03-28","no":880}],"tone":"green","cshort":"고등영어 1\n동아(박)","ord":41},{"id":"교과서2학년고등영어1고등영어1미래엔김","title":"고등영어 1 · 미래엔(김)","path":["교과서","[2학년] 고등영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260328/3f70440fdb904679.jpg","chapters":[{"label":"1강","items":{"basic":{"pdf":"0|3859788873978611232","q":120}},"added":"2026-03-28","no":877},{"label":"2강","items":{"basic":{"pdf":"0|3859788971798169121","q":118}},"added":"2026-03-28","no":878}],"tone":"green","cshort":"고등영어 1\n미래엔(김)","ord":42},{"id":"교과서2학년고등영어1고등영어1천재강","title":"고등영어 1 · 천재(강)","path":["교과서","[2학년] 고등영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260225/ac0c16f3f4264c28.jpg","chapters":[{"label":"1강","items":{"basic":{"pdf":"0|3825701231561540745","q":122}},"added":"2026-02-25","no":499},{"label":"2강","items":{"basic":{"pdf":"0|3825648269128631413","q":105}},"added":"2026-02-25","no":500},{"label":"3강","items":{"basic":{"pdf":"0|3825648391333872758","q":121}},"added":"2026-02-25","no":501},{"label":"4강","items":{"basic":{"pdf":"0|3825648521298576503","q":123}},"added":"2026-02-25","no":502},{"label":"5강","items":{"basic":{"pdf":"0|3825648653561758840","q":107}},"added":"2026-02-25","no":503},{"label":"SL강","items":{"basic":{"pdf":"0|3825648769785922681","q":134}},"added":"2026-02-25","no":504}],"tone":"green","cshort":"고등영어 1\n천재(강)","ord":43},{"id":"교과서2학년고등영어1고등영어1천재조","title":"고등영어 1 · 천재(조)","path":["교과서","[2학년] 고등영어 1"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260225/0763a99bf6d5407d.jpg","chapters":[{"label":"1강","items":{"basic":{"pdf":"0|3825653268059522170","q":121}},"added":"2026-02-25","no":505},{"label":"2강","items":{"basic":{"pdf":"0|3825653399836165243","q":138}},"added":"2026-02-25","no":506},{"label":"3강","items":{"basic":{"pdf":"0|3825653518467859580","q":92}},"added":"2026-02-25","no":507},{"label":"4강","items":{"basic":{"pdf":"0|3825653636134863997","q":108}},"added":"2026-02-25","no":508},{"label":"5강","items":{"basic":{"pdf":"0|3825653765805966462","q":107}},"added":"2026-02-25","no":509},{"label":"6강","items":{"basic":{"pdf":"0|3825653879236723839","q":93}},"added":"2026-02-25","no":510}],"tone":"green","cshort":"고등영어 1\n천재(조)","ord":44},{"id":"교과서2학년고등영어2고등영어2ybm박","title":"고등영어 2 · YBM(박)","path":["교과서","[2학년] 고등영어 2"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260811/9a5e0f4f5e274574.jpg","chapters":[{"label":"1강","items":{"analysis":{"pdf":"0|3960630271761450660"},"boost":{"pdf":"0|3956173185312884614"},"basic":{"pdf":"0|3940822260692026972","q":144},"summary":{"pdf":"0|3940820377709577819"}},"added":"2026-08-11","no":1156},{"label":"2강","items":{"analysis":{"pdf":"0|3960631188065879717"},"boost":{"pdf":"0|3956173715607127943"},"basic":{"pdf":"0|3940828804729013857","q":171},"summary":{"pdf":"0|3940826312179975773"}},"added":"2026-08-11","no":1157},{"label":"3강","items":{"analysis":{"pdf":"0|3960632412559378086"},"boost":{"pdf":"0|3956174143023482760"},"basic":{"pdf":"0|3940830218746332770","q":142},"summary":{"pdf":"0|3940826893451789918"}},"added":"2026-08-11","no":1158},{"label":"4강","items":{"analysis":{"pdf":"0|3960633265504650919"},"boost":{"pdf":"0|3956175277289113489"},"basic":{"pdf":"0|3940831160552130147","q":182},"summary":{"pdf":"0|3940827298864825951"}},"added":"2026-08-11","no":1159},{"label":"5강","items":{"analysis":{"pdf":"0|3960633771664869032"},"boost":{"pdf":"0|3956175749139924886"},"basic":{"pdf":"0|3940832086914500196","q":171},"summary":{"pdf":"0|3940827764843611744"}},"added":"2026-08-11","no":1160}],"tone":"green","cshort":"고등영어 2\nYBM(박)","ord":45},{"id":"교과서2학년고등영어2고등영어2능률오","title":"고등영어 2 · 능률(오)","path":["교과서","[2학년] 고등영어 2"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260814/6fbbcda1517a4127.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3956915198693999697"},"basic":{"pdf":"0|3940818384467265114","q":175},"summary":{"pdf":"0|3940816638839883353"}},"added":"2026-08-14","no":1169},{"label":"2강","items":{"boost":{"pdf":"0|3956915568732275795"},"basic":{"pdf":"0|3940834834686936685","q":124},"summary":{"pdf":"0|3940832540276819557"}},"added":"2026-08-14","no":1170},{"label":"3강","items":{"boost":{"pdf":"0|3956915933133407316"},"basic":{"pdf":"0|3940836550383765102","q":143},"summary":{"pdf":"0|3940832877633078887"}},"added":"2026-08-14","no":1171},{"label":"4강","items":{"boost":{"pdf":"0|3956916286906172501"},"basic":{"pdf":"0|3940837324291573359","q":98},"summary":{"pdf":"0|3940833188472948329"}},"added":"2026-08-14","no":1172},{"label":"5강","items":{"boost":{"pdf":"0|3956916977422828630"},"basic":{"pdf":"0|3940837952447317616","q":128},"summary":{"pdf":"0|3940833612315756139"}},"added":"2026-08-14","no":1173},{"label":"SL강","items":{"boost":{"pdf":"0|3956917519016526935"},"basic":{"pdf":"0|3940838918915622513","q":123},"summary":{"pdf":"0|3940834005380761196"}},"added":"2026-08-14","no":1174}],"tone":"green","cshort":"고등영어 2\n능률(오)","ord":46},{"id":"교과서2학년고등영어2고등영어2미래엔김","title":"고등영어 2 · 미래엔(김)","path":["교과서","[2학년] 고등영어 2"],"cover":"text","vendor":"쏠북","img":"42|daa86d8516634a64.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3963430299622180298"},"basic":{"pdf":"0|3957649469675144332","q":113},"summary":{"pdf":"0|3963430808584193487"}},"added":"2026-08-15","no":1226},{"label":"2강","items":{"boost":{"pdf":"0|3963430397248800203"},"basic":{"pdf":"0|3957649603506996365","q":97},"summary":{"pdf":"0|3963430923977885136"}},"added":"2026-08-15","no":1227},{"label":"3강","items":{"boost":{"pdf":"0|3963430508439799244"},"basic":{"pdf":"0|3957649760415909006","q":112},"summary":{"pdf":"0|3963431015556318673"}},"added":"2026-08-15","no":1228},{"label":"4강","items":{"boost":{"pdf":"0|3963430613507114445"},"basic":{"pdf":"0|3957649906587403407","q":128},"summary":{"pdf":"0|3963431112872560082"}},"added":"2026-08-15","no":1229},{"label":"5강","items":{"boost":{"pdf":"0|3963430715420313038"},"basic":{"pdf":"0|3957650076649653392","q":127},"summary":{"pdf":"0|3963431221110769107"}},"added":"2026-08-15","no":1230}],"tone":"green","cshort":"고등영어 2\n미래엔(김)","ord":47},{"id":"교과서2학년고등영어2고등영어2천재강","title":"고등영어 2 · 천재(강)","path":["교과서","[2학년] 고등영어 2"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260814/d0ac133dc6a34f1e.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3963429031071712702"},"basic":{"pdf":"0|3957671894739584145","q":111},"summary":{"pdf":"0|3963429689912985028"}},"added":"2026-08-14","no":1177},{"label":"2강","items":{"boost":{"pdf":"0|3963429155063727551"},"basic":{"pdf":"0|3957672042706240658","q":111},"summary":{"pdf":"0|3963429789091497413"}},"added":"2026-08-14","no":1188},{"label":"3강","items":{"boost":{"pdf":"0|3963429266909038016"},"basic":{"pdf":"0|3957672161044333715","q":96},"summary":{"pdf":"0|3963429889620575686"}},"added":"2026-08-14","no":1189},{"label":"4강","items":{"boost":{"pdf":"0|3963429379635152321"},"basic":{"pdf":"0|3957672279894131860","q":129},"summary":{"pdf":"0|3963429981610051015"}},"added":"2026-08-14","no":1190},{"label":"5강","items":{"boost":{"pdf":"0|3963429491832784322"},"basic":{"pdf":"0|3957672410102105237","q":126},"summary":{"pdf":"0|3963430085385520584"}},"added":"2026-08-14","no":1191},{"label":"SL강","items":{"boost":{"pdf":"0|3963429599458624963"},"basic":{"pdf":"0|3957672537063687318","q":131},"summary":{"pdf":"0|3963430193061692873"}},"added":"2026-08-14","no":1192}],"tone":"green","cshort":"고등영어 2\n천재(강)","ord":48},{"id":"교과서2학년고등영어2고등영어2천재조","title":"고등영어 2 · 천재(조)","path":["교과서","[2학년] 고등영어 2"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260814/af5492060b9f4948.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"0|3963432022138947035"},"basic":{"pdf":"0|3957672679997179031","q":125},"summary":{"pdf":"0|3963431329885849044"}},"added":"2026-08-14","no":1208},{"label":"2강","items":{"boost":{"pdf":"0|3963432129404077532"},"basic":{"pdf":"0|3957672823593370776","q":112},"summary":{"pdf":"0|3963431443333383637"}},"added":"2026-08-14","no":1209},{"label":"3강","items":{"boost":{"pdf":"0|3963432232567178718"},"basic":{"pdf":"0|3957672967961314457","q":112},"summary":{"pdf":"0|3963431542218294742"}},"added":"2026-08-14","no":1210},{"label":"4강","items":{"boost":{"pdf":"0|3963432346719356383"},"basic":{"pdf":"0|3957673117421143194","q":96},"summary":{"pdf":"0|3963431648174802391"}},"added":"2026-08-14","no":1211},{"label":"5강","items":{"boost":{"pdf":"0|3963432457750971872"},"basic":{"pdf":"0|3957673273617024155","q":112},"summary":{"pdf":"0|3963431731616286168"}},"added":"2026-08-14","no":1212},{"label":"6강","items":{"boost":{"pdf":"0|3963432572372911585"},"basic":{"pdf":"0|3957673424922346652","q":111},"summary":{"pdf":"0|3963431822548796889"}},"added":"2026-08-14","no":1213},{"label":"SL강","items":{"boost":{"pdf":"0|3963432680778892770"},"basic":{"pdf":"0|3957673545533752477","q":81},"summary":{"pdf":"0|3963431921676977626"}},"added":"2026-08-14","no":1214}],"tone":"green","cshort":"고등영어 2\n천재(조)","ord":49},{"id":"교과서2학년영어독해와작문영어독해와작문ybm김","title":"영어독해와 작문 · YBM(김)","path":["교과서","[2학년] 영어독해와 작문"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260228/0f1f39fe5da34136.jpg","chapters":[{"label":"1강","items":{"basic":{"pdf":"0|3842314463529141255","q":139}},"added":"2026-02-28","no":518},{"label":"2강","items":{"basic":{"pdf":"0|3842315300141794313","q":123}},"added":"2026-02-28","no":519},{"label":"3강","items":{"basic":{"pdf":"0|3842315981850412042","q":134}},"added":"2026-02-28","no":520},{"label":"4강","items":{"basic":{"pdf":"0|3842316606071899147","q":110}},"added":"2026-02-28","no":521},{"label":"5강","items":{"basic":{"pdf":"0|3842317603032794124","q":136}},"added":"2026-02-28","no":522},{"label":"6강","items":{"basic":{"pdf":"0|3842318795288871949","q":95}},"added":"2026-02-28","no":523}],"tone":"green","cshort":"영어독해와 작문\nYBM(김)","ord":50},{"id":"교과서2학년영어독해와작문영어독해와작문능률민","title":"영어독해와 작문 · 능률(민)","path":["교과서","[2학년] 영어독해와 작문"],"cover":"text","vendor":"쏠북","img":"https://cdn.imweb.me/thumbnail/20260305/5d12271d120a47dd.jpg","chapters":[{"label":"1강","items":{"basic":{"pdf":"0|3844730391936108254","q":106}},"added":"2026-03-05","no":577},{"label":"2강","items":{"basic":{"pdf":"0|3844731157304313567","q":180}},"added":"2026-03-05","no":578},{"label":"3강","items":{"basic":{"pdf":"0|3844731859246253792","q":110}},"added":"2026-03-05","no":579},{"label":"4강","items":{"basic":{"pdf":"0|3844734207578343139","q":124}},"added":"2026-03-05","no":580},{"label":"5강","items":{"basic":{"pdf":"0|3844734893674202854","q":139}},"added":"2026-03-05","no":581},{"label":"6강","items":{"basic":{"pdf":"0|3844735477898807016","q":123}},"added":"2026-03-05","no":582}],"tone":"green","cshort":"영어독해와 작문\n능률(민)","ord":51},{"id":"부교재ebs수능특강2027수능특강영어","title":"2027 수능특강 영어","path":["부교재","EBS 수능특강"],"cover":"ebs","img":"https://cdn.imweb.me/thumbnail/20260602/a9d381655a204ce2.jpg","chapters":[{"label":"전범위","items":{"workbook":{"pdf":"3|?idx=861","price":91260,"off":40},"basic":{"pdf":"4|?idx=798","price":79272,"off":46},"summary":{"pdf":"5|?idx=797","price":72765,"off":45},"analysis":{"pdf":"6|?idx=796","price":99500,"off":50}},"added":"2026-03-19","no":861,"pkg":1,"off":50},{"label":"1강","items":{"advanced":{"pdf":"8|?idx=1028","price":5900,"q":93},"boost":{"pdf":"7|?idx=902","price":5500},"workbook":{"pdf":"3|?idx=469","price":4300},"analysis":{"pdf":"6|?idx=766","price":4900},"basic":{"pdf":"4|?idx=437","price":4200,"q":75},"summary":{"pdf":"5|?idx=427","price":3900}},"added":"2026-06-01","no":1028},{"label":"2강","items":{"advanced":{"pdf":"8|?idx=1029","price":5900,"q":91},"boost":{"pdf":"7|?idx=903","price":5500},"workbook":{"pdf":"3|?idx=470","price":4300},"analysis":{"pdf":"6|?idx=767","price":5900},"basic":{"pdf":"4|?idx=438","price":4200,"q":75},"summary":{"pdf":"5|?idx=428","price":3900}},"added":"2026-06-01","no":1029},{"label":"3강","items":{"advanced":{"pdf":"8|?idx=1030","price":5900,"q":94},"boost":{"pdf":"7|?idx=904","price":5500},"workbook":{"pdf":"3|?idx=471","price":4300},"analysis":{"pdf":"6|?idx=768","price":5900},"basic":{"pdf":"4|?idx=439","price":4200,"q":75},"summary":{"pdf":"5|?idx=429","price":3900}},"added":"2026-06-01","no":1030},{"label":"4강","items":{"advanced":{"pdf":"8|?idx=1031","price":5900,"q":92},"boost":{"pdf":"7|?idx=905","price":5500},"workbook":{"pdf":"3|?idx=472","price":4300},"analysis":{"pdf":"6|?idx=769","price":5900},"basic":{"pdf":"4|?idx=440","price":4200,"q":78},"summary":{"pdf":"5|?idx=430","price":3900}},"added":"2026-06-01","no":1031},{"label":"5강","items":{"advanced":{"pdf":"8|?idx=1032","price":5900,"q":94},"boost":{"pdf":"7|?idx=906","price":5500},"workbook":{"pdf":"3|?idx=473","price":4300},"analysis":{"pdf":"6|?idx=770","price":5900},"basic":{"pdf":"4|?idx=441","price":4200,"q":75},"summary":{"pdf":"5|?idx=431","price":3900}},"added":"2026-06-01","no":1032},{"label":"6강","items":{"advanced":{"pdf":"8|?idx=1033","price":5900,"q":94},"boost":{"pdf":"7|?idx=917","price":5500},"workbook":{"pdf":"3|?idx=474","price":4300},"analysis":{"pdf":"6|?idx=771","price":5900},"basic":{"pdf":"4|?idx=442","price":4200,"q":75},"summary":{"pdf":"5|?idx=432","price":3900}},"added":"2026-06-01","no":1033},{"label":"7강","items":{"advanced":{"pdf":"8|?idx=1034","price":5900,"q":92},"boost":{"pdf":"7|?idx=918","price":5500},"workbook":{"pdf":"3|?idx=475","price":4300},"analysis":{"pdf":"6|?idx=772","price":5900},"basic":{"pdf":"4|?idx=443","price":4200,"q":76},"summary":{"pdf":"5|?idx=433","price":3900}},"added":"2026-06-01","no":1034},{"label":"9강","items":{"advanced":{"pdf":"8|?idx=1035","price":5900,"q":92},"boost":{"pdf":"7|?idx=919","price":5500},"workbook":{"pdf":"3|?idx=799","price":4300},"analysis":{"pdf":"6|?idx=773","price":5900},"basic":{"pdf":"4|?idx=448","price":4200,"q":78},"summary":{"pdf":"5|?idx=434","price":3900}},"added":"2026-06-01","no":1035},{"label":"11강","items":{"advanced":{"pdf":"8|?idx=1036","price":5900,"q":95},"boost":{"pdf":"7|?idx=920","price":5500},"workbook":{"pdf":"3|?idx=800","price":4300},"analysis":{"pdf":"6|?idx=774","price":5900},"basic":{"pdf":"4|?idx=449","price":4200,"q":77},"summary":{"pdf":"5|?idx=435","price":3900}},"added":"2026-06-01","no":1036},{"label":"12강","items":{"advanced":{"pdf":"8|?idx=1037","price":5900,"q":95},"boost":{"pdf":"7|?idx=957","price":5500},"workbook":{"pdf":"3|?idx=801","price":4300},"analysis":{"pdf":"6|?idx=775","price":5900},"basic":{"pdf":"4|?idx=450","price":4200,"q":77},"summary":{"pdf":"5|?idx=436","price":3900}},"added":"2026-06-01","no":1037},{"label":"13강","items":{"advanced":{"pdf":"8|?idx=1038","price":5900,"q":91},"boost":{"pdf":"7|?idx=958","price":5500},"workbook":{"pdf":"3|?idx=805","price":4300},"analysis":{"pdf":"6|?idx=776","price":5900},"basic":{"pdf":"4|?idx=746","price":4200,"q":76},"summary":{"pdf":"5|?idx=726","price":3900}},"added":"2026-06-01","no":1038},{"label":"14강","items":{"advanced":{"pdf":"8|?idx=1039","price":5900,"q":94},"boost":{"pdf":"7|?idx=959","price":5500},"workbook":{"pdf":"3|?idx=806","price":4300},"analysis":{"pdf":"6|?idx=777","price":5900},"basic":{"pdf":"4|?idx=747","price":4200,"q":76},"summary":{"pdf":"5|?idx=727","price":3900}},"added":"2026-06-01","no":1039},{"label":"15강","items":{"advanced":{"pdf":"8|?idx=1040","price":5900,"q":94},"boost":{"pdf":"7|?idx=961","price":5500},"workbook":{"pdf":"3|?idx=807","price":4300},"analysis":{"pdf":"6|?idx=778","price":5900},"basic":{"pdf":"4|?idx=748","price":4200,"q":75},"summary":{"pdf":"5|?idx=728","price":3900}},"added":"2026-06-01","no":1040},{"label":"16강","items":{"advanced":{"pdf":"8|?idx=1041","price":6900,"q":129},"boost":{"pdf":"7|?idx=962","price":5500},"workbook":{"pdf":"3|?idx=808","price":4300},"analysis":{"pdf":"6|?idx=779","price":5900},"basic":{"pdf":"4|?idx=749","price":5400,"q":107},"summary":{"pdf":"5|?idx=729","price":3900}},"added":"2026-06-01","no":1041},{"label":"17강","items":{"advanced":{"pdf":"8|?idx=1042","price":6900,"q":131},"boost":{"pdf":"7|?idx=964","price":5500},"workbook":{"pdf":"3|?idx=809","price":4300},"analysis":{"pdf":"6|?idx=780","price":5900},"basic":{"pdf":"4|?idx=750","price":5400,"q":108},"summary":{"pdf":"5|?idx=730","price":3900}},"added":"2026-06-01","no":1042},{"label":"18강","items":{"advanced":{"pdf":"8|?idx=1043","price":5900,"q":86},"boost":{"pdf":"7|?idx=965","price":5500},"workbook":{"pdf":"3|?idx=846","price":4300},"analysis":{"pdf":"6|?idx=781","price":5900},"basic":{"pdf":"4|?idx=751","price":5400,"q":77},"summary":{"pdf":"5|?idx=731","price":3900}},"added":"2026-06-01","no":1043},{"label":"19강","items":{"advanced":{"pdf":"8|?idx=1044","price":5900,"q":89},"boost":{"pdf":"7|?idx=966","price":5500},"workbook":{"pdf":"3|?idx=847","price":4300},"analysis":{"pdf":"6|?idx=782","price":5900},"basic":{"pdf":"4|?idx=752","price":4200,"q":76},"summary":{"pdf":"5|?idx=732","price":3900}},"added":"2026-06-01","no":1044},{"label":"21강","items":{"advanced":{"pdf":"8|?idx=1045","price":5900,"q":74},"boost":{"pdf":"7|?idx=967","price":5500},"workbook":{"pdf":"3|?idx=848","price":4300},"analysis":{"pdf":"6|?idx=783","price":5900},"basic":{"pdf":"4|?idx=753","price":3500,"q":61},"summary":{"pdf":"5|?idx=733","price":3900}},"added":"2026-06-01","no":1045},{"label":"22강","items":{"advanced":{"pdf":"8|?idx=1046","price":5900,"q":74},"boost":{"pdf":"7|?idx=968","price":5500},"workbook":{"pdf":"3|?idx=849","price":4300},"analysis":{"pdf":"6|?idx=784","price":5900},"basic":{"pdf":"4|?idx=754","price":3500,"q":63},"summary":{"pdf":"5|?idx=734","price":3900}},"added":"2026-06-01","no":1046},{"label":"23강","items":{"advanced":{"pdf":"8|?idx=1047","price":5900,"q":75},"boost":{"pdf":"7|?idx=969","price":5500},"workbook":{"pdf":"3|?idx=850","price":4300},"analysis":{"pdf":"6|?idx=785","price":5900},"basic":{"pdf":"4|?idx=755","price":3500,"q":62},"summary":{"pdf":"5|?idx=735","price":3900}},"added":"2026-06-01","no":1047},{"label":"24강","items":{"advanced":{"pdf":"8|?idx=1048","price":4900,"q":56},"boost":{"pdf":"7|?idx=970","price":4500},"workbook":{"pdf":"3|?idx=851","price":4300},"analysis":{"pdf":"6|?idx=786","price":4900},"basic":{"pdf":"4|?idx=756","price":3000,"q":47},"summary":{"pdf":"5|?idx=736","price":3900}},"added":"2026-06-02","no":1048},{"label":"25강","items":{"advanced":{"pdf":"8|?idx=1049","price":5900,"q":75},"boost":{"pdf":"7|?idx=971","price":5500},"workbook":{"pdf":"3|?idx=852","price":4300},"analysis":{"pdf":"6|?idx=787","price":4900},"basic":{"pdf":"4|?idx=757","price":3500,"q":62},"summary":{"pdf":"5|?idx=737","price":3900}},"added":"2026-06-02","no":1049},{"label":"26강","items":{"advanced":{"pdf":"8|?idx=1050","price":5900,"q":75},"boost":{"pdf":"7|?idx=972","price":5500},"workbook":{"pdf":"3|?idx=853","price":4300},"analysis":{"pdf":"6|?idx=788","price":4900},"basic":{"pdf":"4|?idx=758","price":3500,"q":61},"summary":{"pdf":"5|?idx=738","price":3900}},"added":"2026-06-02","no":1050},{"label":"27강","items":{"advanced":{"pdf":"8|?idx=1051","price":4900,"q":56},"boost":{"pdf":"7|?idx=973","price":4500},"workbook":{"pdf":"3|?idx=854","price":4300},"analysis":{"pdf":"6|?idx=789","price":4900},"basic":{"pdf":"4|?idx=759","price":3000,"q":45},"summary":{"pdf":"5|?idx=739","price":3900}},"added":"2026-06-02","no":1051},{"label":"28강","items":{"advanced":{"pdf":"8|?idx=1052","price":5900,"q":77},"boost":{"pdf":"7|?idx=974","price":5500},"workbook":{"pdf":"3|?idx=855","price":4300},"analysis":{"pdf":"6|?idx=790","price":4900},"basic":{"pdf":"4|?idx=760","price":3500,"q":60},"summary":{"pdf":"5|?idx=740","price":3900}},"added":"2026-06-02","no":1052},{"label":"29강","items":{"advanced":{"pdf":"8|?idx=1053","price":5900,"q":70},"boost":{"pdf":"7|?idx=975","price":5500},"workbook":{"pdf":"3|?idx=856","price":4300},"analysis":{"pdf":"6|?idx=791","price":4900},"basic":{"pdf":"4|?idx=761","price":3500,"q":60},"summary":{"pdf":"5|?idx=741","price":3900}},"added":"2026-06-02","no":1053},{"label":"30강","items":{"advanced":{"pdf":"8|?idx=1054","price":5900,"q":76},"boost":{"pdf":"7|?idx=976","price":5500},"workbook":{"pdf":"3|?idx=857","price":4300},"analysis":{"pdf":"6|?idx=792","price":4900},"basic":{"pdf":"4|?idx=762","price":3500,"q":61},"summary":{"pdf":"5|?idx=742","price":3900}},"added":"2026-06-02","no":1054},{"label":"TEST 1강","items":{"advanced":{"pdf":"8|?idx=1055","price":16900,"q":391},"boost":{"pdf":"7|?idx=977","price":9900},"workbook":{"pdf":"3|?idx=858","price":12000},"analysis":{"pdf":"6|?idx=793","price":15900},"basic":{"pdf":"4|?idx=763","price":13000,"q":323},"summary":{"pdf":"5|?idx=743","price":9000}},"added":"2026-06-02","no":1055},{"label":"TEST 2강","items":{"boost":{"pdf":"7|?idx=978","price":9900},"workbook":{"pdf":"3|?idx=859","price":12000},"analysis":{"pdf":"6|?idx=794","price":15900},"basic":{"pdf":"4|?idx=764","price":13000,"q":325},"summary":{"pdf":"5|?idx=744","price":9000}},"added":"2026-04-24","no":978},{"label":"TEST 3강","items":{"boost":{"pdf":"7|?idx=979","price":9900},"workbook":{"pdf":"3|?idx=860","price":12000},"analysis":{"pdf":"6|?idx=795","price":15900},"basic":{"pdf":"4|?idx=765","price":13000,"q":324},"summary":{"pdf":"5|?idx=745","price":9000}},"added":"2026-04-24","no":979}],"tone":"orange","cshort":"수능특강 영어","year":2027,"ord":52},{"id":"부교재ebs수능특강2027수능특강영어독해연습","title":"2027 수능특강 영어독해연습","path":["부교재","EBS 수능특강"],"cover":"ebs","img":"https://cdn.imweb.me/thumbnail/20260702/d2739eb88d2a4507.png","chapters":[{"label":"전범위","items":{"analysis":{"pdf":"39|?idx=901","price":93600,"off":30},"basic":{"pdf":"24|?idx=802","price":86700,"off":40},"summary":{"pdf":"25|?idx=803","price":69345,"off":31}},"added":"2026-04-08","no":901,"pkg":1,"off":40},{"label":"1강","items":{"workbook":{"pdf":"29|?idx=994","price":6900},"boost":{"pdf":"30|?idx=980","price":7900},"analysis":{"pdf":"31|?idx=840","price":7900},"basic":{"pdf":"24|?idx=466","price":9500,"q":188},"summary":{"pdf":"25|?idx=451","price":5900}},"added":"2026-05-13","no":994},{"label":"2강","items":{"workbook":{"pdf":"29|?idx=995","price":6900},"boost":{"pdf":"30|?idx=981","price":7900},"analysis":{"pdf":"31|?idx=862","price":7900},"basic":{"pdf":"24|?idx=467","price":9500,"q":187},"summary":{"pdf":"25|?idx=452","price":5900}},"added":"2026-05-13","no":995},{"label":"3강","items":{"boost":{"pdf":"30|?idx=1011","price":7900},"workbook":{"pdf":"29|?idx=996","price":6900},"analysis":{"pdf":"31|?idx=863","price":7900},"basic":{"pdf":"24|?idx=468","price":9200,"q":184},"summary":{"pdf":"25|?idx=453","price":5900}},"added":"2026-05-20","no":1011},{"label":"4강","items":{"boost":{"pdf":"30|?idx=1012","price":7900},"workbook":{"pdf":"29|?idx=997","price":6900},"analysis":{"pdf":"31|?idx=889","price":7900},"basic":{"pdf":"24|?idx=476","price":9200,"q":183},"summary":{"pdf":"25|?idx=454","price":5900}},"added":"2026-05-20","no":1012},{"label":"5강","items":{"boost":{"pdf":"30|?idx=1013","price":7900},"workbook":{"pdf":"29|?idx=998","price":6900},"analysis":{"pdf":"31|?idx=890","price":7900},"basic":{"pdf":"24|?idx=477","price":9300,"q":185},"summary":{"pdf":"25|?idx=455","price":5900}},"added":"2026-05-20","no":1013},{"label":"6강","items":{"boost":{"pdf":"30|?idx=1014","price":7900},"workbook":{"pdf":"29|?idx=999","price":6900},"analysis":{"pdf":"31|?idx=892","price":7900},"basic":{"pdf":"24|?idx=478","price":9300,"q":183},"summary":{"pdf":"25|?idx=456","price":5900}},"added":"2026-05-20","no":1014},{"label":"7강","items":{"boost":{"pdf":"30|?idx=1015","price":7900},"workbook":{"pdf":"29|?idx=1000","price":6900},"analysis":{"pdf":"31|?idx=893","price":7900},"basic":{"pdf":"24|?idx=479","price":9300,"q":183},"summary":{"pdf":"25|?idx=457","price":5900}},"added":"2026-05-20","no":1015},{"label":"8강","items":{"boost":{"pdf":"30|?idx=1016","price":7900},"workbook":{"pdf":"29|?idx=1001","price":6900},"analysis":{"pdf":"31|?idx=894","price":7900},"basic":{"pdf":"24|?idx=480","price":9300,"q":183},"summary":{"pdf":"25|?idx=458","price":5900}},"added":"2026-05-20","no":1016},{"label":"9강","items":{"boost":{"pdf":"30|?idx=1017","price":7900},"workbook":{"pdf":"29|?idx=1002","price":6900},"analysis":{"pdf":"31|?idx=895","price":7900},"basic":{"pdf":"24|?idx=481","price":7700,"q":154},"summary":{"pdf":"25|?idx=459","price":5900}},"added":"2026-05-20","no":1017},{"label":"10강","items":{"workbook":{"pdf":"29|?idx=1093","price":6900},"boost":{"pdf":"30|?idx=1018","price":7900},"analysis":{"pdf":"31|?idx=896","price":7900},"basic":{"pdf":"24|?idx=482","price":7800,"q":156},"summary":{"pdf":"25|?idx=460","price":5900}},"added":"2026-06-15","no":1093},{"label":"11강","items":{"workbook":{"pdf":"29|?idx=1094","price":6900},"boost":{"pdf":"30|?idx=1019","price":7900},"analysis":{"pdf":"31|?idx=897","price":7900},"basic":{"pdf":"24|?idx=483","price":7700,"q":154},"summary":{"pdf":"25|?idx=461","price":5900}},"added":"2026-06-16","no":1094},{"label":"12강","items":{"workbook":{"pdf":"29|?idx=1095","price":6900},"boost":{"pdf":"30|?idx=1020","price":7900},"analysis":{"pdf":"31|?idx=898","price":7900},"basic":{"pdf":"24|?idx=484","price":7700,"q":154},"summary":{"pdf":"25|?idx=462","price":5900}},"added":"2026-06-16","no":1095},{"label":"TEST 1강","items":{"workbook":{"pdf":"29|?idx=1103","price":9900},"boost":{"pdf":"30|?idx=1021","price":9900},"analysis":{"pdf":"31|?idx=891","price":13000},"basic":{"pdf":"24|?idx=485","price":13000,"q":318},"summary":{"pdf":"25|?idx=463","price":9900}},"added":"2026-06-24","no":1103},{"label":"TEST 2강","items":{"workbook":{"pdf":"29|?idx=1104","price":9900},"boost":{"pdf":"30|?idx=1022","price":9900},"analysis":{"pdf":"31|?idx=899","price":13000},"basic":{"pdf":"24|?idx=486","price":13000,"q":323},"summary":{"pdf":"25|?idx=464","price":9900}},"added":"2026-06-24","no":1104},{"label":"TEST 3강","items":{"workbook":{"pdf":"29|?idx=1123","price":9900},"boost":{"pdf":"30|?idx=1023","price":9900},"analysis":{"pdf":"31|?idx=900","price":13000},"basic":{"pdf":"24|?idx=487","price":13000,"q":321},"summary":{"pdf":"25|?idx=465","price":9900}},"added":"2026-07-02","no":1123}],"tone":"orange","cshort":"수능특강 영어독해연습","year":2027,"ord":53},{"id":"부교재ebs수능특강2026수능특강영어독해연습","title":"2026 수능특강 영어독해연습","path":["부교재","EBS 수능특강"],"cover":"ebs","img":"https://cdn.imweb.me/thumbnail/20250912/ba1869ea1e39b.jpg","chapters":[{"label":"1강","items":{"basic":{"pdf":"32|?idx=25","price":9000}},"added":"2025-07-23","no":25},{"label":"2강","items":{"basic":{"pdf":"32|?idx=26","price":9000}},"added":"2025-07-23","no":26},{"label":"3강","items":{"basic":{"pdf":"32|?idx=27","price":9000}},"added":"2025-07-23","no":27},{"label":"4강","items":{"basic":{"pdf":"32|?idx=134","price":9000}},"added":"2025-09-12","no":134},{"label":"5강","items":{"basic":{"pdf":"32|?idx=135","price":9000}},"added":"2025-09-12","no":135},{"label":"6강","items":{"basic":{"pdf":"32|?idx=136","price":9000}},"added":"2025-09-12","no":136},{"label":"7강","items":{"basic":{"pdf":"32|?idx=137","price":9000}},"added":"2025-09-12","no":137},{"label":"8강","items":{"basic":{"pdf":"32|?idx=138","price":9000}},"added":"2025-09-12","no":138},{"label":"9강","items":{"basic":{"pdf":"32|?idx=139","price":9000}},"added":"2025-09-12","no":139},{"label":"10강","items":{"basic":{"pdf":"32|?idx=140","price":9000}},"added":"2025-09-12","no":140},{"label":"11강","items":{"basic":{"pdf":"32|?idx=141","price":9000}},"added":"2025-09-12","no":141},{"label":"12강","items":{"basic":{"pdf":"32|?idx=142","price":9000}},"added":"2025-09-12","no":142},{"label":"TEST 1강","items":{"basic":{"pdf":"32|?idx=143","price":9000}},"added":"2025-09-12","no":143},{"label":"TEST 2강","items":{"basic":{"pdf":"32|?idx=144","price":9000}},"added":"2025-09-12","no":144},{"label":"TEST 3강","items":{"basic":{"pdf":"32|?idx=145","price":9000}},"added":"2025-09-12","no":145}],"tone":"orange","cshort":"수능특강 영어독해연습","year":2026,"old":true,"ord":54},{"id":"부교재ebs수능특강라이트수능특강라이트영어","title":"수능특강 라이트 영어","path":["부교재","EBS 수능특강 라이트"],"cover":"ebs","img":"https://cdn.imweb.me/thumbnail/20260816/0172deea3b4a412d.jpg","chapters":[{"label":"전범위","items":{"analysis":{"pdf":"10|?idx=841","price":88130,"off":30},"summary":{"pdf":"11|?idx=444","price":66780,"off":50,"hwp":"1|?idx=573","hwpPrice":98000},"basic":{"pdf":"12|?idx=445","price":79000,"off":38,"hwp":"1|?idx=574","hwpPrice":148680}},"added":"2026-03-15","no":841,"pkg":1,"off":50},{"label":"1강","items":{"boost":{"pdf":"13|?idx=1255","price":3900},"basic":{"hwp":"41|?idx=375","hwpPrice":16200,"q":75,"pdf":"12|?idx=313","price":5400},"summary":{"hwp":"1|?idx=652","hwpPrice":6000,"pdf":"11|?idx=367","price":3000},"workbook":{"pdf":"38|?idx=372","price":6000},"analysis":{"pdf":"10|?idx=310","price":5500}},"added":"2026-08-16","no":1255},{"label":"2강","items":{"boost":{"pdf":"13|?idx=1256","price":3900},"basic":{"hwp":"41|?idx=377","hwpPrice":16200,"q":79,"pdf":"12|?idx=315","price":5400},"summary":{"hwp":"1|?idx=653","hwpPrice":6000,"pdf":"11|?idx=368","price":3000},"workbook":{"pdf":"38|?idx=373","price":6000},"analysis":{"pdf":"10|?idx=311","price":5500}},"added":"2026-08-16","no":1256},{"label":"3강","items":{"boost":{"pdf":"13|?idx=1257","price":3900},"basic":{"hwp":"41|?idx=378","hwpPrice":16200,"q":81,"pdf":"12|?idx=316","price":5400},"summary":{"hwp":"1|?idx=654","hwpPrice":6000,"pdf":"11|?idx=236","price":4500},"workbook":{"pdf":"38|?idx=374","price":6000},"analysis":{"pdf":"10|?idx=312","price":5500}},"added":"2026-08-16","no":1257},{"label":"4강","items":{"boost":{"pdf":"13|?idx=1258","price":3900},"basic":{"hwp":"41|?idx=379","hwpPrice":16200,"q":79,"pdf":"12|?idx=317","price":5400},"summary":{"hwp":"1|?idx=655","hwpPrice":9000,"pdf":"11|?idx=239","price":4500},"workbook":{"pdf":"38|?idx=386","price":6000},"analysis":{"pdf":"10|?idx=369","price":5500}},"added":"2026-08-16","no":1258},{"label":"5강","items":{"boost":{"pdf":"13|?idx=1259","price":3900},"basic":{"hwp":"41|?idx=380","hwpPrice":16200,"q":76,"pdf":"12|?idx=318","price":5400},"summary":{"hwp":"1|?idx=656","hwpPrice":9000,"pdf":"11|?idx=240","price":4500},"workbook":{"pdf":"38|?idx=387","price":6000},"analysis":{"pdf":"10|?idx=370","price":5500}},"added":"2026-08-16","no":1259},{"label":"7강","items":{"boost":{"pdf":"13|?idx=1260","price":3900},"basic":{"hwp":"41|?idx=381","hwpPrice":16200,"q":78,"pdf":"12|?idx=319","price":5400},"summary":{"hwp":"1|?idx=657","hwpPrice":9000,"pdf":"11|?idx=241","price":4500},"workbook":{"pdf":"38|?idx=388","price":6000},"analysis":{"pdf":"10|?idx=371","price":5500}},"added":"2026-08-16","no":1260},{"label":"8강","items":{"boost":{"pdf":"13|?idx=1261","price":3900},"basic":{"hwp":"1|?idx=679","hwpPrice":10800,"q":81,"pdf":"12|?idx=320","price":5400},"summary":{"hwp":"1|?idx=658","hwpPrice":9000,"pdf":"11|?idx=242","price":4500},"analysis":{"pdf":"10|?idx=511","price":5500}},"added":"2026-08-16","no":1261},{"label":"9강","items":{"boost":{"pdf":"13|?idx=1262","price":3900},"workbook":{"pdf":"38|?idx=1124","price":6000},"basic":{"hwp":"1|?idx=680","hwpPrice":10800,"q":83,"pdf":"12|?idx=321","price":5400},"summary":{"hwp":"1|?idx=659","hwpPrice":9000,"pdf":"11|?idx=243","price":4500},"analysis":{"pdf":"10|?idx=512","price":5500}},"added":"2026-08-16","no":1262},{"label":"10강","items":{"boost":{"pdf":"13|?idx=1263","price":3900},"workbook":{"pdf":"38|?idx=1125","price":6000},"basic":{"hwp":"1|?idx=681","hwpPrice":15800,"q":142,"pdf":"12|?idx=322","price":7900},"summary":{"hwp":"1|?idx=660","hwpPrice":9000,"pdf":"11|?idx=244","price":4500},"analysis":{"pdf":"10|?idx=513","price":5500}},"added":"2026-08-16","no":1263},{"label":"11강","items":{"boost":{"pdf":"13|?idx=1264","price":3900},"workbook":{"pdf":"38|?idx=1126","price":6000},"basic":{"hwp":"1|?idx=682","hwpPrice":10800,"q":78,"pdf":"12|?idx=323","price":5400},"summary":{"hwp":"1|?idx=661","hwpPrice":9000,"pdf":"11|?idx=245","price":4500},"analysis":{"pdf":"10|?idx=514","price":5500}},"added":"2026-08-16","no":1264},{"label":"12강","items":{"boost":{"pdf":"13|?idx=1265","price":3900},"workbook":{"pdf":"38|?idx=1127","price":6000},"basic":{"hwp":"1|?idx=683","hwpPrice":14400,"q":121,"pdf":"12|?idx=324","price":7200},"summary":{"hwp":"1|?idx=662","hwpPrice":9000,"pdf":"11|?idx=247","price":4500},"analysis":{"pdf":"10|?idx=515","price":5500}},"added":"2026-08-16","no":1265},{"label":"13강","items":{"boost":{"pdf":"13|?idx=1266","price":3900},"workbook":{"pdf":"38|?idx=1128","price":6000},"basic":{"hwp":"1|?idx=684","hwpPrice":10800,"q":83,"pdf":"12|?idx=325","price":5400},"summary":{"hwp":"1|?idx=663","hwpPrice":9000,"pdf":"11|?idx=248","price":4500},"analysis":{"pdf":"10|?idx=516","price":5500}},"added":"2026-08-16","no":1266},{"label":"14강","items":{"boost":{"pdf":"13|?idx=1267","price":3900},"basic":{"hwp":"1|?idx=685","hwpPrice":10800,"q":82,"pdf":"12|?idx=326","price":5400},"summary":{"hwp":"1|?idx=664","hwpPrice":9000,"pdf":"11|?idx=249","price":4500},"analysis":{"pdf":"10|?idx=517","price":5500}},"added":"2026-08-16","no":1267},{"label":"15강","items":{"boost":{"pdf":"13|?idx=1268","price":3900},"basic":{"hwp":"1|?idx=686","hwpPrice":7800,"q":56,"pdf":"12|?idx=327","price":3900},"summary":{"hwp":"1|?idx=665","hwpPrice":6000,"pdf":"11|?idx=250","price":3000},"analysis":{"pdf":"10|?idx=643","price":5500}},"added":"2026-08-16","no":1268},{"label":"17강","items":{"boost":{"pdf":"13|?idx=1269","price":3900},"basic":{"hwp":"1|?idx=687","hwpPrice":10800,"q":83,"pdf":"12|?idx=328","price":5400},"summary":{"hwp":"1|?idx=666","hwpPrice":9000,"pdf":"11|?idx=251","price":4500},"analysis":{"pdf":"10|?idx=644","price":5500}},"added":"2026-08-16","no":1269},{"label":"18강","items":{"boost":{"pdf":"13|?idx=1270","price":3900},"basic":{"hwp":"1|?idx=688","hwpPrice":10800,"q":79,"pdf":"12|?idx=329","price":5400},"summary":{"hwp":"1|?idx=667","hwpPrice":9000,"pdf":"11|?idx=252","price":4500},"analysis":{"pdf":"10|?idx=645","price":5500}},"added":"2026-08-16","no":1270},{"label":"19강","items":{"boost":{"pdf":"13|?idx=1271","price":3900},"basic":{"hwp":"1|?idx=689","hwpPrice":10800,"q":79,"pdf":"12|?idx=330","price":5400},"summary":{"hwp":"1|?idx=668","hwpPrice":9000,"pdf":"11|?idx=253","price":4500},"analysis":{"pdf":"10|?idx=646","price":5500}},"added":"2026-08-16","no":1271},{"label":"20강","items":{"boost":{"pdf":"13|?idx=1272","price":3900},"basic":{"hwp":"1|?idx=690","hwpPrice":10800,"q":79,"pdf":"12|?idx=331","price":5400},"summary":{"hwp":"1|?idx=669","hwpPrice":9000,"pdf":"11|?idx=254","price":4500},"analysis":{"pdf":"10|?idx=647","price":5500}},"added":"2026-08-16","no":1272},{"label":"21강","items":{"boost":{"pdf":"13|?idx=1273","price":3900},"basic":{"hwp":"1|?idx=691","hwpPrice":10800,"q":79,"pdf":"12|?idx=333","price":5400},"summary":{"hwp":"1|?idx=670","hwpPrice":9000,"pdf":"11|?idx=255","price":4500},"analysis":{"pdf":"10|?idx=648","price":5500}},"added":"2026-08-16","no":1273},{"label":"22강","items":{"boost":{"pdf":"13|?idx=1274","price":3900},"basic":{"hwp":"1|?idx=692","hwpPrice":7800,"q":64,"pdf":"12|?idx=334","price":3900},"summary":{"hwp":"1|?idx=671","hwpPrice":9000,"pdf":"11|?idx=256","price":4500},"analysis":{"pdf":"10|?idx=649","price":5500}},"added":"2026-08-16","no":1274},{"label":"TEST","items":{"boost":{"pdf":"13|?idx=1275","price":9900},"basic":{"hwp":"1|?idx=693","hwpPrice":26000,"q":315,"pdf":"12|?idx=336","price":13000},"summary":{"hwp":"1|?idx=672","hwpPrice":19000,"pdf":"11|?idx=257","price":9900},"analysis":{"pdf":"10|?idx=650","price":15900}},"added":"2026-08-16","no":1275}],"tone":"sky","cshort":"수능특강 라이트 영어","ord":55},{"id":"부교재ebs수능특강라이트수능특강라이트영어독해연습","title":"수능특강 라이트 영어독해연습","path":["부교재","EBS 수능특강 라이트"],"cover":"ebs","img":"https://cdn.imweb.me/thumbnail/20260816/976b13d4ba4b434d.jpg","chapters":[{"label":"전범위","items":{"analysis":{"pdf":"26|?idx=845","price":82950,"off":30},"basic":{"pdf":"9|?idx=447","price":69000,"off":50,"hwp":"2|?idx=576","hwpPrice":170000},"summary":{"pdf":"27|?idx=446","price":59000,"off":50,"hwp":"2|?idx=575","hwpPrice":89000}},"added":"2026-03-16","no":845,"pkg":1,"off":50},{"label":"1강","items":{"boost":{"pdf":"33|?idx=1276","price":4900},"advanced":{"pdf":"9|?idx=1161","price":8900,"q":162},"workbook":{"pdf":"https://daechisecret.com/135/?idx=820","price":4900},"analysis":{"pdf":"26|?idx=724","price":5900},"basic":{"hwp":"2|?idx=709","hwpPrice":20000,"q":96,"pdf":"9|?idx=337","price":5000},"summary":{"hwp":"2|?idx=694","hwpPrice":10000,"pdf":"27|?idx=352","price":5000}},"added":"2026-08-16","no":1276},{"label":"2강","items":{"boost":{"pdf":"33|?idx=1277","price":4900},"advanced":{"pdf":"9|?idx=1162","price":8900,"q":166},"workbook":{"pdf":"https://daechisecret.com/135/?idx=821","price":4900},"analysis":{"pdf":"26|?idx=725","price":5900},"basic":{"hwp":"2|?idx=710","hwpPrice":20000,"q":102,"pdf":"9|?idx=338","price":5200},"summary":{"hwp":"2|?idx=695","hwpPrice":10000,"pdf":"27|?idx=353","price":5000}},"added":"2026-08-16","no":1277},{"label":"3강","items":{"boost":{"pdf":"33|?idx=1278","price":4900},"advanced":{"pdf":"9|?idx=1163","price":8900,"q":159},"workbook":{"pdf":"https://daechisecret.com/135/?idx=822","price":4900},"analysis":{"pdf":"26|?idx=810","price":5900},"basic":{"hwp":"2|?idx=711","hwpPrice":20000,"q":98,"pdf":"9|?idx=339","price":5000},"summary":{"hwp":"2|?idx=696","hwpPrice":10000,"pdf":"27|?idx=354","price":5000}},"added":"2026-08-16","no":1278},{"label":"4강","items":{"boost":{"pdf":"33|?idx=1279","price":4900},"advanced":{"pdf":"9|?idx=1164","price":8000,"q":138},"analysis":{"pdf":"26|?idx=811","price":5900},"basic":{"hwp":"2|?idx=712","hwpPrice":20000,"q":83,"pdf":"9|?idx=340","price":4500},"summary":{"hwp":"2|?idx=697","hwpPrice":10000,"pdf":"27|?idx=355","price":5000}},"added":"2026-08-16","no":1279},{"label":"5강","items":{"boost":{"pdf":"33|?idx=1280","price":4900},"advanced":{"pdf":"9|?idx=1165","price":8000,"q":141},"analysis":{"pdf":"26|?idx=812","price":5900},"basic":{"hwp":"2|?idx=713","hwpPrice":20000,"q":75,"pdf":"9|?idx=341","price":4500},"summary":{"hwp":"2|?idx=698","hwpPrice":10000,"pdf":"27|?idx=356","price":5000}},"added":"2026-08-16","no":1280},{"label":"6강","items":{"boost":{"pdf":"33|?idx=1281","price":4900},"advanced":{"pdf":"9|?idx=1166","price":8000,"q":141},"analysis":{"pdf":"26|?idx=813","price":5900},"basic":{"hwp":"2|?idx=714","hwpPrice":20000,"q":83,"pdf":"9|?idx=342","price":4500},"summary":{"hwp":"2|?idx=699","hwpPrice":10000,"pdf":"27|?idx=357","price":5000}},"added":"2026-08-16","no":1281},{"label":"7강","items":{"boost":{"pdf":"33|?idx=1282","price":4900},"advanced":{"pdf":"9|?idx=1167","price":8000,"q":139},"analysis":{"pdf":"26|?idx=814","price":5900},"basic":{"hwp":"2|?idx=715","hwpPrice":20000,"q":79,"pdf":"9|?idx=343","price":4500},"summary":{"hwp":"2|?idx=700","hwpPrice":10000,"pdf":"27|?idx=358","price":5000}},"added":"2026-08-16","no":1282},{"label":"8강","items":{"boost":{"pdf":"33|?idx=1283","price":4900},"advanced":{"pdf":"9|?idx=1168","price":8000,"q":137},"analysis":{"pdf":"26|?idx=815","price":5900},"basic":{"hwp":"2|?idx=716","hwpPrice":20000,"q":79,"pdf":"9|?idx=344","price":4500},"summary":{"hwp":"2|?idx=701","hwpPrice":10000,"pdf":"27|?idx=359","price":5000}},"added":"2026-08-16","no":1283},{"label":"9강","items":{"boost":{"pdf":"33|?idx=1284","price":4900},"analysis":{"pdf":"26|?idx=816","price":5900},"basic":{"hwp":"2|?idx=717","hwpPrice":20000,"q":68,"pdf":"9|?idx=345","price":4000},"summary":{"hwp":"2|?idx=702","hwpPrice":10000,"pdf":"27|?idx=360","price":5000}},"added":"2026-08-16","no":1284},{"label":"10강","items":{"boost":{"pdf":"33|?idx=1285","price":4900},"analysis":{"pdf":"26|?idx=817","price":5900},"basic":{"hwp":"2|?idx=718","hwpPrice":20000,"q":64,"pdf":"9|?idx=346","price":4000},"summary":{"hwp":"2|?idx=703","hwpPrice":10000,"pdf":"27|?idx=361","price":5000}},"added":"2026-08-16","no":1285},{"label":"11강","items":{"boost":{"pdf":"33|?idx=1286","price":4900},"analysis":{"pdf":"26|?idx=818","price":5900},"basic":{"hwp":"2|?idx=719","hwpPrice":20000,"q":67,"pdf":"9|?idx=347","price":4000},"summary":{"hwp":"2|?idx=704","hwpPrice":10000,"pdf":"27|?idx=362","price":5000}},"added":"2026-08-16","no":1286},{"label":"12강","items":{"boost":{"pdf":"33|?idx=1287","price":4900},"analysis":{"pdf":"26|?idx=819","price":5900},"basic":{"hwp":"2|?idx=720","hwpPrice":20000,"q":64,"pdf":"9|?idx=348","price":4000},"summary":{"hwp":"2|?idx=705","hwpPrice":10000,"pdf":"27|?idx=363","price":5000}},"added":"2026-08-16","no":1287},{"label":"TEST 1강","items":{"boost":{"pdf":"33|?idx=1288","price":9900},"analysis":{"pdf":"26|?idx=842","price":15900},"basic":{"hwp":"2|?idx=721","hwpPrice":40000,"q":315,"pdf":"9|?idx=349","price":16000},"summary":{"hwp":"2|?idx=706","hwpPrice":20000,"pdf":"27|?idx=364","price":10000}},"added":"2026-08-16","no":1288},{"label":"TEST 2강","items":{"boost":{"pdf":"33|?idx=1289","price":9900},"analysis":{"pdf":"26|?idx=843","price":15900},"basic":{"hwp":"2|?idx=722","hwpPrice":40000,"q":291,"pdf":"9|?idx=350","price":15000},"summary":{"hwp":"2|?idx=707","hwpPrice":20000,"pdf":"27|?idx=365","price":10000}},"added":"2026-08-16","no":1289},{"label":"TEST 3강","items":{"boost":{"pdf":"33|?idx=1290","price":9900},"analysis":{"pdf":"26|?idx=844","price":15900},"basic":{"hwp":"2|?idx=723","hwpPrice":40000,"q":303,"pdf":"9|?idx=351","price":16000},"summary":{"hwp":"2|?idx=708","hwpPrice":20000,"pdf":"27|?idx=366","price":10000}},"added":"2026-08-16","no":1290}],"tone":"pink","cshort":"수능특강 라이트 영어독해연습","ord":56},{"id":"부교재ebs올림포스올림포스영어독해의기본1","title":"올림포스 영어독해의 기본 1","path":["부교재","EBS 올림포스"],"cover":"ebs","img":"https://cdn.imweb.me/thumbnail/20260819/72b13301421748fe.jpg","chapters":[{"label":"전범위","items":{"summary":{"pdf":"16|?idx=1353","price":35700,"off":30},"workbook":{"pdf":"17|?idx=1355","price":53200,"off":30},"basic":{"pdf":"https://daechisecret.com/378/?idx=1354","price":54950,"off":30}},"added":"2026-08-19","no":1356,"pkg":1,"off":30},{"label":"1강","items":{"basic":{"pdf":"28|?idx=908","price":4500,"q":62},"boost":{"pdf":"18|?idx=1119","price":5500},"workbook":{"pdf":"17|?idx=885","price":4500},"summary":{"pdf":"16|?idx=610","price":3000}},"added":"2026-08-19","no":1332},{"label":"2강","items":{"basic":{"pdf":"28|?idx=909","price":4500,"q":62},"boost":{"pdf":"18|?idx=1120","price":5500},"workbook":{"pdf":"17|?idx=886","price":4500},"summary":{"pdf":"16|?idx=611","price":3000}},"added":"2026-08-19","no":1333},{"label":"3강","items":{"basic":{"pdf":"28|?idx=910","price":4500,"q":62},"boost":{"pdf":"18|?idx=1121","price":5500},"workbook":{"pdf":"17|?idx=887","price":4500},"summary":{"pdf":"16|?idx=612","price":3000}},"added":"2026-08-19","no":1334},{"label":"4강","items":{"basic":{"pdf":"28|?idx=911","price":4500,"q":61},"boost":{"pdf":"18|?idx=1115","price":5500},"workbook":{"pdf":"17|?idx=888","price":4500},"summary":{"pdf":"16|?idx=613","price":3000}},"added":"2026-08-19","no":1335},{"label":"5강","items":{"basic":{"pdf":"28|?idx=912","price":5500,"q":92},"boost":{"pdf":"18|?idx=1116","price":5500},"workbook":{"pdf":"17|?idx=907","price":4500},"summary":{"pdf":"16|?idx=614","price":3000}},"added":"2026-08-19","no":1336},{"label":"7강","items":{"basic":{"pdf":"28|?idx=931","price":5500,"q":77},"boost":{"pdf":"18|?idx=1122","price":5500},"workbook":{"pdf":"17|?idx=932","price":4500},"summary":{"pdf":"16|?idx=615","price":3000}},"added":"2026-08-19","no":1337},{"label":"8강","items":{"basic":{"pdf":"28|?idx=963","price":4500,"q":61},"boost":{"pdf":"18|?idx=1105","price":5500},"workbook":{"pdf":"17|?idx=1079","price":4500},"summary":{"pdf":"16|?idx=616","price":3000}},"added":"2026-08-19","no":1338},{"label":"9강","items":{"basic":{"pdf":"28|?idx=1007","price":5500,"q":91},"boost":{"pdf":"18|?idx=1106","price":5500},"workbook":{"pdf":"17|?idx=1080","price":4500},"summary":{"pdf":"16|?idx=617","price":3000}},"added":"2026-08-19","no":1339},{"label":"10강","items":{"basic":{"pdf":"28|?idx=1008","price":4500,"q":60},"boost":{"pdf":"18|?idx=1107","price":5500},"workbook":{"pdf":"17|?idx=1250","price":4500},"summary":{"pdf":"16|?idx=618","price":3000}},"added":"2026-08-19","no":1340},{"label":"11강","items":{"basic":{"pdf":"28|?idx=1009","price":4500,"q":60},"boost":{"pdf":"18|?idx=1108","price":5500},"workbook":{"pdf":"17|?idx=1251","price":4500},"summary":{"pdf":"16|?idx=619","price":3000}},"added":"2026-08-19","no":1341},{"label":"12강","items":{"basic":{"pdf":"28|?idx=1010","price":4500,"q":93},"boost":{"pdf":"18|?idx=1109","price":5500},"workbook":{"pdf":"17|?idx=1252","price":4500},"summary":{"pdf":"16|?idx=620","price":3000}},"added":"2026-08-19","no":1342},{"label":"13강","items":{"basic":{"pdf":"28|?idx=960","price":4500,"q":60},"boost":{"pdf":"18|?idx=1110","price":5500},"workbook":{"pdf":"17|?idx=1253","price":4500},"summary":{"pdf":"16|?idx=621","price":3000}},"added":"2026-08-19","no":1343},{"label":"14강","items":{"basic":{"pdf":"28|?idx=1024","price":4500,"q":62},"boost":{"pdf":"18|?idx=1111","price":5500},"workbook":{"pdf":"17|?idx=1254","price":4500},"summary":{"pdf":"16|?idx=622","price":3000}},"added":"2026-08-19","no":1344},{"label":"15강","items":{"workbook":{"pdf":"17|?idx=1349","price":4500},"basic":{"pdf":"28|?idx=1025","price":4500,"q":62},"boost":{"pdf":"18|?idx=1112","price":5500},"summary":{"pdf":"16|?idx=623","price":3000}},"added":"2026-08-19","no":1349},{"label":"16강","items":{"workbook":{"pdf":"17|?idx=1350","price":4500},"basic":{"pdf":"28|?idx=1026","price":5500,"q":91},"boost":{"pdf":"18|?idx=1113","price":5500},"summary":{"pdf":"16|?idx=624","price":3000}},"added":"2026-08-19","no":1350},{"label":"17강","items":{"workbook":{"pdf":"17|?idx=1351","price":4500},"basic":{"pdf":"28|?idx=1027","price":3500,"q":46},"boost":{"pdf":"18|?idx=1117","price":5500},"summary":{"pdf":"16|?idx=625","price":3000}},"added":"2026-08-19","no":1351},{"label":"18강","items":{"workbook":{"pdf":"17|?idx=1352","price":4500},"basic":{"pdf":"https://daechisecret.com/378/?idx=1348","price":3500},"boost":{"pdf":"18|?idx=1118","price":5500},"summary":{"pdf":"16|?idx=626","price":3000}},"added":"2026-08-19","no":1352}],"tone":"orange","cshort":"올림포스 영어독해의 기본 1","ord":57},{"id":"부교재ebs올림포스올림포스영어독해의기본2","title":"올림포스 영어독해의 기본 2","path":["부교재","EBS 올림포스"],"cover":"ebs","img":"https://cdn.imweb.me/thumbnail/20260817/d6a5ec9838c54634.jpg","chapters":[{"label":"1강","items":{"boost":{"pdf":"19|?idx=1314","price":3900}},"added":"2026-08-17","no":1314},{"label":"2강","items":{"boost":{"pdf":"19|?idx=1315","price":3900}},"added":"2026-08-17","no":1315},{"label":"3강","items":{"boost":{"pdf":"19|?idx=1316","price":3900}},"added":"2026-08-17","no":1316},{"label":"4강","items":{"boost":{"pdf":"19|?idx=1317","price":3900}},"added":"2026-08-17","no":1317},{"label":"5강","items":{"boost":{"pdf":"19|?idx=1318","price":3900}},"added":"2026-08-17","no":1318},{"label":"7강","items":{"boost":{"pdf":"19|?idx=1319","price":3900}},"added":"2026-08-17","no":1319},{"label":"8강","items":{"boost":{"pdf":"19|?idx=1320","price":3900}},"added":"2026-08-17","no":1320},{"label":"9강","items":{"boost":{"pdf":"19|?idx=1321","price":3900}},"added":"2026-08-17","no":1321},{"label":"10강","items":{"boost":{"pdf":"19|?idx=1322","price":3900}},"added":"2026-08-17","no":1322},{"label":"11강","items":{"boost":{"pdf":"19|?idx=1323","price":3900}},"added":"2026-08-17","no":1323},{"label":"12강","items":{"boost":{"pdf":"19|?idx=1324","price":3900}},"added":"2026-08-17","no":1324},{"label":"13강","items":{"boost":{"pdf":"19|?idx=1326","price":3900}},"added":"2026-08-17","no":1326},{"label":"14강","items":{"boost":{"pdf":"19|?idx=1327","price":3900}},"added":"2026-08-17","no":1327},{"label":"15강","items":{"boost":{"pdf":"19|?idx=1328","price":3900}},"added":"2026-08-17","no":1328},{"label":"16강","items":{"boost":{"pdf":"19|?idx=1329","price":3900}},"added":"2026-08-17","no":1329},{"label":"17강","items":{"boost":{"pdf":"19|?idx=1330","price":3900}},"added":"2026-08-17","no":1330},{"label":"18강","items":{"boost":{"pdf":"19|?idx=1331","price":3900}},"added":"2026-08-17","no":1331}],"tone":"orange","cshort":"올림포스 영어독해의 기본 2","ord":58},{"id":"부교재ebs올림포스올림포스전국연합기출","title":"올림포스 전국연합 기출","path":["부교재","EBS 올림포스"],"cover":"ebs","img":"https://cdn.imweb.me/thumbnail/20260625/0170de602e1b4aa8.jpg","chapters":[{"label":"1강","items":{"summary":{"pdf":"20|?idx=823","price":5900},"basic":{"pdf":"21|?idx=524","price":9800,"q":198}},"added":"2026-03-14","no":823},{"label":"2강","items":{"summary":{"pdf":"20|?idx=824","price":5900},"basic":{"pdf":"21|?idx=525","price":9800,"q":201}},"added":"2026-03-14","no":824},{"label":"3강","items":{"summary":{"pdf":"20|?idx=825","price":5900},"basic":{"pdf":"21|?idx=526","price":9800,"q":201}},"added":"2026-03-14","no":825},{"label":"4강","items":{"basic":{"pdf":"21|?idx=527","price":9800,"q":199},"summary":{"pdf":"20|?idx=826","price":5900}},"added":"2026-03-31","no":883},{"label":"5강","items":{"basic":{"pdf":"21|?idx=528","price":9800,"q":197},"summary":{"pdf":"20|?idx=827","price":5900}},"added":"2026-03-31","no":884},{"label":"6강","items":{"basic":{"pdf":"21|?idx=529","price":9800,"q":204},"summary":{"pdf":"20|?idx=828","price":5900}},"added":"2026-06-18","no":1098},{"label":"7강","items":{"basic":{"pdf":"21|?idx=1077","price":9800,"q":203},"summary":{"pdf":"20|?idx=829","price":5900}},"added":"2026-06-18","no":1099},{"label":"9강","items":{"basic":{"pdf":"21|?idx=1078","price":9800,"q":205},"summary":{"pdf":"20|?idx=830","price":5900}},"added":"2026-06-18","no":1100},{"label":"11강","items":{"basic":{"pdf":"21|?idx=1084","price":9800,"q":204},"summary":{"pdf":"20|?idx=831","price":5900}},"added":"2026-06-18","no":1101},{"label":"12강","items":{"basic":{"pdf":"21|?idx=1085","price":9800,"q":209},"summary":{"pdf":"20|?idx=832","price":5900}},"added":"2026-06-18","no":1102},{"label":"13강","items":{"boost":{"pdf":"https://daechisecret.com/386/?idx=1114","price":7900},"basic":{"pdf":"21|?idx=1086","price":12900,"q":263},"summary":{"pdf":"20|?idx=833","price":5900}},"added":"2026-06-25","no":1114},{"label":"14강","items":{"basic":{"pdf":"21|?idx=1087","price":12900,"q":259},"summary":{"pdf":"20|?idx=834","price":5900}},"added":"2026-06-13","no":1087},{"label":"15강","items":{"basic":{"pdf":"21|?idx=1088","price":9800,"q":197},"summary":{"pdf":"20|?idx=835","price":5900}},"added":"2026-06-14","no":1088},{"label":"16강","items":{"basic":{"pdf":"21|?idx=1089","price":12900,"q":262},"summary":{"pdf":"20|?idx=836","price":5900}},"added":"2026-06-14","no":1089},{"label":"17강","items":{"basic":{"pdf":"21|?idx=1090","price":12900,"q":259},"summary":{"pdf":"20|?idx=837","price":5900}},"added":"2026-06-15","no":1090},{"label":"18강","items":{"basic":{"pdf":"21|?idx=1091","price":9800,"q":197},"summary":{"pdf":"20|?idx=838","price":5900}},"added":"2026-06-15","no":1091},{"label":"19강","items":{"basic":{"pdf":"21|?idx=1092","price":9800,"q":205},"summary":{"pdf":"20|?idx=839","price":5900}},"added":"2026-06-15","no":1092}],"tone":"orange","cshort":"올림포스 전국연합 기출","ord":59},{"id":"수능대비방학특강시크릿어법","title":"시크릿 어법","path":["수능대비 · 방학특강"],"cover":"ebs","img":"https://cdn.imweb.me/thumbnail/20251209/fcff150537391.jpg","chapters":[{"label":"전범위","items":{"grammar":{"pdf":"https://daechisecret.com/suneong/?idx=298","price":46000,"off":30,"hwp":"39|?idx=297","hwpPrice":118800}},"added":"2025-12-09","no":298,"pkg":1,"off":30},{"label":"1강 문장의 형식","items":{"grammar":{"pdf":"14|?idx=262","price":3000,"hwp":"15|?idx=285","hwpPrice":9900}},"added":"2025-12-08","no":285},{"label":"2강 to부정사구 & 동명사구","items":{"grammar":{"pdf":"14|?idx=263","price":3000,"hwp":"15|?idx=286","hwpPrice":9900}},"added":"2025-12-08","no":286},{"label":"3강 분사구","items":{"grammar":{"pdf":"14|?idx=264","price":3000,"hwp":"15|?idx=287","hwpPrice":9900}},"added":"2025-12-08","no":287},{"label":"4강 분사구문","items":{"grammar":{"pdf":"14|?idx=265","price":3000,"hwp":"15|?idx=288","hwpPrice":9900}},"added":"2025-12-08","no":288},{"label":"5강 명사절 접속사","items":{"grammar":{"pdf":"14|?idx=266","price":3000,"hwp":"15|?idx=289","hwpPrice":9900}},"added":"2025-12-08","no":289},{"label":"6강 관계대명사, 관계부사","items":{"grammar":{"pdf":"14|?idx=267","price":3000,"hwp":"15|?idx=290","hwpPrice":9900}},"added":"2025-12-08","no":290},{"label":"7강 수동태","items":{"grammar":{"pdf":"14|?idx=268","price":3000,"hwp":"15|?idx=291","hwpPrice":9900}},"added":"2025-12-08","no":291},{"label":"8강 수일치","items":{"grammar":{"pdf":"14|?idx=269","price":3000,"hwp":"15|?idx=292","hwpPrice":9900}},"added":"2025-12-08","no":292},{"label":"9강 형용사,부사,대명사,대동사","items":{"grammar":{"pdf":"14|?idx=270","price":3000,"hwp":"15|?idx=293","hwpPrice":9900}},"added":"2025-12-08","no":293},{"label":"10강 전치사, 접속사","items":{"grammar":{"pdf":"14|?idx=271","price":3000,"hwp":"15|?idx=294","hwpPrice":9900}},"added":"2025-12-08","no":294},{"label":"11강 조동사, 가정법","items":{"grammar":{"pdf":"14|?idx=272","price":3000,"hwp":"15|?idx=295","hwpPrice":9900}},"added":"2025-12-08","no":295},{"label":"12강 특수구문(도치,병렬,강조)","items":{"grammar":{"pdf":"14|?idx=273","price":3000,"hwp":"15|?idx=296","hwpPrice":9900}},"added":"2025-12-08","no":296}],"tone":"purple","cshort":"시크릿 어법","ord":60},{"id":"수능대비방학특강시크릿어휘","title":"시크릿 어휘","path":["수능대비 · 방학특강"],"cover":"ebs","img":"https://cdn.imweb.me/thumbnail/20251209/0d2c2578799f4.jpg","chapters":[{"label":"전범위","items":{"package":{"pdf":"14|?idx=307","price":44000,"off":35}},"added":"2025-12-09","no":307,"pkg":1,"off":35},{"label":"다의어 100개 끝내기","items":{"vocab":{"pdf":"14|?idx=234","price":4000,"hwp":"15|?idx=299","hwpPrice":11900}},"added":"2025-12-08","no":299},{"label":"반의어 100개 끝내기","items":{"vocab":{"pdf":"14|?idx=237","price":4000,"hwp":"15|?idx=301","hwpPrice":11900}},"added":"2025-12-08","no":301},{"label":"혼동어휘 100개 끝내기","items":{"vocab":{"pdf":"14|?idx=261","price":4000,"hwp":"15|?idx=302","hwpPrice":11900}},"added":"2025-12-08","no":302},{"label":"동의어 500개 끝내기","items":{"vocab":{"pdf":"14|?idx=235","price":4000,"hwp":"15|?idx=300","hwpPrice":11900}},"added":"2025-12-08","no":300},{"label":"테마별 어휘 [과학]","items":{"vocab":{"pdf":"14|?idx=238","price":4000,"hwp":"15|?idx=303","hwpPrice":11900}},"added":"2025-12-08","no":303},{"label":"테마별 어휘 [철학]","items":{"vocab":{"pdf":"14|?idx=258","price":4000,"hwp":"15|?idx=304","hwpPrice":11900}},"added":"2025-12-08","no":304},{"label":"테마별 어휘 [경제]","items":{"vocab":{"pdf":"14|?idx=259","price":4000,"hwp":"15|?idx=305","hwpPrice":11900}},"added":"2025-12-08","no":305},{"label":"테마별 어휘 [기술·공학]","items":{"vocab":{"pdf":"14|?idx=260","price":4000,"hwp":"15|?idx=306","hwpPrice":11900}},"added":"2025-12-08","no":306}],"tone":"purple","cshort":"시크릿 어휘","ord":61}];
+
+</script>
+
+<style>
+/* ═══════════════ 겉모습 ═══════════════
+   이름을 모두 .sl 안에 가둡니다 — 아임웹 테마 CSS 와 부딪히지 않게. */
+/* ── 아임웹 CSS 가 위젯 안으로 새어 들어오는 것을 막습니다 ──
+   아임웹 사이트에도 `.num` 처럼 흔한 이름의 규칙이 있어, 우리 날짜·금액 칸에
+   분홍 딱지가 씌워지고 글자가 세로로 쪼개지는 일이 있었습니다.
+   이름을 바꾸는 것만으로는 다음에 또 겹칠 수 있어, 아예 바탕·테두리·그림자를
+   한 번 지우고 시작합니다.
+   `#sl-store span` 은 셈이 (1,0,1) 이라 아임웹의 `.무엇` (0,1,0) 을 이깁니다.
+   우리 규칙은 모두 반 이름을 함께 쓰므로(1,1,0 이상) 여기에 지워지지 않습니다.
+   맨 앞에 두어, 혹시 셈이 같은 우리 규칙이 있으면 뒤에 오는 쪽이 이기게 합니다. */
+#sl-store span, #sl-store i, #sl-store b, #sl-store em {
+  display: inline; background: none; border: 0; border-radius: 0;
+  box-shadow: none; padding: 0; margin: 0; float: none; text-shadow: none;
+  line-height: inherit; letter-spacing: inherit;
+}
+#sl-store div, #sl-store p, #sl-store ul, #sl-store ol, #sl-store li, #sl-store dl, #sl-store dt, #sl-store dd {
+  background: none; border: 0; border-radius: 0; box-shadow: none; float: none;
+}
+
+/* 아임웹 코드 위젯은 좌우 여백 없이 화면 끝까지 펼쳐집니다.
+   미리보기에서는 감싸는 틀이 여백을 줘서 몰랐는데, 실제 사이트에서는
+   글이 화면 왼쪽 끝에 붙습니다. 그래서 위젯이 스스로 폭을 잡습니다. */
+#sl-store.sl { max-width: 1240px; margin-left: auto; margin-right: auto; padding-left: 20px; padding-right: 20px; }
+
+#sl-store.sl {
+  --panel: #ffffff;
+  --bg2: #eef2f8;
+  --line: #d6e0ee;
+  --line2: #e8eef6;
+  --ink: #1d3a5e;
+  --ink2: #46617f;
+  --mute: #7c90a8;
+  --dim: #93a5bd;
+  --rose: #e85a8a;
+  --rose2: #c33e6d;
+  --roseb: #fdeef3;
+  --mist: #b0c8ef;
+  --mistb: #eaf1fc;
+  --gold: #a86a12;
+  --goldb: #fdf1de;
+  --goldbd: #ecd3a5;
+  /* 쏠북(밖에서 파는 자료) 은 파랑으로 표시합니다 — 우리 자료와 헷갈리지 않게 */
+  --sky: #1f7ae0;
+  --sky2: #1861b4;
+  --skyb: #e8f1fd;
+  --new: #2f8f6b;
+  --newb: #e6f5ef;
+  --shadow: 0 1px 2px rgba(29,58,94,.06), 0 8px 24px rgba(29,58,94,.07);
+  --lift: 0 2px 4px rgba(29,58,94,.08), 0 14px 34px rgba(29,58,94,.12);
+  --r: 12px;
+
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.6;
+  font-family: Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+  text-align: left;
+}
+#sl-store.sl *, #sl-store.sl *::before, #sl-store.sl *::after { box-sizing: border-box; }
+#sl-store.sl h3 { margin: 0; letter-spacing: -.02em; }
+#sl-store.sl p { margin: 0; }
+#sl-store.sl button { font: inherit; cursor: pointer; margin: 0; }
+#sl-store.sl a { text-decoration: none; }
+#sl-store.sl img { max-width: 100%; display: block; }
+#sl-store.sl .sl-num { font-variant-numeric: tabular-nums; }
+#sl-store .sl-boot { padding: 60px; text-align: center; color: #7c90a8; }
+
+/* ── 판 ── */
+#sl-store .sh-split { display: grid; grid-template-columns: minmax(0,286px) minmax(0,1fr); gap: 20px; align-items: start; }
+/* 오른쪽이 서랍보다 짧아지면 문서 전체가 줄어들어 화면이 위로 튑니다.
+   서랍만큼은 자리를 잡아 두어 카드 수가 바뀌어도 높이가 크게 흔들리지 않게 합니다. */
+#sl-store .sh-split > div:last-child { min-height: min(820px, 82vh); }
+
+/* ── 왼쪽 서랍 ── */
+#sl-store .sh-drawer { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; position: sticky; top: 14px; box-shadow: var(--shadow); }
+#sl-store .sh-dtop { padding: 12px 15px; border-bottom: 1px solid var(--line2); font-size: 11.5px; font-weight: 700; letter-spacing: .08em; color: var(--dim); display: flex; align-items: center; }
+#sl-store .sh-dtop .fold { margin-left: auto; border: 0; background: none; color: var(--mute); font-size: 12px; display: none; }
+#sl-store .sh-dscroll { max-height: min(760px, 78vh); overflow-y: auto; overscroll-behavior: contain; padding-bottom: 6px; }
+#sl-store .sh-dscroll::-webkit-scrollbar { width: 7px; }
+#sl-store .sh-dscroll::-webkit-scrollbar-thumb { background: #c8d5e6; border-radius: 4px; }
+
+/* 교재 이름은 줄여 쓰지 않습니다 — 어느 교재인지가 여기서 제일 중요합니다 */
+#sl-store .sh-nd { width: 100%; text-align: left; background: none; border: 0; display: flex; align-items: flex-start; gap: 7px; padding: 7px 12px 7px 14px; color: var(--ink2); font-size: 13px; line-height: 1.45; transition: background .12s; }
+#sl-store .sh-nd:hover { background: var(--mistb); color: var(--ink); }
+#sl-store .sh-nd:focus-visible { outline: 2px solid var(--rose); outline-offset: -2px; }
+#sl-store .sh-nd .tw { width: 12px; flex: none; color: var(--dim); font-size: 9px; transition: transform .16s; padding-top: 3px; }
+#sl-store .sh-nd[aria-expanded="true"] .tw { transform: rotate(90deg); }
+#sl-store .sh-nd .nm { min-width: 0; flex: 1; overflow-wrap: anywhere; word-break: keep-all; }
+#sl-store .sh-nd .c { font-size: 10.5px; color: var(--dim); font-variant-numeric: tabular-nums; flex: none; padding-top: 2px; }
+#sl-store .sh-nd.lv0 { font-weight: 750; color: var(--ink); font-size: 13.5px; padding-top: 10px; padding-bottom: 10px; }
+#sl-store .sh-nd.on { background: var(--roseb); color: var(--rose2); font-weight: 700; box-shadow: inset 3px 0 0 var(--rose); }
+#sl-store .sh-nd .pin { width: 5px; height: 5px; border-radius: 50%; background: var(--new); flex: none; }
+#sl-store .sh-nd .ext { font-size: 9.5px; padding: 1px 5px; border-radius: 4px; background: var(--skyb); color: var(--sky2); font-weight: 700; flex: none; align-self: center; }
+#sl-store .sh-nd .old { font-size: 9.5px; padding: 1px 5px; border-radius: 4px; background: var(--bg2); color: var(--mute); font-weight: 700; flex: none; align-self: center; }
+#sl-store .sh-nd .pin { margin-top: 6px; }
+#sl-store .sh-sep { height: 1px; background: var(--line2); margin: 5px 0; }
+/* 「패키지」 자리 — 여기만 갈래가 아니라 **모아보기**라, 눈에 띄게 세웁니다 */
+#sl-store .sh-nd .pkgtag {
+  font-size: 9.5px; font-weight: 800; color: #fff; background: var(--rose);
+  border-radius: 5px; padding: 2px 5px; margin-left: 5px; flex: none; letter-spacing: -.02em;
+}
+#sl-store .sh-nd.lv0[data-id="패키지"] { color: var(--rose2); }
+#sl-store .sh-nd.lv0[data-id="패키지"].on { background: var(--roseb); }
+
+/* ── 연장 줄 ──
+   형식 고르기와 교재 검색은 **이 화면에서 손님이 가장 먼저 쓰는 것**인데
+   맨 글자로 놓여 있어 눈에 안 들어왔습니다. 흰 카드에 담고 글씨를 키웠습니다. */
+#sl-store .sh-tools {
+  display: flex; flex-direction: column; gap: 11px; margin-bottom: 18px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 14px 16px; box-shadow: var(--shadow);
+}
+#sl-store .sh-trow { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+#sl-store .sh-lab {
+  font-size: 12.5px; font-weight: 800; letter-spacing: -.02em; color: var(--ink); flex: none; width: 52px;
+}
+#sl-store .sh-chips { display: flex; gap: 5px; flex-wrap: wrap; flex: 1; min-width: 0; }
+#sl-store .sh-chip { border: 1px solid var(--line); background: var(--panel); color: var(--ink2); border-radius: 100px; padding: 8px 16px; font-size: 13.5px; font-weight: 600; white-space: nowrap; transition: all .13s; }
+#sl-store .sh-chip:hover { border-color: var(--mist); color: var(--ink); background: var(--mistb); }
+#sl-store .sh-chip[aria-pressed="true"] { background: var(--rose); border-color: var(--rose); color: #fff; font-weight: 700; }
+#sl-store .sh-chip.all[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+#sl-store .sh-chip:focus-visible { outline: 2px solid var(--rose); outline-offset: 2px; }
+
+#sl-store .sh-srch { flex: 1; min-width: 160px; border: 1.5px solid #f2b8cd; background: #fffafc; color: var(--ink); border-radius: 100px; padding: 11px 12px 8px 31px; font-size: 13.5px; font-family: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c90a8' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.5-3.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: 9px center; background-size: 15px; }
+#sl-store .sh-srch::placeholder { color: var(--dim); }
+#sl-store .sh-srch { font-size: 14px; font-weight: 600; }
+#sl-store .sh-srch::placeholder { color: #c8a3b3; font-weight: 500; }
+#sl-store .sh-srch:focus { outline: 0; border-color: var(--rose); box-shadow: 0 0 0 4px var(--roseb); }
+
+#sl-store .sh-seg { display: flex; background: var(--bg2); border: 1px solid var(--line); border-radius: 9px; padding: 2.5px; gap: 2px; flex: none; }
+#sl-store .sh-seg button { border: 0; background: none; border-radius: 7px; padding: 6px 12px; font-size: 12.5px; font-weight: 600; color: var(--mute); transition: all .14s; white-space: nowrap; }
+#sl-store .sh-seg button:hover { color: var(--ink); }
+#sl-store .sh-seg button[aria-pressed="true"] { background: var(--panel); color: var(--ink); font-weight: 700; box-shadow: 0 1px 3px rgba(29,58,94,.13); }
+
+#sl-store .sh-crumb { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; font-size: 12.5px; color: var(--mute); min-height: 20px; }
+#sl-store .sh-crumb b { color: var(--ink); font-weight: 700; }
+#sl-store .sh-crumb .sep { opacity: .4; }
+#sl-store .sh-crumb .x { border: 0; background: none; color: var(--rose2); font-size: 12px; font-weight: 600; padding: 2px 5px; }
+#sl-store .sh-cnt { margin-left: auto; font-size: 12px; color: var(--dim); white-space: nowrap; }
+#sl-store .sh-cnt b { color: var(--ink2); }
+
+/* ── 표지 ── */
+#sl-store .sh-cov { position: relative; border-radius: 5px; overflow: hidden; flex: none; display: flex; flex-direction: column; justify-content: space-between; width: 60px; height: 82px; padding: 7px 6px; color: #fff; background: linear-gradient(160deg,#2a4d7d,#16304f); }
+#sl-store .sh-cov::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.13) 50%, transparent 60%); }
+#sl-store .sh-cov.mock { background: linear-gradient(160deg,#2b5a52,#153a30); }
+#sl-store .sh-cov.text { background: linear-gradient(160deg,#5a4470,#2f2149); }
+#sl-store .sh-cov .t { font-size: 8px; opacity: .75; letter-spacing: .05em; }
+#sl-store .sh-cov .rule { height: 2px; background: var(--rose); width: 19px; border-radius: 2px; margin-bottom: 4px; }
+#sl-store .sh-cov .b { font-weight: 800; line-height: 1.22; font-size: 9.5px; }
+#sl-store .sh-cov .c { font-size: 9px; color: #b0c8ef; font-weight: 700; margin-top: 2px; }
+/* 상품 썸네일을 표지로 쓸 때 — 강 이름만 아래에 얹습니다 */
+#sl-store .sh-cov.shot { padding: 0; background: var(--bg2); }
+#sl-store .sh-cov.shot img { width: 100%; height: 100%; object-fit: cover; }
+#sl-store .sh-cov.shot .c {
+  position: absolute; left: 0; right: 0; bottom: 0; margin: 0; z-index: 1;
+  font-size: 9px; font-weight: 800; color: #fff; text-align: center; padding: 3px 2px;
+  background: linear-gradient(to top, rgba(13,24,38,.86), rgba(13,24,38,0));
+}
+#sl-store .sh-cov.shot::after { display: none; }
+
+/* ── 교재 표지 ── 갈래마다 빛깔이 다릅니다 */
+#sl-store .sh-cov.book {
+  width: 84px; height: 108px; padding: 9px 8px 0; gap: 0; justify-content: flex-start;
+  background: linear-gradient(158deg, var(--c1), var(--c2));
+  --c1: #3d5a80; --c2: #22344d;
+}
+#sl-store .sh-cov.book::after { background: linear-gradient(115deg, transparent 42%, rgba(255,255,255,.16) 50%, transparent 58%); }
+#sl-store .sh-cov.book .tag {
+  font-size: 9px; opacity: .88; letter-spacing: .02em; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+}
+#sl-store .sh-cov.book .nm {
+  margin-top: 6px; font-size: 12px; font-weight: 800; line-height: 1.24; letter-spacing: -.04em;
+  word-break: keep-all; overflow-wrap: break-word; text-shadow: 0 1px 2px rgba(0,0,0,.25);
+  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
+#sl-store .sh-cov.book .ch {
+  margin: auto -8px 0; padding: 4px 4px; font-size: 11px; font-weight: 800; text-align: center;
+  background: rgba(0,0,0,.28); letter-spacing: -.02em; position: relative; z-index: 1;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+#sl-store .sh-cov.t-orange { --c1: #e08b2c; --c2: #a3560e; }
+#sl-store .sh-cov.t-sky    { --c1: #3aa5d8; --c2: #1b6899; }
+#sl-store .sh-cov.t-pink   { --c1: #e8639a; --c2: #b02f68; }
+#sl-store .sh-cov.t-green  { --c1: #3f9e77; --c2: #1e6349; }
+#sl-store .sh-cov.t-purple { --c1: #8a63c4; --c2: #553285; }
+#sl-store .sh-cov.t-navy   { --c1: #3d5a80; --c2: #22344d; }
+
+/* ── 전범위 패키지 표지 ── */
+#sl-store .sh-cov.pack {
+  width: 84px; height: 108px; padding: 9px 7px; gap: 0; text-align: center;
+  justify-content: flex-start; background: linear-gradient(158deg, #e34b5c, #a3132a);
+}
+#sl-store .sh-cov.pack::after { display: none; }
+#sl-store .sh-cov.pack .k { font-size: 13px; font-weight: 800; line-height: 1.16; letter-spacing: -.04em; text-shadow: 0 1px 2px rgba(0,0,0,.3); }
+#sl-store .sh-cov.pack .off {
+  margin-top: 5px; font-size: 9.5px; font-weight: 800; color: #7a0f1e; line-height: 1.2;
+  background: #ffd84d; border-radius: 4px; padding: 2px 5px; align-self: center;
+}
+#sl-store .sh-cov.pack .nm {
+  margin-top: auto; margin-left: -7px; margin-right: -7px; padding: 4px 4px;
+  font-size: 9.5px; font-weight: 700; background: rgba(0,0,0,.26);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* 큰 글씨 표지 — 한 회차 전체 라인업 */
+#sl-store .sh-cov.lineup {
+  width: 84px; height: 108px; padding: 9px 7px; justify-content: flex-start; gap: 0;
+  background: linear-gradient(160deg, #2b5a52, #102c25); text-align: center;
+}
+#sl-store .sh-cov.lineup::after { display: none; }
+#sl-store .sh-cov.lineup b { font-size: 11px; font-weight: 800; color: #7fe0c0; letter-spacing: -.02em; }
+#sl-store .sh-cov.lineup .y { font-size: 9px; color: #9fc4bb; margin-top: 3px; }
+#sl-store .sh-cov.lineup em { font-style: normal; font-size: 24px; font-weight: 800; line-height: 1.05; letter-spacing: -.04em; }
+#sl-store .sh-cov.lineup .k { font-size: 10.5px; font-weight: 700; color: #cfe8e1; }
+#sl-store .sh-cov.lineup .all {
+  margin-top: auto; font-size: 9.5px; font-weight: 800; letter-spacing: .02em;
+  background: rgba(255,255,255,.16); border-radius: 3px; padding: 2px 0; width: 100%;
+}
+
+/* ── 카드 ── */
+#sl-store .sh-grp { margin-bottom: 24px; }
+#sl-store .sh-grph { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+#sl-store .sh-grph h3 { font-size: 15.5px; font-weight: 750; }
+#sl-store .sh-grph .gs { font-size: 12px; color: var(--dim); }
+#sl-store .sh-cards { display: grid; gap: 13px; grid-template-columns: repeat(auto-fill, minmax(420px,1fr)); }
+#sl-store .sh-cards.wide { grid-template-columns: repeat(auto-fill, minmax(430px,1fr)); }
+
+#sl-store .sh-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 15px; box-shadow: var(--shadow); transition: border-color .14s, transform .14s, box-shadow .14s; }
+#sl-store .sh-card:hover { border-color: var(--mist); box-shadow: var(--lift); transform: translateY(-2px); }
+/* 패키지 카드는 한눈에 갈리게 — 붉은 테두리에 옅은 붉은 바탕 */
+#sl-store .sh-card.pack { border-color: #f3c2c7; background: linear-gradient(180deg, #fffafa, #fff 70px); }
+#sl-store .sh-card.pack:hover { border-color: #e0707c; }
+#sl-store .sh-chead { display: flex; gap: 13px; }
+#sl-store .sh-cmeta { min-width: 0; flex: 1; }
+#sl-store .sh-ttl { font-weight: 750; font-size: 15px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; word-break: keep-all; overflow-wrap: anywhere; }
+#sl-store .sh-sub { color: var(--mute); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#sl-store .sh-fig { display: flex; gap: 10px; margin-top: 3px; font-size: 12px; color: var(--ink2); }
+#sl-store .sh-fig b { color: var(--ink); font-weight: 700; }
+#sl-store .sh-why { font-size: 11.5px; color: var(--dim); margin-top: 3px; }
+/* 샘플 보기 — 올린 날짜 바로 아래, 작지만 분홍이라 눈에는 들어옵니다 */
+#sl-store .sh-sampwrap { margin-top: 5px; }
+#sl-store .sh-modwait {
+  padding: 46px 20px; text-align: center; color: var(--dim); font-size: 13.5px; line-height: 1.7;
+}
+#sl-store .sh-btn.samp {
+  background: var(--rose); border-color: var(--rose); color: #fff;
+  font-weight: 700; padding: 3px 10px; border-radius: 100px;
+  box-shadow: 0 1px 4px rgba(232,90,138,.28);
+}
+#sl-store .sh-btn.samp:hover { background: var(--rose2, #c33e6d); border-color: var(--rose2, #c33e6d); color: #fff; }
+/* 장바구니 — 여러 강을 한 번에 결제하시라고 구매 단추 옆에 답니다 */
+#sl-store .sh-btn.cart {
+  background: #fff; border-color: #f2b8cd; color: #c33e6d; font-weight: 700; white-space: nowrap;
+}
+#sl-store .sh-btn.cart:hover { background: var(--rose); border-color: var(--rose); color: #fff; }
+#sl-store .sh-why b { color: var(--ink2); }
+#sl-store .sh-flag { font-size: 9.5px; font-weight: 800; padding: 2px 6px; border-radius: 5px; flex: none; }
+#sl-store .sh-flag.new { background: var(--newb); color: var(--new); }
+#sl-store .sh-flag.ext { background: var(--skyb); color: var(--sky2); }
+#sl-store .sh-flag.pack { background: #fde7e9; color: #c0202f; }
+#sl-store .sh-flag.off { background: #d92435; color: #fff; }
+
+#sl-store .sh-one { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line2); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+#sl-store .sh-one .pn { font-size: 12.5px; color: var(--ink2); font-weight: 600; }
+#sl-store .sh-one .pp { font-size: 17px; font-weight: 800; margin-left: auto; }
+#sl-store .sh-one .pp small { font-size: 12px; font-weight: 600; color: var(--mute); margin-left: 2px; }
+
+#sl-store .sh-rows { margin-top: 12px; border-top: 1px solid var(--line2); }
+#sl-store .sh-prow { display: flex; align-items: center; gap: 9px; padding: 8px 0; border-bottom: 1px solid var(--line2); }
+#sl-store .sh-prow:last-child { border-bottom: 0; }
+#sl-store .sh-prow .pn { font-size: 13px; font-weight: 700; min-width: 76px; flex: none; }
+#sl-store .sh-prow .pd { font-size: 11px; color: var(--dim); min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* '금액' 은 금액 위에, '구매하기' 는 단추 두 개 한가운데 오도록 폭을 맞춰 둡니다 */
+#sl-store .sh-prow .pp { font-size: 13px; font-weight: 750; flex: none; width: 132px; text-align: right; font-variant-numeric: tabular-nums; }
+#sl-store .sh-prow .fb { display: flex; gap: 5px; flex: none; width: 176px; justify-content: center; align-items: center; }
+#sl-store .sh-prow.head { border-bottom: 1px solid var(--line); padding: 7px 0; }
+#sl-store .sh-prow.head span { font-size: 10.5px; color: var(--dim); font-weight: 700; letter-spacing: .05em; }
+#sl-store .sh-prow.head .pp { text-align: right; }
+#sl-store .sh-prow.head .fb { display: block; text-align: center; }
+/* 아직 안 올린 갈래 — 자리는 지키되 흐리게 둡니다 */
+#sl-store .sh-prow.soon .pn, #sl-store .sh-prow.soon .pd { color: var(--dim); }
+#sl-store .sh-prow .soonmark {
+  font-size: 10.5px; font-weight: 700; color: var(--mute);
+  background: var(--bg2); border-radius: 5px; padding: 2px 7px;
+}
+/* 값 줄 — 형식 딱지 + 할인율 + 금액 */
+#sl-store .sh-prow .pr { display: flex; align-items: center; justify-content: flex-end; gap: 4px; line-height: 1.5; }
+#sl-store .sh-prow .pr + .pr { margin-top: 2px; }
+#sl-store .sh-prow .pr i {
+  font-style: normal; font-size: 8.5px; font-weight: 800; color: #fff;
+  border-radius: 3px; padding: 1px 3px; letter-spacing: -.02em;
+}
+#sl-store .sh-prow .pr i.p { background: var(--rose); }
+#sl-store .sh-prow .pr i.h { background: #00a8e1; }
+#sl-store .sh-prow .rowoff {
+  font-size: 10px; font-weight: 800; color: #fff; background: #d92435;
+  border-radius: 4px; padding: 1px 4px; vertical-align: 1px;
+}
+#sl-store .sh-prow .vend { font-size: 11px; font-weight: 700; color: var(--sky2); white-space: nowrap; }
+#sl-store .sh-prow .fb .sh-btn.gold { font-size: 10.5px; }
+
+#sl-store .sh-foot { margin-top: 11px; padding-top: 11px; border-top: 1px solid var(--line2); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+#sl-store .sh-btn { border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 7px; padding: 6px 11px; font-size: 12px; font-weight: 650; transition: all .13s; white-space: nowrap; display: inline-block; }
+#sl-store .sh-btn:hover { border-color: var(--mist); background: var(--mistb); }
+#sl-store .sh-btn.rose { background: var(--rose); border-color: var(--rose); color: #fff; }
+#sl-store .sh-btn.rose:hover { background: #d94a7c; border-color: #d94a7c; }
+/* 샘플 단추 — 점선은 너무 옅어 눈에 안 들어옵니다. 또렷한 남색 테두리로 세웁니다 */
+#sl-store .sh-btn.ghost {
+  background: var(--mistb); border-color: #9fbde8; color: #2c4c78; font-weight: 700;
+}
+#sl-store .sh-btn.ghost::before { content: '📄 '; }
+#sl-store .sh-btn.ghost:hover { background: #dbe8fb; border-color: #6f9ddc; color: var(--ink); }
+#sl-store .sh-btn.ghost:disabled { background: var(--panel); border-color: var(--line); color: var(--mute); font-weight: 600; }
+
+/* 한글 파일 — 한컴 파랑. PDF(분홍)와 한눈에 갈립니다 */
+#sl-store .sh-btn.hwp { background: #00a8e1; border-color: #00a8e1; color: #fff; }
+#sl-store .sh-btn.hwp:hover { background: #0093c4; border-color: #0093c4; }
+#sl-store .hwpwrap { position: relative; display: inline-block; }
+#sl-store .hwpwrap .edit {
+  position: absolute; top: -9px; right: -4px; z-index: 1;
+  background: #e02b3c; color: #fff; font-size: 8px; font-weight: 800;
+  padding: 1px 4px; border-radius: 4px; white-space: nowrap; letter-spacing: -.02em;
+  box-shadow: 0 1px 3px rgba(224,43,60,.35);
+}
+#sl-store .sh-btn.gold { background: var(--sky); border-color: var(--sky); color: #fff; }
+#sl-store .sh-btn.gold:hover { background: var(--sky2); border-color: var(--sky2); }
+#sl-store .sh-btn.xs { padding: 4px 9px; font-size: 11px; }
+#sl-store .sh-btn:disabled { opacity: .5; cursor: not-allowed; background: var(--panel); border-color: var(--line); color: var(--mute); }
+#sl-store .sh-btn:disabled:hover { background: var(--panel); border-color: var(--line); filter: none; }
+#sl-store .sh-soonnote { font-size: 11.5px; color: var(--dim); }
+
+#sl-store .sh-note { background: var(--skyb); border: 1px solid #bcd8f7; border-radius: 10px; padding: 12px 14px; font-size: 13px; color: #17456f; margin-bottom: 14px; line-height: 1.6; }
+#sl-store .sh-note b { color: var(--sky2); }
+#sl-store .sh-empty { padding: 44px; text-align: center; color: var(--mute); background: var(--panel); box-shadow: var(--shadow); border: 1px dashed var(--line); border-radius: var(--r); }
+#sl-store .sh-empty b { color: var(--ink); display: block; margin-bottom: 5px; }
+
+/* ── 쪽 번호 ──
+   자료가 35쪽인데 번호가 목록 맨 아래에 조그맣게 있어, 손님이 **더 있는 줄 모르고** 나가셨습니다.
+   그래서 흰 알약에 담아 화면 아래에 **붙어 다니게** 했습니다 (position:sticky).
+   목록을 보고 계신 동안에는 스크롤을 내려도 계속 따라오고, 목록이 끝나면 제자리에 앉습니다.
+   자바스크립트 없이 브라우저가 알아서 합니다. */
+#sl-store .sh-pager {
+  position: sticky; bottom: 56px; z-index: 30;
+  display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap;
+  margin-top: 26px; padding: 9px 14px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 100px;
+  box-shadow: 0 3px 10px rgba(29,58,94,.10), 0 12px 30px rgba(29,58,94,.10);
+  width: fit-content; margin-left: auto; margin-right: auto;
+}
+#sl-store .sh-pager .pg {
+  border: 1px solid var(--line); background: var(--panel); color: var(--ink2);
+  border-radius: 100px; min-width: 38px; padding: 8px 13px; font-size: 13.5px; font-weight: 750; transition: all .13s;
+}
+#sl-store .sh-pager .pg:hover:not(:disabled) { border-color: var(--rose); background: var(--roseb); color: var(--rose2); }
+#sl-store .sh-pager .pg.on {
+  background: var(--rose); border-color: var(--rose); color: #fff; font-weight: 800;
+  box-shadow: 0 2px 8px rgba(232,90,138,.32);
+}
+#sl-store .sh-pager .pg:disabled { opacity: .35; cursor: not-allowed; }
+/* 앞뒤 화살표는 분홍으로 — 「더 있습니다」가 한눈에 보이게 */
+#sl-store .sh-pager .pg.arw { background: var(--roseb); border-color: #f2b8cd; color: var(--rose2); font-weight: 800; }
+#sl-store .sh-pager .pg.arw:disabled { background: var(--panel); border-color: var(--line); }
+#sl-store .sh-pager .gap { color: var(--dim); padding: 0 2px; }
+#sl-store .sh-pager .tot {
+  margin-left: 6px; padding-left: 12px; border-left: 1px solid var(--line2);
+  font-size: 12.5px; font-weight: 700; color: var(--rose2); white-space: nowrap;
+}
+
+/* ── 샘플 자료 창 ── */
+#sl-store .sh-modal { position: fixed; inset: 0; z-index: 9999; padding: 24px; background: rgba(13,24,38,.55); backdrop-filter: blur(3px); display: grid; place-items: center; }
+#sl-store .sh-modin { background: var(--panel); border-radius: 14px; width: min(920px,100%); height: min(88vh,100%); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+#sl-store .sh-modhead { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--line2); }
+#sl-store .sh-modttl { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+#sl-store .sh-modttl b { font-size: 15px; font-weight: 750; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#sl-store .sh-modttl span { font-size: 12px; color: var(--dim); flex: none; }
+#sl-store .sh-modx { margin-left: auto; border: 0; background: none; color: var(--mute); font-size: 15px; padding: 4px 8px; border-radius: 7px; flex: none; }
+#sl-store .sh-modx:hover { background: var(--bg2); color: var(--ink); }
+#sl-store .sh-modtabs { display: flex; gap: 5px; flex-wrap: wrap; padding: 10px 16px 0; }
+#sl-store .sh-modbody { flex: 1; min-height: 0; padding: 12px 16px; background: var(--bg2); overflow-y: auto; -webkit-overflow-scrolling: touch; }
+#sl-store .sh-modbody iframe { width: 100%; height: 100%; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+#sl-store .sh-pages { display: flex; flex-direction: column; gap: 10px; }
+#sl-store .sh-pages img { width: 100%; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+#sl-store .sh-modfoot { display: flex; align-items: center; gap: 10px; padding: 11px 16px; border-top: 1px solid var(--line2); }
+#sl-store .sh-modfoot .sh-soonnote { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#sl-store .sh-modfoot .sh-btn { margin-left: auto; flex: none; }
+
+@media (max-width: 860px) {
+  #sl-store .sh-split { grid-template-columns: 1fr; }
+  #sl-store .sh-drawer { position: static; }
+  #sl-store .sh-dtop .fold { display: block; }
+  #sl-store .sh-drawer.shut .sh-dscroll { display: none; }
+  #sl-store .sh-dscroll { max-height: 300px; }
+  #sl-store .sh-cards, #sl-store .sh-cards.wide { grid-template-columns: 1fr; }
+  #sl-store .sh-lab { width: auto; }
+  #sl-store .sh-modal { padding: 12px; }
+  #sl-store .sh-modin { height: 92vh; }
+}
+</style>
+
+<script>
+/* ═══════════════ 움직임 ═══════════════
+   아임웹 위젯 안에서 두 번 실행돼도 탈이 없게 즉시실행 함수로 감쌉니다. */
+(function () {
+  var ROOT = document.getElementById('sl-store');
+  if (!ROOT || ROOT.dataset.ready === '1') return;
+  ROOT.dataset.ready = '1';
+
+  var CFG = window.SL_CONFIG || {};
+  /** 접어 둔 주소를 폅니다 — '0|abc.jpg' → 'https://cdn.imweb.me/upload/…/abc.jpg' */
+  var PRE = window.SL_PRE || [];
+  function url(u) {
+    if (!u) return '';
+    var m = /^(\d+)\|/.exec(u);
+    return m ? (PRE[+m[1]] || '') + u.slice(m[0].length) : u;
+  }
+  var KINDS = window.SL_KINDS || [];
+  var BOOKS = window.SL_BOOKS || [];
+
+  var DAY = 86400000;
+  var FORMATS = [
+    { id: 'all', label: '모두' },
+    { id: 'pdf', label: 'PDF' },
+    { id: 'hwp', label: '교사용 한글파일 (HWP)' },
+  ];
+  var SORTS = [ { id: 'name', label: '이름순' }, { id: 'new', label: '최신순' } ];
+  /** 카드마다 늘 자리를 지키는 갈래 — 아직 안 올린 것은 '예정' 으로 보입니다 */
+  var CORE = KINDS.filter(function (k) { return k.core; });
+  /** 한 쪽에 놓는 자료 수 — 끝없이 이어지면 자료가 너무 많아 보입니다 */
+  var PER_PAGE = 10;
+
+  /* ── 잔손질 ── */
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function fmt(n) { return (n || 0).toLocaleString('ko-KR'); }
+  function ms(d) { var t = d ? new Date(d).getTime() : 0; return isNaN(t) ? 0 : t; }
+  function ago(t) {
+    if (!t) return '';
+    var d = Math.floor((Date.now() - t) / DAY);
+    if (d <= 0) return '오늘 올림';
+    if (d === 1) return '어제 올림';
+    if (d === 2) return '엊그제 올림';
+    if (d < 14) return d + '일 전 올림';
+    var x = new Date(t);
+    return x.getFullYear() + '년 ' + (x.getMonth() + 1) + '월 ' + x.getDate() + '일 올림';
+  }
+  function isNew(t) { return t && Date.now() - t < 14 * DAY; }
+  function kindOf(id) { for (var i = 0; i < KINDS.length; i++) if (KINDS[i].id === id) return KINDS[i]; return null; }
+  /** 강 차례 — 1강…12강 다음에 SL강(Special Lesson), 그 다음 TEST 1~3강, 맨 끝이 전범위 */
+  function chapNo(label) {
+    var t = String(label);
+    // 전범위 패키지가 맨 앞 — 통째로 사는 쪽을 먼저 보여 드립니다
+    if (t.indexOf('전범위') >= 0) return -2;
+    if (t.indexOf('전체 라인업') >= 0) return -1;
+    var m = t.match(/(\d+)/);
+    var n = m ? Number(m[1]) : 900;
+    if (t.toUpperCase().indexOf('TEST') >= 0) return 20000 + n;
+    if (t.toUpperCase().indexOf('SL') >= 0) return 10000 + n;
+    return n;
+  }
+  /** '쏠북으로 연결' — 받침을 봅니다 */
+  function to(name) {
+    var n = name || '판매처', c = n.charCodeAt(n.length - 1);
+    var fin = (c >= 0xac00 && c <= 0xd7a3) ? (c - 0xac00) % 28 !== 0 : true;
+    return n + (fin ? '으로' : '로');
+  }
+
+  /* ── 형식으로 거릅니다 ──
+     'PDF' 를 고르면 PDF 링크가 걸린 것만, 'HWP' 면 한글 링크가 걸린 것만 남깁니다. */
+  function passFmt(item, f) {
+    if (!item) return false;
+    if (f === 'pdf') return !!item.pdf;
+    if (f === 'hwp') return !!item.hwp;
+    return true;
+  }
+  /** 이 강이 지금 보는 갈래·형식에 걸리는가 */
+  function chapHit(ch, kind, f) {
+    var it = ch.items || {};
+    if (kind === 'all') {
+      for (var i = 0; i < KINDS.length; i++) if (passFmt(it[KINDS[i].id], f)) return true;
+      return false;
+    }
+    return passFmt(it[kind], f);
+  }
+  function bookHit(b, kind, f) {
+    for (var i = 0; i < (b.chapters || []).length; i++) if (chapHit(b.chapters[i], kind, f)) return true;
+    return false;
+  }
+
+  /* ── 왼쪽 서랍 나무 — path 로 저절로 짓습니다 ── */
+  function buildTree(books) {
+    var roots = [];
+    books.forEach(function (b) {
+      var level = roots, prefix = '';
+      (b.path || ['기타']).forEach(function (name) {
+        prefix = prefix ? prefix + '/' + name : name;
+        var n = null;
+        for (var i = 0; i < level.length; i++) if (level[i].id === prefix) { n = level[i]; break; }
+        if (!n) { n = { id: prefix, name: name, children: [] }; level.push(n); }
+        level = n.children;
+      });
+      level.push({ id: b.id, name: b.title, book: b, children: [] });
+    });
+    return roots;
+  }
+  function countUnder(n) {
+    if (n.pkgNode) return pkgCount();
+    if (n.book) return 1;
+    return n.children.reduce(function (s, k) { return s + countUnder(k); }, 0);
+  }
+  function booksUnder(n, out) {
+    out = out || [];
+    if (n.book) out.push(n.book);
+    n.children.forEach(function (k) { booksUnder(k, out); });
+    return out;
+  }
+  function findNode(nodes, id) {
+    for (var i = 0; i < nodes.length; i++) {
+      if (nodes[i].id === id) return nodes[i];
+      var f = findNode(nodes[i].children, id);
+      if (f) return f;
+    }
+    return null;
+  }
+
+  /* ── 「패키지」 갈래 ──
+     전범위 패키지는 교재마다 흩어져 있어, 통째로 사시려는 손님이 하나씩 뒤져야 했습니다.
+     그래서 **맨 위에 「패키지」 한 자리를 두고 그것들만 모아 보여 줍니다.**
+     교재를 하나 더 만드는 것이 아니라 **보는 방식**만 다른 것이라, 목록표는 한 글자도 안 늘어납니다.
+     (같은 패키지가 원래 교재 자리에도 그대로 있습니다) */
+  var PKG = '패키지';
+  function isPkgChap(c) { return !!(c && c.pkg); }
+  function pkgCount() {
+    var n = 0;
+    BOOKS.forEach(function (b) { (b.chapters || []).forEach(function (c) { if (isPkgChap(c)) n++; }); });
+    return n;
+  }
+
+  var TREE = buildTree(BOOKS);
+  /* 맨 앞에 세웁니다 — 모의고사보다 위 */
+  if (pkgCount()) TREE.unshift({ id: PKG, name: PKG, children: [], pkgNode: true });
+
+  /* ── 지금 보고 있는 것 ── */
+  var S = { cat: null, book: null, kind: 'all', fmt: 'all', q: '', sort: 'name', page: 1 };
+  var open = {};
+  TREE.forEach(function (n) { open[n.id] = true; });
+
+  /* 주소 뒤에 남깁니다 — 아임웹 페이지 주소를 건드리지 않도록 # 뒤에만 씁니다 */
+  function readHash() {
+    var h = (location.hash || '').replace(/^#/, '');
+    /* 주소에 아무 것도 안 적혀 있으면 **패키지부터** 보여 드립니다.
+       손님이 들어오시자마자 통째로 사는 길을 먼저 보시고, 그 뒤에 낱개를 고르시게 합니다. */
+    if (h.indexOf('sl=') !== 0) {
+      if (pkgCount()) { S.cat = PKG; open[PKG] = true; }
+      return;
+    }
+    try {
+      var p = new URLSearchParams(h.slice(3));
+      if (p.get('cat')) S.cat = p.get('cat');
+      if (p.get('book')) S.book = p.get('book');
+
+      if (p.get('fmt')) S.fmt = p.get('fmt');
+      if (p.get('q')) S.q = p.get('q');
+      if (p.get('sort')) S.sort = p.get('sort');
+      if (p.get('page')) S.page = Math.max(1, parseInt(p.get('page'), 10) || 1);
+      if (S.book) { var bk = null; BOOKS.forEach(function (b) { if (b.id === S.book) bk = b; }); if (bk) { var pre = ''; (bk.path || []).forEach(function (n) { pre = pre ? pre + '/' + n : n; open[pre] = true; }); } }
+      if (S.cat) { var acc = ''; S.cat.split('/').forEach(function (n) { acc = acc ? acc + '/' + n : n; open[acc] = true; }); }
+    } catch (e) {}
+  }
+  function writeHash() {
+    var p = [];
+    if (S.book) p.push('book=' + encodeURIComponent(S.book));
+    else if (S.cat) p.push('cat=' + encodeURIComponent(S.cat));
+
+    if (S.page > 1) p.push('page=' + S.page);
+    if (S.fmt !== 'all') p.push('fmt=' + S.fmt);
+    if (S.q.trim()) p.push('q=' + encodeURIComponent(S.q.trim()));
+    if (S.sort !== 'name') p.push('sort=' + S.sort);
+    try { history.replaceState(null, '', location.pathname + location.search + (p.length ? '#sl=' + p.join('&') : '')); } catch (e) {}
+  }
+
+  /* 교재 한 벌에서 찾기에 걸릴 만한 글자를 다 모읍니다 — 한 번 만들어 두고 다시 씁니다 */
+  var TEXT_CACHE = {};
+  function bookText(b) {
+    if (TEXT_CACHE[b.id]) return TEXT_CACHE[b.id];
+    var t = [b.title, (b.path || []).join(' ')];
+    (b.chapters || []).forEach(function (c) {
+      t.push(c.label);
+      if (c.pkg) t.push('패키지 전범위 패키지 전범위패키지');
+      for (var k in (c.items || {})) {
+        var kd = kindOf(k);
+        if (kd) t.push(kd.name, kd.short);
+      }
+    });
+    return (TEXT_CACHE[b.id] = t.join(' ').toLowerCase());
+  }
+
+  /* ── 지금 보여 줄 교재 ── */
+  function shown() {
+    var needle = S.q.trim().toLowerCase();
+    var pool = BOOKS.slice();
+
+    if (S.book) pool = pool.filter(function (b) { return b.id === S.book; });
+    /* 패키지 갈래 — 전범위 패키지를 가진 교재만 */
+    else if (S.cat === PKG) pool = pool.filter(function (b) {
+      return (b.chapters || []).some(isPkgChap);
+    });
+    // 마디 밑에 딸린 교재만 — '부교재/EBS 수능특강' 이 '…수능특강 라이트' 까지 끌어오지 않게 마디 끝을 봅니다
+    else if (S.cat) pool = pool.filter(function (b) {
+      var p = (b.path || []).join('/');
+      return p === S.cat || p.indexOf(S.cat + '/') === 0;
+    });
+
+    /* 찾기 — 교재 이름·갈래뿐 아니라 **강 이름과 자료 종류까지** 뒤집니다.
+       「패키지」로 찾으면 전범위 패키지가, 「워크북」으로 찾으면 워크북이 있는 교재가 나옵니다.
+       (예전에는 교재 이름만 뒤져서 「패키지」가 0건이었습니다) */
+    if (needle) pool = pool.filter(function (b) { return bookText(b).indexOf(needle) >= 0; });
+
+    pool = pool.filter(function (b) { return bookHit(b, S.kind, S.fmt); });
+
+    var newest = function (b) { return Math.max.apply(null, [0].concat((b.chapters || []).map(function (c) { return ms(c.added); }))); };
+
+    return pool.sort(function (x, y) {
+      // '이름순' 은 서랍 차례를 그대로 따릅니다 — 새 해 교재가 늘 위에 서도록 미리 매겨 둔 차례입니다
+      if (S.sort === 'name') return (x.ord || 0) - (y.ord || 0);
+      return newest(y) - newest(x);
+    });
+  }
+
+  /* ═══════════════ 그리기 ═══════════════ */
+
+  function drawerHTML() {
+    var out = [];
+    function walk(n, depth) {
+      var leaf = !!n.book;
+      var on = leaf ? S.book === n.id : S.cat === n.id;
+      var chs = leaf ? (n.book.chapters || []) : [];
+      var fresh = leaf && chs.some(function (c) { return isNew(ms(c.added)); });
+      var ext = leaf && n.book.vendor;
+
+      out.push(
+        '<button type="button" class="sh-nd lv' + depth + (on ? ' on' : '') + '"' +
+        ' style="padding-left:' + (14 + depth * 13) + 'px"' +
+        ' aria-pressed="' + on + '"' +
+        (n.children.length ? ' aria-expanded="' + (!!open[n.id]) + '"' : '') +
+        ' data-act="' + (leaf ? 'book' : 'cat') + '" data-id="' + esc(n.id) + '">' +
+        '<span class="tw">' + (n.children.length ? '▶' : '') + '</span>' +
+        (fresh ? '<span class="pin"></span>' : '') +
+        '<span class="nm">' + esc(n.name) + '</span>' +
+        (n.pkgNode ? '<span class="pkgtag">모아보기</span>' : '') +
+        (leaf && n.book.old ? '<span class="old">이전</span>' : '') +
+        (ext ? '<span class="ext">' + esc(n.book.vendor) + '</span>' : '') +
+        '<span class="c">' + (leaf ? (ext ? '' : (chs.length ? chs.length + '강' : '준비')) : countUnder(n)) + '</span>' +
+        '</button>'
+      );
+      if (n.children.length && open[n.id]) n.children.forEach(function (k) { walk(k, depth + 1); });
+      if (depth === 0) out.push('<div class="sh-sep"></div>');
+    }
+    TREE.forEach(function (n) { walk(n, 0); });
+    return out.join('');
+  }
+
+  /** 카드 밑에 적는 한 줄 — 교재 이름에 이미 든 말은 되풀이하지 않습니다 */
+  function subOf(b) {
+    var tail = (b.path || []).filter(function (n) { return b.title.indexOf(n) < 0; });
+    return [b.title].concat(tail).join(' · ');
+  }
+
+  function coverHTML(b, label, thumb, plain, pkg, off) {
+    /* 전범위 패키지는 낱권과 헷갈리면 안 됩니다 — 빨간 표지에 '전범위 패키지' 와 할인율을 못 박습니다 */
+    if (pkg) {
+      return '<div class="sh-cov pack">' +
+        '<span class="k">전범위<br>패키지</span>' +
+        (off ? '<span class="off">' + esc(off) + '</span>' : '') +
+        '<span class="nm">' + esc(String(b.cshort || b.title).replace('\n', ' ')) + '</span>' +
+        '</div>';
+    }
+    // 자료마다 다른 상품 사진 대신 **교재 한 벌 표지**를 씁니다 — 작게 보면 사진은 읽히지 않습니다
+    if (!plain) {
+      var top = (b.path || [])[0] || '';
+      var nm = String(b.cshort || b.title).split('\n');
+      return '<div class="sh-cov book t-' + esc(b.tone || 'navy') + '">' +
+        '<span class="tag">' + esc(top) + '</span>' +
+        '<span class="nm">' + nm.map(function (x) { return esc(x); }).join('<br>') + '</span>' +
+        '<span class="ch">' + esc(label) + '</span>' +
+        '</div>';
+    }
+    // 한 회차 자료가 통째로 든 장은 사진 대신 **큰 글씨 표지**를 씁니다 — 그게 더 잘 읽힙니다
+    if (plain) {
+      var m = /^\[(\d학년)\]\s*(\d{4})년\s*(\d+월)/.exec(String(label));
+      return '<div class="sh-cov lineup">' +
+        (m ? '<b>' + esc(m[1]) + '</b><span class="y">' + esc(m[2]) + '</span><em>' + esc(m[3]) + '</em>' +
+             '<span class="k">모의고사</span><span class="all">전체 라인업</span>'
+           : '<em>' + esc(label) + '</em>') +
+        '</div>';
+    }
+    // 사장님이 올리신 상품 썸네일이 있으면 그것이 표지입니다
+    if (thumb) {
+      return '<div class="sh-cov shot"><img src="' + esc(url(thumb)) + '" alt="" loading="lazy">' +
+        '<span class="c">' + esc(label) + '</span></div>';
+    }
+    var tag = b.cover === 'mock' ? '모의' : b.cover === 'text' ? '교과서' : 'EBS';
+    var short = b.title.length > 8 ? b.title.slice(0, 7) + '…' : b.title;
+    return '<div class="sh-cov ' + esc(b.cover === 'mock' ? 'mock' : b.cover === 'text' ? 'text' : '') + '">' +
+      '<div class="t">' + tag + '</div>' +
+      '<div><div class="rule"></div><div class="b">' + esc(short) + '</div><div class="c">' + esc(label) + '</div></div>' +
+      '</div>';
+  }
+
+  /** 사러 가는 단추 — 링크가 없으면 눌리지 않습니다 */
+  function buyHTML(raw, text, tone, xs) {
+    var cls = 'sh-btn' + (tone ? ' ' + tone : '') + (xs ? ' xs' : '');
+    var u = url(raw);
+    if (!u) return '<button type="button" class="' + cls + '" disabled title="구매 링크를 아직 안 적었습니다">' + esc(text) + '</button>';
+    return '<a class="' + cls + '" href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + esc(text) + '</a>';
+  }
+
+  /** 보고 있는 형식의 값 — 한글 파일은 값이 따로 매겨져 있습니다 */
+  function priceOf(item) {
+    if (!item) return 0;
+    if (S.fmt === 'hwp') return item.hwpPrice || 0;
+    return item.price || item.hwpPrice || 0;
+  }
+
+  /**
+   * 값 칸 — PDF 와 한글 파일은 **값이 다릅니다** (유형편 PDF 5,400원 · HWP 16,200원).
+   * 하나로 뭉뚱그리면 틀린 값이 되므로 형식마다 한 줄씩 적습니다.
+   */
+  function priceHTML(x) {
+    var out = [];
+    var off = x.off ? '<span class="rowoff">' + x.off + '%</span>' : '';
+    if (x.pdf && x.price && S.fmt !== 'hwp') {
+      out.push('<span class="pr"><i class="p">PDF</i>' + off + fmt(x.price) + '원</span>');
+      off = '';
+    }
+    if (x.hwp && x.hwpPrice && S.fmt !== 'pdf') {
+      out.push('<span class="pr"><i class="h">HWP</i>' + off + fmt(x.hwpPrice) + '원</span>');
+    }
+    // 값이 한쪽만 적힌 자료는 그 값 하나만
+    if (!out.length && priceOf(x)) out.push('<span class="pr">' + off + fmt(priceOf(x)) + '원</span>');
+    return out.join('');
+  }
+
+  /** 교사용 한글 파일 단추 — 편집이 되는 파일이라 눈에 띄게 세웁니다 */
+  function hwpHTML(x) {
+    if (!x.hwp) return '<button type="button" class="sh-btn xs" disabled title="한글 파일을 아직 안 올렸습니다">HWP</button>';
+    return '<span class="hwpwrap"><span class="edit">편집 가능</span>' +
+      '<a class="sh-btn xs hwp" href="' + esc(url(x.hwp)) + '" target="_blank" rel="noopener noreferrer">HWP</a></span>';
+  }
+
+  /** 패키지 할인율 — 갈래마다 다르면 '최대' 를 붙입니다 (변형문제 46%, 지문분석 50% 처럼) */
+  function offLabel(ch) {
+    if (!ch.off) return '';
+    var offs = [];
+    for (var k in (ch.items || {})) if (ch.items[k].off) offs.push(ch.items[k].off);
+    var same = offs.length && offs.every(function (o) { return o === offs[0]; });
+    return (same ? '' : '최대 ') + ch.off + '% 할인';
+  }
+
+  /* 샘플이 있는지 — 이제는 **상품 페이지가 있으면 있다**고 봅니다.
+     예전에는 샘플 사진 주소를 목록표에 다 담아 뒀는데 그것만 190,000자였습니다.
+     지금은 손님이 「샘플 보기」를 누른 그때 그 상품 페이지의 상세정보 사진을 읽어 옵니다. */
+  function hasSample(item) {
+    return !!(item && (item.pdf || item.hwp));
+  }
+
+  /* 샘플에서 걸러 낼 그림 두 갈래
+     1) 홍보 배너 — 여러 교재가 함께 쓰는 것. 엑셀에서 미리 골라 둡니다(SL_BANNERS).
+     2) 공통 안내 — 「디지털 PDF 이용 안내」처럼 **모든 상품에 똑같이 붙는** 그림.
+        이건 엑셀에 없고 아임웹 쇼핑 설정에서 붙는 것이라, 아래처럼 알아서 찾아냅니다:
+        상품 두 개 이상을 읽어 보고 **양쪽에 똑같이 있는 그림**은 안내로 봅니다.
+        지금 붙어 있는 세 장은 미리 적어 둬서 첫 번째 손님부터 깨끗하게 보입니다. */
+  var BANNERS = window.SL_BANNERS || [];
+  var COMMON = ['c84e2dd02eacb.png', 'c989392159b0e.png', '89d88f2a714a7.png'];
+  var SEEN_SETS = [];
+
+  function fileOf(u) { return String(u).split('?')[0].split('/').pop(); }
+  function isBanner(src) {
+    var f = fileOf(src);
+    return BANNERS.indexOf(f) >= 0 || COMMON.indexOf(f) >= 0;
+  }
+  /* 새로 읽은 상품과 앞서 읽은 상품에 똑같이 있는 그림을 안내 목록에 보탭니다 */
+  function noteSet(list) {
+    var files = list.map(fileOf);
+    for (var i = 0; i < SEEN_SETS.length; i++) {
+      for (var j = 0; j < files.length; j++) {
+        if (SEEN_SETS[i].indexOf(files[j]) >= 0 && COMMON.indexOf(files[j]) < 0) COMMON.push(files[j]);
+      }
+    }
+    SEEN_SETS.push(files);
+    if (SEEN_SETS.length > 4) SEEN_SETS.shift();
+  }
+
+  /* 한 번 읽어 온 상품은 다시 읽지 않습니다 */
+  var SAMPLE_CACHE = {};
+  function loadSample(pageUrl, done) {
+    if (SAMPLE_CACHE[pageUrl]) return done(SAMPLE_CACHE[pageUrl]);
+    if (!window.fetch || !window.DOMParser) return done([]);
+    fetch(pageUrl, { credentials: 'same-origin' })
+      .then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); })
+      .then(function (html) {
+        /* 상세정보는 받아 온 글자 안에 들어 있지만 DOM 으로는 안 잡힙니다
+           (아임웹이 감싸 두는 방식 탓입니다). 그래서 글자에서 바로 뽑습니다.
+           상세정보 사진은 /upload/ 아래, 대표 사진은 /thumbnail/ 아래라 서로 안 섞입니다. */
+        var re = /https:\/\/cdn\.imweb\.me\/upload\/[A-Za-z0-9]+\/[A-Za-z0-9._-]+\.(?:png|jpe?g|gif|webp)/gi;
+        var seen = {}, out = [], m;
+        while ((m = re.exec(html))) {
+          var u = m[0];
+          if (seen[u]) continue;
+          seen[u] = 1;
+          out.push(u);
+          if (out.length >= 30) break;
+        }
+        noteSet(out);
+        SAMPLE_CACHE[pageUrl] = out;
+        done(out);
+      })
+      .catch(function () { SAMPLE_CACHE[pageUrl] = []; done([]); });
+  }
+  /* 샘플 보기 — 올린 날짜 바로 아래에 작게 답니다.
+     예전에는 카드 맨 아래에 큰 단추로 있었는데, 눈이 값·구매 단추로 가야 할 자리를
+     가로채고 카드도 그만큼 길어져서 옮겼습니다. 분홍으로 칠해 눈에는 들어오게 합니다. */
+  function sampleHTML(bookId, chapIdx, kind) {
+    return '<button type="button" class="sh-btn xs samp" data-act="sample" data-book="' + esc(bookId) + '" data-ch="' + chapIdx + '" data-kind="' + esc(kind || '') + '">샘플 보기</button>';
+  }
+
+  /* 상품 번호 — 구매 링크(…?idx=1073)에 이미 들어 있어 따로 담아 두지 않습니다 */
+  function idxOf(raw) {
+    var m = /[?&]idx=(\d+)/.exec(url(raw) || '');
+    return m ? m[1] : '';
+  }
+
+  /* 장바구니 담기 — 아임웹이 어느 페이지에서나 쓸 수 있는 함수를 내어 줍니다
+     (SITE_SHOP_CART.addCartAnywhere). 여러 강을 한 번에 결제하시라고 붙였습니다. */
+  function cartBtnHTML(x) {
+    var idx = idxOf(x.pdf);
+    if (!idx) return '';
+    return '<button type="button" class="sh-btn xs cart" data-act="cart" data-idx="' + idx + '" title="장바구니에 담기">장바구니</button>';
+  }
+
+  function anySampleOf(ch) {
+    var have = ch.items || {};
+    for (var i = 0; i < KINDS.length; i++) if (hasSample(have[KINDS[i].id])) return true;
+    return false;
+  }
+
+  function cardHTML(b, ch, idx) {
+    var whole = !!ch.whole;
+    var t = ms(ch.added);
+    var kind = S.kind;
+    var it = (ch.items || {})[kind];
+
+    var head =
+      '<div class="sh-chead">' + coverHTML(b, whole ? '통째' : ch.label, (it && it.img) || ch.img, ch.plain, ch.pkg, offLabel(ch)) +
+      '<div class="sh-cmeta">' +
+        '<div class="sh-ttl">' + esc(ch.pkg ? '전범위 패키지' : (whole ? b.title : ch.label)) +
+          (ch.pkg ? '<span class="sh-flag pack">패키지상품</span>' : '') +
+          (ch.pkg && ch.off ? '<span class="sh-flag off">' + esc(offLabel(ch)) + '</span>' : '') +
+          (isNew(t) ? '<span class="sh-flag new">NEW</span>' : '') +
+          (b.vendor ? '<span class="sh-flag ext">' + esc(b.vendor) + '에서 판매</span>' : '') +
+        '</div>' +
+        '<div class="sh-sub">' + esc(subOf(b)) + '</div>' +
+        '<div class="sh-fig sl-num">' +
+          (ch.passages ? '<span><b>' + fmt(ch.passages) + '</b>지문</span>' : '') +
+          (it && it.q ? '<span><b>' + fmt(it.q) + '</b>제</span>' : '') +
+        '</div>' +
+        '<div class="sh-why sl-num">' +
+          esc(ago(t)) +
+        '</div>' +
+        (anySampleOf(ch) ? '<div class="sh-sampwrap">' + sampleHTML(b.id, idx, '') + '</div>' : '') +
+      '</div></div>';
+
+    /* 이 교재의 자료 라인업 — **늘 여섯 갈래가 다 섭니다.**
+       아직 안 올린 것은 '예정' 으로 자리를 지켜, 무엇이 더 나올지 보이게 합니다. */
+    var have = ch.items || {};
+    var lines = CORE.slice();
+    // 어휘·어법·패키지처럼 이 교재에만 있는 갈래는 뒤에 덧붙입니다
+    KINDS.forEach(function (k) { if (!k.core && have[k.id]) lines.push(k); });
+    // 여섯 갈래가 하나도 없는 자료(어휘·어법 단품)는 있는 것만 보여 줍니다
+    if (!CORE.some(function (k) { return have[k.id]; })) {
+      lines = KINDS.filter(function (k) { return have[k.id]; });
+    }
+
+    var rows = lines.map(function (p) {
+      var x = have[p.id];
+      if (!x) {
+        return '<div class="sh-prow soon">' +
+          '<span class="pn">' + esc(p.short) + '</span>' +
+          '<span class="pd"></span>' +
+          '<span class="pp"><span class="soonmark">예정</span></span>' +
+          '<span class="fb"></span></div>';
+      }
+      // 교과서는 우리가 팔지 않습니다 — 값 대신 '쏠북 구매', 단추는 밖으로 나가는 링크
+      if (b.vendor) {
+        return '<div class="sh-prow">' +
+          '<span class="pn">' + esc(p.short) + '</span>' +
+          '<span class="pd"></span>' +
+          '<span class="pp"><span class="vend">' + esc(b.vendor) + ' 구매</span></span>' +
+          '<span class="fb">' + buyHTML(x.pdf, b.vendor + ' ↗', 'gold', true) + '</span></div>';
+      }
+      return '<div class="sh-prow">' +
+        '<span class="pn">' + esc(p.short) + '</span>' +
+        '<span class="pd"></span>' +
+        '<span class="pp sl-num">' + priceHTML(x) + '</span>' +
+        '<span class="fb">' + buyHTML(x.pdf, 'PDF', 'rose', true) + hwpHTML(x) + cartBtnHTML(x) + '</span></div>';
+    }).join('');
+
+    return '<div class="sh-card' + (ch.pkg ? ' pack' : '') + '">' + head +
+      '<div class="sh-rows"><div class="sh-prow head"><span class="pn">자료 라인업</span><span class="pd"></span><span class="pp">금액</span><span class="fb">구매하기</span></div>' + rows + '</div>' +
+      '</div>';
+
+  }
+
+  /** 쪽 번호 — 앞뒤 두 개씩만 세우고 나머지는 … 로 접습니다 */
+  function pagerHTML(pages, total) {
+    if (pages < 2) return '';
+    var out = ['<button type="button" class="pg arw" data-act="page" data-id="' + (S.page - 1) + '"' +
+      (S.page === 1 ? ' disabled' : '') + '>‹ 이전</button>'];
+    var last = 0;
+    for (var i = 1; i <= pages; i++) {
+      if (i !== 1 && i !== pages && Math.abs(i - S.page) > 2) continue;
+      if (last && i - last > 1) out.push('<span class="gap">…</span>');
+      out.push('<button type="button" class="pg sl-num' + (i === S.page ? ' on' : '') +
+        '" data-act="page" data-id="' + i + '">' + i + '</button>');
+      last = i;
+    }
+    out.push('<button type="button" class="pg arw" data-act="page" data-id="' + (S.page + 1) + '"' +
+      (S.page === pages ? ' disabled' : '') + '>다음 ›</button>');
+    return '<div class="sh-pager">' + out.join('') +
+      '<span class="tot sl-num">모두 ' + fmt(total) + '개</span></div>';
+  }
+
+  /** 다시 그려도 눈이 따라가지 않게, 방금 누른 줄을 붙잡아 둡니다 */
+  var anchor = null;
+  function holdOn(el) {
+    anchor = el && el.dataset && el.dataset.id
+      ? { id: el.dataset.id, act: el.dataset.act, y: el.getBoundingClientRect().top }
+      : null;
+  }
+
+  function render() {
+    // 다시 그리기 전에 지금 자리를 적어 둡니다 — 안 그러면 서랍을 펼 때마다 맨 위로 튑니다
+    var oldDrawer = ROOT.querySelector('.sh-dscroll');
+    var keepTop = oldDrawer ? oldDrawer.scrollTop : 0;
+    var keepWin = window.pageYOffset;
+
+    var list = shown();
+    var wide = S.kind === 'all';
+
+    /* 길잡이 */
+    var crumbs = [];
+    if (S.cat === PKG) crumbs.push('<b>패키지</b> — 전범위를 통째로 담은 자료');
+    else if (S.cat) crumbs.push('<b>' + esc(S.cat.split('/').join(' › ')) + '</b>');
+    if (S.book) { var bb = null; BOOKS.forEach(function (b) { if (b.id === S.book) bb = b; }); if (bb) crumbs.push(esc((bb.path || []).join(' · ')) + ' · <b>' + esc(bb.title) + '</b>'); }
+    if (S.fmt !== 'all') crumbs.push('<b>' + esc(S.fmt === 'pdf' ? 'PDF' : '교사용 한글파일') + '</b>');
+    if (S.q.trim()) crumbs.push('‘' + esc(S.q.trim()) + '’ 로 찾음');
+
+    /* 보여 줄 것을 **자료 한 장 단위**로 죽 늘어놓고 열 장씩 끊습니다.
+       교재 단위로 끊으면 강이 서른 개인 교재가 한 쪽을 통째로 차지해 버립니다. */
+    var slots = [];
+    list.forEach(function (b) {
+      var chs = (b.chapters || []).filter(function (c) { return chapHit(c, S.kind, S.fmt); });
+      /* 패키지 갈래에서는 전범위 패키지만 세웁니다 */
+      if (S.cat === PKG) chs = chs.filter(isPkgChap);
+      chs.sort(function (x, y) {
+        if (S.sort === 'name') return chapNo(x.label) - chapNo(y.label);
+        return ms(y.added) - ms(x.added);
+      });
+      chs.forEach(function (c) { slots.push({ b: b, c: c, n: chs.length }); });
+    });
+
+    var pages = Math.max(1, Math.ceil(slots.length / PER_PAGE));
+    if (S.page > pages) S.page = pages;
+    var here = slots.slice((S.page - 1) * PER_PAGE, S.page * PER_PAGE);
+
+    var body;
+    if (!slots.length) {
+      body = '<div class="sh-empty"><b>여기에 놓인 자료가 아직 없습니다</b>왼쪽에서 다른 갈래를 고르시거나 교재 이름 일부만 적어 보십시오</div>';
+    } else {
+      // 같은 교재끼리는 머리글 하나로 묶어 둡니다
+      var groups = [];
+      here.forEach(function (x) {
+        var g = groups[groups.length - 1];
+        if (!g || g.b !== x.b) groups.push({ b: x.b, n: x.n, items: [x.c] });
+        else g.items.push(x.c);
+      });
+      body = groups.map(function (g) {
+        return '<div class="sh-grp">' +
+          '<div class="sh-grph"><h3>' + esc(g.b.title) + '</h3>' +
+          (g.b.old ? '<span class="sh-flag ext">이전 해 교재</span>' : '') +
+          '<span class="gs">' + esc((g.b.path || []).join(' · ')) +
+          (g.b.vendor || g.n < 2 ? '' : ' · 전 ' + g.n + '강') + '</span></div>' +
+          '<div class="sh-cards' + (wide ? ' wide' : '') + '">' +
+          g.items.map(function (c) { return cardHTML(g.b, c, (g.b.chapters || []).indexOf(c)); }).join('') +
+          '</div></div>';
+      }).join('') + pagerHTML(pages, slots.length);
+    }
+
+    var anyVendor = list.some(function (b) { return !!b.vendor; });
+
+    ROOT.innerHTML =
+      '<div class="sh-split">' +
+        '<aside class="sh-drawer"><div class="sh-dtop">교재 고르기<button type="button" class="fold" data-act="fold">펼치기 ▾</button></div>' +
+        '<div class="sh-dscroll">' + drawerHTML() + '</div></aside>' +
+        '<div>' +
+          '<div class="sh-tools">' +
+            '<div class="sh-trow"><span class="sh-lab">형식</span><div class="sh-chips">' +
+              FORMATS.map(function (f) {
+                return '<button type="button" class="sh-chip' + (f.id === 'all' ? ' all' : '') + '" aria-pressed="' + (S.fmt === f.id) + '" data-act="fmt" data-id="' + f.id + '">' + esc(f.label) + '</button>';
+              }).join('') +
+            '</div></div>' +
+            '<div class="sh-trow">' +
+              '<input class="sh-srch" id="sl-q" value="' + esc(S.q) + '" placeholder="교재 이름으로 찾기" aria-label="교재 이름으로 찾기">' +
+              '<div class="sh-seg" role="group" aria-label="줄 세우기">' +
+                SORTS.map(function (s) { return '<button type="button" aria-pressed="' + (S.sort === s.id) + '" data-act="sort" data-id="' + s.id + '">' + s.label + '</button>'; }).join('') +
+              '</div>' +
+            '</div>' +
+            '<div class="sh-trow sh-crumb">' +
+              (crumbs.length
+                ? crumbs.map(function (c, i) { return (i ? '<span class="sep"> › </span>' : '') + c; }).join('') + '<button type="button" class="x" data-act="clear">지우기</button>'
+                : '<span style="color:var(--dim)">전체를 보고 있습니다</span>') +
+              '<span class="sh-cnt">교재 <b class="sl-num">' + list.length + '</b>종 · 자료 <b class="sl-num">' + slots.length + '</b>개</span>' +
+            '</div>' +
+          '</div>' +
+          (anyVendor && CFG.NOTICE ? '<div class="sh-note">' + CFG.NOTICE + '</div>' : '') +
+          body +
+        '</div>' +
+      '</div>';
+
+    var box = ROOT.querySelector('.sh-dscroll');
+    if (box) box.scrollTop = keepTop;
+    if (window.pageYOffset !== keepWin) window.scrollTo(0, keepWin);
+
+    /* 카드가 줄어 문서가 짧아지면 브라우저가 화면을 위로 당깁니다.
+       누른 줄이 있던 높이에 그 줄을 다시 갖다 놓아 눈이 따라가지 않게 합니다. */
+    if (anchor) {
+      var again = ROOT.querySelector('.sh-nd[data-act="' + anchor.act + '"][data-id="' +
+        (window.CSS && CSS.escape ? CSS.escape(anchor.id) : anchor.id) + '"]');
+      if (again) {
+        var moved = again.getBoundingClientRect().top - anchor.y;
+        if (Math.abs(moved) > 1) window.scrollBy(0, moved);
+      }
+      anchor = null;
+    }
+
+    writeHash();
+  }
+
+  /* ═══════════════ 샘플 창 ═══════════════
+     PDF 는 브라우저가 그리게 두고 스크롤만 열어 줍니다.
+     이미지로 올리신 경우에는 쪽을 죽 이어 붙여 스크롤로 훑습니다. */
+  var modal = null;
+
+  function openSample(bookId, chIdx, startKind) {
+    var b = null;
+    BOOKS.forEach(function (x) { if (x.id === bookId) b = x; });
+    if (!b) return;
+    var ch = (b.chapters || [])[chIdx];
+    if (!ch) return;
+
+    var tabs = KINDS.filter(function (p) { return hasSample((ch.items || {})[p.id]); });
+    if (!tabs.length) return;
+    var cur = (startKind && hasSample(ch.items[startKind])) ? startKind : tabs[0].id;
+
+    /* 샘플 그림은 **누른 뒤에** 상품 페이지에서 읽어 옵니다.
+       그래서 먼저 '불러오는 중' 을 그려 두고, 받아지면 그 자리만 바꿔 끼웁니다. */
+    function fillBody(kind) {
+      var box = modal && modal.querySelector('.sh-modbody');
+      if (!box) return;
+      var page = linkOf(kind);
+      if (!page) { box.innerHTML = '<div class="sh-modwait">샘플을 준비 중입니다</div>'; return; }
+      box.innerHTML = '<div class="sh-modwait">샘플을 불러오는 중입니다…</div>';
+      loadSample(page, function (raw) {
+        /* 거르기는 **그릴 때** 합니다 — 안내 그림 목록이 나중에 늘어나도
+           앞서 읽어 둔 상품까지 함께 깨끗해집니다 */
+        var pages = raw.filter(function (u) { return !isBanner(u); }).slice(0, 20);
+        /* 그 사이 손님이 다른 갈래를 누르셨으면 덮어쓰지 않습니다 */
+        if (!modal || cur !== kind) return;
+        var b2 = modal.querySelector('.sh-modbody');
+        if (!b2) return;
+        b2.innerHTML = pages.length
+          ? '<div class="sh-pages">' + pages.map(function (u, i) {
+              return '<img src="' + esc(u) + '" alt="샘플 ' + (i + 1) + '쪽" loading="lazy">';
+            }).join('') + '</div>'
+          : '<div class="sh-modwait">이 자료는 아직 샘플 사진이 없습니다.<br>상품 페이지에서 확인해 주십시오.</div>';
+      });
+    }
+    /** 자료 사진이 아니라 **그 자료를 파는 상품 페이지**로 보냅니다 */
+    function linkOf(kind) {
+      var x = ch.items[kind] || {};
+      return url(x.pdf || x.hwp || '');
+    }
+
+    function paint() {
+      var p = kindOf(cur) || {};
+      modal.innerHTML =
+        '<div class="sh-modin" role="dialog" aria-modal="true">' +
+          '<div class="sh-modhead"><div class="sh-modttl"><b>' + esc(b.title + ' ' + ch.label) + '</b><span>샘플 자료</span></div>' +
+          '<button type="button" class="sh-modx" data-act="close" aria-label="닫기">✕</button></div>' +
+          (tabs.length > 1 ? '<div class="sh-modtabs">' + tabs.map(function (t) {
+            return '<button type="button" class="sh-chip" aria-pressed="' + (cur === t.id) + '" data-act="tab" data-id="' + t.id + '">' + esc(t.short) + '</button>';
+          }).join('') + '</div>' : '') +
+          '<div class="sh-modbody"></div>' +
+          '<div class="sh-modfoot"><span class="sh-soonnote">' + esc(p.name || '') + ' · 스크롤로 넘겨 보십시오</span>' +
+          (linkOf(cur)
+            ? '<a class="sh-btn rose" href="' + esc(linkOf(cur)) + '" target="_blank" rel="noopener noreferrer">상품 페이지에서 보기 ↗</a>'
+            : '') + '</div>' +
+        '</div>';
+      fillBody(cur);
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'sh-modal';
+    paint();
+    ROOT.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) return closeSample();
+      var t = e.target.closest('[data-act]');
+      if (!t) return;
+      if (t.dataset.act === 'close') return closeSample();
+      if (t.dataset.act === 'tab') { cur = t.dataset.id; paint(); }
+    });
+  }
+  function closeSample() {
+    if (!modal) return;
+    modal.remove(); modal = null;
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSample(); });
+
+  /* ═══════════════ 손길 받기 ═══════════════ */
+  ROOT.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-act]');
+    if (!t || (modal && modal.contains(t))) return;
+    var act = t.dataset.act, id = t.dataset.id;
+
+    if (act !== 'page') S.page = 1;
+
+    if (act === 'cat') {
+      holdOn(t);
+      open[id] = !open[id];
+      S.cat = S.cat === id ? null : id;
+      S.book = null;
+      render();
+    } else if (act === 'book') {
+      holdOn(t);
+      var same = S.book === id;
+      S.book = same ? null : id;
+      S.cat = null;
+      render();
+    } else if (act === 'kind') {
+      S.kind = id; render();
+    } else if (act === 'fmt') {
+      S.fmt = id; render();
+    } else if (act === 'sort') {
+      S.sort = id; render();
+    } else if (act === 'page') {
+      var to = Number(t.dataset.id);
+      if (!to || to === S.page) return;
+      S.page = to;
+      render();
+      ROOT.querySelector('.sh-tools').scrollIntoView({ block: 'start' });
+    } else if (act === 'clear') {
+      S = { cat: null, book: null, kind: 'all', fmt: 'all', q: '', sort: 'name', page: 1 }; render();
+    } else if (act === 'fold') {
+      t.closest('.sh-drawer').classList.toggle('shut');
+      t.textContent = t.closest('.sh-drawer').classList.contains('shut') ? '펼치기 ▾' : '접기 ▴';
+    } else if (act === 'cart') {
+      /* 아임웹이 어느 페이지에서나 쓸 수 있게 열어 둔 함수입니다.
+         상품 페이지로 보내지 않고 그 자리에서 담기므로, 여러 강을 이어서 고르실 수 있습니다. */
+      var api = window.SITE_SHOP_CART;
+      if (api && typeof api.addCartAnywhere === 'function') {
+        api.addCartAnywhere(t.dataset.idx);
+      } else {
+        /* 아임웹 장바구니가 아직 안 실려 있으면 상품 페이지로 보냅니다 */
+        window.open('/?idx=' + t.dataset.idx, '_blank', 'noopener');
+      }
+    } else if (act === 'sample') {
+      openSample(t.dataset.book, Number(t.dataset.ch), t.dataset.kind);
+    }
+  });
+
+  /* ── 찾기 칸 ──
+     예전에는 글자 하나 칠 때마다 화면을 통째로 다시 그렸습니다.
+     그러면 **한글이 안 합쳐집니다** — 「패키지」를 치면 「ㅍㅐㅋㅣㅈㅣ」가 됩니다.
+     찾기 칸이 통째로 새로 만들어지면서 한글 조합이 그때마다 끊기기 때문입니다.
+
+     그래서 두 가지를 합니다.
+       1) 자음·모음을 조합하는 **동안에는 다시 그리지 않습니다** (composition)
+       2) 조합이 끝나도 곧바로 그리지 않고 **잠깐(220ms) 기다립니다** —
+          빨리 치실 때 화면이 덜컹거리지 않고, 다 치신 뒤 한 번만 그립니다
+     다시 그린 뒤에는 커서를 있던 자리에 돌려놓습니다. */
+  var composing = false;
+  var qTimer = null;
+
+  function runSearch() {
+    var box = ROOT.querySelector('#sl-q');
+    var caret = box ? box.selectionStart : null;
+    S.book = null;
+    render();
+    var b2 = ROOT.querySelector('#sl-q');
+    if (b2) {
+      b2.focus();
+      var at = caret === null ? b2.value.length : Math.min(caret, b2.value.length);
+      try { b2.setSelectionRange(at, at); } catch (e) {}
+    }
+  }
+
+  ROOT.addEventListener('compositionstart', function (e) {
+    if (e.target.id === 'sl-q') composing = true;
+  });
+  ROOT.addEventListener('compositionend', function (e) {
+    if (e.target.id !== 'sl-q') return;
+    composing = false;
+    S.q = e.target.value;
+    clearTimeout(qTimer);
+    qTimer = setTimeout(runSearch, 220);
+  });
+  ROOT.addEventListener('input', function (e) {
+    if (e.target.id !== 'sl-q') return;
+    S.q = e.target.value;
+    if (composing) return;          /* 조합 중에는 건드리지 않습니다 */
+    clearTimeout(qTimer);
+    qTimer = setTimeout(runSearch, 220);
+  });
+
+  /* ═══════════════ 밖에서 부르는 문 ═══════════════
+     첫 화면(#sl-home)이 '새로 올라온 자료' 를 그리고, 눌렀을 때 여기로 데려옵니다. */
+  window.SL_STORE = {
+    books: function () { return BOOKS; },
+    kinds: function () { return KINDS; },
+    kindName: function (id) { var k = kindOf(id); return k ? k.short : ''; },
+    /** 자료실을 그 자리로 옮기고 화면을 그리로 굴립니다 */
+    go: function (to) {
+      to = to || {};
+      S.book = to.book || null;
+      S.cat = to.book ? null : (to.cat || null);
+
+      if (to.fmt) S.fmt = to.fmt;
+      // 고른 자리까지 서랍을 펴 둡니다
+      if (S.cat) { var acc = ''; S.cat.split('/').forEach(function (n) { acc = acc ? acc + '/' + n : n; open[acc] = true; }); }
+      if (S.book) {
+        var bk = null;
+        BOOKS.forEach(function (b) { if (b.id === S.book) bk = b; });
+        if (bk) { var pre = ''; (bk.path || []).forEach(function (n) { pre = pre ? pre + '/' + n : n; open[pre] = true; }); }
+      }
+      render();
+      try { ROOT.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { ROOT.scrollIntoView(); }
+    },
+  };
+
+  /* ═══════════════ 열기 ═══════════════ */
+  function start() { readHash(); render(); }
+
+  if (CFG.DATA_URL) {
+    fetch(CFG.DATA_URL)
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && d.books && d.books.length) { BOOKS = d.books; TREE = buildTree(BOOKS); }
+        if (d && d.kinds && d.kinds.length) KINDS = d.kinds;
+        TREE.forEach(function (n) { open[n.id] = true; });
+      })
+      .catch(function () { /* 못 받아 오면 적어 둔 목록으로 엽니다 */ })
+      .then(start);
+  } else {
+    start();
+  }
+})();
+</script>
