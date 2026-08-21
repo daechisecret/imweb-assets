@@ -32,6 +32,8 @@
 .sl-grid .shop-item._shop_item .sale_pay { font-size: 11.5px !important; color: #93a5bd !important; text-decoration: line-through; font-weight: 500 !important; }
 .sl-grid .shop-item._shop_item .ns-icon { display: none !important; }
 .sl-grid .shop-item._shop_item .prod_icon { display: none !important; }
+.sl-grid .shop-item._shop_item .item-icon { display: none !important; }
+.sl-grid .shop-item._shop_item .item-wrap { width: auto !important; }
 .sl-kindtag { display: inline-block; align-self: flex-start; font-size: 10.5px; font-weight: 800; letter-spacing: -.03em; padding: 3px 9px; border-radius: 100px; white-space: nowrap; line-height: 1.5; margin: 0 0 6px; background: #1d3a5e; color: #fff; }
 .sl-kindtag.k0 { background: #e01b24; color: #fff; } /* 패키지 — 빨강 */
 .sl-kindtag.k1 { background: #0a86c4; color: #fff; } /* 교사용 한글파일 — 파랑 */
@@ -69,7 +71,7 @@
 .sl-lay-b .shop-item._shop_item .pay { font-size: 13px !important; }
 .sl-lay-b .shop-item._shop_item .item-detail { padding: 8px 8px 10px; }
 .sl-grid.sl-lay-c { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-.sl-lay-c .shop-item._shop_item { display: grid; grid-template-columns: 86px minmax(0, 1fr) 104px; align-items: center; overflow: hidden; }
+.sl-lay-c .shop-item._shop_item { display: grid !important; grid-template-columns: 86px minmax(0, 1fr) 104px; width: auto !important; padding: 0 !important; align-items: center; overflow: hidden; }
 .sl-lay-c .shop-item._shop_item .shop-item-thumb { width: 86px; height: 86px; }
 .sl-lay-c .shop-item._shop_item .shop-item-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .sl-lay-c .shop-item._shop_item .item-detail { min-width: 0; overflow: hidden; padding: 10px 10px 10px 12px; display: flex; flex-direction: column; justify-content: center; }
