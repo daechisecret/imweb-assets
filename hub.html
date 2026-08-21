@@ -191,7 +191,17 @@
      그 카드들은 <article class="iw-card" data-rating="5"> 안에
      .iw-name(글쓴이)과 .iw-content(본문)로 들어 있습니다. */
   get('/reviews').then(function (doc) {
+    /* 그 카드들은 <template shadowrootmode="open"> 안에 들어 있습니다.
+       template 안은 보통 querySelector 로 안 보이므로 .content 를 따로 뒤집니다. */
     var cards = doc.querySelectorAll('article.iw-card');
+    if (!cards.length) {
+      var tps = doc.querySelectorAll('template'), found = [];
+      for (var k = 0; k < tps.length; k++) {
+        var got = tps[k].content ? tps[k].content.querySelectorAll('article.iw-card') : [];
+        for (var m = 0; m < got.length; m++) found.push(got[m]);
+      }
+      cards = found;
+    }
     var out = [];
     for (var i = 0; i < cards.length && out.length < 2; i++) {
       var c = cards[i];
