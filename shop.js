@@ -223,6 +223,41 @@ if (groups[j].length >= 4 && (best < 0 || groups[j].length > groups[best].length
 }
 return best < 0 ? null : { host: parents[best], items: groups[best] };
 }
+function topBox(bar, host) {
+var tools = document.querySelector('.shop-tools');
+if (!tools || tools.dataset.slTop === '1') {
+host.parentNode.insertBefore(bar, host);
+return;
+}
+tools.dataset.slTop = '1';
+var titleEl = tools.querySelector(':scope > .shop-title');
+var raw = titleEl ? (titleEl.textContent || '').trim() : '';
+var m = /^(.*?)[\s]*(\d+)$/.exec(raw);
+var name = (m ? m[1] : raw).trim();
+var cnt = m ? m[2] : '';
+name = name.replace(/^\s*[\[(]?\s*PDF\s*[\])]?\s*/i, '').trim();
+var box = document.createElement('div');
+box.className = 'sl-top';
+var head = document.createElement('div');
+head.className = 'sl-tophead';
+head.innerHTML = '<div class="sl-tt"><h2>' + name.replace(/</g, '&lt;') + '</h2>' +
+(cnt ? '<span class="sl-cnt">' + cnt + '개</span>' : '') + '</div>';
+var sort = tools.querySelector(':scope > .down-btn');
+if (sort) {
+var wrap = document.createElement('div');
+wrap.className = 'sl-sort';
+wrap.innerHTML = '<b>정렬</b>';
+wrap.appendChild(sort);                 /* 아임웹 것을 그대로 옮겨 담습니다 */
+head.appendChild(wrap);
+}
+box.appendChild(head);
+var body = document.createElement('div');
+body.className = 'sl-topbody';
+body.appendChild(bar);
+box.appendChild(body);
+tools.parentNode.insertBefore(box, tools);
+tools.style.display = 'none';
+}
 function build() {
 var got = pickHost();
 if (!got) return;
@@ -298,7 +333,7 @@ if (!any) return;
 var out = document.createElement('div');
 out.className = 'sl-pillcount';
 bar.appendChild(out);
-host.parentNode.insertBefore(bar, host);
+topBox(bar, host);
 var pick = { kind: '', book: '' };
 function apply() {
 var n = 0;

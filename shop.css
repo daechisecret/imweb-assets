@@ -95,3 +95,16 @@
  .sl-plab { width: auto; padding-top: 0; }
  .sl-grid.sl-lay-a, .sl-grid.sl-lay-b { grid-template-columns: repeat(2, 1fr) !important; } }
 .sl-grid .shop-item._shop_item .pay.sl-ask { font-size: 12px !important; font-weight: 600 !important; color: #7c90a8 !important; letter-spacing: -.03em; }
+.sl-top { background: #fff; border: 1px solid #e6ecf4; border-radius: 16px; overflow: hidden; margin: 4px 0 14px; }
+.sl-tophead { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; background: linear-gradient(180deg, #fff, #fdfbfd); border-bottom: 1px solid #e6ecf4; }
+.sl-tt { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.sl-tt h2 { margin: 0; font-size: 21px; font-weight: 900; letter-spacing: -.04em; color: #1d3a5e; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; }
+.sl-cnt { font-size: 12px; font-weight: 800; color: #fff; background: #e85a8a; border-radius: 100px; padding: 3px 10px; white-space: nowrap; flex: none; }
+.sl-sort { display: flex; align-items: center; gap: 6px; flex: none; }
+.sl-sort b { font-size: 11.5px; font-weight: 750; color: #93a5bd; }
+.sl-sort select, .sl-sort .form-control { font-family: inherit !important; font-size: 12.5px !important; font-weight: 700 !important; color: #46617f !important; border: 1px solid #e6ecf4 !important; border-radius: 9px !important; padding: 7px 26px 7px 12px !important; background-color: #fff !important; height: auto !important; box-shadow: none !important; cursor: pointer; }
+.sl-sort select:hover { border-color: #f2b8cd !important; }
+.sl-topbody { padding: 13px 18px; }
+.sl-top .sl-pills { border: 0 !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; background: none !important; box-shadow: none !important; }
+@media (max-width: 620px) { .sl-tophead { flex-direction: column; align-items: flex-start; gap: 9px; }
+ .sl-tt h2 { font-size: 18px; } }
