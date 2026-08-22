@@ -136,8 +136,21 @@
       .then(function (r) { return r.text(); })
       .then(function (h) {
         var doc = new DOMParser().parseFromString(h, 'text/html');
-        var body = doc.querySelector('.board_text, .view_text, ._article_body, .fr-view, .board_view');
-        var html = body ? body.innerHTML : '';
+        /* 글 보기 화면에는 제목·글쓴이·조회수가 함께 들어 있습니다.
+           펼침에서는 **답 본문만** 보여야 하므로 본문 칸을 좁혀 찾고,
+           못 찾으면 글머리(제목·글쓴이 줄)를 떼어 냅니다. */
+        var body = doc.querySelector('.board_text, .view_text, .fr-view, ._article_body');
+        if (!body) {
+          body = doc.querySelector('.board_view, .view_wrap, .post_view');
+          if (body) {
+            body = body.cloneNode(true);
+            var junk = body.querySelectorAll(
+              '.view_header, .board_header, .post_header, .tit_wrap, .info, .author, .time, ' +
+              '.views, .sticker, .btn_wrap, .comment, ._comment_wrap, .board_btn, h1, h2, h3');
+            for (var z = 0; z < junk.length; z++) junk[z].parentNode.removeChild(junk[z]);
+          }
+        }
+        var html = body ? body.innerHTML.trim() : '';
         box.innerHTML = html || '<span class="wait">글을 열어 확인해 주세요.</span>';
       })
       .catch(function () {
