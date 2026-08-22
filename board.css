@@ -230,20 +230,20 @@ body.sl-bv .board_view .table_bottom .btn {
   font-size: 13px !important; font-weight: 750 !important; line-height: 1.4 !important;
   background: #fff !important; color: #46617f !important; border: 1px solid #e6ecf4 !important;
 }
-/* 아임웹이 단추를 검정으로 칠하는 규칙(!important)이 있어,
-   「목록」에도 「글쓰기」와 같은 세기(.btn.float_l)로 맞춰 줍니다 */
-body.sl-bv .board_view .table_bottom .btn.float_l {
+/* 아임웹에 `…​.widget.board .comment_section .btn-primary.float_l` 이라는
+   아주 센 !important 검정 규칙이 있습니다. 딱지(class)를 더 붙여 이깁니다. */
+body.sl-bv .board_view .table_bottom.action-area .btn.btn-primary.btn-sm.float_l {
   background: #fff !important; background-color: #fff !important;
   color: #46617f !important; border: 1px solid #e6ecf4 !important;
 }
-body.sl-bv .board_view .table_bottom .btn.float_l:hover {
+body.sl-bv .board_view .table_bottom.action-area .btn.btn-primary.btn-sm.float_l:hover {
   background-color: #fffafc !important; border-color: #f2b8cd !important; color: #c33e6d !important;
 }
 /* 글쓰기는 눈에 띄게 분홍으로 */
-body.sl-bv .board_view .table_bottom .btn.float_r {
+body.sl-bv .board_view .table_bottom.action-area .btn.btn-primary.btn-sm.float_r {
   background: #e85a8a !important; background-color: #e85a8a !important;
   border: 1px solid #e85a8a !important; color: #fff !important;
 }
-body.sl-bv .board_view .table_bottom .btn.float_r:hover {
+body.sl-bv .board_view .table_bottom.action-area .btn.btn-primary.btn-sm.float_r:hover {
   background: #c33e6d !important; border-color: #c33e6d !important; color: #fff !important;
 }
