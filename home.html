@@ -312,9 +312,13 @@ window.SL_NOTICE_BOARD = '/notice';
   #sl-home .hm-lead { grid-template-columns: 1fr; gap: 10px; }
   #sl-home .hm-lead h2 { font-size: 17px; }
 
-  /* 자료실 뒤로 옮겨 놓은 공지·새 자료 */
-  #sl-late { margin-top: 26px; }
-  #sl-late .hm-ticker { margin-bottom: 12px; }
+  /* 자료실을 안으로 들여온 뒤 차례를 세웁니다
+       ① 찾으시는 교재  ② 자료실  ③ 인사말·공지 */
+  #sl-home.sl-mobile { display: flex; flex-direction: column; }
+  #sl-home.sl-mobile .hm-lead { order: 1; margin-top: 6px; padding-top: 0; border-top: 0; }
+  #sl-home.sl-mobile #sl-store { order: 2; margin-top: 14px; }
+  #sl-home.sl-mobile .hm-top { order: 3; margin-top: 26px; padding-top: 20px;
+    border-top: 1px solid var(--line); }
   #sl-home .hm-hero h1 { font-size: 23px; }
   #sl-home .hm-freshlist { grid-template-columns: 1fr; }
 }
@@ -518,34 +522,33 @@ window.SL_NOTICE_BOARD = '/notice';
   }
 
   /* ── 휴대폰에서 차례 바꾸기 ──
-     공지와 새 자료 띠를 **자료실 뒤로** 옮깁니다.
-     CSS 만으로는 형제가 아니라 옮길 수 없어 여기서 자리만 바꿉니다
-     (내용·눌렀을 때 하는 일은 그대로입니다).
-     넓은 화면으로 돌아가면 제자리로 되돌립니다. */
-  var LATE = null, homeSide = null, sideHome = null;
+     휴대폰에서는 「찾으시는 교재」 → 자료실 → 인사말·공지 차례로 보여 드립니다.
+
+     ⚠ 공지·띠를 자료실 **뒤로 옮겼더니** 꾸미기가 따라가지 않아
+        새 자료 띠가 세로로 죽 늘어졌습니다.
+        (꾸미기 규칙이 「#sl-home 안의 …」 로 적혀 있는데 밖으로 나갔기 때문입니다.)
+        그래서 이제는 **자료실 쪽을 안으로 들여옵니다.**
+        자료실은 제 꾸미기를 「#sl-store …」 로 혼자 다 갖고 있어
+        어디에 놓아도 모양이 그대로입니다. */
+  var moved = false, storeHome = null;
 
   function arrange() {
     var narrow = window.matchMedia('(max-width: 900px)').matches;
+    var home = document.getElementById('sl-home');
     var store = document.getElementById('sl-store');
-    var side = document.querySelector('#sl-home .hm-side');
-    var tick = document.getElementById('hm-ticker');
-    if (!store || !side || !tick) return;
+    if (!home || !store) return;
 
-    if (narrow) {
-      if (LATE && LATE.parentNode) return;          /* 이미 옮겨 두었습니다 */
-      homeSide = side.parentNode;                   /* 돌아갈 자리를 적어 둡니다 */
-      sideHome = tick.parentNode;
-      LATE = document.createElement('div');
-      LATE.id = 'sl-late';
-      LATE.className = 'sl';
-      store.parentNode.insertBefore(LATE, store.nextSibling);
-      LATE.appendChild(tick);
-      LATE.appendChild(side);
-    } else if (LATE && LATE.parentNode) {
-      if (homeSide) homeSide.appendChild(side);
-      if (sideHome) sideHome.appendChild(tick);
-      LATE.parentNode.removeChild(LATE);
-      LATE = null;
+    if (narrow && !moved) {
+      storeHome = { parent: store.parentNode, next: store.nextSibling };
+      home.appendChild(store);
+      home.classList.add('sl-mobile');
+      moved = true;
+    } else if (!narrow && moved) {
+      if (storeHome && storeHome.parent) {
+        storeHome.parent.insertBefore(store, storeHome.next);
+      }
+      home.classList.remove('sl-mobile');
+      moved = false;
     }
   }
 
