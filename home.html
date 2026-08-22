@@ -1809,16 +1809,25 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
           '<span class="pp"><span class="soonmark">예정</span></span>' +
           '<span class="fb"></span></div>';
       }
+      /* 자료 이름도 **눌러서 상품 페이지로** 가게 합니다.
+         이름만 글자로 두면 손님이 눌러 보시고 아무 일도 안 일어나 답답해하십니다. */
+      var go = url(x.pdf || x.hwp || '');
+      function nameCell(cls) {
+        return go
+          ? '<a class="pn ' + cls + '" href="' + esc(go) + '">' + esc(p.short) + '</a>'
+          : '<span class="pn">' + esc(p.short) + '</span>';
+      }
+
       // 교과서는 우리가 팔지 않습니다 — 값 대신 '쏠북 구매', 단추는 밖으로 나가는 링크
       if (b.vendor) {
         return '<div class="sh-prow">' +
-          '<span class="pn">' + esc(p.short) + '</span>' +
+          nameCell('go') +
           '<span class="pd"></span>' +
           '<span class="pp"><span class="vend">' + esc(b.vendor) + ' 구매</span></span>' +
           '<span class="fb">' + buyHTML(x.pdf, b.vendor + ' ↗', 'gold', true) + '</span></div>';
       }
       return '<div class="sh-prow">' +
-        '<span class="pn">' + esc(p.short) + '</span>' +
+        nameCell('go') +
         '<span class="pd"></span>' +
         '<span class="pp sl-num">' + priceHTML(x) + '</span>' +
         '<span class="fb">' + buyHTML(x.pdf, 'PDF', 'rose', true) + hwpHTML(x) + cartBtnHTML(x) + '</span></div>';
