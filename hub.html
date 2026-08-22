@@ -181,7 +181,10 @@
 
   /* ═══════════ 그리기 ═══════════ */
 
-  var C = HUB[WHICH] || MENU[WHICH] || HUB.info;
+  /* 페이지 주소를 바꾸시면 코드에 적힌 data-hub(옛 주소)가 안 맞게 됩니다.
+     그때는 **지금 보고 있는 주소**로 다시 찾아봅니다 — 코드를 다시 붙이지 않아도 됩니다. */
+  var C = HUB[WHICH] || MENU[WHICH] || MENU[location.pathname] ||
+          MENU[location.pathname.replace(/\/$/, '')] || HUB.info;
   var html = '<div class="hb-hd"><div class="hb-eye">' + esc(C.eye) + '</div>' +
              '<h1>' + esc(C.h1) + '</h1><p>' + esc(C.sub) + '</p></div>';
 
