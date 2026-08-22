@@ -1075,7 +1075,18 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
   function url(u) {
     if (!u) return '';
     var m = /^(\d+)\|/.exec(u);
-    return m ? (PRE[+m[1]] || '') + u.slice(m[0].length) : u;
+    return shopView(m ? (PRE[+m[1]] || '') + u.slice(m[0].length) : u);
+  }
+
+  /* 상품 주소를 「shop_view + 상품번호」 모양으로 바꿔 둡니다.
+     상품 주소에는 진열 칸 이름이 들어 있습니다 — /speciallesson/?idx=234 처럼.
+     그런데 그 진열 칸을 없애시면 주소가 죽어 **첫 화면으로 튕깁니다**(301).
+     실제로 수능대비·방학특강의 하위 메뉴를 없애신 뒤 시크릿 어휘·어법의
+     PDF·HWP 단추와 샘플이 모두 첫 화면으로 가 버렸습니다.
+     /shop_view/번호 는 진열 칸과 상관없이 늘 열리므로 이 모양으로 씁니다. */
+  function shopView(full) {
+    var m = /^(https?:\/\/[^/]+)\/.*[?&]idx=(\d+)/.exec(full || '');
+    return m ? m[1] + '/shop_view/' + m[2] : full;
   }
   var KINDS = window.SL_KINDS || [];
   var BOOKS = window.SL_BOOKS || [];
@@ -1778,11 +1789,14 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
        실제 자료 사진이 없어서 샘플로 보여 드릴 것이 없습니다.
        그래서 같은 교재의 **진짜 자료 강**에서 끌어옵니다.
 
-       패키지는 두 모양이 있어 단추를 다르게 세웁니다.
-         ① 한 강에 여러 갈래가 든 것 (모의고사 올인원 패키지)
-            → 갈래마다 단추 : 변형문제 · 지문분석 · 핵심요약 · 워크북 …
-         ② 여러 강이 한 갈래인 것 (어법 풀패키지 1~12강, 어휘 풀패키지 8종)
-            → 강마다 단추 : 1강 문장의 형식 · 2강 to부정사구 … */
+       단추는 갈래마다 하나씩 세웁니다 — 변형문제 · 지문분석 · 핵심요약 · 워크북 …
+       다만 **방학특강 두 교재만** 다릅니다.
+         시크릿 어휘 (8종) · 시크릿 어법 (12강)
+       이 둘은 갈래가 하나뿐이고 강마다 내용이 아주 달라서
+       (1강 문장의 형식 · 2강 to부정사구 …) 강마다 단추를 세웁니다.
+       나머지 교재는 강이 스무 개씩 되는데 내용은 지문만 다르므로
+       예전처럼 **첫 강 하나만** 보여 드립니다. */
+    var CHAP_PILL_BOOKS = ['시크릿 어휘', '시크릿 어법'];
     var tabs = [];
     var fromLabel = {};
     if (ch.pkg) {
@@ -1799,16 +1813,16 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
       var kindIds = [];
       for (var kk in byKind) kindIds.push(kk);
 
-      if (kindIds.length > 1) {
-        /* ① 갈래가 여럿 — 갈래마다 단추 */
+      if (kindIds.length <= 1 && CHAP_PILL_BOOKS.indexOf(b.title) >= 0) {
+        /* 시크릿 어휘·어법 — 강마다 단추 */
+        chapList.forEach(function (t) { tabs.push(t); });
+      } else {
+        /* 그 밖 — 갈래마다 단추 (갈래가 하나면 첫 강 하나) */
         KINDS.forEach(function (k) {
           if (!byKind[k.id]) return;
           tabs.push({ id: k.id, name: k.short, item: byKind[k.id].item, kind: k });
           fromLabel[k.id] = byKind[k.id].label;
         });
-      } else {
-        /* ② 갈래가 하나 — 강마다 단추 */
-        chapList.forEach(function (t) { tabs.push(t); });
       }
     }
     if (!tabs.length) {
