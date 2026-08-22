@@ -131,7 +131,7 @@
     mount.innerHTML =
       '<div class="sp-head"><h3>자료 미리보기</h3>' +
       (list.length ? '<span class="sp-cnt">' + list.length + '장</span>' : '') +
-      '<span class="sp-tip">사진을 누르면 크게 보입니다</span></div>' +
+      '<span class="sp-tip">눌러서 크게 보세요!</span></div>' +
       (pk ? '<div class="sp-kinds">' + kinds.map(function (k) {
         return '<button type="button" class="sp-kind' + (k.id === cur ? ' on' : '') +
                '" data-kind="' + esc(k.id) + '">' + esc(k.name) + '</button>';
@@ -175,6 +175,25 @@
     lb.querySelector('.no').textContent = (at + 1) + ' / ' + shots.length;
   }
 
+  /* 손가락으로 옆으로 밀어 넘기기 —
+     휴대폰에서는 창을 닫고 다시 여는 것이 번거로워, 민 방향으로 다음 장을 보여 줍니다. */
+  function swipe(el) {
+    var x0 = 0, y0 = 0, moved = false;
+    el.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; moved = false;
+    }, { passive: true });
+    el.addEventListener('touchmove', function (e) {
+      if (e.touches.length !== 1) return;
+      var dx = e.touches[0].clientX - x0, dy = e.touches[0].clientY - y0;
+      /* 세로로 미는 것은 스크롤이므로 가로가 확실할 때만 넘깁니다 */
+      if (!moved && Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+        moved = true;
+        step(dx < 0 ? 1 : -1);
+      }
+    }, { passive: true });
+  }
+
   function build() {
     var R = root(), B = body();
     if (!R || !B || document.getElementById('sl-pd-mount')) return;
@@ -192,6 +211,7 @@
       '<img alt=""><button type="button" class="nav next" aria-label="다음">›</button>' +
       '<span class="no"></span>';
     document.body.appendChild(lb);
+    swipe(lb);
 
     var me = idxNow();
     var pack = PKG && me && PKG[me];

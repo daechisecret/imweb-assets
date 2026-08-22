@@ -219,9 +219,35 @@
     }
   }
 
+  /* ── 글을 누르면 확실히 열리도록 ──
+     아임웹 게시판 위젯은 목록을 **나중에 다시 그립니다.** 그때 우리 목록도 새로 만들어지는데,
+     손님이 마침 그 순간에 누르시면 누른 글줄이 사라져 **클릭이 그냥 없던 일이 됩니다.**
+     («여러 번 눌러야 들어가진다», «글이 잠깐 보였다 사라진다» 가 이것입니다.)
+     그래서 글줄 하나하나가 아니라 **문서 전체**에 한 번만 귀를 달아 두고,
+     눌린 자리가 우리 글줄이면 그 주소로 옮겨 갑니다.
+     요소가 새로 그려져도 이 귀는 그대로라 언제 누르셔도 열립니다. */
+  document.addEventListener('click', function (e) {
+    var row = e.target.closest && e.target.closest('.sl-bd .sl-row');
+    if (!row) return;
+    var href = row.getAttribute('href');
+    if (!href || href === '#') return;
+    e.preventDefault();
+    /* 새 창으로 열도록 누르신 경우(Ctrl·⌘·가운데 단추)는 브라우저에 맡깁니다 */
+    if (e.metaKey || e.ctrlKey || e.button === 1) { window.open(href, '_blank'); return; }
+    location.href = href;
+  }, true);
+
   build();
   window.addEventListener('load', build);
   setTimeout(build, 400);
   setTimeout(build, 1500);
   setTimeout(build, 3000);
+  /* 아임웹이 목록을 다시 그리면 우리 것도 다시 세웁니다 */
+  if (window.MutationObserver) {
+    var host = document.querySelector('.widget.board');
+    if (host && host.parentNode) {
+      var mo = new MutationObserver(function () { setTimeout(build, 60); });
+      mo.observe(host.parentNode, { childList: true, subtree: false });
+    }
+  }
 })();

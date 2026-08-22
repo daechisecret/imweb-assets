@@ -316,7 +316,12 @@ window.SL_NOTICE_BOARD = '/notice';
        ① 찾으시는 교재  ② 자료실  ③ 인사말·공지 */
   #sl-home.sl-mobile { display: flex; flex-direction: column; }
   #sl-home.sl-mobile .hm-lead { order: 1; margin-top: 6px; padding-top: 0; border-top: 0; }
-  #sl-home.sl-mobile #sl-store { order: 2; margin-top: 14px; }
+  /* 세로로 세운 칸 안에서는 「더 줄어도 된다」 고 알려 줘야 자료실이 화면 안에 들어옵니다 */
+  #sl-home.sl-mobile { min-width: 0; }
+  #sl-home.sl-mobile > * { min-width: 0; }
+  #sl-home.sl-mobile #sl-store { order: 2; margin-top: 14px;
+    min-width: 0; width: 100%; max-width: 100%;
+    padding-left: 0 !important; padding-right: 0 !important; }
   #sl-home.sl-mobile .hm-top { order: 3; margin-top: 26px; padding-top: 20px;
     border-top: 1px solid var(--line); }
   #sl-home .hm-hero h1 { font-size: 23px; }
@@ -1108,6 +1113,24 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
      · 누르면 화면 아래에서 목록이 올라오고, 고르면 닫힙니다
    단추와 목록은 넓은 화면에서 쓰던 것을 **그대로** 씁니다 (자리만 옮깁니다). */
 @media (max-width: 860px) {
+  /* ⚠ 자료실이 **줄어들 수 없는 최소 폭(359px)** 을 갖고 있어,
+     휴대폰에서 부모보다 넓어져 오른쪽(HWP·장바구니 단추)이 잘렸습니다.
+     칸마다 「더 줄어도 된다(min-width:0)」 고 알려 주어야 화면 안에 들어옵니다. */
+  #sl-store.sl { padding-left: 12px !important; padding-right: 12px !important;
+    width: 100%; max-width: 100%; min-width: 0; }
+  #sl-store .sh-split,
+  #sl-store .sh-split > div,
+  #sl-store .sh-grp,
+  #sl-store .sh-cards,
+  #sl-store .sh-card,
+  #sl-store .sh-rows,
+  #sl-store .sh-prow,
+  #sl-store .sh-prow .pn,
+  #sl-store .sh-prow .pp { min-width: 0 !important; }
+  #sl-store .sh-card { padding: 12px !important; }
+  /* 자료 이름이 길면 줄을 바꿔 칸을 밀어내지 않게 */
+  #sl-store .sh-prow .pn { overflow-wrap: anywhere; white-space: normal; }
+
   #sl-store .sh-split { grid-template-columns: 1fr; }
   #sl-store .sh-cards, #sl-store .sh-cards.wide { grid-template-columns: 1fr; }
   #sl-store .sh-split > div:last-child { min-height: 0; }
