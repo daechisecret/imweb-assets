@@ -55,19 +55,22 @@
         <ul id="hm-notices"></ul>
       </section>
 
-      <!-- 새로 올라온 자료 — 카드 아홉 장이던 것을 **흐르는 한 줄**로 줄였습니다.
-           마우스를 올리면 멈춥니다. 눌러 두신 것은 그 자료로 갑니다. -->
-      <div class="hm-ticker" id="hm-ticker" aria-label="새로 올라온 자료">
-        <span class="tk-lb">새 자료</span>
-        <div class="tk-win"><div class="tk-run" id="hm-fresh"></div></div>
-      </div>
     </div>
   </div>
 
   <!-- ── 자료실 들머리 ── -->
   <div class="hm-lead" id="hm-lead">
-    <h2>찾으시는 교재를 바로 골라보세요!</h2>
-    <p>아래 메뉴에서 교재를 고르시면 교재의 자료 라인업을 모두 확인하실 수 있습니다.</p>
+    <div class="hm-leadtxt">
+      <h2>찾으시는 교재를 바로 골라보세요!</h2>
+      <p>아래 메뉴에서 교재를 고르시면 교재의 자료 라인업을 모두 확인하실 수 있습니다.</p>
+    </div>
+
+    <!-- 새로 올라온 자료 — 카드 아홉 장이던 것을 **흐르는 한 줄**로 줄였습니다.
+         마우스를 올리면 멈춥니다. 누르시면 그 자료로 갑니다. -->
+    <div class="hm-ticker" id="hm-ticker" aria-label="새로 올라온 자료">
+      <span class="tk-lb">새 자료</span>
+      <div class="tk-win"><div class="tk-run" id="hm-fresh"></div></div>
+    </div>
   </div>
 </div>
 
@@ -140,8 +143,10 @@ window.SL_NOTICE_BOARD = '/notice';
 
 /* ── 인사말 ── */
 /* 윗줄 — 왼쪽 인사말, 오른쪽 공지·새 자료 띠 */
+/* 왼쪽 인사말은 **세로 가운데**에 둡니다 — 위에 붙어 있으면 오른쪽 공지와
+   높이가 안 맞아 왼쪽 아래가 휑하게 비어 보입니다. */
 #sl-home .hm-top { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr);
-  gap: 26px; align-items: start; padding: 6px 0 4px; }
+  gap: 26px; align-items: center; padding: 6px 0 4px; }
 #sl-home .hm-side { display: flex; flex-direction: column; gap: 10px; }
 #sl-home .hm-hero { padding: 6px 0 22px; }
 #sl-home .hm-eyebrow { font-size: 11.5px; font-weight: 800; letter-spacing: .16em; color: var(--rose); margin-bottom: 10px; }
@@ -278,13 +283,17 @@ window.SL_NOTICE_BOARD = '/notice';
 /* 공지 칸은 오른쪽에 들어가느라 낮아집니다 */
 #sl-home .hm-side .hm-notice ul { max-height: 178px; overflow: hidden; }
 
-#sl-home .hm-lead { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--line); }
+/* 자료실 들머리 — 왼쪽에 안내, 오른쪽에 새 자료 띠를 나란히 둡니다 */
+#sl-home .hm-lead { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--line);
+  display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+  gap: 26px; align-items: center; }
 #sl-home .hm-lead h2 { font-size: 20px; font-weight: 780; }
 #sl-home .hm-lead p { margin-top: 6px; color: var(--mute); font-size: 13.5px; }
 
 @media (max-width: 860px) {
   #sl-home .hm-two { grid-template-columns: 1fr; }
   #sl-home .hm-top { grid-template-columns: 1fr; gap: 16px; }
+  #sl-home .hm-lead { grid-template-columns: 1fr; gap: 12px; }
   #sl-home .hm-intro h1 { font-size: 23px; }
   #sl-home .hm-hero h1 { font-size: 23px; }
   #sl-home .hm-freshlist { grid-template-columns: 1fr; }
