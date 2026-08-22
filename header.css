@@ -51,3 +51,17 @@ input, textarea, select, button { font-family: 'Noto Sans KR', 'Apple SD Gothic 
  #inline_header_normal .inline-col-group-right .inline-col { max-width: none; }
  #inline_header_normal .search_btn input.search_btn_form { height: 42px !important; line-height: 42px !important; font-size: 14px !important; }
  html, body { overflow-x: hidden; max-width: 100%; } }
+@media (max-width: 860px) { #mobile_carousel_menu .mobile_table_nav { overflow: visible !important; }
+ #mobile_carousel_menu table.mobile_table_nav_wrap { display: flex !important; width: auto !important; table-layout: auto !important; gap: 6px; padding: 8px 12px; margin: 0 !important; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; border: 0 !important; }
+ #mobile_carousel_menu table.mobile_table_nav_wrap::-webkit-scrollbar { height: 0; }
+ #mobile_carousel_menu tbody { display: flex !important; gap: 6px; }
+ #mobile_carousel_menu tr { display: contents !important; }
+ #mobile_carousel_menu td { display: block !important; width: auto !important; border: 0 !important; padding: 0 !important; white-space: nowrap; }
+ #mobile_carousel_menu td:empty { display: none !important; }
+ #mobile_carousel_menu td a { display: block !important; white-space: nowrap; padding: 9px 15px !important; border-radius: 100px !important; background: #fdeef4 !important; color: #c33e6d !important; font-family: 'Noto Sans KR', sans-serif !important; font-size: 13px !important; font-weight: 750 !important; border: 0 !important; line-height: 1.4 !important; }
+ #mobile_carousel_menu td.on a, #mobile_carousel_menu td a.on, #mobile_carousel_menu td.active a { background: #e85a8a !important; color: #fff !important; font-weight: 800 !important; }
+ #inline_header_mobile .btn-wrap { display: flex !important; flex-wrap: nowrap !important; gap: 5px; overflow-x: auto; padding: 8px 12px; scrollbar-width: none; }
+ #inline_header_mobile .btn-wrap::-webkit-scrollbar { height: 0; }
+ #inline_header_mobile .btn-wrap .btn, #inline_header_mobile .login_btn_item > a { flex: none; background: #fff !important; color: #5b768f !important; border: 1px solid #f3dae4 !important; border-radius: 100px !important; padding: 7px 13px !important; height: auto !important; font-family: 'Noto Sans KR', sans-serif !important; font-size: 12px !important; font-weight: 750 !important; white-space: nowrap; line-height: 1.4 !important; }
+ #inline_header_mobile .btn-wrap .btn:first-child, #inline_header_mobile ._cart_btn > a { background: #e85a8a !important; border-color: #e85a8a !important; color: #fff !important; }
+ #inline_header_mobile .login_btn_item, #inline_header_mobile .btn-wrap .text { white-space: nowrap !important; width: auto !important; } }
