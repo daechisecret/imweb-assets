@@ -156,7 +156,14 @@ body.sl-my #list_wrap {
 body.sl-my #list_wrap .shop-item {
   width: auto !important; float: none !important; margin: 0 !important;
   padding: 12px !important; border: 1px solid #eef3f9; border-radius: 12px;
-  transition: .15s; background: #fff; }
+  transition: .15s; background: #fff;
+  /* 최근 본 상품은 사진을 위, 글을 아래로 쌓고 **높이를 471px 로 못박아** 두어
+     카드 한 장이 화면 절반을 먹습니다. 위시 리스트와 같은 가로 카드로 맞춥니다. */
+  display: flex !important; align-items: flex-start; gap: 12px;
+  height: auto !important; min-height: 0 !important; }
+body.sl-my #list_wrap .shop-item > .item-detail {
+  flex: 1 !important; min-width: 0 !important; width: auto !important;
+  height: auto !important; min-height: 0 !important; }
 body.sl-my #list_wrap .shop-item:hover {
   border-color: #f2b8cd; box-shadow: 0 8px 20px rgba(232, 90, 138, .10); }
 body.sl-my #list_wrap .wish_thumb,
