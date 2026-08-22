@@ -36,6 +36,10 @@
 #sl-sp .sp-line{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
 #sl-sp .sp-line + .sp-line{margin-top:11px;padding-top:11px;border-top:1px dashed var(--line)}
 #sl-sp .sp-lb{font-size:12.5px;font-weight:800;color:var(--navy-l);flex:none;padding-top:6px;width:58px}
+/* 교재는 갈래(교과서·모의고사·부교재·특강자료)를 왼쪽에 세우고 오른쪽에 늘어놓습니다 */
+#sl-sp .sp-grp{display:grid;grid-template-columns:86px minmax(0,1fr);gap:12px;align-items:start}
+#sl-sp .sp-grp + .sp-grp{margin-top:9px;padding-top:9px;border-top:1px solid #f4f7fb}
+#sl-sp .sp-gname{font-size:12.5px;font-weight:800;color:var(--navy);padding-top:6px}
 #sl-sp .sp-pills{display:flex;flex-wrap:wrap;gap:6px;flex:1;min-width:0}
 #sl-sp .sp-pill{border:1px solid var(--line);background:#fff;border-radius:100px;padding:6px 13px;
   font-size:12.5px;font-weight:600;color:var(--navy-l);cursor:pointer;transition:.12s;white-space:nowrap}
@@ -60,10 +64,18 @@
 #sl-sp .sp-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;
   font-size:11px;color:var(--gray)}
 #sl-sp .sp-foot b{color:var(--pink);font-weight:800}
-#sl-sp .sp-more{display:block;margin:18px auto 0;border:1px solid var(--line);background:#fff;
-  border-radius:100px;padding:11px 28px;font:inherit;font-size:13px;font-weight:750;
-  color:var(--navy-l);cursor:pointer}
-#sl-sp .sp-more:hover{border-color:var(--pink-b);color:var(--pink-d)}
+/* 쪽 번호 — 화면 아래에 떠 있게 두어 어디까지 봤든 바로 넘길 수 있습니다 */
+#sl-sp .sp-pager{position:sticky;bottom:18px;z-index:30;display:flex;justify-content:center;
+  gap:5px;flex-wrap:wrap;margin-top:18px;padding:9px 12px;background:rgba(255,255,255,.94);
+  border:1px solid var(--line);border-radius:100px;width:fit-content;margin-left:auto;
+  margin-right:auto;box-shadow:0 6px 20px rgba(29,58,94,.12);backdrop-filter:blur(6px)}
+#sl-sp .sp-pager button{border:1px solid transparent;background:none;border-radius:9px;
+  min-width:32px;padding:6px 9px;font:inherit;font-size:12.5px;font-weight:750;
+  color:var(--navy-l);cursor:pointer;transition:.12s}
+#sl-sp .sp-pager button:hover:not(:disabled){background:var(--pink-l);color:var(--pink-d)}
+#sl-sp .sp-pager button.on{background:var(--navy);color:#fff}
+#sl-sp .sp-pager button:disabled{opacity:.35;cursor:default}
+#sl-sp .sp-pager .dots{color:var(--gray);padding:6px 2px;font-size:12px}
 #sl-sp .sp-wait{padding:50px 20px;text-align:center;color:var(--gray);font-size:13.5px}
 
 /* ── 샘플 보기 창 ── */
@@ -95,17 +107,17 @@
 <div class="sp-hd">
   <div class="eye">SAMPLE</div>
   <h1>자료 샘플 확인</h1>
-  <p>사시기 전에 실제 자료를 미리 보실 수 있습니다. 교재와 자료 유형으로 골라 보세요.</p>
+  <p>구매 전 실제 자료 샘플을 확인해보세요! 교재와 자료 유형으로 골라서 볼 수 있어요.</p>
 </div>
 
 <div class="sp-bar" id="sp-bar"></div>
 <div class="sp-grid" id="sp-grid"><div class="sp-wait">샘플을 불러오는 중입니다…</div></div>
-<button class="sp-more" id="sp-more" style="display:none">더 보기</button>
+<div class="sp-pager" id="sp-pager"></div>
 
 <script>
 (function () {
   var URL = 'https://daechisecret.github.io/imweb-assets/sample-data.json';
-  var STEP = 24;                     /* 한 번에 보여 줄 카드 수 */
+  var STEP = 16;                     /* 한 쪽에 보여 줄 카드 수 */
 
   /* 자료 유형 색 — 진열 페이지 배지와 같은 계열 (파스텔) */
   var TONE = {
@@ -129,7 +141,7 @@
     return t.replace(/[🩷❤️💗💌🎁✨]/g, '').replace(/\s+/g, ' ').trim();
   }
 
-  var DATA = null, pick = { b: '', k: '' }, shown = STEP, PRE = '';
+  var DATA = null, pick = { b: '', k: '' }, page = 1, PRE = '';
   /* 사진 주소는 앞부분을 한 번만 적어 두고 파일 이름만 담아 옵니다 (자료가 절반으로 줄어듭니다) */
   function pic(u) { return /^https?:/.test(u) ? u : PRE + u; }
 
@@ -155,10 +167,18 @@
       if (!pick.k || x.k === pick.k) byB[x.b] = (byB[x.b] || 0) + 1;
       if (!pick.b || x.b === pick.b) byK[x.k] = (byK[x.k] || 0) + 1;
     });
+
+    var books = '<div class="sp-grp"><span class="sp-gname">전체</span><span class="sp-pills">' +
+      '<button class="sp-pill' + (pick.b ? '' : ' on') + '" data-p="b" data-v="">교재 전체</button>' +
+      '</span></div>' +
+      DATA.groups.map(function (g) {
+        return '<div class="sp-grp"><span class="sp-gname">' + esc(g.g) + '</span>' +
+          '<span class="sp-pills">' + pills('b', g.books, byB) + '</span></div>';
+      }).join('');
+
     document.getElementById('sp-bar').innerHTML =
-      '<div class="sp-line"><span class="sp-lb">교재</span><span class="sp-pills">' +
-        '<button class="sp-pill' + (pick.b ? '' : ' on') + '" data-p="b" data-v="">전체</button>' +
-        pills('b', DATA.books, byB) + '</span></div>' +
+      '<div class="sp-line"><span class="sp-lb">교재</span><span class="sp-pills" ' +
+        'style="display:block">' + books + '</span></div>' +
       '<div class="sp-line"><span class="sp-lb">자료 유형</span><span class="sp-pills">' +
         '<button class="sp-pill' + (pick.k ? '' : ' on') + '" data-p="k" data-v="">전체</button>' +
         pills('k', DATA.kinds, byK) + '</span></div>' +
@@ -167,9 +187,13 @@
 
   function cards() {
     var rows = list();
+    var last = Math.max(1, Math.ceil(rows.length / STEP));
+    if (page > last) page = last;
     var box = document.getElementById('sp-grid');
-    box.innerHTML = rows.length
-      ? rows.slice(0, shown).map(function (x, i) {
+    var from = (page - 1) * STEP;
+    var part = rows.slice(from, from + STEP);
+    box.innerHTML = part.length
+      ? part.map(function (x) {
           var c = tone(x.k);
           return '<div class="sp-card" data-i="' + rows.indexOf(x) + '">' +
             '<div class="sp-th"><img src="' + esc(pic(x.p[0])) + '" alt="" loading="lazy"></div>' +
@@ -180,9 +204,26 @@
             '</div></div>';
         }).join('')
       : '<div class="sp-wait">고르신 조건에 맞는 샘플이 없습니다.</div>';
-    var more = document.getElementById('sp-more');
-    more.style.display = rows.length > shown ? 'block' : 'none';
-    more.textContent = '더 보기 (' + (rows.length - shown) + '개 남음)';
+    pager(last);
+  }
+
+  /* 쪽이 많아지면 번호를 다 늘어놓을 수 없어, 지금 쪽 둘레만 보이고 나머지는 … 로 접습니다 */
+  function pager(last) {
+    var box = document.getElementById('sp-pager');
+    if (last <= 1) { box.innerHTML = ''; box.style.display = 'none'; return; }
+    box.style.display = 'flex';
+    var nums = [];
+    for (var i = 1; i <= last; i++) {
+      if (i === 1 || i === last || Math.abs(i - page) <= 2) nums.push(i);
+      else if (nums[nums.length - 1] !== '…') nums.push('…');
+    }
+    box.innerHTML =
+      '<button data-g="' + (page - 1) + '"' + (page <= 1 ? ' disabled' : '') + '>‹</button>' +
+      nums.map(function (n) {
+        return n === '…' ? '<span class="dots">…</span>'
+          : '<button data-g="' + n + '"' + (n === page ? ' class="on"' : '') + '>' + n + '</button>';
+      }).join('') +
+      '<button data-g="' + (page + 1) + '"' + (page >= last ? ' disabled' : '') + '>›</button>';
   }
 
   function open(x) {
@@ -207,14 +248,17 @@
   document.getElementById('sp-bar').addEventListener('click', function (e) {
     var b = e.target.closest('.sp-pill'); if (!b) return;
     pick[b.dataset.p] = b.dataset.v;
-    shown = STEP; bar(); cards();
+    page = 1; bar(); cards();
   });
   document.getElementById('sp-grid').addEventListener('click', function (e) {
     var c = e.target.closest('.sp-card'); if (!c) return;
     open(list()[Number(c.dataset.i)]);
   });
-  document.getElementById('sp-more').addEventListener('click', function () {
-    shown += STEP; cards();
+  document.getElementById('sp-pager').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-g]'); if (!b || b.disabled) return;
+    page = Number(b.dataset.g);
+    cards();
+    document.getElementById('sp-bar').scrollIntoView({ block: 'start', behavior: 'smooth' });
   });
 
   fetch(URL).then(function (r) { return r.json(); }).then(function (d) {
