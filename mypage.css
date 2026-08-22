@@ -23,8 +23,8 @@ body.sl-my .shop-content.mypage * { box-sizing: border-box; }
 
 /* 두 단 — 왼쪽 메뉴 206px, 오른쪽 본문 */
 body.sl-my .shop-content.mypage .row.show-grid {
-  display: grid !important; grid-template-columns: 206px minmax(0, 1fr);
-  gap: 24px; align-items: start; margin: 0 !important; }
+  display: grid !important; grid-template-columns: 206px minmax(0, 1fr) !important;
+  gap: 24px !important; align-items: start; margin: 0 !important; }
 body.sl-my .shop-content.mypage .row.show-grid > div { width: auto !important; float: none !important; padding: 0 !important; }
 /* 이 줄에는 자식이 **셋**입니다 — 맨 앞의 .left-menu 는 휴대폰용이라 넓은 화면에서
    높이가 0 이지만 **첫 칸을 차지해** 두 칸을 한 칸씩 밀어냅니다.
@@ -146,8 +146,10 @@ body.sl-my .order_title { font-size: 12.5px !important; font-weight: 700 !import
 
 /* ── ④ 최근 본 상품 · 위시 리스트 ── */
 body.sl-my #list_wrap {
-  display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px; padding: 18px 22px !important; }
+  display: grid !important;
+  /* 아임웹이 이 칸에 자기 격자를 잡아 두어 !important 를 붙여야 이깁니다 */
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 14px !important; padding: 18px 22px !important; margin: 0 !important; }
 body.sl-my #list_wrap .shop-item {
   width: auto !important; float: none !important; margin: 0 !important; padding: 0 !important;
   border: 1px solid #eef3f9; border-radius: 12px; overflow: hidden; transition: .15s; }
@@ -167,7 +169,8 @@ body.sl-my #list_wrap .item-detail .sale_price {
   font-size: 13.5px !important; font-weight: 900 !important; color: #243b53 !important; }
 
 /* ── ⑤ 쿠폰 ── */
-body.sl-my .mypage_coupon_list { padding: 18px 22px !important; display: grid; gap: 12px; }
+body.sl-my .mypage_coupon_list { padding: 18px 22px !important; display: grid !important;
+  grid-template-columns: 1fr !important; gap: 12px !important; }
 body.sl-my .mypage_coupon_list > * {
   border: 1px dashed #f2b8cd !important; border-radius: 12px !important;
   background: #fffafc !important; padding: 16px 18px !important; margin: 0 !important; }
@@ -246,13 +249,13 @@ body.sl-my #cocoaModal .check .form-label:has(input:checked) {
   background: #fdeef4; border-color: #f2b8cd; color: #c33e6d !important; font-weight: 800 !important; }
 
 @media (max-width: 900px) {
-  body.sl-my .shop-content.mypage .row.show-grid { grid-template-columns: 1fr; }
+  body.sl-my .shop-content.mypage .row.show-grid { grid-template-columns: 1fr !important; }
   body.sl-my .shop-content.mypage .row.show-grid > .col-md-2 { grid-column: 1 !important; }
   body.sl-my .shop-content.mypage .row.show-grid > .col-md-10 { grid-column: 1 !important; grid-row: 3 !important; }
   body.sl-my .col-md-2 ul { position: static; display: flex; flex-wrap: wrap; gap: 4px; }
   body.sl-my .col-md-2 ul li a { padding: 9px 14px !important; border-radius: 100px; }
   body.sl-my .head .my-theme.tabled { flex-wrap: wrap; }
   body.sl-my .head .point-view { border-left: 0; padding-left: 0 !important; }
-  body.sl-my #list_wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.sl-my #list_wrap { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
   body.sl-my #cocoaModal .modal-dialog { max-width: none !important; width: auto !important; margin: 12px !important; }
 }
