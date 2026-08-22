@@ -94,7 +94,9 @@
   var CACHE = {};
   function load(idx, done) {
     if (CACHE[idx]) return done(CACHE[idx]);
-    fetch(sameHost(location.origin + '/?idx=' + idx), { credentials: 'same-origin' })
+    /* 상품 주소는 진열 칸마다 달라(/mockexam1-2026-pdf/?idx=1057 …) 알 수 없습니다.
+       다행히 아임웹은 /shop_view/번호 로도 같은 상품을 열어 줍니다. */
+    fetch(sameHost(location.origin + '/shop_view/' + idx), { credentials: 'same-origin' })
       .then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); })
       .then(function (h) { CACHE[idx] = pick(h); done(CACHE[idx]); })
       .catch(function () { CACHE[idx] = []; done([]); });
