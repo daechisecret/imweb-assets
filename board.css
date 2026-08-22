@@ -1,0 +1,124 @@
+/* ═══════════════════════════════════════════════════════════════
+   대치동시크릿 게시판 공통 꾸미기
+
+   아임웹 게시판은 페이지마다 두 가지 모양으로 나옵니다.
+     ① .post_link_wrap  — 공지사항·자료 샘플 (그림이 붙는 목록)
+     ② .li_board > ul   — FAQ·문의하기·후기 (표 모양 목록)
+   글자와 얼개는 아임웹이 그린 것을 그대로 두고, **보이는 모양만** 바꿉니다.
+   그래야 글쓰기·검색·쪽넘김 같은 아임웹 기능이 그대로 살아 있습니다.
+
+   어느 모양으로 보일지는 board.js 가 페이지 주소를 보고 정합니다.
+     공지사항·문의하기 → 줄 목록 (sl-bd-line)
+     FAQ              → 펼침   (sl-bd-fold)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 공통 : 게시판을 흰 상자에 담습니다 ── */
+.sl-bd {
+  background: #fff; border: 1px solid #e6ecf4; border-radius: 16px;
+  overflow: hidden; margin: 4px 0 14px;
+}
+.sl-bd .sl-bdtop {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 15px 18px; background: linear-gradient(180deg, #fff, #fdfbfd);
+  border-bottom: 1px solid #e6ecf4;
+}
+.sl-bd .sl-bdtt { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.sl-bd .sl-bdtt h2 {
+  margin: 0; font-size: 21px; font-weight: 900; letter-spacing: -.04em; color: #1d3a5e;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.sl-bd .sl-bdcnt {
+  font-size: 12px; font-weight: 800; color: #fff; background: #e85a8a;
+  border-radius: 100px; padding: 3px 10px; white-space: nowrap; flex: none;
+}
+/* 아임웹 검색칸을 우리 모양으로 */
+.sl-bd .sl-bdtop .board_search, .sl-bd .sl-bdtop ._search_wrap {
+  margin: 0 !important; flex: none;
+}
+.sl-bd .sl-bdtop input[type=text], .sl-bd .sl-bdtop input[type=search] {
+  border: 1px solid #e6ecf4 !important; border-radius: 100px !important;
+  padding: 7px 14px !important; font-size: 13px !important; height: auto !important;
+  box-shadow: none !important; background: #fff !important;
+}
+
+/* 아임웹이 붙이는 표 머리·테두리는 우리 것으로 덮습니다 */
+.sl-bd .li_header { display: none !important; }
+.sl-bd table, .sl-bd .li_board { border: 0 !important; margin: 0 !important; }
+
+/* ── ㉮ 줄 목록 ── */
+.sl-bd-line .sl-row {
+  display: grid; grid-template-columns: 52px minmax(0, 1fr) 92px 92px 54px;
+  gap: 12px; align-items: center; padding: 15px 20px;
+  border-bottom: 1px solid #f4f7fb; transition: .12s;
+}
+.sl-bd-line .sl-row:last-child { border-bottom: 0; }
+.sl-bd-line .sl-row:hover { background: #fffafc; }
+.sl-bd-line .sl-row.pin { background: #fdeef3; }
+.sl-bd-line .sl-no { font-size: 12px; color: #93a5bd; text-align: center; }
+.sl-bd-line .sl-tt { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.sl-bd-line .sl-tt .t {
+  font-size: 14px; font-weight: 600; color: #1d3a5e;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.sl-bd-line .sl-row:hover .sl-tt .t { color: #c33e6d; }
+.sl-bd-line .sl-w, .sl-bd-line .sl-d { font-size: 12px; color: #46617f; text-align: center; }
+.sl-bd-line .sl-v { font-size: 12px; color: #93a5bd; text-align: center; }
+.sl-bd-line .sl-cm { font-size: 11.5px; color: #93a5bd; white-space: nowrap; }
+.sl-bd-line .sl-head {
+  display: grid; grid-template-columns: 52px minmax(0, 1fr) 92px 92px 54px; gap: 12px;
+  padding: 11px 20px; background: #fbfdff; border-bottom: 1px solid #e6ecf4;
+  font-size: 11.5px; font-weight: 800; color: #46617f; text-align: center;
+}
+.sl-bd-line .sl-head b:nth-child(2) { text-align: left; }
+.sl-bd-line .sl-head b { font-weight: 800; }
+
+/* 딱지 */
+.sl-tag { font-size: 10.5px; font-weight: 800; border-radius: 6px; padding: 3px 8px;
+  white-space: nowrap; flex: none; }
+.sl-tag.pin  { background: #e85a8a; color: #fff; }
+.sl-tag.done { background: #e6f6e9; color: #1e6b32; }
+.sl-tag.wait { background: #fff4d6; color: #8a6300; }
+
+/* ── ㉰ 펼침 (묻고 답하기) ── */
+.sl-bd-fold .sl-fq { border-bottom: 1px solid #f4f7fb; }
+.sl-bd-fold .sl-fq:last-child { border-bottom: 0; }
+.sl-bd-fold .sl-fq .q {
+  display: flex; align-items: center; gap: 11px; padding: 17px 20px;
+  cursor: pointer; transition: .12s;
+}
+.sl-bd-fold .sl-fq .q:hover { background: #fffafc; }
+.sl-bd-fold .sl-fq .mk {
+  width: 24px; height: 24px; border-radius: 7px; background: #fdeef3; color: #c33e6d;
+  display: grid; place-items: center; font-size: 12px; font-weight: 900; flex: none;
+}
+.sl-bd-fold .sl-fq .t {
+  flex: 1; min-width: 0; font-size: 14px; font-weight: 650; color: #1d3a5e;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.sl-bd-fold .sl-fq .arw { color: #f2b8cd; font-size: 13px; transition: .15s; flex: none; }
+.sl-bd-fold .sl-fq.open .arw { transform: rotate(180deg); }
+.sl-bd-fold .sl-fq .a {
+  display: none; padding: 0 20px 20px 55px; font-size: 13.5px; line-height: 1.8; color: #46617f;
+}
+.sl-bd-fold .sl-fq.open { background: #fffafc; }
+.sl-bd-fold .sl-fq.open .a { display: block; }
+.sl-bd-fold .sl-fq .a img { max-width: 100%; height: auto; border-radius: 8px; margin: 8px 0; }
+.sl-bd-fold .sl-fq .a .wait { color: #93a5bd; }
+
+/* 쪽 넘김은 아임웹 것을 그대로 쓰되 모양만 다듬습니다 */
+.sl-bd-wrap .pagination > li > a, .sl-bd-wrap .pagination > li > span {
+  border: 1px solid #e6ecf4 !important; border-radius: 9px !important; margin: 0 3px !important;
+  color: #46617f !important; font-weight: 700 !important; font-size: 12.5px !important;
+}
+.sl-bd-wrap .pagination > li.active > a, .sl-bd-wrap .pagination > li.active > span {
+  background: #1d3a5e !important; border-color: #1d3a5e !important; color: #fff !important;
+}
+
+@media (max-width: 900px) {
+  .sl-bd-line .sl-row, .sl-bd-line .sl-head { grid-template-columns: minmax(0, 1fr) 74px; }
+  .sl-bd-line .sl-no, .sl-bd-line .sl-w, .sl-bd-line .sl-v,
+  .sl-bd-line .sl-head b:nth-child(1), .sl-bd-line .sl-head b:nth-child(3),
+  .sl-bd-line .sl-head b:nth-child(5) { display: none; }
+  .sl-bd .sl-bdtop { flex-direction: column; align-items: flex-start; gap: 9px; }
+  .sl-bd .sl-bdtt h2 { font-size: 18px; }
+}
