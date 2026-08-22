@@ -187,14 +187,56 @@ body.sl-bv .board_view .comment_textarea textarea {
 }
 body.sl-bv .board_view .comment_textarea textarea:focus { border-color: #f2b8cd !important; }
 
-/* 맨 아래 목록·글쓰기 단추 */
+/* ── 맨 아래 : 이전·다음 글 + 목록·글쓰기 ──
+   아임웹은 이 둘을 좁은 알약 상자와 검은 단추로 나란히 띄워 놓습니다.
+   글줄이 잘리고 검정 단추가 튀어서, **위아래로 나눠** 놓습니다.
+     .list_tap      이전 글 / 다음 글 (각각 <a>, 안에 화살표 아이콘)
+     .table_bottom  목록 · 글쓰기 */
 body.sl-bv .board_view .comment_section:last-child {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 16px 20px; border-top: 1px solid #e6ecf4;
+  display: block; padding: 0; border-top: 1px solid #e6ecf4;
 }
-body.sl-bv .board_view .comment_section:last-child .btn,
-body.sl-bv .board_view .comment_section:last-child a,
-body.sl-bv .board_view .comment_section:last-child button {
-  border-radius: 100px !important; padding: 10px 22px !important;
-  font-size: 13px !important; font-weight: 750 !important;
+/* 이전·다음 글 — 한 줄에 하나씩, 폭을 가득 씁니다 */
+body.sl-bv .board_view .list_tap {
+  display: block !important; border: 0 !important; border-radius: 0 !important;
+  background: none !important; margin: 0 !important; padding: 0 !important; width: auto !important;
+}
+body.sl-bv .board_view .list_tap > a {
+  display: grid !important; grid-template-columns: 74px minmax(0, 1fr); align-items: center;
+  gap: 10px; padding: 15px 30px !important; border: 0 !important;
+  border-bottom: 1px solid #f4f7fb !important; border-radius: 0 !important;
+  background: #fff !important; font-size: 13.5px !important; font-weight: 600 !important;
+  color: #46617f !important; transition: .12s; white-space: normal !important;
+  overflow: visible !important; text-overflow: clip !important;
+}
+body.sl-bv .board_view .list_tap > a:hover { background: #fffafc !important; color: #c33e6d !important; }
+body.sl-bv .board_view .list_tap > a:last-child { border-bottom: 0 !important; }
+/* 화살표 자리에 「이전 글 / 다음 글」 이라고 적어 줍니다 */
+body.sl-bv .board_view .list_tap > a::before {
+  content: '이전 글'; font-size: 11.5px; font-weight: 800; color: #93a5bd;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+body.sl-bv .board_view .list_tap > a:last-child::before { content: '다음 글'; }
+body.sl-bv .board_view .list_tap > a i,
+body.sl-bv .board_view .list_tap > a [class*='bt-'] { display: none !important; }
+
+/* 목록·글쓰기 — 가운데 알약 단추로 */
+body.sl-bv .board_view .table_bottom {
+  display: flex !important; align-items: center; justify-content: center; gap: 8px;
+  padding: 16px 20px !important; border-top: 1px solid #e6ecf4; background: #fbfdff;
+  float: none !important;
+}
+body.sl-bv .board_view .table_bottom .btn {
+  float: none !important; border-radius: 100px !important; padding: 10px 24px !important;
+  font-size: 13px !important; font-weight: 750 !important; line-height: 1.4 !important;
+  background: #fff !important; color: #46617f !important; border: 1px solid #e6ecf4 !important;
+}
+body.sl-bv .board_view .table_bottom .btn:hover {
+  border-color: #f2b8cd !important; color: #c33e6d !important;
+}
+/* 글쓰기는 눈에 띄게 분홍으로 */
+body.sl-bv .board_view .table_bottom .btn.float_r {
+  background: #e85a8a !important; border-color: #e85a8a !important; color: #fff !important;
+}
+body.sl-bv .board_view .table_bottom .btn.float_r:hover {
+  background: #c33e6d !important; border-color: #c33e6d !important; color: #fff !important;
 }
