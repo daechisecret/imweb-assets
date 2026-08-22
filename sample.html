@@ -98,9 +98,17 @@
 @media (max-width:1100px){ #sl-sp .sp-grid{grid-template-columns:repeat(3,1fr)} }
 @media (max-width:820px){ #sl-sp .sp-grid{grid-template-columns:repeat(2,1fr)} }
 @media (max-width:520px){
-  #sl-sp .sp-grid{grid-template-columns:1fr}
-  #sl-sp .sp-hd h1{font-size:24px}
+  /* 한 칸으로 두면 사진이 너무 커져 한 화면에 한 장뿐입니다 — 두 칸으로 둡니다 */
+  #sl-sp .sp-grid{grid-template-columns:repeat(2,1fr);gap:9px}
+  #sl-sp .sp-hd h1{font-size:20px;line-height:1.35}
+  #sl-sp .sp-hd p{font-size:12.5px}
   #sl-sp .sp-lb{width:100%}
+  /* 거르개 알약은 옆으로 밀어 봅니다 */
+  #sl-sp .sp-fil{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}
+  #sl-sp .sp-fil::-webkit-scrollbar{height:0}
+  #sl-sp .sp-fil button{flex:none}
+  #sl-sp .sp-pager{flex-wrap:wrap;justify-content:center;gap:6px}
+  #sl-sp .sp-nm{font-size:11.5px}
 }
 </style>
 

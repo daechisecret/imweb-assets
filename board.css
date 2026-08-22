@@ -247,3 +247,29 @@ body.sl-bv .board_view .table_bottom.action-area .btn.btn-primary.btn-sm.float_r
 body.sl-bv .board_view .table_bottom.action-area .btn.btn-primary.btn-sm.float_r:hover {
   background: #c33e6d !important; border-color: #c33e6d !important; color: #fff !important;
 }
+
+/* ── 휴대폰 (390px 기준) ──
+   게시판 목록은 「제목 · 글쓴이 · 작성일 · 조회」 네 칸입니다.
+   390px 에서는 제목만 남기고 나머지는 제목 아래 작은 글씨로 내립니다. */
+@media (max-width: 520px) {
+  .sl-bd .sl-head { display: none; }
+  .sl-bd .sl-row { grid-template-columns: 1fr; gap: 4px; padding: 13px 14px; }
+  .sl-bd .sl-row .sl-tt { font-size: 13.5px; }
+  .sl-bd .sl-row .sl-w,
+  .sl-bd .sl-row .sl-d,
+  .sl-bd .sl-row .sl-v { display: inline; font-size: 11px; color: #9db0c6; text-align: left; }
+  .sl-bd .sl-row .sl-w::after { content: ' · '; }
+  .sl-bd .sl-row .sl-d::after { content: ' · 조회 '; }
+  .sl-bdtop { flex-wrap: wrap; gap: 8px; padding: 14px; }
+  .sl-bdtt h2 { font-size: 17px; }
+  .sl-bd-fold .sl-fq .q { padding: 13px 14px; font-size: 13px; }
+  .sl-bd-fold .sl-fq .a { padding: 0 14px 14px; font-size: 13px; }
+
+  /* 글 보기 */
+  body.sl-bv .board_view .view_tit { font-size: 17px !important; line-height: 1.45 !important; }
+  body.sl-bv .board_view .board_txt_area { padding: 16px 14px !important; font-size: 14px !important; }
+  body.sl-bv .board_view .list_tap > a {
+    grid-template-columns: 58px minmax(0, 1fr) !important; padding: 12px 14px !important;
+    font-size: 12.5px !important; }
+  body.sl-bv .board_view .table_bottom { padding: 14px !important; }
+}
