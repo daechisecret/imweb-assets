@@ -75,6 +75,8 @@
       ORIG.push(a);
       out.push({
         i: ORIG.length - 1,
+        lock: !!(w.querySelector('a.blocked, .blocked, [class*="lock"]') ||
+                 /blocked/.test(a.className || '')),
         t: t,
         u: a.getAttribute('href') || '',
         w: txt(w, '.author'),
@@ -100,8 +102,13 @@
                u.querySelector('a[href*="bmode=view"]') ||
                u.querySelector('a[href*="idx="]');
       ORIG.push(a2 || null);
+      /* 비밀글은 아임웹이 링크에 blocked 딱지를 붙이고,
+         줄 어딘가에 자물쇠 아이콘(bt-lock 따위)을 넣어 둡니다. */
+      var lock = !!(u.querySelector('a.blocked, .blocked, [class*="lock"]') ||
+                    (a2 && /blocked/.test(a2.className || '')));
       out.push({
         i: ORIG.length - 1,
+        lock: lock,
         t: t2,
         u: a2 ? a2.getAttribute('href') : '',
         w: txt(u, '.name'),
@@ -136,7 +143,9 @@
       rows.map(function (r) {
         var pin = r.pin && pinUseful;
         return '<a class="sl-row' + (pin ? ' pin' : '') + '" data-i="' + r.i + '" href="' + esc(r.u) + '">' +
-          '<span class="sl-tt">' + tagOf(r) + '<span class="t">' + esc(r.t) + '</span>' +
+          '<span class="sl-tt">' + tagOf(r) +
+          (r.lock ? '<span class="sl-lock" title="비밀글입니다">🔒</span>' : '') +
+          '<span class="t">' + esc(r.t) + '</span>' +
           (Number(r.c) ? '<span class="sl-cm">💬 ' + r.c + '</span>' : '') + '</span>' +
           '<span class="sl-w">' + esc(r.w) + '</span>' +
           '<span class="sl-d">' + esc((r.d || '').replace(/^\d{4}-/, '')) + '</span>' +
