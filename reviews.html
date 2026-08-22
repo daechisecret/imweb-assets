@@ -5,8 +5,9 @@
        베스트 후기 — 사장님이 골라 두신 18편. 전에는 아임웹 「커스텀 위젯」 안에
                      있었는데 그 위젯을 지우면 글도 사라지므로 미리 빼내 두었습니다.
                      이제 parts/reviews-best.json 이 본입니다 (넣고 빼는 건 거기서).
-       전체 후기   — 아래 후기 게시판을 **그 자리에서 읽어** 옵니다.
-                     새 후기가 달리면 저절로 올라옵니다.
+       전체 후기   — 같은 페이지에 있는 **후기 게시판 위젯을 그대로 읽어** 옵니다.
+                     그 위젯은 화면에서 감추기만 하고 지우면 안 됩니다 —
+                     지우면 읽어올 원본이 없어져 목록이 빈칸이 됩니다.
 
      쪽 넘김은 아임웹이 `/reviews/?q=…&page=2` 꼴을 씁니다. q 는 검색 조건을 담은
      토막인데, 첫 장에서 그대로 주워 씁니다 (직접 만들면 안 먹습니다).
@@ -70,6 +71,13 @@
 #sl-rv .rv-row .dt{font-size:11.5px;color:var(--gray);text-align:right}
 #sl-rv .rv-row .rv-hearts{font-size:12px;text-align:right}
 #sl-rv .rv-wait{padding:40px 20px;text-align:center;color:var(--gray);font-size:13.5px}
+/* 아임웹 후기 게시판 위젯은 **자료를 읽어 오는 원본**이라 페이지에 그대로 두고
+   화면에서만 감춥니다. display:none 으로 지우면 브라우저가 안 그려서 읽을 수 없으므로
+   눈에만 안 보이게 밀어 둡니다. */
+body.sl-rv-on .widget.board._list_wrap{
+  position:absolute !important; left:-9999px !important; top:0 !important;
+  width:1px !important; height:1px !important; overflow:hidden !important;
+}
 
 #sl-rv .rv-pager{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:16px}
 #sl-rv .rv-pager button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 13px;
@@ -134,8 +142,8 @@
   if (!window.fetch || !window.DOMParser) return;
   var qtok = '', page = 1, last = 1;
 
-  function parse(doc) {
-    var uls = doc.querySelectorAll('.li_board > ul');
+  function parse(root) {
+    var uls = root.querySelectorAll('.li_board > ul');
     var out = [];
     for (var i = 0; i < uls.length; i++) {
       var u = uls[i];
@@ -191,39 +199,60 @@
       });
   }
 
-  fetch(BOARD, { credentials: 'same-origin' })
-    .then(function (r) { return r.text(); })
-    .then(function (h) {
-      var doc = new DOMParser().parseFromString(h, 'text/html');
-      /* 쪽 넘김 주소에서 q 토막과 마지막 쪽을 주워 옵니다 */
-      var links = doc.querySelectorAll('a[href*="page="]');
-      for (var i = 0; i < links.length; i++) {
-        var href = links[i].getAttribute('href') || '';
-        var mq = /[?&]q=([^&]+)/.exec(href);
-        if (mq) qtok = mq[1];
-        var mp = /[?&]page=(\d+)/.exec(href);
-        if (mp) last = Math.max(last, parseInt(mp[1], 10));
-      }
-      /* 글이 몇 개인지 — 「자료후기 348」 처럼 적혀 있습니다 */
-      var m = /후기\s*(\d{2,5})/.exec(doc.body ? doc.body.textContent : '');
-      var tot = m ? m[1] : '';
-      document.getElementById('rv-tot').textContent = tot ? ('후기 ' + tot + '개') : '';
+  /* ── 첫 화면 ──
+     같은 페이지에 후기 게시판 위젯이 있으면 **그것을 그대로 읽습니다** (요청 0번).
+     아임웹이 늦게 그리는 일이 있어 몇 번 더 살핍니다.
+     위젯이 아예 없으면(지우셨으면) /reviews 를 받아 읽어 봅니다. */
+  function readHere() {
+    var board = document.querySelector('.widget.board._list_wrap');
+    if (!board || !board.querySelector('.li_board > ul')) return false;
+    document.body.classList.add('sl-rv-on');       /* 원본은 감춥니다 */
 
-      var rows = parse(doc);
-      /* 평균 점수는 첫 장에 보이는 것으로 셈합니다 */
-      if (rows.length) {
-        var sum = 0;
-        for (var k = 0; k < rows.length; k++) sum += rows[k].s;
-        var avg = (sum / rows.length).toFixed(1);
-        document.getElementById('rv-avg').textContent = avg;
-        document.getElementById('rv-avgh').innerHTML = hearts(Math.round(avg), '');
-      }
-      paint(rows);
-    })
-    .catch(function () {
-      document.getElementById('rv-list').innerHTML =
-        '<div class="rv-wait">후기를 불러오지 못했습니다. 잠시 뒤 새로고침해 주십시오.</div>';
-    });
+    var links = board.querySelectorAll('a[href*="page="]');
+    for (var i = 0; i < links.length; i++) {
+      var href = links[i].getAttribute('href') || '';
+      var mq = /[?&]q=([^&]+)/.exec(href);
+      if (mq) qtok = mq[1];
+      var mp = /[?&]page=(\d+)/.exec(href);
+      if (mp) last = Math.max(last, parseInt(mp[1], 10));
+    }
+    var m = /후기\s*(\d{2,5})/.exec(board.textContent || '');
+    document.getElementById('rv-tot').textContent = m ? ('후기 ' + m[1] + '개') : '';
+
+    var rows = parse(board);
+    if (!rows.length) return false;
+    var sum = 0;
+    for (var k = 0; k < rows.length; k++) sum += rows[k].s;
+    var avg = (sum / rows.length).toFixed(1);
+    document.getElementById('rv-avg').textContent = avg;
+    document.getElementById('rv-avgh').innerHTML = hearts(Math.round(avg), '');
+    paint(rows);
+    return true;
+  }
+
+  var tries = 0;
+  (function look() {
+    if (readHere()) return;
+    if (++tries < 12) { setTimeout(look, 400); return; }
+    /* 게시판 위젯이 없을 때만 받아 옵니다 */
+    fetch(BOARD, { credentials: 'same-origin' })
+      .then(function (r) { return r.text(); })
+      .then(function (h) {
+        var doc = new DOMParser().parseFromString(h, 'text/html');
+        var rows = parse(doc);
+        if (!rows.length) {
+          document.getElementById('rv-list').innerHTML =
+            '<div class="rv-wait">후기 게시판 위젯이 이 페이지에 없습니다.<br>' +
+            '위젯을 다시 넣어 주시면 (화면에서는 저절로 감춰집니다) 목록이 채워집니다.</div>';
+          return;
+        }
+        paint(rows);
+      })
+      .catch(function () {
+        document.getElementById('rv-list').innerHTML =
+          '<div class="rv-wait">후기를 불러오지 못했습니다. 잠시 뒤 새로고침해 주십시오.</div>';
+      });
+  })();
 })();
 </script>
 </div>
