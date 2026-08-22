@@ -207,9 +207,20 @@
     });
   }
 
+  /* 표지 슬라이더(Owl)는 처음 열릴 때 잰 폭(593px)을 칸마다 **직접 박아** 둡니다.
+     우리가 상자를 400px 로 줄여도 그 숫자가 그대로 남아 그림이 안 줄어듭니다.
+     창 크기가 바뀐 척 알려 주면 슬라이더가 스스로 다시 잽니다. */
+  var told = false;
+  function retellOwl() {
+    if (told || !document.querySelector('.prod-owl-list .owl-item')) return;
+    told = true;
+    window.dispatchEvent(new Event('resize'));
+  }
+
   function run() {
     if (!root()) return;
     build();
+    retellOwl();
     fitCover();
   }
 
