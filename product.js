@@ -178,16 +178,11 @@
         show(pack.kinds, b.dataset.kind);
       });
     } else {
-      /* 보통 상품 — 이 페이지에 이미 그려진 자료 사진을 그대로 씁니다.
-         (다시 받아 올 필요가 없습니다) */
-      var here = [];
-      B.querySelectorAll('img').forEach(function (im) {
-        var s = im.currentSrc || im.src || '';
-        if (!/cdn(-optimized)?\.imweb\.me\/upload\//.test(s)) return;
-        if (!/\bfr-/.test(im.className || '')) return;
-        s = s.split('?')[0];
-        if (here.indexOf(s) < 0) here.push(s);
-      });
+      /* 보통 상품 — 이 페이지의 글자에서 바로 뽑습니다.
+         상세정보 사진은 **스크롤할 때 늦게 불러오도록** 되어 있어서,
+         지금 화면에 그려진 <img> 를 세면 아직 한 장도 없습니다.
+         받아 온 글자에는 처음부터 다 들어 있으므로 거기서 찾습니다. */
+      var here = pick(document.documentElement.innerHTML);
       if (!here.length) { mount.remove(); mount = null; return; }
       document.body.classList.add('sl-pd-on');
       paint(here, null, null);
