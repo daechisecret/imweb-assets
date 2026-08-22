@@ -153,7 +153,16 @@ body.sl-sc .search_widget .control_box a.icon.close:hover { color: #c33e6d !impo
 body.sl-sc .search_widget .site_nav {
   display: inline-flex !important; gap: 4px; border: 0 !important;
   background: #f2f6fb; border-radius: 100px; padding: 4px; margin: 6px 0 16px !important; }
-body.sl-sc .search_widget .site_nav li { border: 0 !important; margin: 0 !important; float: none !important; }
+/* 아임웹은 고른 탭 아래에 검은 밑줄을 그립니다 (li·a 양쪽에).
+   알약 모양으로 바꿨으니 밑줄은 지웁니다. */
+body.sl-sc .search_widget .site_nav li,
+body.sl-sc .search_widget .site_nav li::after,
+body.sl-sc .search_widget .site_nav a::after {
+  border: 0 !important; box-shadow: none !important; margin: 0 !important;
+  float: none !important; background-image: none !important; }
+body.sl-sc .search_widget .site_nav li::after,
+body.sl-sc .search_widget .site_nav a::after { display: none !important; content: none !important; }
+body.sl-sc .search_widget .site_nav a { border-bottom: 0 !important; }
 body.sl-sc .search_widget .site_nav li.sl-hide { display: none !important; }
 body.sl-sc .search_widget .site_nav a {
   display: block !important; border: 0 !important; border-radius: 100px !important;
@@ -162,8 +171,8 @@ body.sl-sc .search_widget .site_nav a {
   background: transparent !important; transition: .14s; }
 body.sl-sc .search_widget .site_nav a:hover { color: #c33e6d !important; }
 body.sl-sc .search_widget .site_nav a.active {
-  background: #fff !important; color: #c33e6d !important;
-  box-shadow: 0 2px 7px rgba(36, 59, 83, .09); }
+  background: #fff !important; background-color: #fff !important; color: #c33e6d !important;
+  border: 0 !important; box-shadow: 0 2px 7px rgba(36, 59, 83, .09) !important; }
 
 /* ── 「28개의 검색 결과 · 정확도순」 줄 (게시판 탭에서만 보입니다) ── */
 body.sl-sc .search_widget .shop-tools {

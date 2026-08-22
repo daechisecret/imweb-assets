@@ -54,10 +54,11 @@
 (function () {
   if (location.pathname.replace(/\/$/, '') !== '/search') return;
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
+  var V = '0825bc46';
   var css = document.createElement('link');
-  css.rel = 'stylesheet'; css.href = BASE + 'search.css';
+  css.rel = 'stylesheet'; css.href = BASE + 'search.css?v=' + V;
   document.head.appendChild(css);
   var js = document.createElement('script');
-  js.src = BASE + 'search.js'; js.defer = true;
+  js.src = BASE + 'search.js?v=' + V; js.defer = true;
   document.head.appendChild(js);
 })();
