@@ -129,7 +129,9 @@
     return t.replace(/[🩷❤️💗💌🎁✨]/g, '').replace(/\s+/g, ' ').trim();
   }
 
-  var DATA = null, pick = { b: '', k: '' }, shown = STEP;
+  var DATA = null, pick = { b: '', k: '' }, shown = STEP, PRE = '';
+  /* 사진 주소는 앞부분을 한 번만 적어 두고 파일 이름만 담아 옵니다 (자료가 절반으로 줄어듭니다) */
+  function pic(u) { return /^https?:/.test(u) ? u : PRE + u; }
 
   function list() {
     return DATA.items.filter(function (x) {
@@ -170,7 +172,7 @@
       ? rows.slice(0, shown).map(function (x, i) {
           var c = tone(x.k);
           return '<div class="sp-card" data-i="' + rows.indexOf(x) + '">' +
-            '<div class="sp-th"><img src="' + esc(x.p[0]) + '" alt="" loading="lazy"></div>' +
+            '<div class="sp-th"><img src="' + esc(pic(x.p[0])) + '" alt="" loading="lazy"></div>' +
             '<div class="sp-bd">' +
             '<span class="sp-kind" style="background:' + c[0] + ';color:' + c[1] + '">' + esc(x.k) + '</span>' +
             '<span class="sp-t">' + esc(tidy(x.t)) + '</span>' +
@@ -190,7 +192,7 @@
       '<div class="sp-modhead"><b>' + esc(tidy(x.t)) + '</b>' +
       '<button class="sp-modx">✕</button></div>' +
       '<div class="sp-modbody">' + x.p.map(function (u) {
-        return '<img src="' + esc(u) + '" alt="" loading="lazy">';
+        return '<img src="' + esc(pic(u)) + '" alt="" loading="lazy">';
       }).join('') + '</div>' +
       '<div class="sp-modfoot"><a class="sp-buy ghost sp-close">닫기</a>' +
       '<a class="sp-buy" href="' + esc(x.u) + '">상품 페이지로 →</a></div></div>';
@@ -216,7 +218,7 @@
   });
 
   fetch(URL).then(function (r) { return r.json(); }).then(function (d) {
-    DATA = d; bar(); cards();
+    DATA = d; PRE = d.pre || ''; bar(); cards();
   }).catch(function () {
     document.getElementById('sp-grid').innerHTML =
       '<div class="sp-wait">샘플을 불러오지 못했습니다. 잠시 뒤 새로고침해 주십시오.</div>';
