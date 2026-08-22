@@ -1,4 +1,10 @@
 (function () {
+  if (location.hostname !== 'daechisecret.imweb.me') return;
+  try { if (window.top !== window.self) return; } catch (e) { return; }  /* 틀 안 = 편집 미리보기 */
+  location.replace('https://www.daechisecret.com' + location.pathname + location.search + location.hash);
+})();
+
+(function () {
   var W = document.getElementById('inline_header_normal');
   if (!W) return;
 
