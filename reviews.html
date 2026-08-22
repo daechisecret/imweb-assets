@@ -1,0 +1,229 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     대치동시크릿 「자료 후기 모아보기」 (/reviews)
+
+     두 덩어리로 되어 있습니다.
+       베스트 후기 — 사장님이 골라 두신 18편. 전에는 아임웹 「커스텀 위젯」 안에
+                     있었는데 그 위젯을 지우면 글도 사라지므로 미리 빼내 두었습니다.
+                     이제 parts/reviews-best.json 이 본입니다 (넣고 빼는 건 거기서).
+       전체 후기   — 아래 후기 게시판을 **그 자리에서 읽어** 옵니다.
+                     새 후기가 달리면 저절로 올라옵니다.
+
+     쪽 넘김은 아임웹이 `/reviews/?q=…&page=2` 꼴을 씁니다. q 는 검색 조건을 담은
+     토막인데, 첫 장에서 그대로 주워 씁니다 (직접 만들면 안 먹습니다).
+
+     별점은 사이트 규칙대로 **분홍 하트 + 숫자**(♥♥♥♥♥ 5.0)로 보입니다.
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="sl-rv">
+<style>
+#sl-rv{
+  --pink:#e85a8a; --pink-d:#c33e6d; --pink-l:#fdeef3; --pink-b:#f2b8cd;
+  --navy:#1d3a5e; --navy-l:#46617f; --gray:#93a5bd; --line:#e6ecf4;
+  max-width:1240px; margin:0 auto; padding:0 20px 70px;
+  font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif; color:var(--navy);
+  -webkit-font-smoothing:antialiased;
+}
+#sl-rv *{box-sizing:border-box}
+#sl-rv a{text-decoration:none;color:inherit}
+#sl-rv span,#sl-rv p,#sl-rv h1,#sl-rv h3,#sl-rv div{font-family:inherit;letter-spacing:-.02em}
+
+#sl-rv .rv-hearts{color:var(--pink);letter-spacing:2px;font-size:13px;line-height:1;white-space:nowrap}
+#sl-rv .rv-hearts .off{color:#e8d5dd}
+#sl-rv .rv-hearts b{font-size:.92em;font-weight:800;color:var(--navy-l);margin-left:5px;letter-spacing:0}
+
+#sl-rv .rv-hd{text-align:center;padding:34px 0 26px}
+#sl-rv .rv-hd .eye{font-size:12.5px;font-weight:800;color:var(--pink);letter-spacing:.08em}
+#sl-rv .rv-hd h1{margin:8px 0 12px;font-size:30px;font-weight:900;letter-spacing:-.045em;line-height:1.25}
+#sl-rv .rv-sum{display:inline-flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);
+  border-radius:100px;padding:10px 20px}
+#sl-rv .rv-sum .big{font-size:22px;font-weight:900;color:var(--pink)}
+#sl-rv .rv-sum .rv-hearts{font-size:16px}
+#sl-rv .rv-sum .n{font-size:13px;color:var(--navy-l);font-weight:700}
+
+#sl-rv .rv-sec{display:flex;align-items:baseline;gap:10px;margin:34px 0 14px}
+#sl-rv .rv-sec h3{margin:0;font-size:17px;font-weight:850}
+#sl-rv .rv-sec span{font-size:12.5px;color:var(--gray)}
+
+/* ── 베스트 후기 : 큰 인용 ── */
+#sl-rv .rv-best{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+#sl-rv .rv-q{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 26px;
+  position:relative;overflow:hidden}
+#sl-rv .rv-q::before{content:'\201C';position:absolute;top:-10px;left:16px;font-size:74px;
+  color:var(--pink-l);font-weight:900;line-height:1}
+#sl-rv .rv-q .tx{position:relative;font-size:14px;line-height:1.8;color:#2b4a70;
+  display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+#sl-rv .rv-q .bot{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+#sl-rv .rv-q .who{font-size:12.5px;font-weight:800;color:var(--navy)}
+
+/* ── 전체 후기 목록 ── */
+#sl-rv .rv-list{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+#sl-rv .rv-row{display:grid;grid-template-columns:minmax(0,1fr) 150px 82px 78px;gap:14px;
+  align-items:center;padding:15px 20px;border-bottom:1px solid #f4f7fb;transition:.12s}
+#sl-rv .rv-row:last-child{border-bottom:0}
+#sl-rv .rv-row:hover{background:#fffafc}
+#sl-rv .rv-row .tt{min-width:0}
+#sl-rv .rv-row .q{font-size:13.5px;font-weight:600;color:var(--navy);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+#sl-rv .rv-row .pr{font-size:11.5px;color:var(--gray);margin-top:3px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+#sl-rv .rv-row .who{font-size:12px;color:var(--navy-l);text-align:right}
+#sl-rv .rv-row .dt{font-size:11.5px;color:var(--gray);text-align:right}
+#sl-rv .rv-row .rv-hearts{font-size:12px;text-align:right}
+#sl-rv .rv-wait{padding:40px 20px;text-align:center;color:var(--gray);font-size:13.5px}
+
+#sl-rv .rv-pager{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:16px}
+#sl-rv .rv-pager button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 13px;
+  font:inherit;font-size:12.5px;font-weight:700;color:var(--navy-l);cursor:pointer;transition:.12s}
+#sl-rv .rv-pager button:hover:not(:disabled){border-color:var(--pink-b);color:var(--pink-d)}
+#sl-rv .rv-pager button:disabled{opacity:.4;cursor:default}
+#sl-rv .rv-pager .now{font-size:12.5px;color:var(--navy-l);font-weight:750;padding:0 6px}
+
+@media (max-width:900px){
+  #sl-rv .rv-best{grid-template-columns:1fr}
+  #sl-rv .rv-row{grid-template-columns:minmax(0,1fr) 78px}
+  #sl-rv .rv-row .who,#sl-rv .rv-row .dt{display:none}
+  #sl-rv .rv-hd h1{font-size:24px}
+}
+</style>
+
+<div class="rv-hd">
+  <div class="eye">REVIEWS</div>
+  <h1>자료 후기 모아보기</h1>
+  <div class="rv-sum"><span class="big" id="rv-avg">–</span>
+    <span id="rv-avgh"></span>
+    <span class="n" id="rv-tot">후기를 세는 중…</span></div>
+</div>
+
+<div class="rv-sec"><h3>베스트 후기</h3><span id="rv-bestn"></span></div>
+<div class="rv-best" id="rv-best"></div>
+
+<div class="rv-sec"><h3>전체 후기</h3><span id="rv-listn">최신순</span></div>
+<div class="rv-list" id="rv-list"><div class="rv-wait">후기를 불러오는 중입니다…</div></div>
+<div class="rv-pager" id="rv-pager"></div>
+
+<script>
+(function () {
+  var BEST_URL = 'https://daechisecret.github.io/imweb-assets/reviews-best.json';
+  var BOARD = '/reviews';
+
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  /* 하트만 있으면 몇 점인지 바로 안 읽혀서 숫자를 같이 답니다 (♥♥♥♥♥ 5.0) */
+  function hearts(n, num){
+    var s = '';
+    for (var i = 1; i <= 5; i++) s += (i <= n ? '♥' : '<span class="off">♥</span>');
+    return '<span class="rv-hearts">' + s +
+      (num === '' ? '' : '<b>' + (num !== undefined ? num : Number(n).toFixed(1)) + '</b>') + '</span>';
+  }
+
+  /* ── 베스트 후기 ── */
+  fetch(BEST_URL).then(function (r) { return r.json(); }).then(function (d) {
+    document.getElementById('rv-bestn').textContent = '직접 골라 두신 ' + d.length + '편';
+    document.getElementById('rv-best').innerHTML = d.map(function (r) {
+      return '<div class="rv-q"><div class="tx">' + esc(r.text) + '</div>' +
+        '<div class="bot"><span class="who">' + esc(r.who) + ' ' + esc(r.role || '선생님') + '</span>' +
+        hearts(r.star) + '</div></div>';
+    }).join('');
+  }).catch(function () {
+    document.getElementById('rv-best').innerHTML =
+      '<div class="rv-wait">베스트 후기를 불러오지 못했습니다.</div>';
+  });
+
+  /* ── 전체 후기 : 게시판을 그 자리에서 읽습니다 ── */
+  if (!window.fetch || !window.DOMParser) return;
+  var qtok = '', page = 1, last = 1;
+
+  function parse(doc) {
+    var uls = doc.querySelectorAll('.li_board > ul');
+    var out = [];
+    for (var i = 0; i < uls.length; i++) {
+      var u = uls[i];
+      if (/li_header/.test(u.className)) continue;
+      var tit = u.querySelector('.tit'), prod = u.querySelector('.prod_name');
+      var nm = u.querySelector('.name'), tm = u.querySelector('.time');
+      var st = u.querySelector('[class*="star"]');
+      if (!tit) continue;
+      var a = tit.querySelector('a[href]') || u.querySelector('a[href]');
+      var t = (tit.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!t || t === '제목') continue;
+      out.push({
+        t: t,
+        p: prod ? (prod.textContent || '').replace(/상품명/g, '').replace(/\s+/g, ' ').trim() : '',
+        w: nm ? (nm.textContent || '').trim() : '',
+        d: tm ? (tm.textContent || '').trim() : '',
+        s: st ? st.querySelectorAll('.active').length : 5,
+        u: a ? a.getAttribute('href') : BOARD
+      });
+    }
+    return out;
+  }
+
+  function paint(rows) {
+    document.getElementById('rv-list').innerHTML = rows.length
+      ? rows.map(function (r) {
+          return '<a class="rv-row" href="' + esc(r.u) + '">' +
+            '<div class="tt"><div class="q">' + esc(r.t) + '</div>' +
+            (r.p ? '<div class="pr">' + esc(r.p) + '</div>' : '') + '</div>' +
+            '<div class="who">' + esc(r.w) + '</div>' +
+            '<div class="dt">' + esc(r.d) + '</div>' + hearts(r.s) + '</a>';
+        }).join('')
+      : '<div class="rv-wait">후기가 없습니다.</div>';
+    document.getElementById('rv-pager').innerHTML =
+      '<button id="rv-prev"' + (page <= 1 ? ' disabled' : '') + '>‹ 이전</button>' +
+      '<span class="now">' + page + ' / ' + last + '</span>' +
+      '<button id="rv-next"' + (page >= last ? ' disabled' : '') + '>다음 ›</button>';
+    var pv = document.getElementById('rv-prev'), nx = document.getElementById('rv-next');
+    if (pv) pv.onclick = function () { go(page - 1); };
+    if (nx) nx.onclick = function () { go(page + 1); };
+  }
+
+  function go(p) {
+    if (p < 1 || p > last) return;
+    document.getElementById('rv-list').innerHTML = '<div class="rv-wait">불러오는 중…</div>';
+    var url = qtok ? (BOARD + '/?q=' + qtok + '&page=' + p) : (BOARD + '/?page=' + p);
+    fetch(url, { credentials: 'same-origin' })
+      .then(function (r) { return r.text(); })
+      .then(function (h) {
+        page = p;
+        paint(parse(new DOMParser().parseFromString(h, 'text/html')));
+        document.getElementById('rv-list').scrollIntoView({ block: 'start', behavior: 'smooth' });
+      });
+  }
+
+  fetch(BOARD, { credentials: 'same-origin' })
+    .then(function (r) { return r.text(); })
+    .then(function (h) {
+      var doc = new DOMParser().parseFromString(h, 'text/html');
+      /* 쪽 넘김 주소에서 q 토막과 마지막 쪽을 주워 옵니다 */
+      var links = doc.querySelectorAll('a[href*="page="]');
+      for (var i = 0; i < links.length; i++) {
+        var href = links[i].getAttribute('href') || '';
+        var mq = /[?&]q=([^&]+)/.exec(href);
+        if (mq) qtok = mq[1];
+        var mp = /[?&]page=(\d+)/.exec(href);
+        if (mp) last = Math.max(last, parseInt(mp[1], 10));
+      }
+      /* 글이 몇 개인지 — 「자료후기 348」 처럼 적혀 있습니다 */
+      var m = /후기\s*(\d{2,5})/.exec(doc.body ? doc.body.textContent : '');
+      var tot = m ? m[1] : '';
+      document.getElementById('rv-tot').textContent = tot ? ('후기 ' + tot + '개') : '';
+
+      var rows = parse(doc);
+      /* 평균 점수는 첫 장에 보이는 것으로 셈합니다 */
+      if (rows.length) {
+        var sum = 0;
+        for (var k = 0; k < rows.length; k++) sum += rows[k].s;
+        var avg = (sum / rows.length).toFixed(1);
+        document.getElementById('rv-avg').textContent = avg;
+        document.getElementById('rv-avgh').innerHTML = hearts(Math.round(avg), '');
+      }
+      paint(rows);
+    })
+    .catch(function () {
+      document.getElementById('rv-list').innerHTML =
+        '<div class="rv-wait">후기를 불러오지 못했습니다. 잠시 뒤 새로고침해 주십시오.</div>';
+    });
+})();
+</script>
+</div>

@@ -108,3 +108,6 @@
 .sl-top .sl-pills { border: 0 !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; background: none !important; box-shadow: none !important; }
 @media (max-width: 620px) { .sl-tophead { flex-direction: column; align-items: flex-start; gap: 9px; }
  .sl-tt h2 { font-size: 18px; } }
+.interlock_star_point .bts.bt-star::before, .star_point .bts.bt-star::before { content: '♥' !important; font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif !important; color: #e8d5dd !important; }
+.interlock_star_point .bts.bt-star.active::before, .star_point .bts.bt-star.active::before { color: #e85a8a !important; }
+.sl-score { font-size: 11.5px; font-weight: 800; color: #46617f; margin-left: 5px; letter-spacing: 0; }

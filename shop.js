@@ -384,11 +384,24 @@ e.classList.add('sl-ask');
 }
 }
 }
-fixAsk();
-window.addEventListener('load', fixAsk);
-setTimeout(fixAsk, 500);
-setTimeout(fixAsk, 1600);
-setTimeout(fixAsk, 3200);
+function fixScore() {
+var boxes = document.querySelectorAll('.interlock_star_point, .star_point');
+for (var i = 0; i < boxes.length; i++) {
+var b = boxes[i];
+if (b.querySelector('.sl-score')) continue;
+var on = b.querySelectorAll('.bt-star.active').length;
+if (!b.querySelectorAll('.bt-star').length) continue;
+var s = document.createElement('span');
+s.className = 'sl-score';
+s.textContent = on.toFixed(1);
+b.appendChild(s);
+}
+}
+fixAsk(); fixScore();
+window.addEventListener('load', function () { fixAsk(); fixScore(); });
+setTimeout(function(){ fixAsk(); fixScore(); }, 500);
+setTimeout(function(){ fixAsk(); fixScore(); }, 1600);
+setTimeout(function(){ fixAsk(); fixScore(); }, 3200);
 build();
 window.addEventListener('load', build);
 setTimeout(build, 400);
