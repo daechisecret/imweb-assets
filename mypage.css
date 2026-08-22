@@ -186,11 +186,16 @@ body.sl-my #list_wrap .item-pay-detail .pay {
 body.sl-my #list_wrap .item-pay-detail .sale_pay { color: #b6c4d4 !important; }
 
 /* ── ⑤ 쿠폰 ── */
-body.sl-my .mypage_coupon_list { padding: 18px 22px !important; display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 12px !important; }
-body.sl-my .mypage_coupon_list > * {
+/* 쿠폰은 아임웹이 이미 335px 짜리 가로 카드로 만들어 두었고, 한 줄에 셋이 들어갑니다.
+   격자로 칸을 나누면 칸이 10px 쯤 모자라 안쪽 글자가 **세로로 흐릅니다.**
+   그래서 칸을 나누지 않고 **줄바꿈만** 켜 줍니다 — 넓으면 셋, 좁으면 알아서 줄어듭니다. */
+body.sl-my .mypage_coupon_list {
+  display: flex !important; flex-wrap: wrap !important;
+  gap: 12px !important; padding: 18px 22px !important; }
+body.sl-my .mypage_coupon_list > .mypage-coupon-wrap {
+  flex: 0 0 auto !important; margin: 0 !important;
   border: 1px dashed #f2b8cd !important; border-radius: 12px !important;
-  background: #fffafc !important; padding: 16px 18px !important; margin: 0 !important; }
+  background: #fffafc !important; }
 
 /* ── ⑥ 적립금 ── */
 body.sl-my #shop_mypage_pointlist_table { margin: 0 !important; }
@@ -285,6 +290,6 @@ body.sl-my #cocoaModal .check .form-label:has(input:checked) {
   body.sl-my .head .my-theme.tabled { flex-wrap: wrap; }
   body.sl-my .head .point-view { border-left: 0; padding-left: 0 !important; }
   body.sl-my #list_wrap { grid-template-columns: 1fr !important; }
-  body.sl-my .mypage_coupon_list { grid-template-columns: 1fr !important; }
+  body.sl-my .mypage_coupon_list > .mypage-coupon-wrap { flex: 1 1 100% !important; }
   body.sl-my #cocoaModal .modal-dialog { max-width: none !important; width: auto !important; margin: 12px !important; }
 }
