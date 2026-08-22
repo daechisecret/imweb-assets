@@ -53,7 +53,12 @@
       return;
     }
     var cover = document.querySelector('.prod-owl-list');
-    var btns = document.querySelector('#prod_goods_form .buy_btns');
+    /* 구매 단추 줄은 **두 벌**입니다 — 넓은 화면용(.pc)과 좁은 화면용.
+       지금 안 보이는 쪽은 높이가 0 이라 그것을 잡으면 셈이 어그러집니다. */
+    var btns = null;
+    document.querySelectorAll('#prod_goods_form .buy_btns').forEach(function (x) {
+      if (!btns && x.getBoundingClientRect().height > 10) btns = x;
+    });
     if (!cover || !btns) return;
     var c = cover.getBoundingClientRect(), b = btns.getBoundingClientRect();
     var want = Math.round(b.bottom - c.top);
