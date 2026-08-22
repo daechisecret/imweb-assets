@@ -37,10 +37,29 @@
     return k.trim();
   }
 
-  /* 쇼핑 탭을 보고 있을 때만 나섭니다 */
-  function onShopTab() {
-    var on = document.querySelector('.search_widget .site_nav a.active');
-    return !on || /쇼핑/.test(on.textContent || '');
+  /* ── 지금 어느 탭인가 ──
+     아임웹은 탭을 누르면 숨은 칸(input._type)에 값을 넣고 페이지를 다시 엽니다.
+       (없음)·goods = 쇼핑,  post = 게시판,  map = 지도,  gallery = 갤러리
+     주소에도 type= 로 남으니 둘 다 봅니다. */
+  function tabNow() {
+    var m = /[?&]type=(\w+)/.exec(location.search);
+    var v = m ? m[1] : '';
+    if (!v) {
+      var box = document.querySelector('.search_widget input._type');
+      v = box ? (box.value || '') : '';
+    }
+    return v || 'goods';
+  }
+
+  /* 「지도」와 「갤러리」는 쓰지 않는 탭입니다.
+     눌러 봐야 꾸미지 않은 화면이 나오고 자료도 없어서 감춥니다.
+     (아임웹 관리자에서 끄는 설정이 없어 여기서 가립니다.) */
+  function trimTabs() {
+    var lis = document.querySelectorAll('.search_widget .site_nav li');
+    for (var i = 0; i < lis.length; i++) {
+      var t = (lis[i].textContent || '').replace(/\s+/g, '');
+      if (t === '지도' || t === '갤러리') lis[i].classList.add('sl-hide');
+    }
   }
 
   function esc(s) {
@@ -206,8 +225,25 @@
   }
 
   function run() {
-    if (!onShopTab()) return;
+    if (!document.querySelector('.search_widget')) return;
+    /* 겉옷(검색칸·탭·쪽넘김) 꾸미기는 어느 탭에서나 켭니다 */
+    document.body.classList.add('sl-sc');
+    trimTabs();
+
+    var tab = tabNow();
+    if (tab === 'post') {
+      /* 게시판 탭은 아임웹 검색 결과를 그대로 두고 모양만 바꿉니다.
+         (글 내용까지 담은 색인은 만들지 않았습니다 — 비밀글도 있어서요.) */
+      document.body.classList.add('sl-sc-post');
+      document.body.classList.remove('sl-sc-shop');
+      if (mount) mount.innerHTML = '';
+      return;
+    }
+    document.body.classList.remove('sl-sc-post');
+    if (tab !== 'goods' && tab !== '') return;   /* 지도·갤러리는 손대지 않습니다 */
+
     if (!place()) return;
+    document.body.classList.add('sl-sc-shop');
     if (!DATA) return;
     draw();
   }
@@ -216,8 +252,9 @@
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(function (d) { DATA = d; run(); })
     .catch(function () {
-      /* 색인을 못 받아 오면 아임웹 본래 결과를 그대로 보여 줍니다 (아무것도 감추지 않습니다) */
-      document.body.classList.remove('sl-sc');
+      /* 색인을 못 받아 오면 아임웹 본래 결과를 그대로 보여 줍니다.
+         겉옷(검색칸·탭)은 그대로 두고, 결과를 가리는 것만 풉니다. */
+      document.body.classList.remove('sl-sc-shop');
       if (mount && mount.parentNode) mount.parentNode.removeChild(mount);
     });
 
