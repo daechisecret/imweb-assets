@@ -16,7 +16,20 @@
   var shots = [], at = 0;
 
   function root() { return document.getElementById('prod_detail'); }
-  function body() { return document.getElementById('prod_detail_body'); }
+
+  /* 상세정보 상자는 **두 개**입니다 — 넓은 화면용과 좁은 화면용.
+     (아임웹이 id 를 똑같이 prod_detail_body 로 붙여 두었습니다.)
+     getElementById 는 먼저 나오는 **숨어 있는 쪽**을 집어 옵니다.
+     거기에 미리보기를 넣으면 상자가 display:none 이라 사진이 통째로 안 보입니다.
+     그래서 **지금 화면에 보이는 쪽**을 고릅니다. */
+  function body() {
+    var all = document.querySelectorAll('[id="prod_detail_body"]');
+    for (var i = 0; i < all.length; i++) {
+      var e = all[i];
+      if (e.getBoundingClientRect().width > 0 && e.offsetParent !== null) return e;
+    }
+    return all[0] || null;
+  }
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
@@ -125,6 +138,18 @@
       }).join('') + '</div>' : '') +
       (pk ? '<div class="sp-from">패키지 상품이라 <b>안에 든 자료</b>의 미리보기를 보여 드립니다.</div>' : '') +
       grid(list);
+    showOnly();
+  }
+
+  /* 아임웹이 그려 둔 사진을 감추는 것은 **우리 사진이 실제로 자리를 차지할 때만** 합니다.
+     한 장도 못 보여 주면서 원본까지 감추면 상세 페이지가 텅 비어 버립니다. */
+  function showOnly() {
+    var ok = false;
+    if (mount) {
+      var im = mount.querySelectorAll('.sp-grid img');
+      ok = im.length > 0 && mount.getBoundingClientRect().width > 40;
+    }
+    document.body.classList.toggle('sl-pd-on', ok);
   }
 
   function show(kinds, cur) {
@@ -172,7 +197,6 @@
     var pack = PKG && me && PKG[me];
     if (pack && pack.kinds.length) {
       /* 패키지 — 안에 든 자료를 단추로 세웁니다 */
-      document.body.classList.add('sl-pd-on');
       show(pack.kinds, pack.kinds[0].id);
       mount.addEventListener('click', function (e) {
         var b = e.target.closest('.sp-kind');
@@ -186,8 +210,8 @@
          받아 온 글자에는 처음부터 다 들어 있으므로 거기서 찾습니다. */
       var here = pick(document.documentElement.innerHTML);
       if (!here.length) { mount.remove(); mount = null; return; }
-      document.body.classList.add('sl-pd-on');
       paint(here, null, null);
+      showOnly();
     }
 
     mount.addEventListener('click', function (e) {
