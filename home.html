@@ -292,9 +292,29 @@ window.SL_NOTICE_BOARD = '/notice';
 
 @media (max-width: 860px) {
   #sl-home .hm-two { grid-template-columns: 1fr; }
-  #sl-home .hm-top { grid-template-columns: 1fr; gap: 16px; }
-  #sl-home .hm-lead { grid-template-columns: 1fr; gap: 12px; }
-  #sl-home .hm-intro h1 { font-size: 23px; }
+  /* ── 휴대폰 첫 화면 차례 ──
+     선생님들이 휴대폰으로 오시는 까닭은 대부분 **교재 찾기**입니다.
+     그런데 인사말과 공지를 지나야 자료실이 나와, 화면을 두 번 넘겨야 했습니다.
+     그래서 휴대폰에서는
+       ① 「찾으시는 교재를 바로 골라보세요!」 를 맨 위로
+       ② 자료실
+       ③ 새 자료 띠 · 공지사항        (짝꿍 스크립트가 자료실 뒤로 옮깁니다)
+     로 바꿉니다. 인사말은 제목만 남기고 줄입니다. */
+  #sl-home .hm-top { grid-template-columns: 1fr !important; gap: 12px; }
+  #sl-home .hm-intro,
+  #sl-home .hm-side { min-width: 0; }
+  #sl-home .hm-intro h1 { font-size: 21px; }
+  #sl-home .hm-lede { font-size: 12.5px; margin-top: 9px; }
+  /* 자료 라인업 알약 줄이 칸을 밀어내지 않게 */
+  #sl-home .hm-lineup summary { flex-wrap: wrap; gap: 6px; }
+  #sl-home .hm-lineup .pills { width: 100%; }
+  #sl-home .hm-lineup .pills b { font-size: 11px; padding: 4px 9px; }
+  #sl-home .hm-lead { grid-template-columns: 1fr; gap: 10px; }
+  #sl-home .hm-lead h2 { font-size: 17px; }
+
+  /* 자료실 뒤로 옮겨 놓은 공지·새 자료 */
+  #sl-late { margin-top: 26px; }
+  #sl-late .hm-ticker { margin-bottom: 12px; }
   #sl-home .hm-hero h1 { font-size: 23px; }
   #sl-home .hm-freshlist { grid-template-columns: 1fr; }
 }
@@ -496,6 +516,43 @@ window.SL_NOTICE_BOARD = '/notice';
       }).join('');
     return true;
   }
+
+  /* ── 휴대폰에서 차례 바꾸기 ──
+     공지와 새 자료 띠를 **자료실 뒤로** 옮깁니다.
+     CSS 만으로는 형제가 아니라 옮길 수 없어 여기서 자리만 바꿉니다
+     (내용·눌렀을 때 하는 일은 그대로입니다).
+     넓은 화면으로 돌아가면 제자리로 되돌립니다. */
+  var LATE = null, homeSide = null, sideHome = null;
+
+  function arrange() {
+    var narrow = window.matchMedia('(max-width: 900px)').matches;
+    var store = document.getElementById('sl-store');
+    var side = document.querySelector('#sl-home .hm-side');
+    var tick = document.getElementById('hm-ticker');
+    if (!store || !side || !tick) return;
+
+    if (narrow) {
+      if (LATE && LATE.parentNode) return;          /* 이미 옮겨 두었습니다 */
+      homeSide = side.parentNode;                   /* 돌아갈 자리를 적어 둡니다 */
+      sideHome = tick.parentNode;
+      LATE = document.createElement('div');
+      LATE.id = 'sl-late';
+      LATE.className = 'sl';
+      store.parentNode.insertBefore(LATE, store.nextSibling);
+      LATE.appendChild(tick);
+      LATE.appendChild(side);
+    } else if (LATE && LATE.parentNode) {
+      if (homeSide) homeSide.appendChild(side);
+      if (sideHome) sideHome.appendChild(tick);
+      LATE.parentNode.removeChild(LATE);
+      LATE = null;
+    }
+  }
+
+  window.addEventListener('resize', arrange);
+  setTimeout(arrange, 600);
+  setTimeout(arrange, 1800);
+  setTimeout(arrange, 3500);
 
   /* 자료실은 밖에서 자료를 받아올 수도 있어 조금 기다립니다 */
   var tries = 0;
@@ -1041,17 +1098,60 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
 #sl-store .sh-modfoot .sh-soonnote { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #sl-store .sh-modfoot .sh-btn { margin-left: auto; flex: none; }
 
+/* ═══════════════ 휴대폰 ═══════════════
+   왼쪽 「교재 고르기」 서랍은 286px 로, 휴대폰 화면(390px)의 3/4 를 먹습니다.
+   그래서 휴대폰에서는 서랍을 **아래에서 올라오는 창(바텀시트)** 으로 바꿉니다.
+     · 평소에는 「교재 고르기」 단추 한 줄만 보입니다
+     · 누르면 화면 아래에서 목록이 올라오고, 고르면 닫힙니다
+   단추와 목록은 넓은 화면에서 쓰던 것을 **그대로** 씁니다 (자리만 옮깁니다). */
 @media (max-width: 860px) {
   #sl-store .sh-split { grid-template-columns: 1fr; }
-  #sl-store .sh-drawer { position: static; }
-  #sl-store .sh-dtop .fold { display: block; }
-  #sl-store .sh-drawer.shut .sh-dscroll { display: none; }
-  #sl-store .sh-dscroll { max-height: 300px; }
   #sl-store .sh-cards, #sl-store .sh-cards.wide { grid-template-columns: 1fr; }
+  #sl-store .sh-split > div:last-child { min-height: 0; }
   #sl-store .sh-lab { width: auto; }
-  #sl-store .sh-modal { padding: 12px; }
-  #sl-store .sh-modin { height: 92vh; }
+  #sl-store .sh-modal { padding: 0; }
+  #sl-store .sh-modin { height: 100%; max-height: none; border-radius: 0; }
+
+  /* ── 서랍 → 바텀시트 ── */
+  #sl-store .sh-drawer {
+    position: fixed; left: 0; right: 0; bottom: 0; top: 24%;
+    z-index: 1200; border-radius: 18px 18px 0 0; border: 0;
+    box-shadow: 0 -8px 30px rgba(36, 59, 83, .22);
+    display: flex; flex-direction: column;
+    transform: translateY(101%); transition: transform .22s ease; }
+  body.sl-sheet #sl-store .sh-drawer { transform: translateY(0); }
+  #sl-store .sh-dtop {
+    padding: 14px 18px 12px; font-size: 14.5px; font-weight: 900;
+    letter-spacing: -.01em; color: var(--ink); position: relative; flex: none; }
+  /* 위쪽 손잡이 줄 */
+  #sl-store .sh-dtop::before {
+    content: ''; position: absolute; left: 50%; top: 6px; transform: translateX(-50%);
+    width: 38px; height: 4px; border-radius: 100px; background: var(--line); }
+  #sl-store .sh-dtop .fold {
+    display: block; margin-left: auto; font-size: 13px; font-weight: 750; color: var(--rose2); }
+  #sl-store .sh-dscroll {
+    max-height: none; flex: 1; min-height: 0; overflow-y: auto; padding-bottom: 18px; }
+  /* 「.shut」은 넓은 화면에서 쓰던 접기 표시입니다 — 휴대폰에서는 쓰지 않습니다 */
+  #sl-store .sh-drawer.shut .sh-dscroll { display: block; }
+
+  /* 서랍을 여는 단추 — 서랍이 있던 자리에 한 줄로 놓습니다 */
+  #sl-store .sh-open {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    padding: 14px; margin-bottom: 12px;
+    border: 1px solid var(--line); border-radius: var(--r); background: var(--panel);
+    font-family: inherit; font-size: 14px; font-weight: 800; color: var(--ink); }
+  #sl-store .sh-open .ic {
+    width: 30px; height: 30px; border-radius: 9px; background: var(--roseb); color: var(--rose2);
+    display: flex; align-items: center; justify-content: center; font-size: 14px; flex: none; }
+  #sl-store .sh-open .sb { margin-left: auto; font-size: 11.5px; color: var(--mute); font-weight: 600; }
+  /* 뒤쪽을 어둡게 */
+  #sl-store .sh-veil {
+    display: none; position: fixed; inset: 0; z-index: 1190; background: rgba(20, 32, 48, .38); }
+  body.sl-sheet #sl-store .sh-veil { display: block; }
+  body.sl-sheet { overflow: hidden; }
 }
+/* 넓은 화면에서는 여는 단추와 어두운 막이 필요 없습니다 */
+#sl-store .sh-open, #sl-store .sh-veil { display: none; }
 /* 휴대폰에서는 세 칸이 다 들어가지 않습니다.
    자료 이름은 한 줄 위로 올리고, 아래에 금액과 단추를 나란히 둡니다. */
 @media (max-width: 560px) {
@@ -1731,8 +1831,12 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
 
     ROOT.innerHTML =
       '<div class="sh-split">' +
+        '<div>' +
+        '<button type="button" class="sh-open" data-act="sheet"><span class="ic">📚</span>교재 고르기' +
+        '<span class="sb">' + BOOKS.length + '종</span></button>' +
+        '<div class="sh-veil" data-act="sheet-close"></div>' +
         '<aside class="sh-drawer"><div class="sh-dtop">교재 고르기<button type="button" class="fold" data-act="fold">펼치기 ▾</button></div>' +
-        '<div class="sh-dscroll">' + drawerHTML() + '</div></aside>' +
+        '<div class="sh-dscroll">' + drawerHTML() + '</div></aside></div>' +
         '<div>' +
           '<div class="sh-tools">' +
             '<div class="sh-trow"><span class="sh-lab">형식</span><div class="sh-chips">' +
@@ -1938,6 +2042,12 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
 
     if (act !== 'page') S.page = 1;
 
+    /* 휴대폰에서 교재나 갈래를 고르시면 아래 창은 닫습니다 —
+       고르자마자 결과가 보여야 하기 때문입니다. */
+    if (act === 'cat' || act === 'book' || act === 'clear') {
+      document.body.classList.remove('sl-sheet');
+    }
+
     if (act === 'cat') {
       holdOn(t);
       open[id] = !open[id];
@@ -1964,8 +2074,18 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
       ROOT.querySelector('.sh-tools').scrollIntoView({ block: 'start' });
     } else if (act === 'clear') {
       S = { cat: null, book: null, kind: 'all', fmt: 'all', q: '', sort: 'name', page: 1 }; render();
+    } else if (act === 'sheet') {
+      /* 휴대폰에서 아래 창을 엽니다 */
+      document.body.classList.add('sl-sheet');
+    } else if (act === 'sheet-close') {
+      document.body.classList.remove('sl-sheet');
     } else if (act === 'fold') {
-      t.closest('.sh-drawer').classList.toggle('shut');
+      /* 휴대폰에서는 아래 창을 닫고, 넓은 화면에서는 서랍을 접습니다 */
+      if (document.body.classList.contains('sl-sheet')) {
+        document.body.classList.remove('sl-sheet');
+      } else {
+        t.closest('.sh-drawer').classList.toggle('shut');
+      }
       t.textContent = t.closest('.sh-drawer').classList.contains('shut') ? '펼치기 ▾' : '접기 ▴';
     } else if (act === 'cart') {
       /* 아임웹이 어느 페이지에서나 쓸 수 있게 열어 둔 함수입니다.
