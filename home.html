@@ -1443,9 +1443,9 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
               붙입니다 — fr-dib(한 줄 차지) · fr-dii(글 사이) 두 가지가 있고,
               class 가 src 앞에 올 때도 뒤에 올 때도 있습니다.
               후기 사진과 로고·안내 그림에는 이 이름이 없습니다. */
-        var TAG = /<img[^>]*>/gi;
+        var TAG = /<img\s[^>]*>/gi;
         var SRC = /src="(https:\/\/cdn\.imweb\.me\/upload\/[A-Za-z0-9]+\/[A-Za-z0-9._-]+\.(?:png|jpe?g|gif|webp))"/i;
-        var FR  = /class="[^"]*fr-[a-z]/i;
+        var FR  = /class="(?:[^"]*\s)?fr-[a-z]/i;
         var seen = {}, out = [], m;
         while ((m = TAG.exec(html))) {
           var tag = m[0];
