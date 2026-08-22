@@ -2104,9 +2104,11 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
 
     if (act !== 'page') S.page = 1;
 
-    /* 휴대폰에서 교재나 갈래를 고르시면 아래 창은 닫습니다 —
-       고르자마자 결과가 보여야 하기 때문입니다. */
-    if (act === 'cat' || act === 'book' || act === 'clear') {
+    /* 휴대폰에서 아래 창을 닫는 때 —
+       **말단 교재를 고르셨을 때만** 닫습니다.
+       「모의고사」 → 「1학년」 처럼 접힌 것을 펴는 중에 닫아 버리면
+       다시 열어 처음부터 찾아야 합니다. */
+    if (act === 'book' || act === 'clear') {
       document.body.classList.remove('sl-sheet');
     }
 

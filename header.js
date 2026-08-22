@@ -36,13 +36,27 @@
     }
   }
 
-  function run() { unlock(); fix(); }
+  var composing = false;
+  document.addEventListener('compositionstart', function () { composing = true; }, true);
+  document.addEventListener('compositionend', function () { composing = false; }, true);
+
+  function typing() {
+    if (composing) return true;
+    var a = document.activeElement;
+    return !!(a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA'));
+  }
+
+  function run() { if (typing()) return; unlock(); fix(); }
 
   run();
   window.addEventListener('load', run);
   window.addEventListener('resize', run);
   if (window.ResizeObserver) {
-    var ro = new ResizeObserver(function () { fix(); });
+    var roT = null;
+    var ro = new ResizeObserver(function () {
+      if (roT) clearTimeout(roT);
+      roT = setTimeout(function () { if (!typing()) fix(); }, 150);
+    });
     var secs = W.querySelectorAll('._fixed_header_section');
     for (var i = 0; i < secs.length; i++) ro.observe(secs[i]);
   }
