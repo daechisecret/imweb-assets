@@ -227,10 +227,13 @@ body.sl-my #cocoaModal button[type="submit"] {
 /* 체크상자 27개를 알약으로 —
    **진짜 체크상자는 그대로 둡니다.** 눈에만 안 보이게 하고 label 을 알약처럼 꾸밉니다.
    그래야 눌렀을 때 아임웹이 읽는 값이 예전과 똑같이 바뀝니다. */
-/* 아임웹은 이 상자를 **세로 flex** 로 잡아 두어, 방향까지 바꿔 줘야 옆으로 섭니다 */
-body.sl-my #cocoaModal .check {
+/* 항목 하나하나가 **자기 .check 상자**를 따로 갖고 있어서 세로로 늘어섭니다.
+   .check 를 「없는 셈(display:contents)」으로 만들어 알약들이
+   바깥 상자의 flex 에 직접 서게 합니다. */
+body.sl-my #cocoaModal .input_block:has(.check) > div {
   display: flex !important; flex-direction: row !important; flex-wrap: wrap !important;
   gap: 6px !important; align-items: flex-start !important; }
+body.sl-my #cocoaModal .check { display: contents !important; }
 body.sl-my #cocoaModal .check .checkbox-styled {
   margin: 0 !important; width: auto !important; flex: 0 0 auto !important;
   padding: 0 !important; border: 0 !important; }
