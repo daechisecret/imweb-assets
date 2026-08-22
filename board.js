@@ -86,9 +86,14 @@
     return out;
   }
 
+  /* 글이 죄다 「공지」로 올라와 있으면 딱지가 아무것도 안 알려 줍니다.
+     (공지사항 게시판은 32개가 전부 공지였습니다 — 줄마다 분홍이면 강조가 아니라 배경입니다.)
+     그래서 공지가 절반을 넘으면 딱지도 분홍 바탕도 쓰지 않습니다. */
+  var pinUseful = true;
+
   /* 문의 게시판은 댓글이 달렸으면 답변이 된 것으로 봅니다 */
   function tagOf(r) {
-    if (r.pin) return '<span class="sl-tag pin">공지</span>';
+    if (r.pin && pinUseful) return '<span class="sl-tag pin">공지</span>';
     if (path === '/contact') {
       return Number(r.c) > 0
         ? '<span class="sl-tag done">답변완료</span>'
@@ -102,8 +107,9 @@
     var no = n;
     return '<div class="sl-head"><b>번호</b><b>제목</b><b>글쓴이</b><b>작성일</b><b>조회</b></div>' +
       rows.map(function (r) {
-        var num = r.pin ? '–' : no--;
-        return '<a class="sl-row' + (r.pin ? ' pin' : '') + '" href="' + esc(r.u) + '">' +
+        var pin = r.pin && pinUseful;
+        var num = pin ? '–' : no--;
+        return '<a class="sl-row' + (pin ? ' pin' : '') + '" href="' + esc(r.u) + '">' +
           '<span class="sl-no">' + num + '</span>' +
           '<span class="sl-tt">' + tagOf(r) + '<span class="t">' + esc(r.t) + '</span>' +
           (Number(r.c) ? '<span class="sl-cm">💬 ' + r.c + '</span>' : '') + '</span>' +
@@ -147,6 +153,9 @@
     if (!board || board.dataset.slBd === '1') return;
     var rows = readRows(board);
     if (!rows.length) return;
+    var pins = 0;
+    for (var p = 0; p < rows.length; p++) if (rows[p].pin) pins++;
+    pinUseful = pins <= rows.length / 2;
     board.dataset.slBd = '1';
 
     /* 글 개수 — 「자주하는 질문 (FAQ) 20」 처럼 제목 뒤에 붙어 있습니다 */
