@@ -3,6 +3,12 @@ var LIST_SEL = '.shop-item._shop_item';
 var MANY = 9;            /* 알약이 이보다 많으면 접어 둡니다 */
 var KIND_ORDER = ['패키지', '교사용 한글파일 (편집가능)', '변형문제 (유형편)', '변형문제 (심화편)',
 '지문분석', '직전보강', '핵심요약', '워크북', '특강자료'];
+var FMT_PAGES = ['/special-lecture'];
+var FMT_ORDER = ['PDF', 'HWP (편집가능)'];
+var HWP_RE = /교사용\s*HWP|HWP\s*파일|한글\s*파일|HWP/i;
+function fmtPage() {
+return FMT_PAGES.indexOf(location.pathname.replace(/\/$/, '')) >= 0;
+}
 var KIND_RULES = [
 ['교사용 한글파일 (편집가능)', /교사용\s*HWP|HWP\s*파일|한글\s*파일|HWP/i],
 ['변형문제 (심화편)', /심화편|심화\s*변형|고난도|서술형/],
@@ -78,6 +84,7 @@ return String(s || '')
 .replace(/\s+/g, ' ').trim();
 }
 function kindOf(t) {
+if (fmtPage()) return HWP_RE.test(t) ? 'HWP (편집가능)' : 'PDF';
 for (var i = 0; i < KIND_RULES.length; i++) if (KIND_RULES[i][1].test(t)) return KIND_RULES[i][0];
 return '';
 }
@@ -286,7 +293,7 @@ h.parentNode.insertBefore(tag, h);
 addGo(el);
 addActs(el);
 });
-kinds.sort(sortBy(KIND_ORDER));
+kinds.sort(sortBy(fmtPage() ? FMT_ORDER : KIND_ORDER));
 var bar = document.createElement('div');
 bar.className = 'sl-pills';
 var any = false;

@@ -1776,32 +1776,58 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
     /* ── 패키지 강의 샘플은 어디서 오는가 ──
        패키지 상품의 상세 페이지에는 「30% 할인」 같은 **홍보 배너**만 있습니다.
        실제 자료 사진이 없어서 샘플로 보여 드릴 것이 없습니다.
-       그래서 같은 교재의 **진짜 자료 강**에서 갈래마다 첫 번째 것을 끌어옵니다.
-         6월 모의고사 올인원 패키지
-           → 변형문제(유형편) 를 누르면 「6월 모의고사 변형문제」 의 샘플
-           → 지문분석 을 누르면      「6월 모의고사 지문분석」 의 샘플
-       수능특강 핵심요약 패키지처럼 한 갈래짜리 패키지면 1강 자료가 나옵니다. */
-    var pool = ch.items || {}, fromLabel = {};
+       그래서 같은 교재의 **진짜 자료 강**에서 끌어옵니다.
+
+       패키지는 두 모양이 있어 단추를 다르게 세웁니다.
+         ① 한 강에 여러 갈래가 든 것 (모의고사 올인원 패키지)
+            → 갈래마다 단추 : 변형문제 · 지문분석 · 핵심요약 · 워크북 …
+         ② 여러 강이 한 갈래인 것 (어법 풀패키지 1~12강, 어휘 풀패키지 8종)
+            → 강마다 단추 : 1강 문장의 형식 · 2강 to부정사구 … */
+    var tabs = [];
+    var fromLabel = {};
     if (ch.pkg) {
-      pool = {};
+      var byKind = {}, chapList = [];
       (b.chapters || []).forEach(function (c) {
         if (c === ch || c.pkg) return;
         KINDS.forEach(function (k) {
-          if (!pool[k.id] && hasSample((c.items || {})[k.id])) {
-            pool[k.id] = c.items[k.id];
-            fromLabel[k.id] = c.label;
-          }
+          var it = (c.items || {})[k.id];
+          if (!hasSample(it)) return;
+          if (!byKind[k.id]) byKind[k.id] = { k: k, item: it, label: c.label };
+          chapList.push({ id: 'c' + chapList.length, name: c.label, item: it, kind: k });
         });
       });
-      /* 끌어올 자료가 하나도 없으면 원래 것으로 되돌립니다 */
-      var any = false;
-      for (var kk in pool) { any = true; break; }
-      if (!any) { pool = ch.items || {}; fromLabel = {}; }
-    }
+      var kindIds = [];
+      for (var kk in byKind) kindIds.push(kk);
 
-    var tabs = KINDS.filter(function (p) { return hasSample(pool[p.id]); });
+      if (kindIds.length > 1) {
+        /* ① 갈래가 여럿 — 갈래마다 단추 */
+        KINDS.forEach(function (k) {
+          if (!byKind[k.id]) return;
+          tabs.push({ id: k.id, name: k.short, item: byKind[k.id].item, kind: k });
+          fromLabel[k.id] = byKind[k.id].label;
+        });
+      } else {
+        /* ② 갈래가 하나 — 강마다 단추 */
+        chapList.forEach(function (t) { tabs.push(t); });
+      }
+    }
+    if (!tabs.length) {
+      /* 보통 강(패키지가 아닌 것)과, 끌어올 자료가 없는 패키지 */
+      KINDS.forEach(function (k) {
+        var it = (ch.items || {})[k.id];
+        if (hasSample(it)) tabs.push({ id: k.id, name: k.short, item: it, kind: k });
+      });
+    }
     if (!tabs.length) return;
-    var cur = (startKind && hasSample(pool[startKind])) ? startKind : tabs[0].id;
+
+    var pool = {};
+    tabs.forEach(function (t) { pool[t.id] = t.item; });
+    var cur = (startKind && pool[startKind]) ? startKind : tabs[0].id;
+    function tabOf(id) {
+      var f = null;
+      tabs.forEach(function (t) { if (t.id === id) f = t; });
+      return f;
+    }
 
     /* 샘플 그림은 **누른 뒤에** 상품 페이지에서 읽어 옵니다.
        그래서 먼저 '불러오는 중' 을 그려 두고, 받아지면 그 자리만 바꿔 끼웁니다. */
@@ -1840,17 +1866,18 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
     }
 
     function paint() {
-      var p = kindOf(cur) || {};
+      var t0 = tabOf(cur) || {};
+      var p = t0.kind || kindOf(cur) || {};
       modal.innerHTML =
         '<div class="sh-modin" role="dialog" aria-modal="true">' +
           '<div class="sh-modhead"><div class="sh-modttl"><b>' + esc(b.title + ' ' + ch.label) + '</b><span>샘플 자료</span></div>' +
           '<button type="button" class="sh-modx" data-act="close" aria-label="닫기">✕</button></div>' +
           (tabs.length > 1 ? '<div class="sh-modtabs">' + tabs.map(function (t) {
-            return '<button type="button" class="sh-chip" aria-pressed="' + (cur === t.id) + '" data-act="tab" data-id="' + t.id + '">' + esc(t.short) + '</button>';
+            return '<button type="button" class="sh-chip" aria-pressed="' + (cur === t.id) + '" data-act="tab" data-id="' + t.id + '">' + esc(t.name) + '</button>';
           }).join('') + '</div>' : '') +
           '<div class="sh-modbody"></div>' +
-          '<div class="sh-modfoot"><span class="sh-soonnote">' + esc(p.name || '') +
-          (fromLabel[cur] ? ' · ' + esc(fromLabel[cur]) + ' 자료의 샘플입니다' : '') +
+          '<div class="sh-modfoot"><span class="sh-soonnote">' + esc(t0.name || p.name || '') +
+          (ch.pkg ? ' · 패키지에 든 자료의 샘플입니다' : '') +
           ' · 스크롤로 넘겨 보십시오</span>' +
           (linkOf(cur)
             ? '<a class="sh-btn rose" href="' + esc(linkOf(cur)) + '" target="_blank" rel="noopener noreferrer">상품 페이지에서 보기 ↗</a>'
