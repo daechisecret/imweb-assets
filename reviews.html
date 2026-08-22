@@ -114,6 +114,15 @@ body.sl-rv-on .widget.board._list_wrap{
   var BEST_URL = 'https://daechisecret.github.io/imweb-assets/reviews-best.json';
   var BOARD = '/reviews';
 
+  /* 후기 하나를 눌러 **글 보기**로 들어오면 같은 주소(/reviews)에 글이 열립니다.
+     그때까지 우리 목록이 덮고 있으면 글을 못 읽습니다 — 그 경우엔 통째로 비켜서고
+     아임웹 게시판이 그대로 보이게 둡니다. 글쓰기·답글도 마찬가지입니다. */
+  if (/[?&]bmode=(view|write|edit|reply)/.test(location.search)) {
+    var me = document.getElementById('sl-rv');
+    if (me) me.style.display = 'none';
+    return;
+  }
+
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
