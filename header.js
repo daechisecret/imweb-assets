@@ -50,3 +50,14 @@
   setTimeout(run, 1200);
   setTimeout(run, 3000);
 })();
+
+(function () {
+  if (location.pathname.replace(/\/$/, '') !== '/search') return;
+  var BASE = 'https://daechisecret.github.io/imweb-assets/';
+  var css = document.createElement('link');
+  css.rel = 'stylesheet'; css.href = BASE + 'search.css';
+  document.head.appendChild(css);
+  var js = document.createElement('script');
+  js.src = BASE + 'search.js'; js.defer = true;
+  document.head.appendChild(js);
+})();
