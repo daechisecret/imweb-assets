@@ -34,7 +34,9 @@ input, textarea, select, button { font-family: 'Noto Sans KR', 'Apple SD Gothic 
 #inline_header_normal .login_btn_item:has(._shop_cart_badge_cnt_wrap) .btn { background: var(--sl-rose) !important; color: #fff; padding: 11px 20px !important; border-radius: 100px !important; font-size: 13.5px !important; font-weight: 800; box-shadow: 0 3px 10px rgba(232,90,138,.32) !important; }
 #inline_header_normal .login_btn_item:has(._shop_cart_badge_cnt_wrap) .btn:hover { background: var(--sl-rose-dark) !important; color: #fff; box-shadow: 0 4px 14px rgba(232,90,138,.42) !important; transform: translateY(-1px); }
 #inline_header_normal .login_btn_item:has(._shop_cart_badge_cnt_wrap) .icon_class { font-size: 14px; opacity: 1; }
-#inline_header_normal .login_btn .badge_wrap sup.badge { margin-left: 5px; padding: 2px 6px; top: 0; background: #fff; color: var(--sl-rose-dark) !important; border-radius: 100px; font-size: 11px; font-weight: 800; line-height: 1.2; }
+#inline_header_normal .login_btn .badge_wrap sup.badge, #inline_header_normal sup.badge, #inline_header_normal .badge_wrap > .badge { position: absolute; top: -7px; right: -9px; margin: 0; padding: 0 4px; min-width: 18px; height: 18px; line-height: 18px; background: #e5252c !important; color: #fff !important; border: 2px solid #fff; border-radius: 100px; font-size: 11.5px; font-weight: 800; text-align: center; box-shadow: 0 1px 4px rgba(0, 0, 0, .18); }
+#inline_header_normal .badge_wrap { position: relative; display: inline-block; }
+#inline_header_normal .login_btn_item:has(._shop_cart_badge_cnt_wrap) .badge_wrap sup.badge { top: -9px; right: -7px; }
 #inline_header_normal ._fixed_header_section:has(._inline_menu_container) ._section_bg_color { background: var(--sl-rose-bg) !important; }
 #inline_header_normal ._fixed_header_section:has(._inline_menu_container) { border-bottom: 1px solid #f7dbe6; }
 #inline_header_normal ._fixed_header_section:has(._inline_menu_container) .inline-section { height: 52px; }
