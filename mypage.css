@@ -227,8 +227,13 @@ body.sl-my #cocoaModal button[type="submit"] {
 /* 체크상자 27개를 알약으로 —
    **진짜 체크상자는 그대로 둡니다.** 눈에만 안 보이게 하고 label 을 알약처럼 꾸밉니다.
    그래야 눌렀을 때 아임웹이 읽는 값이 예전과 똑같이 바뀝니다. */
-body.sl-my #cocoaModal .check { display: flex !important; flex-wrap: wrap; gap: 6px; }
-body.sl-my #cocoaModal .check .checkbox-styled { margin: 0 !important; width: auto !important; }
+/* 아임웹은 이 상자를 **세로 flex** 로 잡아 두어, 방향까지 바꿔 줘야 옆으로 섭니다 */
+body.sl-my #cocoaModal .check {
+  display: flex !important; flex-direction: row !important; flex-wrap: wrap !important;
+  gap: 6px !important; align-items: flex-start !important; }
+body.sl-my #cocoaModal .check .checkbox-styled {
+  margin: 0 !important; width: auto !important; flex: 0 0 auto !important;
+  padding: 0 !important; border: 0 !important; }
 body.sl-my #cocoaModal .check .form-label {
   display: inline-flex !important; align-items: center; gap: 5px; margin: 0 !important;
   border: 1px solid #e6ecf4; border-radius: 100px; padding: 8px 13px;
@@ -237,8 +242,11 @@ body.sl-my #cocoaModal .check .form-label {
   cursor: pointer; transition: .13s; }
 body.sl-my #cocoaModal .check .form-label:hover { border-color: #f2b8cd; color: #c33e6d !important; }
 body.sl-my #cocoaModal .check .form-label input[type="checkbox"] {
-  appearance: none; -webkit-appearance: none; width: 13px; height: 13px; margin: 0 !important;
-  border: 1.5px solid #d7e2ee; border-radius: 4px; position: relative; flex: none; transition: .13s; }
+  appearance: none !important; -webkit-appearance: none !important;
+  width: 13px !important; height: 13px !important; min-width: 0 !important;
+  margin: 0 !important; padding: 0 !important; opacity: 1 !important; position: relative !important;
+  border: 1.5px solid #d7e2ee !important; border-radius: 4px !important;
+  flex: none !important; transition: .13s; }
 body.sl-my #cocoaModal .check .form-label input[type="checkbox"]:checked {
   background: #e85a8a; border-color: #e85a8a; }
 body.sl-my #cocoaModal .check .form-label input[type="checkbox"]:checked::after {
