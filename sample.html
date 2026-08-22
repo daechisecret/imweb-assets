@@ -1,0 +1,226 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     대치동시크릿 「자료 샘플 확인」 (/sample)
+
+     사장님이 샘플을 따로 올리실 필요가 없습니다 — 상품 상세페이지에 이미
+     올려 두신 자료 사진을 그대로 씁니다. 새 자료를 올리시면 샘플도 따라옵니다.
+
+     다만 상세페이지에는 홍보 배너도 섞여 있습니다. 그래서 **여러 상품이 함께 쓰는
+     사진은 배너로 보고 빼고**(한 장이 86개 상품에 함께 들어 있기도 했습니다),
+     남은 진짜 교재 사진이 두 장 이상인 상품만 여기에 올립니다.
+     1,237개 가운데 1,067개가 올라오고, 배너뿐인 170개는 빠집니다.
+
+     고르는 것은 build-sample.py 가 미리 해 두고(parts/sample-data.json),
+     여기서는 그리기만 합니다.
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="sl-sp">
+<style>
+#sl-sp{
+  --pink:#e85a8a; --pink-d:#c33e6d; --pink-l:#fdeef3; --pink-b:#f2b8cd;
+  --navy:#1d3a5e; --navy-l:#46617f; --gray:#93a5bd; --line:#e6ecf4;
+  max-width:1240px; margin:0 auto; padding:0 20px 70px;
+  font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif; color:var(--navy);
+  -webkit-font-smoothing:antialiased;
+}
+#sl-sp *{box-sizing:border-box}
+#sl-sp a{text-decoration:none;color:inherit}
+#sl-sp span,#sl-sp p,#sl-sp h1,#sl-sp h3,#sl-sp h4,#sl-sp div{font-family:inherit;letter-spacing:-.02em}
+
+#sl-sp .sp-hd{text-align:center;padding:34px 0 24px}
+#sl-sp .sp-hd .eye{font-size:12.5px;font-weight:800;color:var(--pink);letter-spacing:.08em}
+#sl-sp .sp-hd h1{margin:8px 0 10px;font-size:30px;font-weight:900;letter-spacing:-.045em;line-height:1.25}
+#sl-sp .sp-hd p{margin:0;font-size:14px;color:var(--navy-l);line-height:1.7}
+
+/* ── 고르는 줄 ── */
+#sl-sp .sp-bar{background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:15px 18px;margin-bottom:14px}
+#sl-sp .sp-line{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+#sl-sp .sp-line + .sp-line{margin-top:11px;padding-top:11px;border-top:1px dashed var(--line)}
+#sl-sp .sp-lb{font-size:12.5px;font-weight:800;color:var(--navy-l);flex:none;padding-top:6px;width:58px}
+#sl-sp .sp-pills{display:flex;flex-wrap:wrap;gap:6px;flex:1;min-width:0}
+#sl-sp .sp-pill{border:1px solid var(--line);background:#fff;border-radius:100px;padding:6px 13px;
+  font-size:12.5px;font-weight:600;color:var(--navy-l);cursor:pointer;transition:.12s;white-space:nowrap}
+#sl-sp .sp-pill i{font-style:normal;font-size:10.5px;font-weight:800;color:var(--pink);margin-left:5px}
+#sl-sp .sp-pill:hover{border-color:var(--pink-b);background:#fffafc}
+#sl-sp .sp-pill.on{background:var(--pink);border-color:var(--pink);color:#fff;font-weight:750}
+#sl-sp .sp-pill.on i{color:#fff}
+#sl-sp .sp-num{font-size:12.5px;color:var(--pink);font-weight:800;text-align:right;margin-top:10px}
+
+/* ── 카드 ── */
+#sl-sp .sp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+#sl-sp .sp-card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  transition:.14s;cursor:pointer;display:flex;flex-direction:column}
+#sl-sp .sp-card:hover{transform:translateY(-3px);border-color:var(--pink-b);
+  box-shadow:0 12px 24px rgba(232,90,138,.13)}
+#sl-sp .sp-th{height:132px;background:#f4f7fb;overflow:hidden}
+#sl-sp .sp-th img{width:100%;height:100%;object-fit:cover;display:block}
+#sl-sp .sp-bd{padding:12px 14px 14px;display:flex;flex-direction:column;gap:7px;flex:1}
+#sl-sp .sp-kind{align-self:flex-start;font-size:10.5px;font-weight:800;border-radius:6px;padding:3px 8px}
+#sl-sp .sp-t{font-size:12.5px;font-weight:650;line-height:1.5;color:var(--navy);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#sl-sp .sp-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;color:var(--gray)}
+#sl-sp .sp-foot b{color:var(--pink);font-weight:800}
+#sl-sp .sp-more{display:block;margin:18px auto 0;border:1px solid var(--line);background:#fff;
+  border-radius:100px;padding:11px 28px;font:inherit;font-size:13px;font-weight:750;
+  color:var(--navy-l);cursor:pointer}
+#sl-sp .sp-more:hover{border-color:var(--pink-b);color:var(--pink-d)}
+#sl-sp .sp-wait{padding:50px 20px;text-align:center;color:var(--gray);font-size:13.5px}
+
+/* ── 샘플 보기 창 ── */
+.sp-modal{position:fixed;inset:0;z-index:99999;background:rgba(13,24,38,.55);
+  display:grid;place-items:center;padding:24px}
+.sp-modin{background:#fff;border-radius:14px;width:min(900px,100%);height:min(88vh,100%);
+  display:flex;flex-direction:column;overflow:hidden;
+  font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif}
+.sp-modhead{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid #e8eef6}
+.sp-modhead b{font-size:14.5px;font-weight:750;color:#1d3a5e;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.sp-modx{margin-left:auto;border:0;background:none;font-size:17px;color:#7c90a8;cursor:pointer;padding:2px 6px}
+.sp-modbody{flex:1;overflow:auto;background:#f4f7fb;padding:14px}
+.sp-modbody img{width:100%;display:block;margin:0 auto 10px;max-width:760px;border-radius:6px;background:#fff}
+.sp-modfoot{padding:11px 16px;border-top:1px solid #e8eef6;display:flex;gap:7px;justify-content:flex-end}
+.sp-buy{border:1px solid #e85a8a;background:#e85a8a;color:#fff;border-radius:100px;
+  padding:8px 18px;font-size:12.5px;font-weight:750;text-decoration:none}
+.sp-buy.ghost{background:#fff;color:#46617f;border-color:#e6ecf4}
+
+@media (max-width:1100px){ #sl-sp .sp-grid{grid-template-columns:repeat(3,1fr)} }
+@media (max-width:820px){ #sl-sp .sp-grid{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:520px){
+  #sl-sp .sp-grid{grid-template-columns:1fr}
+  #sl-sp .sp-hd h1{font-size:24px}
+  #sl-sp .sp-lb{width:100%}
+}
+</style>
+
+<div class="sp-hd">
+  <div class="eye">SAMPLE</div>
+  <h1>자료 샘플 확인</h1>
+  <p>사시기 전에 실제 자료를 미리 보실 수 있습니다. 교재와 자료 유형으로 골라 보세요.</p>
+</div>
+
+<div class="sp-bar" id="sp-bar"></div>
+<div class="sp-grid" id="sp-grid"><div class="sp-wait">샘플을 불러오는 중입니다…</div></div>
+<button class="sp-more" id="sp-more" style="display:none">더 보기</button>
+
+<script>
+(function () {
+  var URL = 'https://daechisecret.github.io/imweb-assets/sample-data.json';
+  var STEP = 24;                     /* 한 번에 보여 줄 카드 수 */
+
+  /* 자료 유형 색 — 진열 페이지 배지와 같은 계열 (파스텔) */
+  var TONE = {
+    '패키지':           ['#ffe4e6', '#a8102a'],
+    '핵심요약':         ['#fdeaf3', '#9c2a63'],
+    '변형문제 (유형편)': ['#fde6f0', '#a8215c'],
+    '변형문제 (심화편)': ['#e4e9f4', '#22406b'],
+    '워크북':           ['#ffeadb', '#9a4a12'],
+    '지문분석':         ['#ede7fa', '#5b3a95'],
+    '직전보강':         ['#fff4d6', '#8a6300'],
+    '교사용 한글파일':   ['#e8f3da', '#4a7018'],
+    '특강자료':         ['#dcf0e8', '#166b52']
+  };
+  function tone(k) { return TONE[k] || ['#eef2f8', '#46617f']; }
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  /* 상품 이름에서 하트·대괄호 꾸밈을 덜어 냅니다 */
+  function tidy(t) {
+    return t.replace(/[🩷❤️💗💌🎁✨]/g, '').replace(/\s+/g, ' ').trim();
+  }
+
+  var DATA = null, pick = { b: '', k: '' }, shown = STEP;
+
+  function list() {
+    return DATA.items.filter(function (x) {
+      return (!pick.b || x.b === pick.b) && (!pick.k || x.k === pick.k);
+    });
+  }
+
+  function pills(kind, names, counts) {
+    return names.map(function (n) {
+      return '<button class="sp-pill' + (pick[kind] === n ? ' on' : '') + '" data-p="' + kind +
+        '" data-v="' + esc(n) + '">' + esc(n) +
+        (counts[n] ? '<i>' + counts[n] + '</i>' : '') + '</button>';
+    }).join('');
+  }
+
+  function bar() {
+    /* 알약 옆 숫자는 **지금 걸러 놓은 것 안에서** 셉니다 —
+       「수능특강 영어」를 고르면 그 안에 워크북이 몇 개인지 바로 보입니다. */
+    var byB = {}, byK = {};
+    DATA.items.forEach(function (x) {
+      if (!pick.k || x.k === pick.k) byB[x.b] = (byB[x.b] || 0) + 1;
+      if (!pick.b || x.b === pick.b) byK[x.k] = (byK[x.k] || 0) + 1;
+    });
+    document.getElementById('sp-bar').innerHTML =
+      '<div class="sp-line"><span class="sp-lb">교재</span><span class="sp-pills">' +
+        '<button class="sp-pill' + (pick.b ? '' : ' on') + '" data-p="b" data-v="">전체</button>' +
+        pills('b', DATA.books, byB) + '</span></div>' +
+      '<div class="sp-line"><span class="sp-lb">자료 유형</span><span class="sp-pills">' +
+        '<button class="sp-pill' + (pick.k ? '' : ' on') + '" data-p="k" data-v="">전체</button>' +
+        pills('k', DATA.kinds, byK) + '</span></div>' +
+      '<div class="sp-num">' + list().length + '개</div>';
+  }
+
+  function cards() {
+    var rows = list();
+    var box = document.getElementById('sp-grid');
+    box.innerHTML = rows.length
+      ? rows.slice(0, shown).map(function (x, i) {
+          var c = tone(x.k);
+          return '<div class="sp-card" data-i="' + rows.indexOf(x) + '">' +
+            '<div class="sp-th"><img src="' + esc(x.p[0]) + '" alt="" loading="lazy"></div>' +
+            '<div class="sp-bd">' +
+            '<span class="sp-kind" style="background:' + c[0] + ';color:' + c[1] + '">' + esc(x.k) + '</span>' +
+            '<span class="sp-t">' + esc(tidy(x.t)) + '</span>' +
+            '<span class="sp-foot"><span>' + esc(x.b) + '</span><b>' + x.n + '장</b></span>' +
+            '</div></div>';
+        }).join('')
+      : '<div class="sp-wait">고르신 조건에 맞는 샘플이 없습니다.</div>';
+    var more = document.getElementById('sp-more');
+    more.style.display = rows.length > shown ? 'block' : 'none';
+    more.textContent = '더 보기 (' + (rows.length - shown) + '개 남음)';
+  }
+
+  function open(x) {
+    var m = document.createElement('div');
+    m.className = 'sp-modal';
+    m.innerHTML = '<div class="sp-modin">' +
+      '<div class="sp-modhead"><b>' + esc(tidy(x.t)) + '</b>' +
+      '<button class="sp-modx">✕</button></div>' +
+      '<div class="sp-modbody">' + x.p.map(function (u) {
+        return '<img src="' + esc(u) + '" alt="" loading="lazy">';
+      }).join('') + '</div>' +
+      '<div class="sp-modfoot"><a class="sp-buy ghost sp-close">닫기</a>' +
+      '<a class="sp-buy" href="' + esc(x.u) + '">상품 페이지로 →</a></div></div>';
+    document.body.appendChild(m);
+    document.body.style.overflow = 'hidden';
+    function close() { m.remove(); document.body.style.overflow = ''; }
+    m.addEventListener('click', function (e) {
+      if (e.target === m || e.target.closest('.sp-modx, .sp-close')) close();
+    });
+  }
+
+  document.getElementById('sp-bar').addEventListener('click', function (e) {
+    var b = e.target.closest('.sp-pill'); if (!b) return;
+    pick[b.dataset.p] = b.dataset.v;
+    shown = STEP; bar(); cards();
+  });
+  document.getElementById('sp-grid').addEventListener('click', function (e) {
+    var c = e.target.closest('.sp-card'); if (!c) return;
+    open(list()[Number(c.dataset.i)]);
+  });
+  document.getElementById('sp-more').addEventListener('click', function () {
+    shown += STEP; cards();
+  });
+
+  fetch(URL).then(function (r) { return r.json(); }).then(function (d) {
+    DATA = d; bar(); cards();
+  }).catch(function () {
+    document.getElementById('sp-grid').innerHTML =
+      '<div class="sp-wait">샘플을 불러오지 못했습니다. 잠시 뒤 새로고침해 주십시오.</div>';
+  });
+})();
+</script>
+</div>
