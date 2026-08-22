@@ -209,7 +209,7 @@ body.sl-sc-post .search_widget .view_box {
 /* 아임웹은 게시글 한 줄을 **표(table)** 로 짭니다 — 그림 칸을 비워 두느라
    글 칸이 136px 밖에 안 되어 오른쪽이 텅 빕니다. 보통 줄로 바꿉니다. */
 body.sl-sc-post .search_widget .repeat_area {
-  display: block !important; width: auto !important;
+  display: block !important; width: auto !important; max-width: none !important;
   padding: 0 !important; margin: 0 !important; border: 0 !important;
   border-bottom: 1px solid #f4f8fd !important; }
 body.sl-sc-post .search_widget .box_thumb { display: none !important; }
