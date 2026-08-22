@@ -67,4 +67,5 @@ input, textarea, select, button { font-family: 'Noto Sans KR', 'Apple SD Gothic 
  #inline_header_mobile .widget.logo .img_box, #inline_header_mobile .widget.logo a { display: inline-block !important; width: auto !important; height: auto !important; line-height: 0 !important; position: relative; }
  #inline_header_mobile .widget.logo a img.normal_logo { display: block !important; height: 44px !important; width: auto !important; max-width: none !important; }
  #inline_header_mobile .widget.logo a img.scroll_logo { display: none !important; }
+ #inline_header_mobile .widget.logo ~ .widget.logo, #inline_header_mobile ._fixed_header_section:nth-of-type(n+2) .widget.logo { display: none !important; }
  #inline_header_mobile .widget.logo a { padding: 6px 4px !important; } }

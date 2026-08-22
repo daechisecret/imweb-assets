@@ -124,12 +124,14 @@
 
 @media (max-width:1100px){ #sl-hub .hb-links,#sl-hub .hb-bot.c4{grid-template-columns:1fr 1fr} }
 @media (max-width:900px){
+  /* 「1fr」 은 **내용이 큰 만큼 늘어납니다.** 그래서 카드가 575px 로 벌어져 잘렸습니다.
+     minmax(0,1fr) 로 써야 「화면만큼만」 이 됩니다. */
   #sl-hub .hb-top,#sl-hub .hb-bot,#sl-hub .hb-bot.c4,#sl-hub .hb-bot.c2,
-  #sl-hub .hb-big,#sl-hub .hb-cols{grid-template-columns:1fr}
+  #sl-hub .hb-big,#sl-hub .hb-cols{grid-template-columns:minmax(0,1fr)}
   #sl-hub .hb-hd h1{font-size:25px}
   /* 바깥 채널 카드가 900px 규칙에 빠져 있어 네 칸 그대로였습니다.
      그래서 「카카오톡 플러스친구」가 한 글자씩 세로로 쪼개졌습니다. */
-  #sl-hub .hb-links{grid-template-columns:1fr !important}
+  #sl-hub .hb-links{grid-template-columns:minmax(0,1fr) !important}
 }
 
 /* ── 휴대폰 (390px 기준) ── */
