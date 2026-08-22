@@ -34,9 +34,9 @@
   /* 인사 칸에 적힌 적립금·쿠폰 수를 메뉴 옆에 옮겨 적습니다 (읽기만 합니다) */
   function counts() {
     var out = {};
-    var p = document.querySelector('.head .point-view .text-32');
+    /* 적립금은 「16,900」처럼 자릿수가 길어 메뉴 글자를 두 줄로 밀어냅니다.
+       금액은 바로 위 인사 칸에 크게 적혀 있으니 메뉴에는 붙이지 않습니다. */
     var c = document.querySelector('.head .coupon-view .text-32');
-    if (p) out['시크릿적립금'] = (p.textContent || '').trim();
     if (c) out['쿠폰'] = (c.textContent || '').trim();
     var w = document.querySelector('#titleWishlist, #wish_cnt em');
     if (w) out['위시 리스트'] = (w.textContent || '').trim();

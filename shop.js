@@ -211,9 +211,11 @@ if (act === 'sample') openSample(card);
 else if (act === 'cart') addCart(idxOf(card), b);
 else if (act === 'wish') addWish(idxOf(card), b);
 }, true);
-var SLIDER = '.swiper-container, .swiper-wrapper, .swiper, [class*="carousel"]';
+var SLIDER = '.swiper-container, .swiper-wrapper, .swiper, [class*="carousel"],' +
+'.type-slide, .owl-stage, .owl-stage-outer, ._item_container.type-slide';
+var SKIP = ['/', '/shop_mypage', '/login', '/search'];
 function pickHost() {
-if (location.pathname === '/') return null;
+if (SKIP.indexOf(location.pathname.replace(/\/$/, '')) >= 0) return null;
 var all = document.querySelectorAll(LIST_SEL);
 var parents = [], groups = [];
 for (var i = 0; i < all.length; i++) {

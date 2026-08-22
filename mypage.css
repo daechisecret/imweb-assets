@@ -160,7 +160,17 @@ body.sl-my #list_wrap .shop-item {
 body.sl-my #list_wrap .shop-item:hover {
   border-color: #f2b8cd; box-shadow: 0 8px 20px rgba(232, 90, 138, .10); }
 body.sl-my #list_wrap .wish_thumb,
-body.sl-my #list_wrap .recent_view_thumb { border-radius: 10px; overflow: hidden; }
+body.sl-my #list_wrap .recent_view_thumb {
+  border-radius: 10px; overflow: hidden; flex: none;
+  /* 최근 본 상품은 사진 칸을 세로로 길게 잡아 두어 카드가 두 배로 높아집니다.
+     위시 리스트와 같은 86px 정사각으로 맞춥니다. */
+  width: 86px !important; height: 86px !important; }
+body.sl-my #list_wrap .recent_view_thumb img,
+body.sl-my #list_wrap .wish_thumb img,
+body.sl-my #list_wrap .recent_view_thumb ._org_img,
+body.sl-my #list_wrap .wish_thumb ._org_img {
+  width: 86px !important; height: 86px !important; object-fit: cover; }
+body.sl-my #list_wrap .item-detail { min-height: 0 !important; }
 body.sl-my #list_wrap .item-title a {
   font-size: 13px !important; font-weight: 700 !important; color: #243b53 !important;
   line-height: 1.45 !important; }
@@ -170,7 +180,7 @@ body.sl-my #list_wrap .item-pay-detail .sale_pay { color: #b6c4d4 !important; }
 
 /* ── ⑤ 쿠폰 ── */
 body.sl-my .mypage_coupon_list { padding: 18px 22px !important; display: grid !important;
-  grid-template-columns: 1fr !important; gap: 12px !important; }
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 12px !important; }
 body.sl-my .mypage_coupon_list > * {
   border: 1px dashed #f2b8cd !important; border-radius: 12px !important;
   background: #fffafc !important; padding: 16px 18px !important; margin: 0 !important; }
@@ -268,5 +278,6 @@ body.sl-my #cocoaModal .check .form-label:has(input:checked) {
   body.sl-my .head .my-theme.tabled { flex-wrap: wrap; }
   body.sl-my .head .point-view { border-left: 0; padding-left: 0 !important; }
   body.sl-my #list_wrap { grid-template-columns: 1fr !important; }
+  body.sl-my .mypage_coupon_list { grid-template-columns: 1fr !important; }
   body.sl-my #cocoaModal .modal-dialog { max-width: none !important; width: auto !important; margin: 12px !important; }
 }
