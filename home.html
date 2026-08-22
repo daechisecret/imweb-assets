@@ -1033,9 +1033,10 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
 #sl-store .sh-pages { display: flex; flex-direction: column; gap: 10px; }
 /* 사진이 오기 전에도 **자리를 잡아 둡니다.** 높이가 0 이면 늦게 불러오기가
    「화면 밖」으로 보고 영영 안 받아 옵니다. 우리 샘플은 대체로 A4 세로입니다. */
-#sl-store .sh-pages img { width: 100%; aspect-ratio: 1 / 1.414; height: auto;
-  object-fit: contain; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
-#sl-store .sh-pages img.ok { aspect-ratio: auto; }
+/* 사진이 오기 전에도 자리를 잡아 둡니다 (우리 샘플은 대체로 A4 세로).
+   min-height 로 두면 사진이 도착한 뒤 제 비율로 자연스럽게 늘어납니다. */
+#sl-store .sh-pages img { width: 100%; height: auto; min-height: 200px;
+  border: 1px solid var(--line); border-radius: 8px; background: #fff; }
 #sl-store .sh-modfoot { display: flex; align-items: center; gap: 10px; padding: 11px 16px; border-top: 1px solid var(--line2); }
 #sl-store .sh-modfoot .sh-soonnote { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #sl-store .sh-modfoot .sh-btn { margin-left: auto; flex: none; }
@@ -1869,8 +1870,7 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
                  이 창은 스크롤 상자 안에 떠 있어서, 브라우저가 사진을 죄다
                  「화면 밖」으로 보고 한 장도 안 받아 옵니다. 그래서 창이 텅 비었습니다.
                  샘플은 많아야 스무 장이라 한꺼번에 받아도 부담이 크지 않습니다. */
-              return '<img src="' + esc(u) + '" alt="샘플 ' + (i + 1) + '쪽"' +
-                ' onload="this.classList.add('ok')">';
+              return '<img src="' + esc(u) + '" alt="샘플 ' + (i + 1) + '쪽" class="pg">';
             }).join('') + '</div>'
           : '<div class="sh-modwait">이 자료는 아직 샘플 사진이 없습니다.<br>상품 페이지에서 확인해 주십시오.</div>';
       });
