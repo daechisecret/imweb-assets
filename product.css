@@ -16,6 +16,11 @@
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── ① 표지 ── */
+/* 아임웹은 대표 사진을 593px 로 깔아 화면 절반을 먹습니다.
+   시안 ㉱ 에서 정한 대로 폭을 400px 로 줄입니다.
+   (더 줄이면 왼쪽에 빈 자리가 크게 남아 허전해집니다.) */
+body.sl-pd .prod-owl-list { max-width: 400px; }
+body.sl-pd .goods_wrapper .col-md-6:first-child .owl-carousel { margin: 0 auto; }
 body.sl-pd .prod-owl-list .owl-stage-outer,
 body.sl-pd .prod-owl-list .item,
 body.sl-pd .prod-owl-list .owl-item { max-height: var(--sl-cover, none); }
