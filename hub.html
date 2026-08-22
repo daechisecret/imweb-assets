@@ -127,6 +127,34 @@
   #sl-hub .hb-top,#sl-hub .hb-bot,#sl-hub .hb-bot.c4,#sl-hub .hb-bot.c2,
   #sl-hub .hb-big,#sl-hub .hb-cols{grid-template-columns:1fr}
   #sl-hub .hb-hd h1{font-size:25px}
+  /* 바깥 채널 카드가 900px 규칙에 빠져 있어 네 칸 그대로였습니다.
+     그래서 「카카오톡 플러스친구」가 한 글자씩 세로로 쪼개졌습니다. */
+  #sl-hub .hb-links{grid-template-columns:1fr !important}
+}
+
+/* ── 휴대폰 (390px 기준) ── */
+@media (max-width:520px){
+  #sl-hub{padding:0 2px}
+  #sl-hub .hb-hd h1{font-size:21px;line-height:1.35}
+  #sl-hub .hb-hd p{font-size:12.5px}
+  /* 카드 안 여백을 줄여 글이 잘리지 않게 */
+  #sl-hub .hb-card{padding:16px 14px}
+  #sl-hub .hb-ch h3{font-size:14.5px}
+  #sl-hub .hb-list a{padding:9px 0;gap:7px}
+  #sl-hub .hb-list .tt{font-size:12.5px;white-space:normal}
+  #sl-hub .hb-list .dd{font-size:10.5px;flex:none}
+  #sl-hub .hb-q{padding:13px 14px;font-size:12.5px}
+  #sl-hub .hb-q .tx{-webkit-line-clamp:3}
+  #sl-hub .hb-btn{padding:15px 14px;gap:10px}
+  #sl-hub .hb-btn h4{font-size:14px}
+  #sl-hub .hb-btn p{font-size:11px}
+  /* 바깥 채널 — 그림·글·화살표 세 칸을 유지하되 글이 줄어들 수 있게 */
+  #sl-hub .hb-link{grid-template-columns:36px minmax(0,1fr) auto;padding:13px 14px;gap:10px}
+  #sl-hub .hb-link h4{font-size:13px;white-space:normal;word-break:keep-all}
+  #sl-hub .hb-link p{font-size:11px}
+  #sl-hub .hb-link .hot{display:none}   /* 「가장 빠른 답변」 딱지가 글을 밀어냅니다 */
+  /* 교재 × 유형 표는 옆으로 밀어 봅니다 */
+  #sl-hub .hb-cols,#sl-hub .hb-table{overflow-x:auto}
 }
 </style>
 <div id="sl-hub-body"></div>
