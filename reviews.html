@@ -152,7 +152,11 @@ body.sl-rv-on .widget.board._list_wrap{
       var nm = u.querySelector('.name'), tm = u.querySelector('.time');
       var st = u.querySelector('[class*="star"]');
       if (!tit) continue;
-      var a = tit.querySelector('a[href]') || u.querySelector('a[href]');
+      /* 제목 칸에는 링크가 둘 있습니다 — 앞의 것은 「?category=」 라 아무 데도 안 가고,
+         글로 가는 것은 「bmode=view&idx=…」 가 붙은 쪽입니다. 그것만 골라야 합니다. */
+      var a = u.querySelector('a[href*="bmode=view"]') ||
+              tit.querySelector('a[href*="idx="]') ||
+              u.querySelector('a[href*="idx="]');
       var t = (tit.textContent || '').replace(/\s+/g, ' ').trim();
       if (!t || t === '제목') continue;
       out.push({
