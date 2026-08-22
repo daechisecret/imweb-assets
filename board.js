@@ -102,15 +102,12 @@
     return '';
   }
 
-  function lineHTML(rows, total) {
-    var n = total || rows.length;
-    var no = n;
-    return '<div class="sl-head"><b>번호</b><b>제목</b><b>글쓴이</b><b>작성일</b><b>조회</b></div>' +
+  /* 번호 칸은 뺐습니다 — 쪽을 넘기면 어차피 안 맞고, 그 자리를 제목에 주는 편이 낫습니다. */
+  function lineHTML(rows) {
+    return '<div class="sl-head"><b>제목</b><b>글쓴이</b><b>작성일</b><b>조회</b></div>' +
       rows.map(function (r) {
         var pin = r.pin && pinUseful;
-        var num = pin ? '–' : no--;
         return '<a class="sl-row' + (pin ? ' pin' : '') + '" href="' + esc(r.u) + '">' +
-          '<span class="sl-no">' + num + '</span>' +
           '<span class="sl-tt">' + tagOf(r) + '<span class="t">' + esc(r.t) + '</span>' +
           (Number(r.c) ? '<span class="sl-cm">💬 ' + r.c + '</span>' : '') + '</span>' +
           '<span class="sl-w">' + esc(r.w) + '</span>' +
@@ -158,17 +155,22 @@
     pinUseful = pins <= rows.length / 2;
     board.dataset.slBd = '1';
 
-    /* 글 개수 — 「자주하는 질문 (FAQ) 20」 처럼 제목 뒤에 붙어 있습니다 */
-    var head = (board.textContent || '').replace(/\s+/g, ' ').slice(0, 80);
-    var m = /(\d{1,5})/.exec(head);
-    var total = m ? parseInt(m[1], 10) : rows.length;
+    /* 글 개수 — 아임웹이 게시판 위에 「자주하는 질문 (FAQ) 20」 처럼 적어 둡니다.
+       게시판 안쪽 글에서 숫자를 주우면 날짜(2026)를 개수로 잘못 읽으므로
+       **게시판 바깥의 제목 줄**에서만 찾습니다. 못 찾으면 개수를 안 보여 줍니다. */
+    var total = 0;
+    var tt = document.querySelector('.shop-title, .board_title, ._board_title');
+    if (tt) {
+      var mm = /(\d{1,5})\s*$/.exec((tt.textContent || '').trim());
+      if (mm) total = parseInt(mm[1], 10);
+    }
 
     var box = document.createElement('div');
     box.className = 'sl-bd ' + (cfg.how === 'fold' ? 'sl-bd-fold' : 'sl-bd-line');
     box.innerHTML =
       '<div class="sl-bdtop"><div class="sl-bdtt"><h2>' + esc(cfg.name) + '</h2>' +
-      '<span class="sl-bdcnt">' + total + '개</span></div></div>' +
-      (cfg.how === 'fold' ? foldHTML(rows) : lineHTML(rows, total));
+      (total ? '<span class="sl-bdcnt">' + total + '개</span>' : '') + '</div></div>' +
+      (cfg.how === 'fold' ? foldHTML(rows) : lineHTML(rows));
 
     /* 아임웹 검색칸이 있으면 우리 머리줄로 옮겨 담습니다 (기능은 그대로) */
     var search = board.querySelector('.board_search, ._search_wrap, .search_wrap');

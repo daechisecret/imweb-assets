@@ -47,7 +47,7 @@
 
 /* ── ㉮ 줄 목록 ── */
 .sl-bd-line .sl-row {
-  display: grid; grid-template-columns: 52px minmax(0, 1fr) 92px 92px 54px;
+  display: grid; grid-template-columns: minmax(0, 1fr) 92px 92px 54px;
   gap: 12px; align-items: center; padding: 15px 20px;
   border-bottom: 1px solid #f4f7fb; transition: .12s;
 }
@@ -65,11 +65,11 @@
 .sl-bd-line .sl-v { font-size: 12px; color: #93a5bd; text-align: center; }
 .sl-bd-line .sl-cm { font-size: 11.5px; color: #93a5bd; white-space: nowrap; }
 .sl-bd-line .sl-head {
-  display: grid; grid-template-columns: 52px minmax(0, 1fr) 92px 92px 54px; gap: 12px;
+  display: grid; grid-template-columns: minmax(0, 1fr) 92px 92px 54px; gap: 12px;
   padding: 11px 20px; background: #fbfdff; border-bottom: 1px solid #e6ecf4;
   font-size: 11.5px; font-weight: 800; color: #46617f; text-align: center;
 }
-.sl-bd-line .sl-head b:nth-child(2) { text-align: left; }
+.sl-bd-line .sl-head b:nth-child(1) { text-align: left; }
 .sl-bd-line .sl-head b { font-weight: 800; }
 
 /* 딱지 */
@@ -116,9 +116,8 @@
 
 @media (max-width: 900px) {
   .sl-bd-line .sl-row, .sl-bd-line .sl-head { grid-template-columns: minmax(0, 1fr) 74px; }
-  .sl-bd-line .sl-no, .sl-bd-line .sl-w, .sl-bd-line .sl-v,
-  .sl-bd-line .sl-head b:nth-child(1), .sl-bd-line .sl-head b:nth-child(3),
-  .sl-bd-line .sl-head b:nth-child(5) { display: none; }
+  .sl-bd-line .sl-w, .sl-bd-line .sl-v,
+  .sl-bd-line .sl-head b:nth-child(2), .sl-bd-line .sl-head b:nth-child(4) { display: none; }
   .sl-bd .sl-bdtop { flex-direction: column; align-items: flex-start; gap: 9px; }
   .sl-bd .sl-bdtt h2 { font-size: 18px; }
 }
