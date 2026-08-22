@@ -85,3 +85,19 @@ body.sl-pd.sl-pd-on #prod_detail_body img[class*="fr-"] { display: none !importa
   body.sl-pd .prod-owl-list .item img { max-height: none !important; }
   .sp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 }
+
+/* ── 휴대폰 (390px 기준) ── */
+@media (max-width: 480px) {
+  /* 표지는 화면 폭을 그대로 씁니다 */
+  body.sl-pd .prod-owl-list { max-width: none; }
+  .sp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  .sp-head h3 { font-size: 15px; }
+  .sp-tip { display: none; }          /* 좁은 화면에서는 자리만 먹습니다 */
+  .sp-kinds { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+  .sp-kinds::-webkit-scrollbar { height: 0; }
+  .sp-kind { flex: none; font-size: 12.5px; padding: 8px 14px; }
+  .sp-lb { padding: 12px; }
+  .sp-lb .nav { width: 38px; height: 38px; }
+  .sp-lb .nav.prev { left: 8px; }
+  .sp-lb .nav.next { right: 8px; }
+}

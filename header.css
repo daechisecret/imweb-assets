@@ -44,3 +44,10 @@ input, textarea, select, button { font-family: 'Noto Sans KR', 'Apple SD Gothic 
 #inline_header_normal ._inline_menu_container .viewport-nav > li.dropdown > a { font-size: 14px !important; font-weight: 750; letter-spacing: -.02em; transition: all .13s; }
 #inline_header_normal ._inline_menu_container .viewport-nav > li.dropdown > a span.plain_name { padding: 7px 14px; border-radius: 100px; transition: all .13s; }
 #inline_header_normal ._inline_menu_container .viewport-nav > li.dropdown > a:hover span.plain_name { background: rgba(255,255,255,.75); }
+@media (max-width: 860px) { #inline_header_normal ._fixed_header_section:has(.widget.logo) .inline-section { display: block; height: auto; }
+ #inline_header_normal ._fixed_header_section:has(.widget.logo) .inline-col-group-right, #inline_header_normal ._fixed_header_section:has(.widget.logo) .inline-col-group-left { margin: 0; }
+ #inline_header_normal .btn-wrap { flex-wrap: wrap !important; row-gap: 4px; }
+ #inline_header_normal .widget.logo img.normal_logo { height: 52px !important; }
+ #inline_header_normal .inline-col-group-right .inline-col { max-width: none; }
+ #inline_header_normal .search_btn input.search_btn_form { height: 42px !important; line-height: 42px !important; font-size: 14px !important; }
+ html, body { overflow-x: hidden; max-width: 100%; } }

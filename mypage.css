@@ -293,3 +293,23 @@ body.sl-my #cocoaModal .check .form-label:has(input:checked) {
   body.sl-my .mypage_coupon_list > .mypage-coupon-wrap { flex: 1 1 100% !important; }
   body.sl-my #cocoaModal .modal-dialog { max-width: none !important; width: auto !important; margin: 12px !important; }
 }
+
+/* ── 휴대폰 (390px 기준) ── */
+@media (max-width: 480px) {
+  body.sl-my .shop-content.mypage .row.show-grid { gap: 12px !important; }
+  body.sl-my .col-md-2 ul { padding: 6px !important; }
+  body.sl-my .col-md-2 ul li a { font-size: 12.5px !important; padding: 8px 12px !important; }
+  body.sl-my .head.bg-bright { padding: 16px !important; }
+  body.sl-my .head .nick > span:not(.ug_name) { font-size: 16px !important; }
+  body.sl-my .head .point-view .text-32,
+  body.sl-my .head .coupon-view .text-32 { font-size: 20px !important; }
+  body.sl-my .col-md-10 h6 { padding: 14px 16px !important; font-size: 14.5px !important; }
+  /* 주문 줄 — 표지·이름·단추가 한 줄에 안 들어갑니다 */
+  body.sl-my #shop_mypage_orderlist td { padding: 12px 16px !important; }
+  body.sl-my #shop_mypage_orderlist td img { width: 52px !important; height: 52px !important; }
+  body.sl-my .cart-btn-tools .btn { font-size: 11px !important; padding: 7px 12px !important; }
+  body.sl-my #list_wrap { padding: 12px !important; }
+  body.sl-my .mypage_coupon_list { padding: 12px !important; }
+  body.sl-my #shop_mypage_pointlist_table th,
+  body.sl-my #shop_mypage_pointlist_table td { padding: 11px 14px !important; font-size: 12.5px !important; }
+}

@@ -1149,6 +1149,38 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
     display: none; position: fixed; inset: 0; z-index: 1190; background: rgba(20, 32, 48, .38); }
   body.sl-sheet #sl-store .sh-veil { display: block; }
   body.sl-sheet { overflow: hidden; }
+
+  /* ── 자료 카드 ── */
+  #sl-store { font-size: 13px; }
+  #sl-store .sh-card { border-radius: 12px; }
+  #sl-store .sh-chead { padding: 12px; gap: 10px; }
+  #sl-store .sh-cov { width: 62px !important; height: 62px !important; flex: none; }
+  #sl-store .sh-ttl { font-size: 13.5px; }
+  #sl-store .sh-sub { font-size: 11px; }
+  #sl-store .sh-rows { padding: 0 12px 10px; }
+  /* 값·단추가 한 줄에 다 안 들어갑니다 — 이름은 윗줄, 값과 단추는 아랫줄로 */
+  #sl-store .sh-prow { flex-wrap: wrap; gap: 4px 8px; padding: 9px 0; }
+  #sl-store .sh-prow .pn { flex: 0 0 100%; font-size: 12.5px; }
+  #sl-store .sh-prow .pp { width: auto; flex: 1; text-align: left; font-size: 12.5px; }
+  #sl-store .sh-prow .pr { justify-content: flex-start; }
+  #sl-store .sh-prow .pr .amt { margin-left: 0; }
+  #sl-store .sh-prow .fb { grid-template-columns: 42px 42px 28px; gap: 4px; }
+  #sl-store .sh-prow.head .pn { flex: 1; }
+  #sl-store .sh-prow.head .pp { display: none; }
+  #sl-store .sh-prow.head .fb { width: auto; }
+
+  /* 위쪽 고르개 */
+  #sl-store .sh-tools { padding: 12px; gap: 8px; }
+  #sl-store .sh-seg { flex-wrap: wrap; }
+  #sl-store .sh-pager { flex-wrap: wrap; justify-content: center; }
+
+  /* 샘플 창 — 화면을 가득 씁니다 */
+  #sl-store .sh-modtabs { overflow-x: auto; flex-wrap: nowrap; padding: 10px 12px; }
+  #sl-store .sh-modtabs::-webkit-scrollbar { height: 0; }
+  #sl-store .sh-chip { flex: none; }
+  #sl-store .sh-modhead { padding: 12px 14px; }
+  #sl-store .sh-modttl b { font-size: 14px; }
+  #sl-store .sh-modfoot { padding: 10px 12px; flex-wrap: wrap; gap: 8px; }
 }
 /* 넓은 화면에서는 여는 단추와 어두운 막이 필요 없습니다 */
 #sl-store .sh-open, #sl-store .sh-veil { display: none; }

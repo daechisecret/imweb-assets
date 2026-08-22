@@ -256,3 +256,19 @@ body.sl-sc .search_widget .pagination a.disabled { opacity: .35; pointer-events:
   body.sl-sc .search_widget .site_nav a { padding: 8px 17px !important; font-size: 13px !important; }
   body.sl-sc-post .search_widget .box_content { padding: 14px 16px !important; }
 }
+
+/* ── 휴대폰 (390px 기준) ──
+   좁혀 보기 서랍은 이미 접혀 있습니다. 나머지 자잘한 것을 맞춥니다. */
+@media (max-width: 480px) {
+  .sq-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 9px; }
+  .sq-tit { font-size: 12px; height: 2.9em; }
+  .sq-pr { font-size: 13px; }
+  .sq-tag { font-size: 10px; padding: 2px 6px; }
+  .sq-head { gap: 8px; margin: 10px 0; }
+  .sq-h1 { font-size: 17px; }
+  .sq-sort { width: 100%; overflow-x: auto; }
+  .sq-sort button { flex: none; }
+  body.sl-sc .search_widget .control_box { padding: 14px 12px 4px !important; }
+  body.sl-sc .search_widget .site_nav { margin: 4px 0 12px !important; }
+  body.sl-sc-post .search_widget .box_content { padding: 12px 14px !important; }
+}
