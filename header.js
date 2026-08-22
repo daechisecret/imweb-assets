@@ -2,18 +2,26 @@
   var W = document.getElementById('inline_header_normal');
   if (!W) return;
 
-  function fix() {
+  function pass() {
     var y = 0;
     var secs = W.querySelectorAll('._fixed_header_section');
     for (var i = 0; i < secs.length; i++) {
       var s = secs[i];
       var r = s.getBoundingClientRect();
       if (!r.height) continue;                      // 안 보이는 구역은 건너뜁니다
-      if (getComputedStyle(s).position === 'fixed') {
-        s.style.setProperty('top', y + 'px', 'important');
+      var cs = getComputedStyle(s);
+      if (cs.position === 'fixed') {
+        s.style.setProperty('top', (y + (parseFloat(cs.top) || 0) - r.top) + 'px', 'important');
       }
       y += r.height;
     }
+    return y;
+  }
+
+  function fix() {
+    pass();
+    var y = pass();
+    var secs = W.querySelectorAll('._fixed_header_section');
     if (y && getComputedStyle(secs[0]).position === 'fixed') {
       W.style.setProperty('height', y + 'px', 'important');
     }
@@ -33,6 +41,11 @@
   run();
   window.addEventListener('load', run);
   window.addEventListener('resize', run);
+  if (window.ResizeObserver) {
+    var ro = new ResizeObserver(function () { fix(); });
+    var secs = W.querySelectorAll('._fixed_header_section');
+    for (var i = 0; i < secs.length; i++) ro.observe(secs[i]);
+  }
   setTimeout(run, 300);
   setTimeout(run, 1200);
   setTimeout(run, 3000);
