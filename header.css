@@ -65,9 +65,8 @@ input, textarea, select, button { font-family: 'Noto Sans KR', 'Apple SD Gothic 
  #inline_header_mobile .login_btn_item, #inline_header_mobile .btn-wrap .text { white-space: nowrap !important; width: auto !important; } }
 @media (max-width: 860px) { #inline_header_mobile .widget.logo { display: block; }
  #inline_header_mobile .widget.logo .img_box, #inline_header_mobile .widget.logo a { display: inline-block !important; width: auto !important; height: auto !important; line-height: 0 !important; position: relative; }
- #inline_header_mobile .widget.logo a img.normal_logo { display: block !important; height: 44px !important; width: auto !important; max-width: none !important; }
+ #inline_header_mobile .widget.logo a img.normal_logo { display: block !important; height: auto !important; max-height: 44px !important; width: auto !important; max-width: none !important; }
  #inline_header_mobile .widget.logo a img.scroll_logo { display: none !important; }
- #inline_header_mobile .widget.logo ~ .widget.logo, #inline_header_mobile ._fixed_header_section:nth-of-type(n+2) .widget.logo { display: none !important; }
  #inline_header_mobile .widget.logo a { padding: 6px 4px !important; } }
 @media (max-width: 860px) { #inline_header_mobile, #inline_header_mobile ._fixed_header_section, #inline_header_mobile .inline-section-wrap, #mobile_carousel_menu { background: #fff !important; }
  #mobile_carousel_menu { background: #fdf3f7 !important; }

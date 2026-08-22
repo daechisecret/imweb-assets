@@ -260,25 +260,29 @@ window.SL_NOTICE_BOARD = '/notice';
 /* ── 새로 올라온 자료 : 흐르는 한 줄 띠 ──
    카드 아홉 장이 화면을 반쯤 먹고 있었습니다. 한 줄로 줄여 공지 아래에 붙입니다.
    글이 왼쪽으로 천천히 흘러가고, 마우스를 올리면 멈춥니다. */
-#sl-home .hm-ticker { display: flex; align-items: center; gap: 10px;
+/* ⓘ 휴대폰에서는 이 띠가 자료실(#sl-store) 안 「교재 고르기」 단추 아래로 옮겨 갑니다.
+      그래서 꾸미기를 **두 곳 모두**에 걸어 둡니다 —
+      한쪽만 적어 두면 옮겨 간 자리에서 띠가 세로로 죽 늘어집니다.
+      (색 이름(--rose 따위)은 #sl-home 과 #sl-store 가 똑같이 갖고 있습니다.) */
+#sl-home .hm-ticker, #sl-store .hm-ticker { display: flex; align-items: center; gap: 10px;
   background: var(--roseb); border: 1px solid var(--line2); border-radius: 10px;
   padding: 0 12px; height: 40px; overflow: hidden; }
-#sl-home .tk-lb { flex: none; background: var(--rose); color: #fff; border-radius: 100px;
+#sl-home .tk-lb, #sl-store .tk-lb { flex: none; background: var(--rose); color: #fff; border-radius: 100px;
   padding: 3px 9px; font-size: 10.5px; font-weight: 800; letter-spacing: .02em; }
-#sl-home .tk-win { flex: 1; min-width: 0; overflow: hidden; }
-#sl-home .tk-run { display: inline-flex; align-items: center; gap: 26px; white-space: nowrap;
+#sl-home .tk-win, #sl-store .tk-win { flex: 1; min-width: 0; overflow: hidden; }
+#sl-home .tk-run, #sl-store .tk-run { display: inline-flex; align-items: center; gap: 26px; white-space: nowrap;
   will-change: transform; animation: sl-tk 40s linear infinite; }
-#sl-home .hm-ticker:hover .tk-run { animation-play-state: paused; }
+#sl-home .hm-ticker:hover .tk-run, #sl-store .hm-ticker:hover .tk-run { animation-play-state: paused; }
 @keyframes sl-tk { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-#sl-home .tk-run button { border: 0; background: none; padding: 0; cursor: pointer;
+#sl-home .tk-run button, #sl-store .tk-run button { border: 0; background: none; padding: 0; cursor: pointer;
   font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--ink2); white-space: nowrap; }
-#sl-home .tk-run button:hover { color: var(--rose2); }
-#sl-home .tk-run button .nm { font-weight: 750; }
-#sl-home .tk-run button .kd { color: var(--mute); font-weight: 600; margin-left: 5px; }
-#sl-home .tk-run button .new { background: var(--newb); color: var(--new); border-radius: 4px;
+#sl-home .tk-run button:hover, #sl-store .tk-run button:hover { color: var(--rose2); }
+#sl-home .tk-run button .nm, #sl-store .tk-run button .nm { font-weight: 750; }
+#sl-home .tk-run button .kd, #sl-store .tk-run button .kd { color: var(--mute); font-weight: 600; margin-left: 5px; }
+#sl-home .tk-run button .new, #sl-store .tk-run button .new { background: var(--newb); color: var(--new); border-radius: 4px;
   padding: 1px 5px; font-size: 9.5px; font-weight: 800; margin-left: 5px; }
 /* 움직임을 싫어하시는 분(운영체제 설정)에게는 멈춰 둡니다 */
-@media (prefers-reduced-motion: reduce) { #sl-home .tk-run { animation: none; } }
+@media (prefers-reduced-motion: reduce) { #sl-home .tk-run, #sl-store .tk-run { animation: none; } }
 
 /* 공지 칸은 오른쪽에 들어가느라 낮아집니다 */
 #sl-home .hm-side .hm-notice ul { max-height: 178px; overflow: hidden; }
@@ -974,6 +978,14 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
    좁은 화면에서 장바구니가 카드 밖으로 삐져나갑니다. */
 #sl-store .sh-prow .pn { font-size: 13px; font-weight: 700; flex: 1 1 auto;
   min-width: 68px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* 자료 이름을 누르면 상품 페이지로 갑니다 — 우리 사이트 분홍으로 물들여
+   「여기는 눌러지는 곳」임을 한눈에 알립니다. (예전에는 본문과 같은 남색이라
+   눌러지는 줄 모르고 지나치셨습니다.) */
+#sl-store .sh-prow a.pn { color: var(--rose2); transition: color .12s, text-decoration-color .12s;
+  text-decoration: underline; text-decoration-color: transparent;
+  text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+#sl-store .sh-prow a.pn:hover { color: var(--rose); text-decoration-color: #f2b8cd; }
+#sl-store .sh-prow a.pn:focus-visible { outline: 2px solid var(--rose); outline-offset: 2px; border-radius: 4px; }
 #sl-store .sh-prow .pd { display: none; }
 #sl-store .sh-prow .pp { font-size: 13px; font-weight: 750; flex: none; width: 132px; text-align: right; font-variant-numeric: tabular-nums; }
 /* 구매 단추는 PDF · HWP · 장바구니 **세 자리**로 나눕니다.
@@ -1196,6 +1208,9 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
   /* 단추 위 한 줄 안내 */
   #sl-store .sh-opentip {
     display: block; margin: 0 0 7px; font-size: 12.5px; font-weight: 700; color: var(--rose2); }
+  /* 「새 자료」 띠 자리 — 교재 고르기 단추 바로 아래 (첫 화면 스크립트가 띠를 넣어 줍니다) */
+  #sl-store .sh-tickslot { margin: 10px 0 2px; }
+  #sl-store .sh-tickslot:empty { display: none; }
   /* 뒤쪽을 어둡게 */
   #sl-store .sh-veil {
     display: none; position: fixed; inset: 0; z-index: 1190; background: rgba(20, 32, 48, .38); }
@@ -1238,7 +1253,8 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
    (예전에는 미디어쿼리 **뒤에** 그냥 두어서, 휴대폰에서도 이 규칙이 이겨
     「교재 고르기」 단추가 아예 안 보였습니다.) */
 @media (min-width: 861px) {
-  #sl-store .sh-open, #sl-store .sh-veil, #sl-store .sh-opentip { display: none !important; }
+  #sl-store .sh-open, #sl-store .sh-veil, #sl-store .sh-opentip,
+  #sl-store .sh-tickslot { display: none !important; }
 }
 /* 휴대폰에서는 세 칸이 다 들어가지 않습니다.
    자료 이름은 한 줄 위로 올리고, 아래에 금액과 단추를 나란히 둡니다. */
@@ -1410,6 +1426,18 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
   /* 맨 앞에 세웁니다 — 모의고사보다 위 */
   if (pkgCount()) TREE.unshift({ id: PKG, name: PKG, children: [], pkgNode: true });
 
+  /* ── 처음 들어오셨을 때 열려 있는 갈래 ──
+     예전에는 「패키지」였습니다. 선생님들이 가장 자주 찾으시는 것은 **모의고사**라
+     들어오시자마자 모의고사가 골라져 있게 합니다 (PC·휴대폰 모두).
+     혹시 목록에 모의고사가 없으면 예전처럼 패키지로 돌아갑니다. */
+  var HOME_CAT = '모의고사';
+  function defaultCat() {
+    var found = null;
+    TREE.forEach(function (n) { if (n.id === HOME_CAT) found = n.id; });
+    if (found) return found;
+    return pkgCount() ? PKG : null;
+  }
+
   /* ── 지금 보고 있는 것 ── */
   var S = { cat: null, book: null, kind: 'all', fmt: 'all', q: '', sort: 'name', page: 1 };
   var open = {};
@@ -1418,10 +1446,10 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
   /* 주소 뒤에 남깁니다 — 아임웹 페이지 주소를 건드리지 않도록 # 뒤에만 씁니다 */
   function readHash() {
     var h = (location.hash || '').replace(/^#/, '');
-    /* 주소에 아무 것도 안 적혀 있으면 **패키지부터** 보여 드립니다.
-       손님이 들어오시자마자 통째로 사는 길을 먼저 보시고, 그 뒤에 낱개를 고르시게 합니다. */
+    /* 주소에 아무 것도 안 적혀 있으면 **모의고사부터** 보여 드립니다 (defaultCat). */
     if (h.indexOf('sl=') !== 0) {
-      if (pkgCount()) { S.cat = PKG; open[PKG] = true; }
+      var d = defaultCat();
+      if (d) { S.cat = d; open[d] = true; }
       return;
     }
     try {
@@ -1932,6 +1960,8 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
         '<span class="sh-opentip">교재를 고르시면 자료 라인업이 모두 나옵니다</span>' +
         '<button type="button" class="sh-open" data-act="sheet"><span class="ic">📚</span>교재 고르기' +
         '<span class="sb">' + BOOKS.length + '종</span></button>' +
+        /* 첫 화면의 「새 자료」 띠가 여기로 옮겨 옵니다 — 아래 placeTicker() */
+        '<div class="sh-tickslot" id="sl-tickslot"></div>' +
         '<div class="sh-veil" data-act="sheet-close"></div>' +
         '<aside class="sh-drawer"><div class="sh-dtop">교재 고르기<button type="button" class="fold" data-act="fold">펼치기 ▾</button></div>' +
         '<div class="sh-dscroll">' + drawerHTML() + '</div></aside></div>' +
@@ -1976,8 +2006,25 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
       anchor = null;
     }
 
+    placeTicker();
     writeHash();
   }
+
+  /* ── 「새 자료」 띠 자리 ──
+     첫 화면 위쪽에 있던 띠를 **휴대폰에서만** 「교재 고르기」 단추 바로 아래로 옮깁니다.
+     (휴대폰에서는 첫 화면 짝꿍 스크립트가 자료실을 #sl-home 안으로 들여오기 때문에,
+      띠를 여기로 옮겨도 「#sl-home …」 로 적힌 띠 꾸미기가 그대로 걸립니다.)
+     넓은 화면에서는 있던 자리(#hm-lead)로 돌려 놓습니다.
+     자료실 페이지처럼 첫 화면 띠가 없는 곳에서는 빈 자리라 보이지 않습니다. */
+  function placeTicker() {
+    var tk = document.getElementById('hm-ticker');
+    if (!tk) return;
+    var narrow = window.matchMedia('(max-width: 860px)').matches;
+    var slot = document.getElementById('sl-tickslot');
+    var home = narrow ? slot : document.getElementById('hm-lead');
+    if (home && tk.parentNode !== home) home.appendChild(tk);
+  }
+  window.addEventListener('resize', function () { placeTicker(); });
 
   /* ═══════════════ 샘플 창 ═══════════════
      PDF 는 브라우저가 그리게 두고 스크롤만 열어 줍니다.

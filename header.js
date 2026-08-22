@@ -139,15 +139,29 @@
 })();
 
 (function () {
+  function real(w) {
+    var im = w.querySelector('img.normal_logo') || w.querySelector('img');
+    return !!im && im.complete && im.naturalWidth >= 20;
+  }
   function one() {
     var head = document.getElementById('inline_header_mobile');
     if (!head) return;
-    var logos = head.querySelectorAll('.widget.logo');
-    if (logos.length < 2) return;
-    for (var i = 1; i < logos.length; i++) logos[i].style.display = 'none';
+    var logos = [].slice.call(head.querySelectorAll('.widget.logo'));
+    if (!logos.length) return;
+    var pick = -1;
+    for (var i = 0; i < logos.length; i++) { if (real(logos[i])) { pick = i; break; } }
+    if (pick < 0) return;
+    logos.forEach(function (w, i) {
+      w.style.setProperty('display', i === pick ? 'block' : 'none', 'important');
+    });
   }
   one();
   window.addEventListener('load', one);
   setTimeout(one, 500);
   setTimeout(one, 1800);
+  setTimeout(one, 3500);
+  document.addEventListener('load', function (e) {
+    var t = e.target;
+    if (t && t.tagName === 'IMG' && t.closest && t.closest('#inline_header_mobile .widget.logo')) one();
+  }, true);
 })();
