@@ -50,8 +50,17 @@
      아임웹 게시판은 두 모양으로 나옵니다.
        .post_link_wrap  공지사항처럼 그림이 붙는 목록
        .li_board > ul   FAQ·문의처럼 표 모양 목록 */
+  /* 원본 글줄의 링크를 기억해 둡니다.
+     문의 게시판은 비밀글이 많아 링크에 blocked 딱지가 붙습니다.
+     그 링크는 **아임웹이 눌린 것을 가로채** 비밀번호를 묻고 나서야 열어 줍니다.
+     우리가 주소만 보고 그냥 옮겨 가면 확인 절차가 빠져 되돌려 보내집니다
+     (「글이 잠깐 보였다 사라진다」가 이것입니다).
+     그래서 손님이 우리 줄을 누르시면 **원본 링크를 대신 눌러 드립니다.** */
+  var ORIG = [];
+
   function readRows(root) {
     var out = [];
+    ORIG = [];
 
     var wraps = root.querySelectorAll('.post_link_wrap');
     for (var i = 0; i < wraps.length; i++) {
@@ -63,7 +72,9 @@
       for (var j = 0; j < st.length; j++) st[j].parentNode.removeChild(st[j]);
       var t = (c.textContent || '').replace(/\s+/g, ' ').trim();
       if (!t) continue;
+      ORIG.push(a);
       out.push({
+        i: ORIG.length - 1,
         t: t,
         u: a.getAttribute('href') || '',
         w: txt(w, '.author'),
@@ -84,8 +95,13 @@
       var t2 = (tit.textContent || '').replace(/\s+/g, ' ').trim();
       if (!t2 || t2 === '제목') continue;
       /* 제목 칸에는 링크가 둘 있습니다 — 글로 가는 것은 bmode=view 가 붙은 쪽입니다 */
-      var a2 = u.querySelector('a[href*="bmode=view"]') || u.querySelector('a[href*="idx="]');
+      /* 제목 링크를 먼저 씁니다 — 비밀글은 이 링크에 아임웹의 확인이 걸려 있습니다 */
+      var a2 = u.querySelector('a.list_text_title') ||
+               u.querySelector('a[href*="bmode=view"]') ||
+               u.querySelector('a[href*="idx="]');
+      ORIG.push(a2 || null);
       out.push({
+        i: ORIG.length - 1,
         t: t2,
         u: a2 ? a2.getAttribute('href') : '',
         w: txt(u, '.name'),
@@ -119,7 +135,7 @@
     return '<div class="sl-head"><b>제목</b><b>글쓴이</b><b>작성일</b><b>조회</b></div>' +
       rows.map(function (r) {
         var pin = r.pin && pinUseful;
-        return '<a class="sl-row' + (pin ? ' pin' : '') + '" href="' + esc(r.u) + '">' +
+        return '<a class="sl-row' + (pin ? ' pin' : '') + '" data-i="' + r.i + '" href="' + esc(r.u) + '">' +
           '<span class="sl-tt">' + tagOf(r) + '<span class="t">' + esc(r.t) + '</span>' +
           (Number(r.c) ? '<span class="sl-cm">💬 ' + r.c + '</span>' : '') + '</span>' +
           '<span class="sl-w">' + esc(r.w) + '</span>' +
@@ -235,11 +251,21 @@
   document.addEventListener('click', function (e) {
     var row = e.target.closest && e.target.closest('.sl-bd .sl-row');
     if (!row) return;
+    /* 새 창으로 열도록 누르신 경우(Ctrl·⌘·가운데 단추)는 브라우저에 맡깁니다 */
     var href = row.getAttribute('href');
+    if ((e.metaKey || e.ctrlKey || e.button === 1) && href && href !== '#') {
+      e.preventDefault(); window.open(href, '_blank'); return;
+    }
+    var idx = parseInt(row.getAttribute('data-i'), 10);
+    var orig = (idx >= 0 && ORIG[idx]) ? ORIG[idx] : null;
+    if (orig && orig.isConnected) {
+      /* 원본을 대신 누릅니다 — 비밀글이면 아임웹이 비밀번호를 묻습니다 */
+      e.preventDefault();
+      orig.click();
+      return;
+    }
     if (!href || href === '#') return;
     e.preventDefault();
-    /* 새 창으로 열도록 누르신 경우(Ctrl·⌘·가운데 단추)는 브라우저에 맡깁니다 */
-    if (e.metaKey || e.ctrlKey || e.button === 1) { window.open(href, '_blank'); return; }
     location.href = href;
   }, true);
 
