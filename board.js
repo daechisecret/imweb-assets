@@ -23,7 +23,19 @@
   var path = location.pathname.replace(/\/$/, '');
   var cfg = HOW[path];
   if (!cfg) return;
-  if (/[?&]bmode=(view|write|edit|reply)/.test(location.search)) return;
+  /* 글 보기 화면은 목록을 새로 그리지 않고 **모양만** 다듬습니다 (body 에 표시만 붙입니다).
+     글쓰기·댓글·좋아요는 아임웹 기능이라 건드리면 안 됩니다. */
+  if (/[?&]bmode=(view|write|edit|reply)/.test(location.search)) {
+    if (/[?&]bmode=view/.test(location.search)) {
+      var mark = function () {
+        if (document.querySelector('.board_view')) document.body.classList.add('sl-bv');
+      };
+      mark();
+      window.addEventListener('load', mark);
+      setTimeout(mark, 400); setTimeout(mark, 1500);
+    }
+    return;
+  }
 
   function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')

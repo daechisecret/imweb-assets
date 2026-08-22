@@ -121,3 +121,80 @@
   .sl-bd .sl-bdtop { flex-direction: column; align-items: flex-start; gap: 9px; }
   .sl-bd .sl-bdtt h2 { font-size: 18px; }
 }
+
+
+/* ═══════════════ 글 보기 (공지사항·문의하기) ═══════════════
+   아임웹이 그린 얼개를 그대로 두고 **보이는 모양만** 바꿉니다.
+   글쓰기·댓글·좋아요는 아임웹 기능이라 손대면 안 됩니다.
+
+     .board_view
+       .board-title  > h1.view_tit      제목
+       .board_summary > .left > .avatar + .author   글쓴이·게시판·조회수
+       .board_txt_area.fr-view          본문
+       .comment_section (둘)            댓글 / 목록·글쓰기 단추
+*/
+body.sl-bv .board_view {
+  background: #fff; border: 1px solid #e6ecf4; border-radius: 18px;
+  overflow: hidden; margin: 6px 0 14px;
+}
+body.sl-bv .board_view .board-title {
+  padding: 26px 30px 0; border: 0 !important; margin: 0 !important;
+}
+body.sl-bv .board_view h1.view_tit {
+  margin: 0; font-size: 23px; font-weight: 850; letter-spacing: -.04em;
+  line-height: 1.4; color: #1d3a5e;
+}
+body.sl-bv .board_view .board_summary {
+  padding: 16px 30px 20px; border-bottom: 1px solid #e6ecf4; margin: 0 !important;
+}
+body.sl-bv .board_view .board_summary .left { display: flex; align-items: center; gap: 11px; }
+body.sl-bv .board_view .board_summary .avatar {
+  width: 38px; height: 38px; border-radius: 50%; overflow: hidden; flex: none;
+  background: #fdeef3;
+}
+body.sl-bv .board_view .board_summary .avatar img { width: 100%; height: 100%; object-fit: cover; }
+body.sl-bv .board_view .board_summary .author { font-size: 12px; color: #93a5bd; line-height: 1.6; }
+body.sl-bv .board_view .board_summary .author .name,
+body.sl-bv .board_view .board_summary .author > *:first-child {
+  font-size: 13.5px; font-weight: 750; color: #1d3a5e;
+}
+body.sl-bv .board_view .board_txt_area {
+  padding: 30px; font-size: 15px; line-height: 1.9; color: #2b4a70; min-height: 110px;
+}
+body.sl-bv .board_view .board_txt_area img { max-width: 100%; height: auto; border-radius: 8px; }
+
+/* 좋아요·댓글 수 줄 */
+body.sl-bv .board_view .comment-block {
+  display: flex; align-items: center; gap: 9px;
+  padding: 14px 30px; border-top: 1px solid #e6ecf4; background: #fbfdff;
+}
+body.sl-bv .board_view .comment-block > * {
+  border: 1px solid #e6ecf4; background: #fff; border-radius: 100px;
+  padding: 6px 14px; font-size: 12.5px; font-weight: 700; color: #46617f;
+}
+body.sl-bv .board_view .comment-block > *:hover { border-color: #f2b8cd; color: #c33e6d; }
+
+/* 댓글 */
+body.sl-bv .board_view .comment_list { padding: 4px 30px 0; }
+body.sl-bv .board_view .comment_list .comment {
+  padding: 18px 0; border-bottom: 1px solid #f4f7fb;
+}
+body.sl-bv .board_view .comment_list .comment:last-child { border-bottom: 0; }
+body.sl-bv .board_view .comment_textarea { padding: 18px 30px 24px; background: #fbfdff; }
+body.sl-bv .board_view .comment_textarea textarea {
+  border: 1px solid #e6ecf4 !important; border-radius: 12px !important;
+  padding: 13px 15px !important; font-size: 13.5px !important; min-height: 88px !important;
+}
+body.sl-bv .board_view .comment_textarea textarea:focus { border-color: #f2b8cd !important; }
+
+/* 맨 아래 목록·글쓰기 단추 */
+body.sl-bv .board_view .comment_section:last-child {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 16px 20px; border-top: 1px solid #e6ecf4;
+}
+body.sl-bv .board_view .comment_section:last-child .btn,
+body.sl-bv .board_view .comment_section:last-child a,
+body.sl-bv .board_view .comment_section:last-child button {
+  border-radius: 100px !important; padding: 10px 22px !important;
+  font-size: 13px !important; font-weight: 750 !important;
+}
