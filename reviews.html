@@ -216,7 +216,11 @@ body.sl-rv-on .widget.board._list_wrap{
       var mp = /[?&]page=(\d+)/.exec(href);
       if (mp) last = Math.max(last, parseInt(mp[1], 10));
     }
-    var m = /후기\s*(\d{2,5})/.exec(board.textContent || '');
+    /* 게시판 머리에 「전체 후기 모아보기 348」 처럼 적혀 있습니다.
+       제목 문구가 바뀔 수 있어 「후기 348」 식으로 딱 맞추지 않고,
+       머리 부분에서 두 자리 이상 숫자를 하나 주워 씁니다. */
+    var head = (board.textContent || '').replace(/\s+/g, ' ').slice(0, 80);
+    var m = /(\d{2,5})/.exec(head);
     document.getElementById('rv-tot').textContent = m ? ('후기 ' + m[1] + '개') : '';
 
     var rows = parse(board);
