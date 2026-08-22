@@ -45,16 +45,22 @@ body.sl-sc .search_widget .categorize { margin-bottom: 0 !important; }
   font-size: 11px; font-weight: 700; color: #c9d5e3; cursor: pointer; padding: 2px 4px; }
 .sq-clr:hover { color: #c33e6d; }
 .sq-sub { font-size: 11px; font-weight: 800; color: #c8d4e2; margin: 10px 0 3px; }
-.sq-chk { display: flex; align-items: center; gap: 8px; padding: 5px 0;
-  font-size: 13px; font-weight: 600; color: #5b768f; cursor: pointer; line-height: 1.35; }
+.sq-chk { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0;
+  font-size: 13px; font-weight: 600; color: #5b768f; cursor: pointer; line-height: 1.35;
+  text-align: left; }
 .sq-chk:hover { color: #c33e6d; }
 .sq-chk .bx { width: 15px; height: 15px; border: 1.5px solid #d7e2ee; border-radius: 4px;
-  flex: 0 0 15px; position: relative; transition: .14s; }
+  flex: 0 0 15px; position: relative; transition: .14s; margin-top: 1px; }
 .sq-chk.on .bx { background: #e85a8a; border-color: #e85a8a; }
 .sq-chk.on .bx::after { content: ''; position: absolute; left: 4px; top: 1px; width: 4px;
   height: 8px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(42deg); }
 .sq-chk.on { color: #243b53; font-weight: 750; }
-.sq-chk i { margin-left: auto; font-style: normal; font-size: 11.5px; color: #b6c4d4; font-weight: 600; }
+.sq-chk span { flex: 1; min-width: 0; }
+/* 글 개수는 오른쪽 끝에 세로로 나란히 서게 합니다.
+   (여기를 <i> 로 두었더니 체크칸(.bx)까지 같은 규칙에 걸려
+    남은 자리를 반씩 나눠 갖는 바람에 줄이 가운데로 밀렸습니다.) */
+.sq-chk .sq-num { flex: 0 0 34px; text-align: right; font-size: 11.5px;
+                  color: #b6c4d4; font-weight: 600; font-variant-numeric: tabular-nums; }
 
 /* ── 카드 격자 ── */
 .sq-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }

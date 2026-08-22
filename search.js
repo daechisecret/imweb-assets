@@ -108,8 +108,8 @@
       h += '<div class="sq-sub">' + esc(g.g) + '</div>';
       have.forEach(function (bk) {
         h += '<div class="sq-chk' + (picked.b.indexOf(bk) >= 0 ? ' on' : '') +
-             '" data-t="b" data-v="' + esc(bk) + '"><i class="bx"></i>' + esc(bk) +
-             '<i>' + (cb[bk] || 0) + '</i></div>';
+             '" data-t="b" data-v="' + esc(bk) + '"><i class="bx"></i><span>' + esc(bk) +
+             '</span><i class="sq-num">' + (cb[bk] || 0) + '</i></div>';
       });
     });
     if (!anyBook) h += '<div class="sq-sub">해당 없음</div>';
@@ -122,8 +122,8 @@
       if (!ck[k] && picked.k.indexOf(k) < 0) return;
       anyKind = true;
       h += '<div class="sq-chk' + (picked.k.indexOf(k) >= 0 ? ' on' : '') +
-           '" data-t="k" data-v="' + esc(k) + '"><i class="bx"></i>' + esc(k) +
-           '<i>' + (ck[k] || 0) + '</i></div>';
+           '" data-t="k" data-v="' + esc(k) + '"><i class="bx"></i><span>' + esc(k) +
+           '</span><i class="sq-num">' + (ck[k] || 0) + '</i></div>';
     });
     if (!anyKind) h += '<div class="sq-sub">해당 없음</div>';
     h += '</div></div>';
