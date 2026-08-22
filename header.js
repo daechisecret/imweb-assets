@@ -62,3 +62,23 @@
   js.src = BASE + 'search.js?v=' + V; js.defer = true;
   document.head.appendChild(js);
 })();
+
+(function () {
+  var BASE = 'https://daechisecret.github.io/imweb-assets/';
+  var V = 'b9940c9f';
+  var done = false;
+  function go() {
+    if (done || !document.getElementById('prod_detail')) return;
+    done = true;
+    var css = document.createElement('link');
+    css.rel = 'stylesheet'; css.href = BASE + 'product.css?v=' + V;
+    document.head.appendChild(css);
+    var js = document.createElement('script');
+    js.src = BASE + 'product.js?v=' + V; js.defer = true;
+    document.head.appendChild(js);
+  }
+  go();
+  window.addEventListener('load', go);
+  setTimeout(go, 500);
+  setTimeout(go, 1600);
+})();

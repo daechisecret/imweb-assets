@@ -1,0 +1,82 @@
+/* ═══════════════════════════════════════════════════════════════
+   대치동시크릿 상품 상세 페이지  —  짝꿍 : themes/product.js
+
+   두 가지를 손봅니다.
+
+   ① 표지가 너무 큽니다
+      아임웹은 대표 사진을 593×839 로 큼직하게 깔아 둡니다.
+      오른쪽 정보·구매 단추보다 아래로 한참 삐져나와 균형이 깨집니다.
+      → 표지 아래끝을 「장바구니·바로 구매」 단추 아래선에 맞춥니다.
+        (얼마나 줄일지는 화면 너비마다 달라져 짝꿍 스크립트가 재어 정합니다.)
+
+   ② 미리보기 사진이 너무 큽니다
+      상세정보 사진이 한 장에 1080×1350 으로 깔려, 다섯 장만 얹어도
+      페이지가 8,000px 을 넘습니다 (노트북 화면으로 열 번 넘게 굴려야 끝).
+      → 세 칸 격자로 줄여 한 화면에 담고, 누르면 크게 봅니다.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── ① 표지 ── */
+body.sl-pd .prod-owl-list .owl-stage-outer,
+body.sl-pd .prod-owl-list .item,
+body.sl-pd .prod-owl-list .owl-item { max-height: var(--sl-cover, none); }
+body.sl-pd .prod-owl-list #main-image,
+body.sl-pd .prod-owl-list .item img {
+  max-height: var(--sl-cover, none) !important;
+  width: auto !important; max-width: 100% !important;
+  margin: 0 auto !important; object-fit: contain !important; border-radius: 10px; }
+
+/* ── ② 미리보기 ── */
+/* 아임웹이 그려 둔 상세정보 그림은 감춥니다 (우리 격자로 다시 세웁니다).
+   글은 그대로 두어야 하므로 그림만 가립니다. */
+body.sl-pd.sl-pd-on #prod_detail_body > p:has(> img) { display: none !important; }
+body.sl-pd.sl-pd-on #prod_detail_body img[class*="fr-"] { display: none !important; }
+
+.sp-box { margin: 22px 0 8px; font-family: 'Noto Sans KR', sans-serif; color: #243b53; }
+.sp-box * { box-sizing: border-box; }
+.sp-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.sp-head h3 { font-size: 17px; font-weight: 900; letter-spacing: -.02em; margin: 0; }
+.sp-cnt { background: #fdeef4; color: #c33e6d; border-radius: 100px;
+          padding: 3px 10px; font-size: 11.5px; font-weight: 800; }
+.sp-tip { margin-left: auto; font-size: 12px; color: #9db0c6; font-weight: 600; }
+
+/* 패키지에 든 자료를 고르는 단추 */
+.sp-kinds { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.sp-kind { border: 1px solid #e6ecf4; background: #fff; border-radius: 100px;
+  padding: 8px 16px; font-family: inherit; font-size: 13px; font-weight: 750;
+  color: #5b768f; cursor: pointer; transition: .14s; }
+.sp-kind:hover { border-color: #f2b8cd; color: #c33e6d; }
+.sp-kind.on { background: #e85a8a; border-color: #e85a8a; color: #fff; }
+.sp-from { font-size: 12px; color: #9db0c6; font-weight: 600; margin-bottom: 12px; }
+.sp-from b { color: #46617f; font-weight: 750; }
+
+.sp-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.sp-grid img { width: 100%; aspect-ratio: 4/5; object-fit: cover; object-position: top;
+  display: block; border: 1px solid #eef3f9; border-radius: 10px; background: #f4f8fd;
+  cursor: zoom-in; transition: .16s; }
+.sp-grid img:hover { border-color: #f2b8cd; box-shadow: 0 8px 22px rgba(232, 90, 138, .13); }
+.sp-wait { padding: 44px 20px; text-align: center; color: #9db0c6;
+  font-size: 13.5px; font-weight: 600; background: #fbfdff;
+  border: 1px solid #e6ecf4; border-radius: 12px; }
+
+/* 크게 보기 */
+.sp-lb { position: fixed; inset: 0; background: rgba(20, 32, 48, .9); z-index: 9999;
+  display: none; align-items: center; justify-content: center; padding: 26px; }
+.sp-lb.on { display: flex; }
+.sp-lb img { max-width: min(100%, 980px); max-height: 92vh; object-fit: contain; border-radius: 10px; }
+.sp-lb .x { position: absolute; top: 16px; right: 20px; border: 0;
+  background: rgba(255, 255, 255, .18); color: #fff; width: 40px; height: 40px;
+  border-radius: 100px; font-size: 20px; cursor: pointer; font-family: inherit; }
+.sp-lb .nav { position: absolute; top: 50%; transform: translateY(-50%); border: 0;
+  background: rgba(255, 255, 255, .18); color: #fff; width: 46px; height: 46px;
+  border-radius: 100px; font-size: 20px; cursor: pointer; font-family: inherit; }
+.sp-lb .nav.prev { left: 20px; }
+.sp-lb .nav.next { right: 20px; }
+.sp-lb .no { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  color: #fff; font-size: 13px; font-weight: 700; opacity: .8; }
+
+@media (max-width: 860px) {
+  /* 좁은 화면에서는 표지와 정보가 위아래로 놓여 높이를 맞출 것이 없습니다 */
+  body.sl-pd .prod-owl-list #main-image,
+  body.sl-pd .prod-owl-list .item img { max-height: none !important; }
+  .sp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+}
