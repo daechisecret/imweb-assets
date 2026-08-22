@@ -170,9 +170,15 @@
       });
   }
 
+  var built = 0;
   function build() {
     var board = document.querySelector('.widget.board');
-    if (!board || board.dataset.slBd === '1') return;
+    if (!board) return;
+    /* 이미 세워 둔 우리 목록이 화면에 붙어 있으면 아무것도 하지 않습니다 */
+    var mine = document.querySelector('.sl-bd');
+    if (mine && mine.isConnected) return;
+    if (board.dataset.slBd === '1' && mine) return;
+    if (++built > 5) return;          /* 어떤 일이 있어도 다섯 번을 넘기지 않습니다 */
     var rows = readRows(board);
     if (!rows.length) return;
     var pins = 0;
@@ -242,12 +248,8 @@
   setTimeout(build, 400);
   setTimeout(build, 1500);
   setTimeout(build, 3000);
-  /* 아임웹이 목록을 다시 그리면 우리 것도 다시 세웁니다 */
-  if (window.MutationObserver) {
-    var host = document.querySelector('.widget.board');
-    if (host && host.parentNode) {
-      var mo = new MutationObserver(function () { setTimeout(build, 60); });
-      mo.observe(host.parentNode, { childList: true, subtree: false });
-    }
-  }
+  /* ⚠ 예전에 여기서 MutationObserver 로 「아임웹이 목록을 다시 그리면 우리도 다시 세우기」를
+     했는데, **우리가 넣은 것을 스스로 다시 감지해** 끝없이 다시 세우는 고리가 되었습니다.
+     화면이 멈추고, 목록이 생겼다 사라지기를 되풀이해 눌러도 안 열렸습니다.
+     감시는 걷어내고, 아래 몇 번의 시도만 남깁니다. */
 })();
