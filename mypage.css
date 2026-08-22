@@ -26,6 +26,13 @@ body.sl-my .shop-content.mypage .row.show-grid {
   display: grid !important; grid-template-columns: 206px minmax(0, 1fr);
   gap: 24px; align-items: start; margin: 0 !important; }
 body.sl-my .shop-content.mypage .row.show-grid > div { width: auto !important; float: none !important; padding: 0 !important; }
+/* 이 줄에는 자식이 **셋**입니다 — 맨 앞의 .left-menu 는 휴대폰용이라 넓은 화면에서
+   높이가 0 이지만 **첫 칸을 차지해** 두 칸을 한 칸씩 밀어냅니다.
+   (그래서 메뉴가 오른쪽 넓은 칸으로, 본문이 왼쪽 좁은 칸으로 갔습니다.)
+   자리를 못박아 둡니다. */
+body.sl-my .shop-content.mypage .row.show-grid > .left-menu { grid-column: 1 / -1 !important; }
+body.sl-my .shop-content.mypage .row.show-grid > .col-md-2 { grid-column: 1 !important; grid-row: 2 !important; }
+body.sl-my .shop-content.mypage .row.show-grid > .col-md-10 { grid-column: 2 !important; grid-row: 2 !important; }
 
 /* ── ① 왼쪽 메뉴 ── */
 body.sl-my .col-md-2 ul {
@@ -240,6 +247,8 @@ body.sl-my #cocoaModal .check .form-label:has(input:checked) {
 
 @media (max-width: 900px) {
   body.sl-my .shop-content.mypage .row.show-grid { grid-template-columns: 1fr; }
+  body.sl-my .shop-content.mypage .row.show-grid > .col-md-2 { grid-column: 1 !important; }
+  body.sl-my .shop-content.mypage .row.show-grid > .col-md-10 { grid-column: 1 !important; grid-row: 3 !important; }
   body.sl-my .col-md-2 ul { position: static; display: flex; flex-wrap: wrap; gap: 4px; }
   body.sl-my .col-md-2 ul li a { padding: 9px 14px !important; border-radius: 100px; }
   body.sl-my .head .my-theme.tabled { flex-wrap: wrap; }
