@@ -843,21 +843,27 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
 #sl-store .sh-one .pp small { font-size: 12px; font-weight: 600; color: var(--mute); margin-left: 2px; }
 
 #sl-store .sh-rows { margin-top: 12px; border-top: 1px solid var(--line2); }
-#sl-store .sh-prow { display: flex; align-items: center; gap: 9px; padding: 8px 0; border-bottom: 1px solid var(--line2); }
+#sl-store .sh-prow { display: flex; align-items: center; gap: 8px; padding: 8px 0;
+  border-bottom: 1px solid var(--line2); min-width: 0; }
 #sl-store .sh-prow:last-child { border-bottom: 0; }
 /* ── 칸 폭을 못박습니다 ──
    자료마다 값이 한 줄이거나 두 줄이고, 한글 파일이 없는 줄도 있어서
    폭을 자동으로 두면 줄마다 칸이 밀려 어긋나 보입니다.
    자료 이름 · 금액 · 구매하기 세 칸을 **고정 폭**으로 세워 세로로 맞춥니다. */
-#sl-store .sh-prow .pn { font-size: 13px; font-weight: 700; width: 108px; flex: none; }
-#sl-store .sh-prow .pd { font-size: 11px; color: var(--dim); min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-#sl-store .sh-prow .pp { font-size: 13px; font-weight: 750; flex: none; width: 148px; text-align: right; font-variant-numeric: tabular-nums; }
+/* 자료 이름은 **줄어들 수 있게** 둡니다.
+   카드는 화면 너비에 따라 좁아지는데, 세 칸을 모두 고정 폭으로 잡아 두면
+   좁은 화면에서 장바구니가 카드 밖으로 삐져나갑니다. */
+#sl-store .sh-prow .pn { font-size: 13px; font-weight: 700; flex: 1 1 auto;
+  min-width: 68px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#sl-store .sh-prow .pd { display: none; }
+#sl-store .sh-prow .pp { font-size: 13px; font-weight: 750; flex: none; width: 132px; text-align: right; font-variant-numeric: tabular-nums; }
 /* 구매 단추는 PDF · HWP · 장바구니 **세 자리**로 나눕니다.
    단추가 없는 줄에도 자리가 남아 있어 아래윗줄과 나란히 섭니다. */
-#sl-store .sh-prow .fb { display: grid; grid-template-columns: 52px 52px 32px; gap: 5px;
+#sl-store .sh-prow .fb { display: grid; grid-template-columns: 44px 44px 30px; gap: 4px;
   flex: none; width: auto; justify-content: end; align-items: center; }
 #sl-store .sh-prow .fb > * { width: 100%; }
-#sl-store .sh-prow .fb .sh-btn { width: 100%; padding-left: 0; padding-right: 0; text-align: center; }
+#sl-store .sh-prow .fb .sh-btn { width: 100%; padding-left: 0; padding-right: 0;
+  text-align: center; font-size: 11px; }
 /* 장바구니는 수레 그림 하나 — 가운데 놓습니다 */
 #sl-store .sh-prow .fb .sh-btn.cart { display: inline-flex; align-items: center; justify-content: center; }
 #sl-store .sh-prow .fb .sh-btn.cart svg { display: block; }
@@ -865,7 +871,7 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
 #sl-store .sh-prow.head span { font-size: 10.5px; color: var(--dim); font-weight: 700; letter-spacing: .05em; }
 #sl-store .sh-prow.head .pp { text-align: right; }
 /* 머리글 「구매하기」는 세 자리를 통째로 써서 가운데 놓습니다 */
-#sl-store .sh-prow.head .fb { display: block !important; width: 141px; text-align: center; }
+#sl-store .sh-prow.head .fb { display: block !important; width: 126px; text-align: center; }
 /* 아직 안 올린 갈래 — 자리는 지키되 흐리게 둡니다 */
 #sl-store .sh-prow.soon .pn, #sl-store .sh-prow.soon .pd { color: var(--dim); }
 #sl-store .sh-prow .soonmark {
@@ -991,8 +997,7 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
    자료 이름은 한 줄 위로 올리고, 아래에 금액과 단추를 나란히 둡니다. */
 @media (max-width: 560px) {
   #sl-store .sh-prow { flex-wrap: wrap; gap: 4px 8px; padding: 10px 0; }
-  #sl-store .sh-prow .pn { width: 100%; }
-  #sl-store .sh-prow .pd { display: none; }
+  #sl-store .sh-prow .pn { flex: 0 0 100%; }
   #sl-store .sh-prow .pp { width: auto; flex: 1; text-align: left; }
   #sl-store .sh-prow .pr { justify-content: flex-start; }
   #sl-store .sh-prow .pr .amt { margin-left: 0; }
