@@ -39,7 +39,7 @@
 
   /* ── 지금 어느 탭인가 ──
      아임웹은 탭을 누르면 숨은 칸(input._type)에 값을 넣고 페이지를 다시 엽니다.
-       (없음)·goods = 쇼핑,  post = 게시판,  map = 지도,  gallery = 갤러리
+       (없음)·shopping = 쇼핑,  post = 게시판,  map = 지도,  gallery = 갤러리
      주소에도 type= 로 남으니 둘 다 봅니다. */
   function tabNow() {
     var m = /[?&]type=(\w+)/.exec(location.search);
@@ -48,7 +48,7 @@
       var box = document.querySelector('.search_widget input._type');
       v = box ? (box.value || '') : '';
     }
-    return v || 'goods';
+    return v || 'shopping';
   }
 
   /* 「지도」와 「갤러리」는 쓰지 않는 탭입니다.
@@ -240,7 +240,9 @@
       return;
     }
     document.body.classList.remove('sl-sc-post');
-    if (tab !== 'goods' && tab !== '') return;   /* 지도·갤러리는 손대지 않습니다 */
+    /* 지도·갤러리는 감춰 둔 탭입니다 — 혹시 들어오더라도 손대지 않습니다.
+       나머지(shopping, 값 없음)는 모두 쇼핑으로 봅니다. */
+    if (tab === 'map' || tab === 'gallery') return;
 
     if (!place()) return;
     document.body.classList.add('sl-sc-shop');
