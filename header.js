@@ -137,3 +137,17 @@
   setTimeout(go, 400);
   setTimeout(go, 1500);
 })();
+
+(function () {
+  function one() {
+    var head = document.getElementById('inline_header_mobile');
+    if (!head) return;
+    var logos = head.querySelectorAll('.widget.logo');
+    if (logos.length < 2) return;
+    for (var i = 1; i < logos.length; i++) logos[i].style.display = 'none';
+  }
+  one();
+  window.addEventListener('load', one);
+  setTimeout(one, 500);
+  setTimeout(one, 1800);
+})();
