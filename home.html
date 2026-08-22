@@ -1160,16 +1160,42 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
   /* 「.shut」은 넓은 화면에서 쓰던 접기 표시입니다 — 휴대폰에서는 쓰지 않습니다 */
   #sl-store .sh-drawer.shut .sh-dscroll { display: block; }
 
-  /* 서랍을 여는 단추 — 서랍이 있던 자리에 한 줄로 놓습니다 */
+  /* ── 서랍을 여는 단추 ──
+     휴대폰에서 손님이 가장 먼저 눌러야 할 곳입니다.
+     흰 상자로 두면 다른 칸과 섞여 그냥 지나치시므로,
+     **브랜드 분홍으로 채우고** 살짝 숨 쉬게 해 눈이 가게 합니다. */
   #sl-store .sh-open {
-    display: flex; align-items: center; gap: 10px; width: 100%;
-    padding: 14px; margin-bottom: 12px;
-    border: 1px solid var(--line); border-radius: var(--r); background: var(--panel);
-    font-family: inherit; font-size: 14px; font-weight: 800; color: var(--ink); }
+    display: flex; align-items: center; gap: 11px; width: 100%;
+    padding: 16px 16px; margin-bottom: 14px;
+    border: 0; border-radius: 14px;
+    background: linear-gradient(135deg, #e85a8a, #c33e6d);
+    color: #fff; font-family: inherit; font-size: 15.5px; font-weight: 800;
+    letter-spacing: -.02em; text-align: left;
+    box-shadow: 0 6px 18px rgba(232, 90, 138, .32);
+    animation: sl-breathe 2.6s ease-in-out 3; }
   #sl-store .sh-open .ic {
-    width: 30px; height: 30px; border-radius: 9px; background: var(--roseb); color: var(--rose2);
-    display: flex; align-items: center; justify-content: center; font-size: 14px; flex: none; }
-  #sl-store .sh-open .sb { margin-left: auto; font-size: 11.5px; color: var(--mute); font-weight: 600; }
+    width: 34px; height: 34px; border-radius: 10px;
+    background: rgba(255, 255, 255, .22); color: #fff;
+    display: flex; align-items: center; justify-content: center; font-size: 16px; flex: none; }
+  #sl-store .sh-open .sb {
+    margin-left: auto; font-size: 12px; color: #fff; font-weight: 700;
+    background: rgba(255, 255, 255, .22); border-radius: 100px; padding: 4px 10px;
+    white-space: nowrap; }
+  /* 「누르면 아래에서 열립니다」 를 화살표로 알려 줍니다 */
+  #sl-store .sh-open::after {
+    content: '▾'; font-size: 15px; margin-left: 2px; opacity: .9; }
+  #sl-store .sh-open:active { transform: scale(.985); }
+  @keyframes sl-breathe {
+    0%, 100% { box-shadow: 0 6px 18px rgba(232, 90, 138, .32); }
+    50%      { box-shadow: 0 8px 26px rgba(232, 90, 138, .55); }
+  }
+  /* 움직임을 싫어하시는 분(운영체제 설정)에게는 멈춰 둡니다 */
+  @media (prefers-reduced-motion: reduce) {
+    #sl-store .sh-open { animation: none; }
+  }
+  /* 단추 위 한 줄 안내 */
+  #sl-store .sh-opentip {
+    display: block; margin: 0 0 7px; font-size: 12.5px; font-weight: 700; color: var(--rose2); }
   /* 뒤쪽을 어둡게 */
   #sl-store .sh-veil {
     display: none; position: fixed; inset: 0; z-index: 1190; background: rgba(20, 32, 48, .38); }
@@ -1212,7 +1238,7 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
    (예전에는 미디어쿼리 **뒤에** 그냥 두어서, 휴대폰에서도 이 규칙이 이겨
     「교재 고르기」 단추가 아예 안 보였습니다.) */
 @media (min-width: 861px) {
-  #sl-store .sh-open, #sl-store .sh-veil { display: none !important; }
+  #sl-store .sh-open, #sl-store .sh-veil, #sl-store .sh-opentip { display: none !important; }
 }
 /* 휴대폰에서는 세 칸이 다 들어가지 않습니다.
    자료 이름은 한 줄 위로 올리고, 아래에 금액과 단추를 나란히 둡니다. */
@@ -1894,6 +1920,7 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
     ROOT.innerHTML =
       '<div class="sh-split">' +
         '<div>' +
+        '<span class="sh-opentip">교재를 고르시면 자료 라인업이 모두 나옵니다</span>' +
         '<button type="button" class="sh-open" data-act="sheet"><span class="ic">📚</span>교재 고르기' +
         '<span class="sb">' + BOOKS.length + '종</span></button>' +
         '<div class="sh-veil" data-act="sheet-close"></div>' +
