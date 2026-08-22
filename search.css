@@ -17,7 +17,8 @@ body.sl-sc-shop .search_widget .shop-tools { display: none !important; }
 
 body.sl-sc .search_widget .categorize { margin-bottom: 0 !important; }
 
-.sq { max-width: 1180px; margin: 4px auto 60px; padding: 0 4px;
+/* 아임웹 검색 위젯과 **같은 폭**을 씁니다. 서로 다르면 왼쪽 끝이 어긋나 보입니다. */
+.sq { max-width: none; margin: 4px 0 60px; padding: 0;
       font-family: 'Noto Sans KR', sans-serif; color: #243b53; }
 .sq * { box-sizing: border-box; }
 .sq a { text-decoration: none; color: inherit; }
@@ -124,7 +125,7 @@ body.sl-sc .search_widget .categorize { margin-bottom: 0 !important; }
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── 검색칸 ── */
-body.sl-sc .search_widget .control_box { margin: 0 auto 4px !important; padding: 26px 0 4px !important; }
+body.sl-sc .search_widget .control_box { margin: 0 auto 4px !important; padding: 34px 0 6px !important; }
 body.sl-sc .search_widget .control_box form { max-width: 560px; margin: 0 auto; }
 body.sl-sc .search_widget .control_box .form-group > div {
   position: relative; background: #fff; border: 2px solid #f3dae4 !important;
@@ -151,8 +152,10 @@ body.sl-sc .search_widget .control_box a.icon.close:hover { color: #c33e6d !impo
 /* ── 탭 (쇼핑 · 게시판) ──
    「지도」와 「갤러리」는 쓰지 않아 search.js 가 sl-hide 를 붙여 감춥니다. */
 body.sl-sc .search_widget .site_nav {
-  display: inline-flex !important; gap: 4px; border: 0 !important;
-  background: #f2f6fb; border-radius: 100px; padding: 4px; margin: 6px 0 16px !important; }
+  display: inline-flex !important; align-items: center; gap: 4px; border: 0 !important;
+  background: #f2f6fb; border-radius: 100px; padding: 4px;
+  margin: 6px 0 16px !important; list-style: none !important; }
+body.sl-sc .search_widget .site_nav li { display: block !important; list-style: none !important; }
 /* 아임웹은 고른 탭 아래에 검은 밑줄을 그립니다 (li·a 양쪽에).
    알약 모양으로 바꿨으니 밑줄은 지웁니다. */
 body.sl-sc .search_widget .site_nav li,
@@ -166,7 +169,10 @@ body.sl-sc .search_widget .site_nav a { border-bottom: 0 !important; }
 body.sl-sc .search_widget .site_nav li.sl-hide { display: none !important; }
 body.sl-sc .search_widget .site_nav a {
   display: block !important; border: 0 !important; border-radius: 100px !important;
-  padding: 9px 22px !important; font-family: 'Noto Sans KR', sans-serif !important;
+  /* 아임웹이 이 링크에 68px 짜리 줄높이를 줍니다 — 알약이 세로로 부풀어 터집니다 */
+  height: auto !important; line-height: 1.4 !important;
+  padding: 9px 22px !important; margin: 0 !important;
+  font-family: 'Noto Sans KR', sans-serif !important;
   font-size: 13.5px !important; font-weight: 750 !important; color: #7e93ab !important;
   background: transparent !important; transition: .14s; }
 body.sl-sc .search_widget .site_nav a:hover { color: #c33e6d !important; }
@@ -178,7 +184,9 @@ body.sl-sc .search_widget .site_nav a.active {
 body.sl-sc .search_widget .shop-tools {
   display: flex !important; align-items: center; justify-content: space-between;
   gap: 12px; margin: 0 0 14px !important; padding: 0 !important; float: none !important; }
-body.sl-sc .search_widget .shop-tools > div { float: none !important; margin: 0 !important; }
+body.sl-sc .search_widget .shop-tools > div {
+  float: none !important; margin: 0 !important; width: auto !important;
+  flex: 0 0 auto !important; text-align: left !important; }
 body.sl-sc .search_widget .shop-tools .inline-blocked span {
   font-family: 'Noto Sans KR', sans-serif !important; font-size: 15px !important;
   font-weight: 900 !important; color: #243b53 !important; letter-spacing: -.02em; }
@@ -191,7 +199,9 @@ body.sl-sc .search_widget .shop-tools select.form-control {
 /* ── 게시판 탭 결과 ──
    아임웹이 준 줄(.repeat_area)을 그대로 쓰되 카드 모양으로 다듬습니다. */
 body.sl-sc-post .search_widget .view_box {
-  background: #fff; border: 1px solid #e6ecf4; border-radius: 14px; overflow: hidden; }
+  background: #fff; border: 1px solid #e6ecf4; border-radius: 14px; overflow: hidden;
+  padding: 0 !important;                 /* 아임웹이 위아래로 50px 씩 벌려 둡니다 */
+  margin: 0 !important; }
 body.sl-sc-post .search_widget .repeat_area {
   padding: 0 !important; margin: 0 !important; border: 0 !important;
   border-bottom: 1px solid #f4f8fd !important; }
