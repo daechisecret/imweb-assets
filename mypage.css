@@ -1,0 +1,249 @@
+/* ═══════════════════════════════════════════════════════════════
+   대치동시크릿 마이페이지  —  짝꿍 : themes/mypage.js
+
+   ⚠ 여기는 **모양만** 바꿉니다.
+      다운로드·구매확정·구매평·위시 빼기·정보 저장은 모두 아임웹 기능입니다.
+      단추를 옮기거나 다시 만들지 않고, 아임웹이 그려 둔 것에
+      **꾸미기만 덧입힙니다.** 그래야 눌렀을 때 하던 일이 그대로 돕니다.
+
+   손보는 곳
+     ① 왼쪽 메뉴      밑줄 목록 → 카드 (아이콘·개수 딱지, 재입고 알림은 감춤)
+     ② 인사 칸        회색 띠 → 카드
+     ③ 주문 조회      표 → 주문번호 머리줄 + 자료 줄
+     ④ 최근 본·위시   좁은 띠 → 네 칸 격자
+     ⑤ 쿠폰           목록 → 쿠폰 모양 카드
+     ⑥ 적립금         표 → 남은 적립금 + 내역 줄
+     ⑦ 1:1 문의       게시판 줄 다듬기
+     ⑧ 정보 수정 창   370px → 460px, 체크상자 27개 → 알약
+   ═══════════════════════════════════════════════════════════════ */
+
+body.sl-my { background: #f3f6fa; }
+body.sl-my .shop-content.mypage { font-family: 'Noto Sans KR', sans-serif; color: #243b53; }
+body.sl-my .shop-content.mypage * { box-sizing: border-box; }
+
+/* 두 단 — 왼쪽 메뉴 206px, 오른쪽 본문 */
+body.sl-my .shop-content.mypage .row.show-grid {
+  display: grid !important; grid-template-columns: 206px minmax(0, 1fr);
+  gap: 24px; align-items: start; margin: 0 !important; }
+body.sl-my .shop-content.mypage .row.show-grid > div { width: auto !important; float: none !important; padding: 0 !important; }
+
+/* ── ① 왼쪽 메뉴 ── */
+body.sl-my .col-md-2 ul {
+  background: #fff; border: 1px solid #e6ecf4; border-radius: 14px;
+  padding: 8px !important; margin: 0 !important; list-style: none !important;
+  position: sticky; top: 96px; width: auto !important; }
+body.sl-my .col-md-2 ul li { list-style: none !important; margin: 0 !important; height: auto !important; }
+body.sl-my .col-md-2 ul li.sl-hide { display: none !important; }
+body.sl-my .col-md-2 ul li a {
+  display: flex !important; align-items: center; gap: 9px;
+  padding: 10px 13px !important; border-radius: 9px; border: 0 !important;
+  font-size: 13.5px !important; font-weight: 650 !important; color: #5b768f !important;
+  text-decoration: none !important; transition: .13s; line-height: 1.4 !important; }
+body.sl-my .col-md-2 ul li a:hover { background: #f6f9fd; color: #c33e6d !important; }
+body.sl-my .col-md-2 ul li.on a,
+body.sl-my .col-md-2 ul li a.on {
+  background: #fdeef4; color: #c33e6d !important; font-weight: 800 !important;
+  text-decoration: none !important; }
+body.sl-my .col-md-2 ul li a .sl-ic { font-style: normal; width: 17px; text-align: center; opacity: .75; flex: none; }
+body.sl-my .col-md-2 ul li a .sl-n {
+  margin-left: auto; font-size: 11.5px; font-weight: 800; color: #e85a8a;
+  background: #fdeef4; border-radius: 100px; padding: 1px 7px; }
+body.sl-my .col-md-2 ul li.on a .sl-n { background: #fff; }
+
+/* ── ② 인사 칸 ── */
+body.sl-my .head.bg-bright {
+  background: #fff !important; border: 1px solid #e6ecf4; border-radius: 16px;
+  padding: 22px 26px !important; margin: 0 0 16px !important; }
+body.sl-my .head .my-theme.tabled { display: flex !important; align-items: center; gap: 20px; width: 100% !important; }
+body.sl-my .head .table-cell { display: block !important; width: auto !important; }
+body.sl-my .head .img-view { flex: 1; min-width: 0; }
+body.sl-my .head .img-view .tabled { display: flex !important; align-items: center; gap: 18px; }
+body.sl-my .head .tumbs { flex: none; width: auto !important; }
+body.sl-my .head .tumbs img,
+body.sl-my #mypage_profile_img {
+  width: 60px !important; height: 60px !important; border-radius: 100px !important; object-fit: cover; }
+body.sl-my .head .nick { flex: 1; min-width: 0; margin: 0 !important; }
+body.sl-my .head .ug_name {
+  display: inline-block; background: #fdeef4; color: #c33e6d !important;
+  border-radius: 100px; padding: 3px 10px; margin-bottom: 7px;
+  font-size: 11.5px !important; font-weight: 800 !important; line-height: 1.5 !important; }
+body.sl-my .head .nick > span:not(.ug_name) {
+  display: block; font-size: 19px !important; font-weight: 900 !important;
+  color: #243b53 !important; letter-spacing: -.02em; line-height: 1.4 !important; }
+/* 「구매금액 500,000원 달성 시 …」 안내와 등급혜택 단추는 감춥니다 */
+body.sl-my .head .use_grade { display: none !important; }
+/* 적립금·쿠폰 */
+body.sl-my .head .point-view,
+body.sl-my .head .coupon-view {
+  flex: none !important; padding: 0 22px !important; border-left: 1px solid #f2f6fb; text-align: center; }
+body.sl-my .head .point-view p,
+body.sl-my .head .coupon-view p {
+  font-size: 11.5px !important; font-weight: 750 !important; color: #8fa3bb !important;
+  margin: 0 0 5px !important; }
+body.sl-my .head .point-view .text-32,
+body.sl-my .head .coupon-view .text-32 {
+  font-size: 25px !important; font-weight: 900 !important; color: #243b53 !important;
+  letter-spacing: -.02em; }
+
+/* ── 공통 : 본문 상자 ── */
+body.sl-my .col-md-10 > .table-wrap,
+body.sl-my .col-md-10 > div > .table-wrap,
+body.sl-my #couopn_list > .table-wrap,
+body.sl-my #shop_mypage_orderlist {
+  background: #fff; border: 1px solid #e6ecf4; border-radius: 16px;
+  padding: 0 !important; margin: 0 0 16px !important; overflow: hidden; }
+body.sl-my .col-md-10 h6 {
+  display: flex !important; align-items: center; gap: 9px;
+  padding: 17px 22px !important; margin: 0 !important;
+  border-bottom: 1px solid #f2f6fb;
+  font-size: 15.5px !important; font-weight: 900 !important; color: #243b53 !important; }
+body.sl-my .col-md-10 h6 .badge {
+  background: #fdeef4 !important; color: #c33e6d !important; border-radius: 100px;
+  padding: 2px 9px; font-size: 11.5px !important; font-weight: 800 !important; }
+/* 「주문 조회」 같은 제목 줄 */
+body.sl-my .col-md-10 > .im-body-size-140 {
+  font-size: 15.5px !important; font-weight: 900 !important; margin: 4px 0 12px !important; }
+
+/* ── ③ 주문 조회 ── */
+body.sl-my #shop_mypage_orderlist table { margin: 0 !important; border: 0 !important; }
+body.sl-my #shop_mypage_orderlist table + table { border-top: 1px solid #f4f8fd !important; }
+body.sl-my #shop_mypage_orderlist th {
+  background: #fbfdff !important; border: 0 !important; border-bottom: 1px solid #f2f6fb !important;
+  padding: 12px 22px !important; font-size: 12.5px !important; font-weight: 700 !important;
+  color: #7e93ab !important; vertical-align: middle; }
+body.sl-my #shop_mypage_orderlist th .text-primary,
+body.sl-my #shop_mypage_orderlist th a { color: #243b53 !important; font-weight: 800 !important; }
+body.sl-my #shop_mypage_orderlist td {
+  border: 0 !important; border-top: 1px solid #f4f8fd !important;
+  padding: 14px 22px !important; vertical-align: middle; }
+body.sl-my #shop_mypage_orderlist td img {
+  width: 60px !important; height: 60px !important; border-radius: 9px !important;
+  object-fit: cover; background: #f4f8fd; }
+body.sl-my #shop_mypage_orderlist td .text-bold {
+  font-size: 13.5px !important; font-weight: 700 !important; color: #243b53 !important;
+  line-height: 1.45 !important; }
+/* 단추 — 다운로드를 분홍으로 올립니다 (아임웹 단추 그대로, 색만) */
+body.sl-my .cart-btn-tools .btn {
+  border-radius: 100px !important; padding: 8px 15px !important; margin: 3px 0 3px 5px !important;
+  border: 1px solid #e6ecf4 !important; background: #fff !important; color: #5b768f !important;
+  font-family: 'Noto Sans KR', sans-serif !important;
+  font-size: 12px !important; font-weight: 750 !important; line-height: 1.4 !important; }
+body.sl-my .cart-btn-tools .btn:hover { border-color: #f2b8cd !important; color: #c33e6d !important; }
+body.sl-my .cart-btn-tools .btn-digital-download,
+body.sl-my .cart-btn-tools .btn.download {
+  background: #e85a8a !important; border-color: #e85a8a !important; color: #fff !important; }
+body.sl-my .cart-btn-tools .btn-digital-download:hover,
+body.sl-my .cart-btn-tools .btn.download:hover {
+  background: #c33e6d !important; border-color: #c33e6d !important; color: #fff !important; }
+body.sl-my .order_title { font-size: 12.5px !important; font-weight: 700 !important; color: #7e93ab !important; }
+
+/* ── ④ 최근 본 상품 · 위시 리스트 ── */
+body.sl-my #list_wrap {
+  display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px; padding: 18px 22px !important; }
+body.sl-my #list_wrap .shop-item {
+  width: auto !important; float: none !important; margin: 0 !important; padding: 0 !important;
+  border: 1px solid #eef3f9; border-radius: 12px; overflow: hidden; transition: .15s; }
+body.sl-my #list_wrap .shop-item:hover {
+  border-color: #f2b8cd; box-shadow: 0 8px 20px rgba(232, 90, 138, .10); }
+body.sl-my #list_wrap .recent_view_thumb img,
+body.sl-my #list_wrap .wish_thumb img,
+body.sl-my #list_wrap .shop-item img {
+  width: 100% !important; aspect-ratio: 1; object-fit: cover; display: block; background: #f4f8fd; }
+body.sl-my #list_wrap .item-detail { padding: 10px 11px 12px !important; }
+body.sl-my #list_wrap .item-detail .name,
+body.sl-my #list_wrap .item-detail a {
+  font-size: 12.5px !important; font-weight: 700 !important; color: #243b53 !important;
+  line-height: 1.45 !important; }
+body.sl-my #list_wrap .item-detail .price,
+body.sl-my #list_wrap .item-detail .sale_price {
+  font-size: 13.5px !important; font-weight: 900 !important; color: #243b53 !important; }
+
+/* ── ⑤ 쿠폰 ── */
+body.sl-my .mypage_coupon_list { padding: 18px 22px !important; display: grid; gap: 12px; }
+body.sl-my .mypage_coupon_list > * {
+  border: 1px dashed #f2b8cd !important; border-radius: 12px !important;
+  background: #fffafc !important; padding: 16px 18px !important; margin: 0 !important; }
+
+/* ── ⑥ 적립금 ── */
+body.sl-my #shop_mypage_pointlist_table { margin: 0 !important; }
+body.sl-my #shop_mypage_pointlist_table th {
+  background: #fbfdff !important; border: 0 !important; border-bottom: 1px solid #f2f6fb !important;
+  padding: 11px 22px !important; font-size: 11.5px !important; font-weight: 800 !important;
+  color: #8fa3bb !important; }
+body.sl-my #shop_mypage_pointlist_table td {
+  border: 0 !important; border-bottom: 1px solid #f4f8fd !important;
+  padding: 14px 22px !important; font-size: 13px !important; font-weight: 600 !important;
+  color: #5b768f !important; }
+body.sl-my .point_amount { font-size: 26px !important; font-weight: 900 !important; }
+body.sl-my .bg-brand { background: linear-gradient(90deg, #fdf3f7, #fff) !important; color: #243b53 !important; }
+
+/* ── ⑦ 1:1 문의 ── */
+body.sl-my .personal_qna_wrap {
+  background: #fff; border: 1px solid #e6ecf4; border-radius: 16px;
+  padding: 6px 6px 10px !important; }
+
+/* ── ⑧ 정보 수정 창 ── */
+body.sl-my #cocoaModal .modal-dialog { max-width: 460px !important; width: 460px !important; }
+body.sl-my #cocoaModal .modal-content { border: 0 !important; border-radius: 18px !important;
+  box-shadow: 0 14px 40px rgba(36, 59, 83, .18) !important; overflow: hidden; }
+body.sl-my #cocoaModal .modal_article { padding: 24px 26px 26px !important; }
+body.sl-my #cocoaModal h2 {
+  font-family: 'Noto Sans KR', sans-serif !important;
+  font-size: 17px !important; font-weight: 900 !important; color: #243b53 !important;
+  text-align: center; margin-bottom: 18px !important; }
+body.sl-my #cocoaModal input[type="text"],
+body.sl-my #cocoaModal input[type="email"],
+body.sl-my #cocoaModal input[type="password"],
+body.sl-my #cocoaModal input[type="tel"],
+body.sl-my #cocoaModal select {
+  height: 46px !important; border: 1.5px solid #e6ecf4 !important; border-radius: 11px !important;
+  background: #fbfdff !important; padding: 0 14px !important;
+  font-family: 'Noto Sans KR', sans-serif !important;
+  font-size: 13.5px !important; font-weight: 600 !important; color: #243b53 !important;
+  box-shadow: none !important; }
+body.sl-my #cocoaModal input:focus,
+body.sl-my #cocoaModal select:focus {
+  border-color: #e85a8a !important; background: #fff !important; outline: 0 !important;
+  box-shadow: 0 0 0 4px rgba(232, 90, 138, .12) !important; }
+body.sl-my #cocoaModal .btn-primary,
+body.sl-my #cocoaModal button[type="submit"] {
+  height: 50px !important; border: 0 !important; border-radius: 100px !important;
+  background: #e85a8a !important; background-color: #e85a8a !important; color: #fff !important;
+  font-family: 'Noto Sans KR', sans-serif !important;
+  font-size: 14.5px !important; font-weight: 800 !important;
+  box-shadow: 0 4px 14px rgba(232, 90, 138, .28) !important; }
+
+/* 체크상자 27개를 알약으로 —
+   **진짜 체크상자는 그대로 둡니다.** 눈에만 안 보이게 하고 label 을 알약처럼 꾸밉니다.
+   그래야 눌렀을 때 아임웹이 읽는 값이 예전과 똑같이 바뀝니다. */
+body.sl-my #cocoaModal .check { display: flex !important; flex-wrap: wrap; gap: 6px; }
+body.sl-my #cocoaModal .check .checkbox-styled { margin: 0 !important; width: auto !important; }
+body.sl-my #cocoaModal .check .form-label {
+  display: inline-flex !important; align-items: center; gap: 5px; margin: 0 !important;
+  border: 1px solid #e6ecf4; border-radius: 100px; padding: 8px 13px;
+  font-family: 'Noto Sans KR', sans-serif !important;
+  font-size: 12.5px !important; font-weight: 700 !important; color: #5b768f !important;
+  cursor: pointer; transition: .13s; }
+body.sl-my #cocoaModal .check .form-label:hover { border-color: #f2b8cd; color: #c33e6d !important; }
+body.sl-my #cocoaModal .check .form-label input[type="checkbox"] {
+  appearance: none; -webkit-appearance: none; width: 13px; height: 13px; margin: 0 !important;
+  border: 1.5px solid #d7e2ee; border-radius: 4px; position: relative; flex: none; transition: .13s; }
+body.sl-my #cocoaModal .check .form-label input[type="checkbox"]:checked {
+  background: #e85a8a; border-color: #e85a8a; }
+body.sl-my #cocoaModal .check .form-label input[type="checkbox"]:checked::after {
+  content: ''; position: absolute; left: 3.5px; top: .5px; width: 3px; height: 7px;
+  border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(42deg); }
+/* 고른 것은 알약째로 분홍이 되게 (:has 를 못 읽는 브라우저에서도 위 체크표는 보입니다) */
+body.sl-my #cocoaModal .check .form-label:has(input:checked) {
+  background: #fdeef4; border-color: #f2b8cd; color: #c33e6d !important; font-weight: 800 !important; }
+
+@media (max-width: 900px) {
+  body.sl-my .shop-content.mypage .row.show-grid { grid-template-columns: 1fr; }
+  body.sl-my .col-md-2 ul { position: static; display: flex; flex-wrap: wrap; gap: 4px; }
+  body.sl-my .col-md-2 ul li a { padding: 9px 14px !important; border-radius: 100px; }
+  body.sl-my .head .my-theme.tabled { flex-wrap: wrap; }
+  body.sl-my .head .point-view { border-left: 0; padding-left: 0 !important; }
+  body.sl-my #list_wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.sl-my #cocoaModal .modal-dialog { max-width: none !important; width: auto !important; margin: 12px !important; }
+}

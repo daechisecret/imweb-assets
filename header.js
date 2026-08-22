@@ -103,3 +103,23 @@
   setTimeout(go, 400);
   setTimeout(go, 1500);
 })();
+
+(function () {
+  var BASE = 'https://daechisecret.github.io/imweb-assets/';
+  var V = '70032ff1';
+  var done = false;
+  function go() {
+    if (done || !document.querySelector('.shop-content.mypage')) return;
+    done = true;
+    var css = document.createElement('link');
+    css.rel = 'stylesheet'; css.href = BASE + 'mypage.css?v=' + V;
+    document.head.appendChild(css);
+    var js = document.createElement('script');
+    js.src = BASE + 'mypage.js?v=' + V; js.defer = true;
+    document.head.appendChild(js);
+  }
+  go();
+  window.addEventListener('load', go);
+  setTimeout(go, 400);
+  setTimeout(go, 1500);
+})();
