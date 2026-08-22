@@ -1,0 +1,120 @@
+/* ═══════════════════════════════════════════════════════════════
+   대치동시크릿 로그인·회원가입 화면  —  짝꿍 : themes/login.js
+
+   아임웹 기본 화면은 상자가 **화면 폭(1280px)을 통째로** 씁니다.
+   노란 카카오 띠와 검은 로그인 띠가 벽처럼 가로지르고, 입력칸은
+   테두리만 있는 네모라 어디를 눌러야 할지 눈에 안 들어옵니다.
+
+   여기서는 **폭 420px 짜리 카드 한 장**으로 모으고,
+   단추와 입력칸을 사이트의 분홍 알약 모양으로 맞춥니다.
+
+   ⚠ 아이디·비밀번호 칸은 **모양만** 바꿉니다.
+      이름(name=uid, passwd)·동작은 아임웹 것을 그대로 둡니다.
+   ═══════════════════════════════════════════════════════════════ */
+
+body.sl-lg { background: #f6f8fb; }
+
+/* 카드 — 로그인 위젯을 가운데로 모읍니다 */
+body.sl-lg .widget.login,
+body.sl-lg .widget.join,
+body.sl-lg .widget.find_account {
+  max-width: 420px !important; margin: 0 auto !important;
+  background: #fff; border: 1px solid #e6ecf4; border-radius: 18px;
+  padding: 30px 28px 26px !important;
+  box-shadow: 0 10px 34px rgba(36, 59, 83, .07);
+  font-family: 'Noto Sans KR', sans-serif;
+}
+body.sl-lg .widget.login *,
+body.sl-lg .widget.join * { box-sizing: border-box; }
+
+/* 우리가 얹는 머리말 */
+.sl-lghead { max-width: 420px; margin: 44px auto 16px; text-align: center;
+  font-family: 'Noto Sans KR', sans-serif; }
+.sl-lghead .eb { font-size: 11.5px; font-weight: 800; letter-spacing: .16em;
+  color: #e85a8a; margin-bottom: 8px; }
+.sl-lghead h1 { font-size: 24px; font-weight: 900; color: #243b53;
+  letter-spacing: -.02em; margin: 0; }
+.sl-lghead p { margin-top: 8px; font-size: 13.5px; color: #8fa3bb; font-weight: 600; }
+.sl-lgfoot { max-width: 420px; margin: 18px auto 70px; text-align: center;
+  font-size: 12.5px; color: #9db0c6; font-weight: 600;
+  font-family: 'Noto Sans KR', sans-serif; }
+
+/* ── 카카오로 시작하기 ── */
+body.sl-lg .sns_login_form { margin: 0 0 16px !important; }
+body.sl-lg .sns_login_form p { margin: 0 !important; }
+body.sl-lg .btn-kakao {
+  display: flex !important; align-items: center; justify-content: center; gap: 8px;
+  height: 50px !important; line-height: 1 !important; border: 0 !important;
+  border-radius: 12px !important; background: #fee500 !important; color: #191600 !important;
+  font-family: 'Noto Sans KR', sans-serif !important;
+  font-size: 14.5px !important; font-weight: 800 !important;
+  box-shadow: none !important; transition: .14s; }
+body.sl-lg .btn-kakao:hover { filter: brightness(.96); }
+
+/* ── 「또는」 구분선 ── */
+body.sl-lg .divider { position: relative; margin: 4px 0 18px !important;
+  color: #b6c4d4 !important; font-size: 12px; font-weight: 700; }
+body.sl-lg .divider .border { display: none !important; }
+body.sl-lg .divider::before { content: ''; position: absolute; left: 0; right: 0; top: 50%;
+  height: 1px; background: #eef3f9; }
+body.sl-lg .divider > *:not(.border) { position: relative; background: #fff; padding: 0 12px; }
+
+/* ── 입력칸 ── */
+body.sl-lg .input_block { border: 0 !important; margin-bottom: 14px !important; }
+body.sl-lg .input_form { position: relative; border: 0 !important; margin-bottom: 8px !important; }
+body.sl-lg .input_form input[type="text"],
+body.sl-lg .input_form input[type="password"],
+body.sl-lg .input_form input[type="email"],
+body.sl-lg .input_form input[type="tel"] {
+  width: 100% !important; height: 50px !important; line-height: 50px !important;
+  border: 1.5px solid #e6ecf4 !important; border-radius: 12px !important;
+  background: #fbfdff !important; padding: 0 44px 0 16px !important;
+  font-family: 'Noto Sans KR', sans-serif !important;
+  font-size: 14.5px !important; font-weight: 600 !important; color: #243b53 !important;
+  box-shadow: none !important; transition: .14s; }
+body.sl-lg .input_form input::placeholder { color: #b6c4d4 !important; font-weight: 500 !important; }
+body.sl-lg .input_form input:focus {
+  border-color: #e85a8a !important; background: #fff !important;
+  box-shadow: 0 0 0 4px rgba(232, 90, 138, .12) !important; outline: 0 !important; }
+/* 비밀번호 보기 눈 아이콘은 아임웹 것을 그대로 두고 자리만 잡습니다 */
+body.sl-lg .input_form .right-icons { right: 14px !important; }
+
+/* ── 로그인 상태 유지 ── */
+body.sl-lg .cheak_article { margin: 2px 0 16px !important; }
+body.sl-lg .cheak_article .form-label { display: flex !important; align-items: center; gap: 8px;
+  font-family: 'Noto Sans KR', sans-serif !important;
+  font-size: 13px !important; font-weight: 650 !important; color: #5b768f !important; }
+body.sl-lg .cheak_article .agree_tit { color: #5b768f !important; }
+
+/* ── 로그인 단추 ── */
+body.sl-lg .widget.login .btn-primary,
+body.sl-lg .widget.join .btn-primary,
+body.sl-lg .widget.login button[type="submit"] {
+  width: 100% !important; height: 52px !important; line-height: 1 !important;
+  border: 0 !important; border-radius: 100px !important;
+  background: #e85a8a !important; background-color: #e85a8a !important; color: #fff !important;
+  font-family: 'Noto Sans KR', sans-serif !important;
+  font-size: 15px !important; font-weight: 800 !important;
+  box-shadow: 0 4px 14px rgba(232, 90, 138, .28) !important; transition: .14s; }
+body.sl-lg .widget.login .btn-primary:hover,
+body.sl-lg .widget.join .btn-primary:hover {
+  background-color: #c33e6d !important; box-shadow: 0 6px 18px rgba(195, 62, 109, .32) !important; }
+
+/* ── 맨 아래 : 회원가입 · 아이디/비밀번호 찾기 ── */
+body.sl-lg .widget.login .over_h {
+  display: flex !important; align-items: center; justify-content: space-between;
+  gap: 10px; margin-top: 18px !important; padding-top: 16px;
+  border-top: 1px solid #f2f6fb; }
+body.sl-lg .widget.login .over_h a {
+  float: none !important; font-family: 'Noto Sans KR', sans-serif !important;
+  font-size: 13px !important; font-weight: 700 !important; color: #7e93ab !important; }
+body.sl-lg .widget.login .over_h a:hover { color: #c33e6d !important; }
+body.sl-lg .widget.login .over_h a.float_l { color: #c33e6d !important; }
+
+@media (max-width: 520px) {
+  body.sl-lg .widget.login,
+  body.sl-lg .widget.join,
+  body.sl-lg .widget.find_account { margin: 0 16px !important; padding: 24px 20px 22px !important; }
+  .sl-lghead { margin-top: 28px; padding: 0 16px; }
+  .sl-lghead h1 { font-size: 21px; }
+}

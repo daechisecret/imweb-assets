@@ -82,3 +82,24 @@
   setTimeout(go, 500);
   setTimeout(go, 1600);
 })();
+
+(function () {
+  var BASE = 'https://daechisecret.github.io/imweb-assets/';
+  var V = 'd744a0fa';
+  var done = false;
+  function go() {
+    if (done) return;
+    if (!document.querySelector('.widget.login, .widget.join, .widget.find_account')) return;
+    done = true;
+    var css = document.createElement('link');
+    css.rel = 'stylesheet'; css.href = BASE + 'login.css?v=' + V;
+    document.head.appendChild(css);
+    var js = document.createElement('script');
+    js.src = BASE + 'login.js?v=' + V; js.defer = true;
+    document.head.appendChild(js);
+  }
+  go();
+  window.addEventListener('load', go);
+  setTimeout(go, 400);
+  setTimeout(go, 1500);
+})();
