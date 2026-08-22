@@ -134,6 +134,15 @@
 
 /* ── 휴대폰 (390px 기준) ── */
 @media (max-width:520px){
+  /* ⚠ 대문 카드가 575px 로 벌어져 오른쪽이 잘렸습니다.
+     칸마다 「더 줄어도 된다(min-width:0)」 고 알려 줘야 화면 안에 들어옵니다. */
+  #sl-hub,#sl-hub *{min-width:0}
+  #sl-hub .hb-card,#sl-hub .hb-cap,#sl-hub .hb-notice,#sl-hub .hb-rev,
+  #sl-hub .hb-q,#sl-hub .hb-btn,#sl-hub .hb-link{max-width:100%}
+  #sl-hub .hb-notice li a{gap:6px}
+  #sl-hub .hb-notice .tt{white-space:normal;word-break:keep-all;overflow:hidden;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  #sl-hub .hb-cap h3{font-size:14.5px}
   #sl-hub{padding:0 2px}
   #sl-hub .hb-hd h1{font-size:21px;line-height:1.35}
   #sl-hub .hb-hd p{font-size:12.5px}
