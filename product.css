@@ -493,3 +493,24 @@ body.shop_view .comment_num_warp::after {
   opacity: 0; transform: translateY(6px); pointer-events: none; transition: all .2s;
 }
 #cocoaModal .sl-share-toast.on { opacity: 1; transform: none; }
+
+/* ── ⑩ 휴대폰에서도 공유 단추 ──
+   아임웹이 휴대폰에서는 공유 단추를 아예 감춰 둡니다. 값 줄 오른쪽 끝에 띄우고,
+   말풍선은 위쪽에 값이 있어 겹치므로 단추 **아래**에 놓습니다. */
+@media (max-width: 860px) {
+  body.shop_view .pay_detail { position: relative; }
+  body.shop_view .comment_num_warp {
+    display: block !important; position: absolute; right: 0; top: 0; z-index: 2;
+  }
+  body.shop_view .comment_num_warp .btn:has(i.bt-share) { width: 36px; height: 36px; }
+  body.shop_view .comment_num_warp i.bt-share { font-size: 15px !important; }
+  body.shop_view .comment_num_warp::before {
+    bottom: auto; top: calc(100% + 9px); right: 0;
+  }
+  body.shop_view .comment_num_warp::after {
+    bottom: auto; top: calc(100% + 1px); right: 13px;
+    border-top-color: transparent; border-bottom-color: #e85a8a;
+  }
+  /* 값 칸 오른쪽에 단추 자리를 비워 둡니다 (「44% 할인」 딱지와 안 겹치게) */
+  body.shop_view .pay_detail .holder.table-row { padding-right: 44px; }
+}
