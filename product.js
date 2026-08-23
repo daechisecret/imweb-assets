@@ -311,6 +311,13 @@
     var price = document.querySelector('#prod_goods_form .pay_detail');
     if (!price || row.previousElementSibling === price) return;
     price.parentNode.insertBefore(row, price.nextSibling);
+    /* ── 눈금도 같이 데려옵니다 ──
+       상세 페이지 꾸미기(themes/theme-d.js)는 단추 줄 **바로 앞에 눈금(.sl-buy-mark)** 을
+       하나 세워 두고, 그 눈금이 화면 위로 지나가면 아래 막대를 띄웁니다.
+       줄만 옮기고 눈금을 두고 오면 눈금이 저 아래(5,000px)에 남아,
+       **페이지 끝까지 내려가야** 막대가 나옵니다. 눈금을 줄 앞에 다시 세웁니다. */
+    var mark = document.querySelector('.sl-buy-mark');
+    if (mark && mark.nextElementSibling !== row) row.parentNode.insertBefore(mark, row);
   }
 
   window.addEventListener('load', run);

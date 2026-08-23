@@ -213,3 +213,127 @@ body.sl-pd.sl-pd-on #prod_detail_body img[class*="fr-"] { display: none !importa
     bottom: 84px !important; right: 12px !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   상품 상세 — 첫 화면을 한눈에
+
+   ── 왜 ──
+   ① 상품명이 32px 라 세 줄을 먹고, 값·단추가 화면 밖으로 밀렸습니다.
+   ② 회색 요약 상자 안 글씨가 **43px · 34px** 짜리 큰 제목이라
+      상자 하나가 화면을 통째로 잡아먹었습니다 (파는 분이 넣으신 글의 서식입니다).
+   ③ 별점 줄(♥♥♥♥♥ 5.0 3개 구매평)이 맨 글자로 흩어져 있어 지저분했습니다.
+   제목~찜하기까지 **첫 상자 안에** 들어오고, 그 아래 요약 상자는 작게,
+   바로 이어서 상세정보·구매평·Q&A 가 나오도록 크기만 손봅니다.
+   (아임웹이 내놓는 짜임새는 그대로 두고 글자 크기와 여백만 바꿉니다)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── ① 상품명 ── */
+body.shop_view .view_tit {
+  font-size: 23px !important; line-height: 1.38 !important;
+  margin-bottom: 10px !important; letter-spacing: -.035em;
+}
+
+/* ── ② 별점 · 구매평 → 분홍 알약 한 개 ── */
+body.shop_view .review_count_summary_wrap {
+  display: inline-flex !important; align-items: center !important; gap: 7px;
+  width: auto !important; margin: 0 0 14px !important; padding: 5px 13px 5px 11px !important;
+  background: #fdeef3; border: 1px solid #f7d3e0; border-radius: 100px;
+  line-height: 1 !important;
+}
+body.shop_view .review_count_summary_wrap .interlock_star_point { gap: 1px; }
+body.shop_view .review_count_summary_wrap .bt-star { font-size: 11.5px !important; }
+body.shop_view .review_count_summary_wrap .sl-score {
+  font-size: 12px !important; font-weight: 800 !important; color: #c33e6d !important; margin-left: 4px;
+}
+/* 별점과 구매평 수 사이에 옅은 가운뎃점 */
+body.shop_view .review_count_summary::before {
+  content: '·'; color: #e2aec3; font-weight: 800; margin-right: 6px;
+}
+body.shop_view .review_count_summary,
+body.shop_view .review_count_summary a {
+  font-size: 12px !important; font-weight: 750 !important; color: #c33e6d !important;
+  line-height: 1 !important; white-space: nowrap;
+}
+
+/* ── ③ 값 칸 여백 줄이기 ── */
+body.shop_view .pay_detail { padding-bottom: 4px !important; }
+body.shop_view .pay_detail::after { margin-top: 8px !important; }
+
+/* ── ④ 회색 요약 상자 — 글씨를 본문 크기로 ──
+   파는 분이 넣으신 서식(43px 제목 등)을 그대로 두면 상자 하나가 한 화면입니다.
+   `!important` 는 글 안에 박힌 style="font-size:…" 까지 눌러야 해서 씁니다. */
+body.shop_view .goods_summary { padding: 16px 18px !important; }
+body.shop_view .goods_summary .fr-view,
+body.shop_view .goods_summary .fr-view p,
+body.shop_view .goods_summary .fr-view span,
+body.shop_view .goods_summary .fr-view div,
+body.shop_view .goods_summary .fr-view li,
+body.shop_view .goods_summary .fr-view strong,
+body.shop_view .goods_summary .fr-view b,
+body.shop_view .goods_summary .fr-view font {
+  font-size: 13px !important; line-height: 1.7 !important;
+}
+body.shop_view .goods_summary .fr-view h1,
+body.shop_view .goods_summary .fr-view h1 strong,
+body.shop_view .goods_summary .fr-view h1 span,
+body.shop_view .goods_summary .fr-view h2,
+body.shop_view .goods_summary .fr-view h2 strong,
+body.shop_view .goods_summary .fr-view h2 span {
+  font-size: 16px !important; line-height: 1.45 !important; margin: 0 0 6px !important;
+}
+body.shop_view .goods_summary .fr-view h3,
+body.shop_view .goods_summary .fr-view h3 strong,
+body.shop_view .goods_summary .fr-view h3 span,
+body.shop_view .goods_summary .fr-view h4,
+body.shop_view .goods_summary .fr-view h4 strong,
+body.shop_view .goods_summary .fr-view h4 span {
+  font-size: 14px !important; line-height: 1.5 !important; margin: 8px 0 4px !important;
+}
+/* 빈 줄(<p><br></p>)이 줄줄이 들어 있어 상자가 늘어납니다 — 반만 줍니다 */
+body.shop_view .goods_summary .fr-view p { margin: 0 0 2px !important; }
+
+/* ── ⑤ 넓은 화면 아래 막대 — 글자 가운데 맞추기 ── */
+@media (min-width: 992px) {
+  body.shop_view.sl-stick .buy_btns.pc a.btn,
+  body.shop_view.sl-stick .buy_btns.pc a._wish_button {
+    text-align: center !important; justify-content: center !important;
+    padding-left: 8px !important; padding-right: 8px !important;
+  }
+}
+
+/* ── ⑥ 휴대폰 ── */
+@media (max-width: 860px) {
+  body.shop_view .view_tit { font-size: 18.5px !important; margin-bottom: 8px !important; }
+  body.shop_view .review_count_summary_wrap { margin-bottom: 10px !important; }
+  body.shop_view .goods_summary { padding: 14px !important; margin-top: 10px !important; }
+  body.shop_view .goods_summary .fr-view,
+  body.shop_view .goods_summary .fr-view p,
+  body.shop_view .goods_summary .fr-view span,
+  body.shop_view .goods_summary .fr-view div,
+  body.shop_view .goods_summary .fr-view li,
+  body.shop_view .goods_summary .fr-view strong,
+  body.shop_view .goods_summary .fr-view b,
+  body.shop_view .goods_summary .fr-view font { font-size: 12.5px !important; }
+  body.shop_view .goods_summary .fr-view h1,
+  body.shop_view .goods_summary .fr-view h1 strong,
+  body.shop_view .goods_summary .fr-view h1 span,
+  body.shop_view .goods_summary .fr-view h2,
+  body.shop_view .goods_summary .fr-view h2 strong,
+  body.shop_view .goods_summary .fr-view h2 span { font-size: 15px !important; }
+
+  /* 찜하기 — 54px 상자에 「찜하기」 가 안 들어가 글자가 잘렸습니다 */
+  body.shop_view #prod_goods_form .buy_btns.pc a._wish_button {
+    width: 68px !important; padding: 0 2px !important; gap: 0 !important;
+  }
+  body.shop_view #prod_goods_form .buy_btns.pc a._wish_button::after {
+    font-size: 9.5px !important; font-weight: 750 !important; line-height: 1.2 !important;
+    white-space: nowrap;
+  }
+  body.shop_view #prod_goods_form .buy_btns.pc a._wish_button i { font-size: 15px !important; }
+  body.shop_view #prod_goods_form .buy_btns.pc a._wish_button ._wish_button_count_label {
+    font-size: 9px !important; line-height: 1.1 !important;
+  }
+  /* 찜이 넓어진 만큼 나머지 둘을 다시 나눕니다 */
+  body.shop_view #prod_goods_form .buy_btns.pc a.btn.cart { width: calc(38% - 8px) !important; }
+  body.shop_view #prod_goods_form .buy_btns.pc a.btn.buy { width: calc(62% - 74px) !important; }
+}
