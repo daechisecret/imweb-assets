@@ -511,3 +511,28 @@ body.shop_view .comment_num_warp::after {
   body.shop_view .comment_num_warp::after { display: none; }
 
 }
+
+/* ── ⑪ 후기가 0개인 상품 — 빈 알약 감추기 (PC·휴대폰 공통) ──
+   아임웹이 후기가 없으면 별점 칸을 **빈 채로** 내놓습니다. 우리가 알약 모양을 입혀 두어
+   작은 분홍 빈 알약이 보였습니다. 안에 아무것도 없으면 접습니다. */
+body.shop_view .review_count_summary_wrap:not(:has(.bt-star, .review_count_summary a)) {
+  display: none !important;
+}
+
+@media (max-width: 860px) {
+  /* ── ⑫ 휴대폰 아래쪽 두 번째 공유·찜 줄 접기 ──
+     아임웹이 상세 설명 아래에 [♡ 0] [공유] 를 한 번 더 내놓습니다.
+     위쪽(값 옆)에 이미 공유 단추와 찜하기가 있어 한 번이면 됩니다. */
+  body.shop_view .categorize-mobile.buy_btns { display: none !important; }
+
+  /* ── ⑬ 휴대폰 말풍선 — 배지(SALE·BEST) 줄 오른쪽에 ──
+     단추 바로 위가 배지 줄이고 오른쪽 절반이 비어 있어 거기에 둡니다. */
+  body.shop_view .comment_num_warp::before {
+    display: block; bottom: calc(100% + 6px); right: 0;
+    font-size: 10px; padding: 4px 9px; white-space: nowrap;
+  }
+  body.shop_view .comment_num_warp::after {
+    display: block; bottom: calc(100% - 2px); right: 13px;
+    border: 4px solid transparent; border-top-color: #e85a8a;
+  }
+}
