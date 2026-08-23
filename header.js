@@ -186,8 +186,17 @@
       '<a href="/faq">자주 묻는 질문</a>' +
       '<span class="sep">|</span>' +
       '<a href="/contact">문의하기</a>';
-    var host = foot.querySelector('.inline-inside, .section_inner, .container') || foot;
-    host.appendChild(box);
+    var copy = null;
+    foot.querySelectorAll('p, div, span').forEach(function (el) {
+      if (!copy && el.children.length < 3 && /copyright|all rights reserved/i.test(el.textContent || '')) copy = el;
+    });
+    if (copy) {
+      var blk = copy;
+      while (blk.parentElement && blk.parentElement !== foot && getComputedStyle(blk).display === 'inline') blk = blk.parentElement;
+      blk.parentNode.insertBefore(box, blk.nextSibling);
+    } else {
+      (foot.querySelector('.footer-section') || foot).appendChild(box);
+    }
   }
   put();
   window.addEventListener('load', put);
