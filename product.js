@@ -348,9 +348,22 @@
                    휴대폰이면 기기의 공유판을 띄우고, 아니면 링크를 복사해 드리고 인스타를 엽니다.
        스레드    : 글쓰기 창을 여는 주소가 있어 그대로 씁니다.
      ═══════════════════════════════════════════ */
+  /* 공유·복사되는 주소는 **한 가지 모양**으로 통일합니다 — https://www.daechisecret.com/shop_view/번호
+     아임웹이 내놓는 주소(daechisecret.com/mockexam1-2026-pdf/?idx=1057)는
+       · www 가 없어 한 번 튕기고(301),
+       · 진열 칸 이름이 들어 있어 그 칸을 없애시면 죽습니다.
+     /shop_view/번호 는 진열 칸과 무관하게 늘 열립니다 (자료실 링크와 같은 규칙). */
   function shareLink() {
     var i = document.querySelector('#cocoaModal ._sns_copy_url');
-    return (i && i.value) || location.href.split('#')[0];
+    var raw = (i && i.value) || location.href;
+    var m = /[?&]idx=(\d+)/.exec(raw) || /\/shop_view\/(\d+)/.exec(raw);
+    if (m) return 'https://www.daechisecret.com/shop_view/' + m[1];
+    return raw.split('#')[0];
+  }
+  /* 아임웹 복사 칸에도 같은 주소를 채워 둡니다 (아래 「복사」 단추도 이 값을 복사합니다) */
+  function unifyCopyBox() {
+    var i = document.querySelector('#cocoaModal ._sns_copy_url');
+    if (i && i.value !== shareLink()) i.value = shareLink();
   }
   function shareName() {
     var t = document.querySelector('.view_tit');
@@ -426,6 +439,7 @@
     if (!ul) return;
     m.dataset.slShare = '1';
     m.classList.add('sl-share');
+    unifyCopyBox();
 
     /* 차례를 세웁니다 — 카카오톡 · 스레드 · 네이버 · 라인 · 페이스북 · 링크 복사
        (인스타그램은 웹에서 보낼 길이 없어 뺐습니다) */
@@ -504,7 +518,7 @@
   /* 공유 창은 누르셔야 만들어집니다 — 누른 뒤에 꾸밉니다 */
   document.addEventListener('click', function (e) {
     if (e.target.closest && e.target.closest('.bt-share, .comment_num_warp .btn')) {
-      [60, 300, 800].forEach(function (ms) { setTimeout(dressShare, ms); });
+      [60, 300, 800].forEach(function (ms) { setTimeout(function () { dressShare(); unifyCopyBox(); }, ms); });
     }
   }, true);
 
