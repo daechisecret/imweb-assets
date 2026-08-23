@@ -134,8 +134,10 @@ body.sl-pd.sl-pd-on #prod_detail_body img[class*="fr-"] { display: none !importa
     flex-wrap: wrap !important; align-items: stretch;
     gap: 7px; width: 100% !important; margin: 12px 0 4px !important;
   }
-  /* 「담아 두시고 …」 안내는 단추 위 한 줄로 (줄바꿈을 막으면 단추 사이로 끼어듭니다) */
+  /* 「담아 두시고 …」 안내는 단추 위 한 줄로 (줄바꿈을 막으면 단추 사이로 끼어듭니다).
+     넓은 화면 문구는 「왼쪽 메뉴에서」로 시작하는데, 휴대폰에는 왼쪽 메뉴가 없어 말을 바꿉니다. */
   body.shop_view #prod_goods_form .buy_btns.pc::before {
+    content: '담아 두시고 다른 강도 이어서 고르실 수 있습니다' !important;
     flex: 0 0 100% !important; order: -1 !important;
     font-size: 11.5px !important; padding: 7px 10px !important; margin-bottom: 1px !important;
     line-height: 1.4 !important; word-break: keep-all;
