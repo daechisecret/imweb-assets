@@ -273,10 +273,37 @@
     .then(function (d) { PKG = d; run(); })
     .catch(function () { PKG = {}; run(); });
 
+  /* ── 휴대폰 위쪽 단추 줄에 「장바구니」 되살리기 ──
+     넓은 화면에서는 [장바구니][구매하기][♡] 셋이 나란한데, 휴대폰에서는 아임웹이
+     장바구니를 감춰 둡니다. 담아 두고 더 고르시려는 손님이 갈 곳이 없어 되살립니다.
+
+     ⚠ 꾸미기(CSS)로 한꺼번에 켜면 안 됩니다 —
+       아임웹은 **옵션 없는 상품용과 옵션 상품용 단추를 둘 다** 넣어 두고 한 쪽만 보여 줍니다.
+       통째로 켜면 「장바구니 장바구니 구매하기 구매하기」 처럼 넷이 됩니다.
+       그래서 **보이는 장바구니가 하나도 없을 때만** 첫 번째를 켭니다. */
+  function cartOnPhone() {
+    if (window.innerWidth > 860) return;
+    var row = null;
+    document.querySelectorAll('#prod_goods_form .buy_btns.pc').forEach(function (x) {
+      if (!row && x.getBoundingClientRect().height > 10) row = x;
+    });
+    if (!row) return;
+    var carts = [].slice.call(row.querySelectorAll('a.btn.cart'));
+    if (!carts.length) return;
+    var shown = carts.filter(function (a) { return a.getBoundingClientRect().width > 1; });
+    if (shown.length) return;                     /* 이미 보입니다 — 손대지 않습니다 */
+    carts[0].style.setProperty('display', 'flex', 'important');
+  }
+
   window.addEventListener('load', run);
   window.addEventListener('resize', fitCover);
+  window.addEventListener('resize', cartOnPhone);
   setTimeout(run, 600);
   setTimeout(run, 1800);
   setTimeout(run, 3500);
   setTimeout(fitCover, 5000);
+  cartOnPhone();
+  setTimeout(cartOnPhone, 700);
+  setTimeout(cartOnPhone, 2000);
+  setTimeout(cartOnPhone, 4000);
 })();

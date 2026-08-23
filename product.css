@@ -133,12 +133,16 @@ body.sl-pd.sl-pd-on #prod_detail_body img[class*="fr-"] { display: none !importa
   }
   body.shop_view #prod_goods_form .buy_btns.pc > .sl-bar-info { display: none !important; }
 
+  /* ⚠ 여기서 `display` 를 켜면 안 됩니다 —
+     아임웹은 **옵션 없는 상품용(.defualt)과 옵션 상품용(.opt)** 단추를 둘 다 넣어 두고
+     한 쪽만 보여 줍니다. 통째로 켜면 「장바구니 장바구니 구매하기 구매하기」 처럼 넷이 됩니다.
+     보이고 안 보이고는 themes/product.js 가 하나씩 살펴 정합니다. 여기서는 모양만 입힙니다. */
   body.shop_view #prod_goods_form .buy_btns.pc a.btn.cart,
   body.shop_view #prod_goods_form .buy_btns.pc a.btn.buy,
   body.shop_view #prod_goods_form .buy_btns.pc a._wish_button {
     height: 50px !important; min-height: 50px !important; margin: 0 !important;
     border-radius: 14px !important; font-size: 14px !important; font-weight: 800 !important;
-    display: flex !important; align-items: center !important; justify-content: center !important;
+    align-items: center !important; justify-content: center !important;
     letter-spacing: -.02em;
   }
   /* 담기 → 사기 → 찜 차례로 세웁니다 (아임웹이 내놓는 차례는 사기가 먼저입니다) */
@@ -173,9 +177,9 @@ body.sl-pd.sl-pd-on #prod_detail_body img[class*="fr-"] { display: none !importa
   }
   body.shop_view .cart_btn .pay-box { gap: 8px !important; }
   body.shop_view .cart_btn a.btn {
-    border-radius: 14px !important; height: 48px !important; font-size: 14.5px !important;
-    font-weight: 800 !important; letter-spacing: -.02em;
-    display: flex !important; align-items: center !important; justify-content: center !important;
+    border-radius: 14px !important; height: 48px !important; line-height: 48px !important;
+    font-size: 14.5px !important; font-weight: 800 !important; letter-spacing: -.02em;
+    text-align: center;
   }
   body.shop_view .cart_btn a.btn.defualt-cart,
   body.shop_view .cart_btn a.btn.cart {
