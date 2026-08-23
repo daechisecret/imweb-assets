@@ -127,10 +127,15 @@ body.sl-pd.sl-pd-on #prod_detail_body img[class*="fr-"] { display: none !importa
 @media (max-width: 860px) {
 
   /* ── ① 위쪽 단추 줄 : 장바구니 · 구매하기 · 찜 ── */
+  /* 아임웹은 휴대폰에서 이 줄을 `visibility: hidden` 으로 **자리만 남기고 지워** 둡니다
+     (아래 떠 있는 막대에게 자리를 넘기려는 것입니다). 우리는 값 아래로 옮겨 쓰므로 되살립니다. */
   body.shop_view #prod_goods_form .buy_btns.pc {
-    display: flex !important; flex-wrap: nowrap !important; align-items: stretch;
-    gap: 7px; width: 100% !important; margin-top: 12px !important;
+    display: flex !important; visibility: visible !important;
+    flex-wrap: nowrap !important; align-items: stretch;
+    gap: 7px; width: 100% !important; margin: 12px 0 4px !important;
   }
+  body.shop_view #prod_goods_form .buy_btns.pc a.btn,
+  body.shop_view #prod_goods_form .buy_btns.pc a._wish_button { visibility: visible !important; }
   body.shop_view #prod_goods_form .buy_btns.pc > .sl-bar-info { display: none !important; }
 
   /* ⚠ 여기서 `display` 를 켜면 안 됩니다 —
