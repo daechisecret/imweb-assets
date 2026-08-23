@@ -305,7 +305,10 @@
     var row = document.querySelector('#prod_goods_form .buy_btns.pc');
     if (!row) return;
     if (window.innerWidth <= 860) {
-      var price = document.querySelector('#prod_goods_form .opt_block.total.bottom');
+      /* 값이 적힌 자리 바로 아래에 둡니다.
+         ※ `.opt_block.total`(총 상품금액) 은 화면 밖 결제판 안에 있어 안 됩니다 —
+            휴대폰에서 눈에 보이는 값은 `.pay_detail` 쪽입니다. */
+      var price = document.querySelector('#prod_goods_form .pay_detail');
       if (!price || row.previousElementSibling === price) return;
       if (!rowHome) rowHome = { p: row.parentNode, n: row.nextSibling };
       price.parentNode.insertBefore(row, price.nextSibling);

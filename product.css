@@ -131,8 +131,14 @@ body.sl-pd.sl-pd-on #prod_detail_body img[class*="fr-"] { display: none !importa
      (아래 떠 있는 막대에게 자리를 넘기려는 것입니다). 우리는 값 아래로 옮겨 쓰므로 되살립니다. */
   body.shop_view #prod_goods_form .buy_btns.pc {
     display: flex !important; visibility: visible !important;
-    flex-wrap: nowrap !important; align-items: stretch;
+    flex-wrap: wrap !important; align-items: stretch;
     gap: 7px; width: 100% !important; margin: 12px 0 4px !important;
+  }
+  /* 「담아 두시고 …」 안내는 단추 위 한 줄로 (줄바꿈을 막으면 단추 사이로 끼어듭니다) */
+  body.shop_view #prod_goods_form .buy_btns.pc::before {
+    flex: 0 0 100% !important; order: -1 !important;
+    font-size: 11.5px !important; padding: 7px 10px !important; margin-bottom: 1px !important;
+    line-height: 1.4 !important; word-break: keep-all;
   }
   body.shop_view #prod_goods_form .buy_btns.pc a.btn,
   body.shop_view #prod_goods_form .buy_btns.pc a._wish_button { visibility: visible !important; }
