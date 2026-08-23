@@ -320,7 +320,24 @@
     if (mark && mark.nextElementSibling !== row) row.parentNode.insertBefore(mark, row);
   }
 
+  /* ── 상품명 크기 ──
+     아임웹 디자인 설정이 상품명에 **글 안(inline) `font-size:32px !important`** 을 직접 박습니다.
+     이건 꾸미기 파일로는 못 이깁니다(같은 !important 라도 글 안에 박힌 쪽이 셉니다).
+     그래서 여기서 값만 바꿔 씁니다 — 넓은 화면 23px, 휴대폰 18.5px.
+     ※ 아임웹 디자인 설정에서 글자 크기를 바꾸시면 그 값이 다시 박히므로,
+        원하시는 크기가 있으면 그쪽에서 정하시고 이 줄을 지우셔도 됩니다. */
+  function fitTitle() {
+    var t = document.querySelector('.view_tit');
+    if (!t) return;
+    var want = window.innerWidth <= 860 ? '18.5px' : '23px';
+    if (t.style.getPropertyValue('font-size') !== want) {
+      t.style.setProperty('font-size', want, 'important');
+      t.style.setProperty('line-height', '1.38', 'important');
+    }
+  }
+
   window.addEventListener('load', run);
+  window.addEventListener('resize', fitTitle);
   window.addEventListener('resize', fitCover);
   window.addEventListener('resize', cartOnPhone);
   window.addEventListener('resize', liftBuyRow);
@@ -328,8 +345,8 @@
   setTimeout(run, 1800);
   setTimeout(run, 3500);
   setTimeout(fitCover, 5000);
-  cartOnPhone(); liftBuyRow();
+  cartOnPhone(); liftBuyRow(); fitTitle();
   [700, 2000, 4000].forEach(function (ms) {
-    setTimeout(function () { cartOnPhone(); liftBuyRow(); }, ms);
+    setTimeout(function () { cartOnPhone(); liftBuyRow(); fitTitle(); }, ms);
   });
 })();
