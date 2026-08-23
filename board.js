@@ -58,6 +58,21 @@
      그래서 손님이 우리 줄을 누르시면 **원본 링크를 대신 눌러 드립니다.** */
   var ORIG = [];
 
+  /* ── 비밀글인가 ──
+     ⚠ 예전에는 줄 안에 자물쇠 요소(.bt-lock)나 blocked 링크가 **있기만 하면** 비밀글로 봤습니다.
+        그런데 아임웹은 **모든 줄에** 자물쇠 요소를 넣어 두고 비밀글이 아니면 숨겨(display:none) 둡니다.
+        휴대폰용 blocked 링크도 모든 줄에 있습니다. 그래서 문의 게시판 글이 죄다 자물쇠였습니다.
+        이제는 자물쇠가 **보이는지**, 제목 링크에 lock_on 이 붙었는지를 봅니다. */
+  function isLocked(row, a) {
+    var ic = row.querySelector('i.bt-lock, i[class*="lock"]');
+    if (ic) {
+      var st = (ic.getAttribute('style') || '').replace(/\s/g, '');
+      if (!/display:none/.test(st)) return true;
+    }
+    if (a && /lock_on/.test(a.className || '')) return true;
+    return !!row.querySelector('.list_text_title.lock_on');
+  }
+
   function readRows(root) {
     var out = [];
     ORIG = [];
@@ -75,8 +90,7 @@
       ORIG.push(a);
       out.push({
         i: ORIG.length - 1,
-        lock: !!(w.querySelector('a.blocked, .blocked, [class*="lock"]') ||
-                 /blocked/.test(a.className || '')),
+        lock: isLocked(w, a),
         t: t,
         u: a.getAttribute('href') || '',
         w: txt(w, '.author'),
@@ -104,8 +118,7 @@
       ORIG.push(a2 || null);
       /* 비밀글은 아임웹이 링크에 blocked 딱지를 붙이고,
          줄 어딘가에 자물쇠 아이콘(bt-lock 따위)을 넣어 둡니다. */
-      var lock = !!(u.querySelector('a.blocked, .blocked, [class*="lock"]') ||
-                    (a2 && /blocked/.test(a2.className || '')));
+      var lock = isLocked(u, a2);
       out.push({
         i: ORIG.length - 1,
         lock: lock,
@@ -144,8 +157,8 @@
         var pin = r.pin && pinUseful;
         return '<a class="sl-row' + (pin ? ' pin' : '') + '" data-i="' + r.i + '" href="' + esc(r.u) + '">' +
           '<span class="sl-tt">' + tagOf(r) +
-          (r.lock ? '<span class="sl-lock" title="비밀글입니다">🔒</span>' : '') +
-          '<span class="t">' + esc(r.t) + '</span>' +
+          (r.lock ? '<span class="sl-lock" title="비밀글입니다">🔒</span><span class="sl-tag secret">비밀글</span>' : '') +
+          '<span class="t' + (r.lock ? ' secret' : '') + '">' + (r.lock ? '비밀글입니다🩷' : esc(r.t)) + '</span>' +
           (Number(r.c) ? '<span class="sl-cm">💬 ' + r.c + '</span>' : '') + '</span>' +
           '<span class="sl-w">' + esc(r.w) + '</span>' +
           '<span class="sl-d">' + esc((r.d || '').replace(/^\d{4}-/, '')) + '</span>' +
@@ -153,14 +166,44 @@
       }).join('');
   }
 
+  /* ── 자주 묻는 질문 갈래 ──
+     제목에 [주문/결제] 처럼 갈래를 적어 두시면 그것을 그대로 씁니다 (화면에서는 떼고 보여 줍니다).
+     안 적혀 있으면 제목의 낱말로 짐작합니다 — 위에서부터 먼저 맞는 것이 이깁니다. */
+  var CATS = ['주문/결제', '제작 일정', '자료 문의', '오류 관련', '다운로드 관련', '할인/쿠폰/적립금', '기타'];
+  var CAT_RULES = [
+    ['할인/쿠폰/적립금', /할인|쿠폰|적립|포인트|이벤트/],
+    ['주문/결제',        /결제|주문|구매|환불|취소|영수증|계산서/],
+    ['오류 관련',        /오류|깨져|깨짐|잘못|안 ?보여|보이지 않|열리지|수정 요청/],
+    ['다운로드 관련',    /다운|받나요|받아|저장|파일/],
+    ['제작 일정',        /일정|언제|업로드|제작|출시|올라오|업데이트/],
+    ['자료 문의',        /자료|샘플|구성|유형|교재|학년|PDF|HWP|한글/]
+  ];
+  function catOf(title) {
+    var m = /\[([^\]]{2,14})\]/.exec(title);
+    if (m) { for (var i = 0; i < CATS.length; i++) if (CATS[i] === m[1].trim()) return CATS[i]; }
+    for (var j = 0; j < CAT_RULES.length; j++) if (CAT_RULES[j][1].test(title)) return CAT_RULES[j][0];
+    return '기타';
+  }
+  function cleanQ(t) {
+    return t.replace(/^[\s💌📌📣✨🩷❤️💗]+/, '').replace(/^Q\.\s*/i, '')
+            .replace(/^\[([^\]]{2,14})\]\s*/, function (all, c) { return CATS.indexOf(c.trim()) >= 0 ? '' : all; });
+  }
+
   function foldHTML(rows) {
-    return rows.map(function (r) {
-      return '<div class="sl-fq" data-u="' + esc(r.u) + '">' +
+    var counts = {};
+    rows.forEach(function (r) { r.cat = catOf(r.t); counts[r.cat] = (counts[r.cat] || 0) + 1; });
+    var chips = '<div class="sl-cats"><button type="button" class="on" data-cat="">전체 <em>' + rows.length + '</em></button>' +
+      CATS.filter(function (c) { return counts[c]; }).map(function (c) {
+        return '<button type="button" data-cat="' + esc(c) + '">' + esc(c) + ' <em>' + counts[c] + '</em></button>';
+      }).join('') + '</div>';
+    return chips + rows.map(function (r) {
+      return '<div class="sl-fq" data-u="' + esc(r.u) + '" data-cat="' + esc(r.cat) + '">' +
         '<div class="q"><span class="mk">Q</span>' + tagOf(r) +
-        '<span class="t">' + esc(r.t.replace(/^Q\.\s*/, '')) + '</span>' +
+        '<span class="t">' + esc(cleanQ(r.t)) + '</span>' +
+        '<span class="sl-cat">' + esc(r.cat) + '</span>' +
         '<span class="arw">▾</span></div>' +
         '<div class="a"><span class="wait">답변을 불러오는 중입니다…</span></div></div>';
-    }).join('');
+    }).join('') + '<div class="sl-fq-none">이 갈래에는 아직 질문이 없습니다.</div>';
   }
 
   /* 펼칠 때 그 글을 받아 답만 꺼내 옵니다 (누를 때 한 번만) */
@@ -240,6 +283,20 @@
     for (var i = 0; i < hide.length; i++) hide[i].style.display = 'none';
 
     if (cfg.how === 'fold') {
+      box.addEventListener('click', function (e) {
+        var b = e.target.closest('.sl-cats button');
+        if (!b) return;
+        var cat = b.getAttribute('data-cat') || '';
+        box.querySelectorAll('.sl-cats button').forEach(function (x) { x.classList.toggle('on', x === b); });
+        var shown = 0;
+        box.querySelectorAll('.sl-fq').forEach(function (q) {
+          var ok = !cat || q.getAttribute('data-cat') === cat;
+          q.style.display = ok ? '' : 'none';
+          if (ok) shown++;
+        });
+        var none = box.querySelector('.sl-fq-none');
+        if (none) none.style.display = shown ? 'none' : 'block';
+      });
       box.addEventListener('click', function (e) {
         var q = e.target.closest('.q');
         if (!q) return;

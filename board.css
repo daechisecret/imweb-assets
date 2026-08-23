@@ -78,12 +78,31 @@
 .sl-tag.pin  { background: #e85a8a; color: #fff; }
 .sl-tag.done { background: #e6f6e9; color: #1e6b32; }
 .sl-tag.wait { background: #fff4d6; color: #8a6300; }
+/* 비밀글 — 자물쇠 옆에 분홍 딱지, 제목은 가립니다 */
+.sl-tag.secret { background: #fdeef3; color: #c33e6d; border: 1px solid #f7d3e0; }
+.sl-bd-line .sl-tt .t.secret { color: #b6a2ad; font-weight: 600; }
+
+/* ── 자주 묻는 질문 갈래 단추 ── */
+.sl-cats { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 16px; border-bottom: 1px solid #f0f3f8; background: #fbfcfe; }
+.sl-cats button {
+  border: 1px solid #e6ecf4; background: #fff; color: #46617f; border-radius: 100px;
+  padding: 6px 12px; font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; transition: all .12s;
+}
+.sl-cats button em { font-style: normal; font-size: 11px; color: #c33e6d; margin-left: 2px; }
+.sl-cats button:hover { border-color: #f2b8cd; color: #c33e6d; }
+.sl-cats button.on { background: #e85a8a; border-color: #e85a8a; color: #fff; }
+.sl-cats button.on em { color: #ffe1eb; }
+.sl-bd-fold .sl-fq .sl-cat {
+  flex: none; font-size: 10.5px; font-weight: 750; color: #7c90a8;
+  background: #f1f4f9; border-radius: 6px; padding: 3px 8px; white-space: nowrap;
+}
+.sl-fq-none { display: none; padding: 26px 16px; text-align: center; color: #93a5bd; font-size: 13px; }
 
 /* ── ㉰ 펼침 (묻고 답하기) ── */
 .sl-bd-fold .sl-fq { border-bottom: 1px solid #f4f7fb; }
 .sl-bd-fold .sl-fq:last-child { border-bottom: 0; }
 .sl-bd-fold .sl-fq .q {
-  display: flex; align-items: center; gap: 11px; padding: 17px 20px;
+  display: flex; align-items: flex-start; gap: 11px; padding: 17px 20px;
   cursor: pointer; transition: .12s;
 }
 .sl-bd-fold .sl-fq .q:hover { background: #fffafc; }
@@ -93,7 +112,7 @@
 }
 .sl-bd-fold .sl-fq .t {
   flex: 1; min-width: 0; font-size: 14px; font-weight: 650; color: #1d3a5e;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  overflow: visible; white-space: normal; word-break: keep-all; line-height: 1.45;
 }
 .sl-bd-fold .sl-fq .arw { color: #f2b8cd; font-size: 13px; transition: .15s; flex: none; }
 .sl-bd-fold .sl-fq.open .arw { transform: rotate(180deg); }
@@ -148,11 +167,19 @@ body.sl-bv .board_view .board_summary {
   padding: 16px 30px 20px; border-bottom: 1px solid #e6ecf4; margin: 0 !important;
 }
 body.sl-bv .board_view .board_summary .left { display: flex; align-items: center; gap: 11px; }
+/* 아임웹이 .avatar 에 padding-right:16px 를 박아 두어, 38px 칸 안에서 사진이 22px 로 눌려
+   왼쪽으로 쏠려 보였습니다. 여백을 지우고 사진이 동그라미를 꽉 채우게 합니다. */
+body.sl-bv .board_view .board_summary .left { float: none !important; padding: 0 !important; }
 body.sl-bv .board_view .board_summary .avatar {
-  width: 38px; height: 38px; border-radius: 50%; overflow: hidden; flex: none;
-  background: #fdeef3;
+  width: 42px !important; height: 42px !important; padding: 0 !important; margin: 0 !important;
+  border-radius: 50%; overflow: hidden; flex: none; background: #fdeef3;
+  display: flex; align-items: center; justify-content: center;
 }
-body.sl-bv .board_view .board_summary .avatar img { width: 100%; height: 100%; object-fit: cover; }
+body.sl-bv .board_view .board_summary .avatar img,
+body.sl-bv .board_view .board_summary .avatar .avatar-image {
+  width: 100% !important; height: 100% !important; max-width: none !important;
+  object-fit: cover; object-position: center; border-radius: 50%; display: block;
+}
 body.sl-bv .board_view .board_summary .author { font-size: 12px; color: #93a5bd; line-height: 1.6; }
 body.sl-bv .board_view .board_summary .author .name,
 body.sl-bv .board_view .board_summary .author > *:first-child {
@@ -263,6 +290,10 @@ body.sl-bv .board_view .table_bottom.action-area .btn.btn-primary.btn-sm.float_r
   .sl-bdtop { flex-wrap: wrap; gap: 8px; padding: 14px; }
   .sl-bdtt h2 { font-size: 17px; }
   .sl-bd-fold .sl-fq .q { padding: 13px 14px; font-size: 13px; }
+  .sl-bd-fold .sl-fq .sl-cat { display: none; }
+  .sl-cats { padding: 10px 12px; gap: 5px; }
+  .sl-cats button { font-size: 11.5px; padding: 5px 10px; }
+  .sl-bd-line .sl-tt .t { white-space: normal; overflow: visible; text-overflow: clip; }
   .sl-bd-fold .sl-fq .a { padding: 0 14px 14px; font-size: 13px; }
 
   /* 글 보기 */

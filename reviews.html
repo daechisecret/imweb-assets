@@ -87,6 +87,8 @@ body.sl-rv-on .widget.board._list_wrap{
 #sl-rv .rv-pager .now{font-size:12.5px;color:var(--navy-l);font-weight:750;padding:0 6px}
 
 @media (max-width:900px){
+/* 휴대폰에서는 베스트 후기를 자르지 않고 끝까지 보여 줍니다 (여섯 줄에서 잘리던 것) */
+#sl-rv .rv-q .tx{display:block;-webkit-line-clamp:unset;overflow:visible}
   #sl-rv .rv-best{grid-template-columns:1fr}
   #sl-rv .rv-row{grid-template-columns:minmax(0,1fr) 78px}
   #sl-rv .rv-row .who,#sl-rv .rv-row .dt{display:none}
@@ -147,7 +149,8 @@ body.sl-rv-on .widget.board._list_wrap{
 
   /* ── 베스트 후기 ── */
   fetch(BEST_URL).then(function (r) { return r.json(); }).then(function (d) {
-    document.getElementById('rv-bestn').textContent = '직접 골라 두신 ' + d.length + '편';
+    /* 「직접 골라 두신 N편」 은 빼 달라 하셨습니다 */
+    document.getElementById('rv-bestn').textContent = '';
     document.getElementById('rv-best').innerHTML = d.map(function (r) {
       return '<div class="rv-q"><div class="tx">' + esc(r.text) + '</div>' +
         '<div class="bot"><span class="who">' + esc(r.who) + ' ' + esc(r.role || '선생님') + '</span>' +
