@@ -1069,7 +1069,7 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
    목록을 보고 계신 동안에는 스크롤을 내려도 계속 따라오고, 목록이 끝나면 제자리에 앉습니다.
    자바스크립트 없이 브라우저가 알아서 합니다. */
 #sl-store .sh-pager {
-  position: sticky; bottom: 56px; z-index: 30;
+  position: sticky; bottom: 14px; z-index: 30;
   display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap;
   margin-top: 26px; padding: 9px 14px;
   background: var(--panel); border: 1px solid var(--line); border-radius: 100px;
@@ -1239,7 +1239,8 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
   /* 위쪽 고르개 */
   #sl-store .sh-tools { padding: 12px; gap: 8px; }
   #sl-store .sh-seg { flex-wrap: wrap; }
-  #sl-store .sh-pager { flex-wrap: wrap; justify-content: center; }
+  /* 카카오 「문의」 단추가 오른쪽 아래에 있어, 쪽번호를 왼쪽으로 조금 비켜 세웁니다 */
+  #sl-store .sh-pager { flex-wrap: wrap; justify-content: center; transform: translateX(-34px); }
 
   /* 샘플 창 — 화면을 가득 씁니다 */
   #sl-store .sh-modtabs { overflow-x: auto; flex-wrap: nowrap; padding: 10px 12px; }
@@ -1295,7 +1296,18 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
      /shop_view/번호 는 진열 칸과 상관없이 늘 열리므로 이 모양으로 씁니다. */
   function shopView(full) {
     var m = /^(https?:\/\/[^/]+)\/.*[?&]idx=(\d+)/.exec(full || '');
-    return m ? m[1] + '/shop_view/' + m[2] : full;
+    return m ? ours(m[1]) + '/shop_view/' + m[2] : ours2(full);
+  }
+  /* ── 우리 사이트 주소는 **머리를 떼고** 씁니다 ──
+     목록표에 적힌 주소가 `https://daechisecret.com/…` (www 가 없습니다) 라,
+     손님이 누르실 때마다 www 로 한 번 더 튕겼다 갑니다 (301). 자료실 한 쪽에만
+     그런 링크가 400개가 넘습니다. 머리를 떼어 `/shop_view/123` 로만 적으면
+     지금 보고 계신 주소 그대로 바로 열립니다 — imweb.me 로 들어오신 손님도 그대로입니다. */
+  var MINE = /^https?:\/\/(?:www\.)?daechisecret\.(?:com|imweb\.me)$/i;
+  function ours(origin) { return MINE.test(origin) ? '' : origin; }
+  function ours2(u) {
+    var m = /^(https?:\/\/[^/]+)(\/.*)?$/.exec(u || '');
+    return m && MINE.test(m[1]) ? (m[2] || '/') : u;
   }
   var KINDS = window.SL_KINDS || [];
   var BOOKS = window.SL_BOOKS || [];

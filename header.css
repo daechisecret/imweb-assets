@@ -72,3 +72,59 @@ input, textarea, select, button { font-family: 'Noto Sans KR', 'Apple SD Gothic 
  #mobile_carousel_menu { background: #fdf3f7 !important; }
  #inline_header_mobile { box-shadow: 0 2px 10px rgba(36, 59, 83, .07); }
  #doz_header_wrap, #doz_header, .new_org_header { background: #fff !important; } }
+@media (max-width: 860px) { #kakao-talk-channel-chat-button { bottom: 14px !important; right: 10px !important; transform: scale(.86); transform-origin: 100% 100%; } }
+#myModalReview { --rv-rose: #e85a8a; --rv-rose2: #c33e6d; --rv-roseb: #fdeef3; --rv-ink: #1d3a5e; --rv-ink2: #46617f; --rv-mute: #7c90a8; --rv-line: #efe3e9; font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif; }
+#myModalReview .modal-dialog { width: 640px; max-width: calc(100% - 32px); margin: 40px auto; }
+#myModalReview .modal-content { position: relative; border: 0 !important; border-radius: 20px !important; overflow: hidden; box-shadow: 0 18px 60px rgba(29, 58, 94, .28) !important; }
+#myModalReview .modal-body { padding: 0 !important; }
+#myModalReview .close { position: absolute; top: 12px; right: 14px; z-index: 3; width: 30px; height: 30px; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .8); color: var(--rv-mute); opacity: 1 !important; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+#myModalReview .close:hover { background: var(--rv-roseb); color: var(--rv-rose2); }
+#myModalReview .modal-table { display: flex !important; align-items: stretch; }
+#myModalReview .modal-left { flex: 0 0 46%; display: flex; flex-direction: column; justify-content: center; padding: 34px 26px !important; text-align: center; background: linear-gradient(160deg, #fff6f9 0%, var(--rv-roseb) 100%); border-right: 1px solid var(--rv-line); }
+#myModalReview .modal-left h5::before { content: '후기 이벤트'; display: block; margin: 0 auto 10px; width: fit-content; background: var(--rv-rose); color: #fff; border-radius: 100px; padding: 4px 12px; font-size: 10.5px; font-weight: 800; letter-spacing: .04em; }
+#myModalReview .modal-left h5 { margin: 0 0 12px !important; font-size: 21px !important; font-weight: 800 !important; color: var(--rv-ink) !important; letter-spacing: -.02em; }
+#myModalReview .modal-left ._remind_text { margin: 0 !important; font-size: 13px !important; line-height: 1.72 !important; color: var(--rv-ink2) !important; word-break: keep-all; }
+#myModalReview .modal-right { flex: 1 1 auto; min-width: 0; padding: 26px 20px !important; background: #fff; }
+#myModalReview .item-head { margin-bottom: 12px; }
+#myModalReview .item-head .text-bold { font-size: 13.5px !important; font-weight: 750 !important; line-height: 1.45 !important; color: var(--rv-ink) !important; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+#myModalReview .item-head .text-gray { font-size: 11.5px !important; color: var(--rv-mute) !important; margin-top: 4px !important; }
+#myModalReview .item img { border-radius: 14px; border: 1px solid var(--rv-line); background: #fff; max-width: 100%; height: auto; }
+#myModalReview .item-foot .btn { background: var(--rv-rose) !important; border: 0 !important; color: #fff !important; border-radius: 100px !important; padding: 9px 20px !important; font-size: 12.5px !important; font-weight: 750 !important; box-shadow: 0 2px 8px rgba(232, 90, 138, .3); transition: all .15s; }
+#myModalReview .item-foot .btn:hover { background: var(--rv-rose2) !important; }
+#myModalReview .item-foot .btn i { margin-right: 4px; }
+#myModalReview .owl-prev, #myModalReview .owl-next { background: #fff !important; border: 1px solid var(--rv-line) !important; border-radius: 50% !important; color: var(--rv-rose2) !important; opacity: 1 !important; box-shadow: 0 2px 6px rgba(29, 58, 94, .08); }
+#myModalReview .owl-prev:hover, #myModalReview .owl-next:hover { border-color: #f2b8cd !important; background: var(--rv-roseb) !important; }
+#myModalReview .owl-dots .owl-dot span { background: #f0d9e3 !important; }
+#myModalReview .owl-dots .owl-dot.active span { background: var(--rv-rose) !important; }
+#myModalReview .modal-footer { padding: 0 !important; border-top: 1px solid var(--rv-line) !important; background: #fff; }
+#myModalReview .modal-footer .btn-group { display: flex !important; gap: 10px; padding: 14px 20px; }
+#myModalReview .modal-footer .btn { flex: 1 1 0; float: none !important; width: auto !important; height: auto !important; border-radius: 100px !important; padding: 12px 10px !important; font-size: 13px !important; font-weight: 750 !important; transition: all .15s; border: 1px solid var(--rv-line) !important; background: #fff !important; color: var(--rv-mute) !important; }
+#myModalReview .modal-footer .btn:hover { border-color: #f2b8cd !important; color: var(--rv-rose2) !important; }
+#myModalReview .modal-footer .btn:last-child { background: var(--rv-rose) !important; border-color: var(--rv-rose) !important; color: #fff !important; }
+#myModalReview .modal-footer .btn:last-child:hover { background: var(--rv-rose2) !important; border-color: var(--rv-rose2) !important; }
+@media (max-width: 860px) { #myModalReview { pointer-events: none !important; overflow: visible !important; }
+ #myModalReview .modal-dialog { pointer-events: auto; position: fixed !important; left: 0 !important; right: 0 !important; bottom: 0 !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; animation: rv-up .28s cubic-bezier(.22, 1, .36, 1); }
+ @keyframes rv-up { from { transform: translateY(102%); } to { transform: translateY(0); } }
+ @media (prefers-reduced-motion: reduce) { #myModalReview .modal-dialog { animation: none; } }
+ #myModalReview .modal-content { border-radius: 20px 20px 0 0 !important; max-height: 46vh; display: flex; flex-direction: column; box-shadow: 0 -6px 26px rgba(29, 58, 94, .18) !important; }
+ #myModalReview .modal-content::before { content: ''; display: block; flex: none; width: 38px; height: 4px; border-radius: 100px; background: #e6d3dc; margin: 8px auto 2px; }
+ #myModalReview .modal-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+ .modal-backdrop.in { opacity: 0 !important; pointer-events: none !important; }
+ body.modal-open { overflow: auto !important; padding-right: 0 !important; }
+ #myModalReview .modal-table { display: block !important; }
+ #myModalReview .modal-left { padding: 6px 44px 10px 18px !important; text-align: left; background: none; border-right: 0; border-bottom: 1px solid var(--rv-line); }
+ #myModalReview .modal-left h5 { font-size: 15px !important; margin: 0 0 5px !important; }
+ #myModalReview .modal-left h5::before { display: inline-block; margin: 0 7px 0 0; vertical-align: 2px; padding: 3px 9px; font-size: 9.5px; }
+ #myModalReview .modal-left ._remind_text { font-size: 11.5px !important; line-height: 1.55 !important; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+ #myModalReview .close { top: 8px; right: 10px; width: 26px; height: 26px; background: #f7eef2; }
+ #myModalReview .modal-right { padding: 12px 14px !important; }
+ #myModalReview .item-head { margin-bottom: 8px; }
+ #myModalReview .item-head .text-bold { font-size: 12px !important; -webkit-line-clamp: 1; }
+ #myModalReview .item-head .text-gray { font-size: 10.5px !important; }
+ #myModalReview .item img { max-height: 84px; width: auto !important; border-radius: 10px; }
+ #myModalReview .item-foot .btn { padding: 7px 15px !important; font-size: 11.5px !important; }
+ #myModalReview .owl-prev, #myModalReview .owl-next { width: 26px !important; height: 26px !important; line-height: 24px !important; }
+ #myModalReview .modal-footer .btn-group { padding: 9px 14px 12px; gap: 8px; }
+ #myModalReview .modal-footer .btn { padding: 10px 8px !important; font-size: 12.5px !important; } }
+@media (max-width: 400px) { #myModalReview .modal-content { max-height: 44vh; }
+ #myModalReview .item img { max-height: 74px; } }

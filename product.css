@@ -103,3 +103,91 @@ body.sl-pd.sl-pd-on #prod_detail_body img[class*="fr-"] { display: none !importa
   .sp-lb .nav.prev { left: 8px; }
   .sp-lb .nav.next { right: 8px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   휴대폰 상품 상세 — 사는 단추 손보기
+
+   ── 왜 ──
+   ① 넓은 화면에서는 [장바구니] [구매하기] [♡] 셋이 나란한데,
+      휴대폰에서는 아임웹이 **장바구니를 감춰** 「구매하기 · ♡」 둘만 남았습니다.
+      담아 두고 더 고르시려는 손님이 갈 곳이 없었습니다.
+   ② 화면 아래에 늘 떠 있는 막대의 「구매하기」가 **검정**이라
+      사이트(분홍)와 따로 놀았습니다.
+   셋 다 되살리고 분홍으로 맞춥니다. 아래 막대는 원래 늘 떠 있으므로 그대로 두고
+   모양만 다듬습니다.
+
+   ── 아임웹이 내놓는 이름들 ──
+     .buy_btns.holder.pc  … 상품값 아래 단추 줄 (휴대폰에서도 보입니다)
+        a.btn.buy         … 구매하기
+        a.btn.cart        … 장바구니   ← 휴대폰에서 감춰져 있던 것
+        a._wish_button    … 찜(하트)
+     .cart_btn            … 화면 아래 늘 떠 있는 막대
+        a.btn.defualt-cart(장바구니) · a.btn.defualt.buy(구매하기)   ※ 철자는 아임웹 것 그대로입니다
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 860px) {
+
+  /* ── ① 위쪽 단추 줄 : 장바구니 · 구매하기 · 찜 ── */
+  body.shop_view #prod_goods_form .buy_btns.pc {
+    display: flex !important; flex-wrap: nowrap !important; align-items: stretch;
+    gap: 7px; width: 100% !important; margin-top: 12px !important;
+  }
+  body.shop_view #prod_goods_form .buy_btns.pc > .sl-bar-info { display: none !important; }
+
+  body.shop_view #prod_goods_form .buy_btns.pc a.btn.cart,
+  body.shop_view #prod_goods_form .buy_btns.pc a.btn.buy,
+  body.shop_view #prod_goods_form .buy_btns.pc a._wish_button {
+    height: 50px !important; min-height: 50px !important; margin: 0 !important;
+    border-radius: 14px !important; font-size: 14px !important; font-weight: 800 !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+    letter-spacing: -.02em;
+  }
+  /* 담기 → 사기 → 찜 차례로 세웁니다 (아임웹이 내놓는 차례는 사기가 먼저입니다) */
+  body.shop_view #prod_goods_form .buy_btns.pc a.btn.cart { order: 1; flex: 1 1 38%; }
+  body.shop_view #prod_goods_form .buy_btns.pc a.btn.buy  { order: 2; flex: 1 1 46%; }
+  body.shop_view #prod_goods_form .buy_btns.pc a._wish_button { order: 3; flex: 0 0 54px; width: 54px !important; padding: 0 !important; }
+
+  /* 장바구니 — 흰 바탕에 분홍 테두리 */
+  body.shop_view #prod_goods_form .buy_btns.pc a.btn.cart {
+    background: #fff !important; border: 1.5px solid #f2b8cd !important; color: #c33e6d !important;
+  }
+  /* 구매하기 — 분홍 채움 */
+  body.shop_view #prod_goods_form .buy_btns.pc a.btn.buy {
+    background: #e85a8a !important; border: 0 !important; color: #fff !important;
+    box-shadow: 0 3px 10px rgba(232, 90, 138, .28);
+  }
+  /* 찜 — 하트만 */
+  body.shop_view #prod_goods_form .buy_btns.pc a._wish_button {
+    background: #fff !important; border: 1.5px solid #f0e2e8 !important; color: #c33e6d !important;
+    flex-direction: column !important; gap: 1px;
+  }
+  body.shop_view #prod_goods_form .buy_btns.pc a._wish_button i { font-size: 17px !important; }
+  body.shop_view #prod_goods_form .buy_btns.pc a._wish_button ._wish_button_count_label {
+    font-size: 10px !important; font-weight: 700 !important; color: #9db0c6 !important;
+  }
+
+  /* ── ② 아래에 늘 떠 있는 막대 ── */
+  body.shop_view .cart_btn {
+    background: #fff !important; border-top: 1px solid #f0e2e8 !important;
+    box-shadow: 0 -4px 18px rgba(29, 58, 94, .10) !important;
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom)) !important;
+  }
+  body.shop_view .cart_btn .pay-box { gap: 8px !important; }
+  body.shop_view .cart_btn a.btn {
+    border-radius: 14px !important; height: 48px !important; font-size: 14.5px !important;
+    font-weight: 800 !important; letter-spacing: -.02em;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+  }
+  body.shop_view .cart_btn a.btn.defualt-cart,
+  body.shop_view .cart_btn a.btn.cart {
+    background: #fff !important; border: 1.5px solid #f2b8cd !important; color: #c33e6d !important;
+  }
+  body.shop_view .cart_btn a.btn.buy {
+    background: #e85a8a !important; border: 0 !important; color: #fff !important;
+    box-shadow: 0 3px 10px rgba(232, 90, 138, .3);
+  }
+
+  /* ── ③ 카카오 「문의」 단추가 그 막대를 덮지 않게 위로 올립니다 ── */
+  body.shop_view #kakao-talk-channel-chat-button {
+    bottom: 84px !important; right: 12px !important;
+  }
+}
