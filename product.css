@@ -337,3 +337,12 @@ body.shop_view .goods_summary .fr-view p { margin: 0 0 2px !important; }
   body.shop_view #prod_goods_form .buy_btns.pc a.btn.cart { width: calc(38% - 8px) !important; }
   body.shop_view #prod_goods_form .buy_btns.pc a.btn.buy { width: calc(62% - 74px) !important; }
 }
+
+/* ── ⑦ 「최근 본 상품」 띠가 단추를 덮습니다 ──
+   아임웹이 화면 오른쪽에 붙박이로 띄우는 세로 띠인데, 상품 상세는 글 칸이 오른쪽 끝까지
+   차 있어 **찜하기 단추와 상품명 끝을 덮습니다** (1707px 화면에서 72px 겹침).
+   상세 페이지에서만 접어 둡니다 — 다른 화면에서는 그대로 보입니다.
+   (되살리시려면 이 한 줄만 지우면 됩니다) */
+@media (min-width: 992px) {
+  body.shop_view .recent-product { display: none !important; }
+}
