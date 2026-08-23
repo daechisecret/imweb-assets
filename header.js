@@ -187,8 +187,9 @@
       '<span class="sep">|</span>' +
       '<a href="/contact">문의하기</a>';
     var copy = null;
-    foot.querySelectorAll('p, div, span').forEach(function (el) {
-      if (!copy && el.children.length < 3 && /copyright|all rights reserved/i.test(el.textContent || '')) copy = el;
+    foot.querySelectorAll('p, div, span, li').forEach(function (el) {
+      var t = (el.textContent || '').trim();
+      if (t.length < 140 && /copyright|all rights reserved/i.test(t)) copy = el;   /* 문서 차례상 마지막 = 가장 안쪽 */
     });
     if (copy) {
       var blk = copy;
