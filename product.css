@@ -499,21 +499,14 @@ body.shop_view .comment_num_warp::after {
    말풍선은 위쪽에 값이 있어 겹치므로 단추 **아래**에 놓습니다. */
 @media (max-width: 860px) {
   body.shop_view .pay_detail { position: relative; }
+  /* 별점 알약 줄 오른쪽 끝에 올려 둡니다 (값 줄에 두면 「44% 할인」 딱지와 닿습니다) */
   body.shop_view .comment_num_warp {
-    display: block !important; position: absolute; right: 0; top: 0; z-index: 2;
+    display: block !important; position: absolute; right: 0; top: -50px; z-index: 2;
   }
   body.shop_view .comment_num_warp .btn:has(i.bt-share) { width: 36px; height: 36px; }
   body.shop_view .comment_num_warp i.bt-share { font-size: 15px !important; }
-  /* 말풍선은 단추 **왼쪽 옆** — 위는 값, 아래는 안내 띠라 자리가 없습니다 */
-  body.shop_view .comment_num_warp::before {
-    bottom: auto; top: 50%; transform: translateY(-50%);
-    right: calc(100% + 10px); font-size: 10.5px; padding: 5px 10px;
-  }
-  body.shop_view .comment_num_warp::after {
-    bottom: auto; top: 50%; transform: translateY(-50%);
-    right: calc(100% + 1px);
-    border-top-color: transparent; border-left-color: #e85a8a;
-  }
-  /* 값 칸 오른쪽에 단추 자리를 비워 둡니다 (「44% 할인」 딱지와 안 겹치게) */
-  body.shop_view .pay_detail .holder.table-row { padding-right: 44px; }
+  /* 휴대폰은 자리가 없어 말풍선은 뺍니다 — 분홍 동그라미 단추만 둡니다 */
+  body.shop_view .comment_num_warp::before,
+  body.shop_view .comment_num_warp::after { display: none; }
+
 }
