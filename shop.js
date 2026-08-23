@@ -112,6 +112,31 @@ function titleOf(el) {
 var h2 = el.querySelector('.shop-title');
 return tidy(h2 ? h2.textContent : '');
 }
+var NOPRICE_RE = /가격\s*문의|가격없음|쏠북/;
+function isNoPrice(el) {
+if (!el) return false;
+if (el.classList.contains('sl-noprice')) return true;
+try {
+var d = JSON.parse(el.getAttribute('data-product-properties') || 'null');
+if (d && ('price' in d) && !Number(d.price) && !Number(d.original_price)) return true;
+} catch (e) {}
+var pay = el.querySelector('.item-pay-detail .pay, .item-pay .pay, .pay');
+return !!(pay && NOPRICE_RE.test(pay.textContent || ''));
+}
+function markNoPrice() {
+var all = document.querySelectorAll('.shop-item._shop_item');
+for (var i = 0; i < all.length; i++) {
+var el = all[i];
+if (el.classList.contains('sl-noprice') || el.classList.contains('sl-priced')) continue;
+el.classList.add(isNoPrice(el) ? 'sl-noprice' : 'sl-priced');
+}
+}
+document.addEventListener('click', function (e) {
+var ic = e.target.closest('[data-shopping-widget-card-action="cart"], .im-ico-cart');
+if (!ic) return;
+var card = ic.closest('.shop-item._shop_item');
+if (card && isNoPrice(card)) { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); }
+}, true);
 function addGo(el) {
 if (el.querySelector('.sl-go')) return;
 var href = urlOf(el);
@@ -130,9 +155,12 @@ var idx = idxOf(el);
 if (!idx) return;
 var box = document.createElement('div');
 box.className = 'sl-acts';
+var mid = isNoPrice(el)
+? '<a class="sl-act solv" href="' + urlOf(el) + '">쏠북에서 구매 ↗</a>'
+: '<button type="button" class="sl-act cart" data-sl-act="cart">장바구니</button>';
 box.innerHTML =
 '<button type="button" class="sl-act samp" data-sl-act="sample">샘플 보기</button>' +
-'<button type="button" class="sl-act cart" data-sl-act="cart">장바구니</button>' +
+mid +
 '<button type="button" class="sl-act wish" data-sl-act="wish">♡ 찜하기</button>';
 el.appendChild(box);
 }
@@ -169,7 +197,9 @@ m.innerHTML = '<div class="sl-modin">' +
 '<button type="button" class="sl-modx" data-sl-act="close">✕</button></div>' +
 '<div class="sl-modbody"><div class="sl-modwait">샘플을 불러오는 중입니다…</div></div>' +
 '<div class="sl-modfoot">' +
-'<button type="button" class="sl-act cart" data-sl-act="cart-modal">장바구니에 담기</button>' +
+(isNoPrice(el)
+? '<span class="sl-modnote">교과서 자료는 쏠북에서 구매 가능합니다 (본문 참고)</span>'
+: '<button type="button" class="sl-act cart" data-sl-act="cart-modal">장바구니에 담기</button>') +
 '<a class="sl-act" href="' + page + '" target="_blank" rel="noopener">상품 페이지에서 보기 ↗</a>' +
 '</div></div>';
 document.body.appendChild(m);
@@ -177,7 +207,7 @@ document.body.style.overflow = 'hidden';
 function close() { m.remove(); document.body.style.overflow = ''; }
 m.addEventListener('click', function (e) {
 if (e.target === m || e.target.closest('[data-sl-act="close"]')) return close();
-if (e.target.closest('[data-sl-act="cart-modal"]')) addCart(idxOf(el), e.target);
+if (e.target.closest('[data-sl-act="cart-modal"]')) addCart(idxOf(el), e.target, el);
 });
 loadSample(page, function (raw) {
 var body = m.querySelector('.sl-modbody');
@@ -188,7 +218,11 @@ body.innerHTML = pages.length
 : '<div class="sl-modwait">이 상품은 아직 샘플 사진이 없습니다.<br>상품 페이지에서 확인해 주십시오.</div>';
 });
 }
-function addCart(idx, btn) {
+function addCart(idx, btn, card) {
+if (card && isNoPrice(card)) {
+if (btn) { var t0 = btn.textContent; btn.textContent = '쏠북에서 구매하는 자료입니다'; setTimeout(function () { btn.textContent = t0; }, 1800); }
+return;
+}
 var api = window.SITE_SHOP_CART;
 if (api && typeof api.addCartAnywhere === 'function') api.addCartAnywhere(idx);
 else window.open('/?idx=' + idx, '_blank', 'noopener');
@@ -208,7 +242,7 @@ var card = b.closest('.shop-item._shop_item');
 if (!card) return;
 e.preventDefault(); e.stopPropagation();
 if (act === 'sample') openSample(card);
-else if (act === 'cart') addCart(idxOf(card), b);
+else if (act === 'cart') addCart(idxOf(card), b, card);
 else if (act === 'wish') addWish(idxOf(card), b);
 }, true);
 var SLIDER = '.swiper-container, .swiper-wrapper, .swiper, [class*="carousel"],' +
@@ -389,10 +423,11 @@ var e = els[i];
 if (e.children.length) continue;
 var t = (e.textContent || '').trim();
 if (t === '가격문의') {
-e.textContent = '본문 내 쏠북 링크 참고';
+e.textContent = '교과서 자료는 쏠북에서 구매 가능합니다 (본문 참고)';
 e.classList.add('sl-ask');
 }
 }
+markNoPrice();
 }
 function fixScore() {
 var boxes = document.querySelectorAll('.interlock_star_point, .star_point');

@@ -108,8 +108,10 @@
   /* 색인은 이미 최신순(연도 → 상품번호)으로 줄 세워져 있습니다.
      가격순일 때만 다시 세웁니다. */
   function ordered(list) {
-    if (sort === 'low') return list.slice().sort(function (a, b) { return a.p - b.p; });
-    if (sort === 'high') return list.slice().sort(function (a, b) { return b.p - a.p; });
+    /* 값이 없는 교과서(p=0)는 가격순에서 **맨 뒤**로 보냅니다 — 0원이 아니라 쏠북 판매이기 때문입니다 */
+    function pv(x, big) { return x.p ? x.p : (big ? -1 : Infinity); }
+    if (sort === 'low') return list.slice().sort(function (a, b) { return pv(a) - pv(b); });
+    if (sort === 'high') return list.slice().sort(function (a, b) { return pv(b, 1) - pv(a, 1); });
     return list;
   }
 
@@ -170,7 +172,11 @@
       (it.b ? '<span class="sq-tag b">' + esc(it.b) + '</span>' : '') +
       (it.k ? '<span class="sq-tag k">' + esc(it.k) + '</span>' : '') + '</div>' +
       '<div class="sq-tit">' + esc(it.n) + '</div>' +
-      '<div class="sq-pr">' + won(it.p) + '</div></div></a>';
+      /* 값이 없는 자료 = 교과서. 우리 사이트에서는 팔지 않고 쏠북에서 사는 자료입니다.
+         「가격없음원」 처럼 찍히지 않게 안내문으로 바꿉니다. */
+      (it.p ? '<div class="sq-pr">' + won(it.p) + '</div>'
+            : '<div class="sq-pr sq-solv">교과서 자료는 쏠북에서 구매 가능합니다 (본문 참고)</div>') +
+      '</div></a>';
   }
 
   function draw() {

@@ -81,6 +81,8 @@ body.sl-sc .search_widget .categorize { margin-bottom: 0 !important; }
 .sq-card:hover .sq-tit { color: #c33e6d; }
 .sq-pr { margin-top: 8px; font-size: 14.5px; font-weight: 900; color: #243b53; }
 .sq-pr s { font-size: 11.5px; font-weight: 600; color: #b6c4d4; margin-left: 5px; }
+/* 교과서(쏠북 판매) — 값 대신 안내문 */
+.sq-pr.sq-solv { font-size: 12px; font-weight: 700; color: #c33e6d; line-height: 1.4; word-break: keep-all; }
 
 .sq-more { display: block; width: 100%; margin-top: 18px; padding: 15px; background: #fff;
   border: 1px solid #e6ecf4; border-radius: 100px; font-family: inherit; font-size: 13.5px;

@@ -55,6 +55,10 @@
 .sl-act.cart { background: #e85a8a; border-color: #e85a8a; color: #fff; box-shadow: 0 2px 6px rgba(232,90,138,.28); }
 .sl-act.cart:hover { background: #c33e6d; border-color: #c33e6d; color: #fff; }
 .sl-act.wish.on { border-color: #e85a8a; color: #c33e6d; background: #fdeef3; }
+.sl-act.solv { display: block; background: #fff7e6; border-color: #f3d28a; color: #9a6a00; text-decoration: none; }
+.sl-act.solv:hover { background: #fdeccb; border-color: #e8bd5a; color: #7a5200; }
+.sl-modnote { font-size: 12px; font-weight: 700; color: #c33e6d; }
+.shop-item._shop_item.sl-noprice [data-shopping-widget-card-action="cart"], .shop-item._shop_item.sl-noprice .im-ico-cart { display: none !important; }
 .sl-modal { position: fixed; inset: 0; z-index: 99999; background: rgba(13,24,38,.55); display: grid; place-items: center; padding: 24px; }
 .sl-modin { background: #fff; border-radius: 14px; width: min(900px,100%); height: min(88vh,100%); display: flex; flex-direction: column; overflow: hidden; }
 .sl-modhead { display: flex; align-items: center; gap: 10px; padding: 13px 16px; border-bottom: 1px solid #e8eef6; }
@@ -94,7 +98,7 @@
  .sl-pillrow { flex-direction: column; gap: 5px; }
  .sl-plab { width: auto; padding-top: 0; }
  .sl-grid.sl-lay-a, .sl-grid.sl-lay-b { grid-template-columns: repeat(2, 1fr) !important; } }
-.sl-grid .shop-item._shop_item .pay.sl-ask { font-size: 12px !important; font-weight: 600 !important; color: #7c90a8 !important; letter-spacing: -.03em; }
+.sl-grid .shop-item._shop_item .pay.sl-ask { font-size: 12px !important; font-weight: 600 !important; color: #7c90a8 !important; letter-spacing: -.03em; white-space: normal !important; word-break: keep-all; line-height: 1.35 !important; }
 .sl-top { background: #fff; border: 1px solid #e6ecf4; border-radius: 16px; overflow: hidden; margin: 4px 0 14px; }
 .sl-tophead { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; background: linear-gradient(180deg, #fff, #fdfbfd); border-bottom: 1px solid #e6ecf4; }
 .sl-tt { display: flex; align-items: center; gap: 9px; min-width: 0; }
