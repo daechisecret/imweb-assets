@@ -300,22 +300,17 @@
      휴대폰에서는 아임웹이 이 줄을 **상세 설명을 다 지난 5,000px 쯤 아래**로 내려 둡니다.
      값을 보시고 바로 담으실 수 있게 값 아래로 데려옵니다.
      (화면 아래 떠 있는 막대는 그대로 둡니다 — 둘 다 있는 것이 편합니다.) */
-  var rowHome = null;
   function liftBuyRow() {
     var row = document.querySelector('#prod_goods_form .buy_btns.pc');
     if (!row) return;
-    if (window.innerWidth <= 860) {
-      /* 값이 적힌 자리 바로 아래에 둡니다.
-         ※ `.opt_block.total`(총 상품금액) 은 화면 밖 결제판 안에 있어 안 됩니다 —
-            휴대폰에서 눈에 보이는 값은 `.pay_detail` 쪽입니다. */
-      var price = document.querySelector('#prod_goods_form .pay_detail');
-      if (!price || row.previousElementSibling === price) return;
-      if (!rowHome) rowHome = { p: row.parentNode, n: row.nextSibling };
-      price.parentNode.insertBefore(row, price.nextSibling);
-    } else if (rowHome) {                       /* 창을 넓히시면 제자리로 */
-      rowHome.p.insertBefore(row, rowHome.n);
-      rowHome = null;
-    }
+    /* 값이 적힌 자리 바로 아래에 둡니다.
+       ※ `.opt_block.total`(총 상품금액) 은 화면 밖 결제판 안에 있어 안 됩니다 —
+          눈에 보이는 값은 `.pay_detail` 쪽입니다.
+       넓은 화면에서도 같습니다 — 값 아래가 원래 이 줄의 자리인데(themes/theme-d.css ③),
+       아임웹이 상세 설명 아래로 내려 두어 **값 아래가 빈 칸으로 남아 있었습니다.** */
+    var price = document.querySelector('#prod_goods_form .pay_detail');
+    if (!price || row.previousElementSibling === price) return;
+    price.parentNode.insertBefore(row, price.nextSibling);
   }
 
   window.addEventListener('load', run);
