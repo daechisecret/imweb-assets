@@ -410,21 +410,6 @@
       }
     },
     {
-      key: 'insta', label: '인스타그램',
-      svg: '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5" fill="none" stroke="#fff" stroke-width="1.9"/>' +
-           '<circle cx="12" cy="12" r="4" fill="none" stroke="#fff" stroke-width="1.9"/>' +
-           '<circle cx="17.2" cy="6.8" r="1.3" fill="#fff"/></svg>',
-      go: function () {
-        if (navigator.share) {
-          navigator.share({ title: shareName(), url: shareLink() }).catch(function () {});
-          return;
-        }
-        copyLink();
-        toast('링크를 복사했습니다 — 인스타그램에 붙여넣어 주세요.');
-        setTimeout(function () { window.open('https://www.instagram.com/', '_blank', 'noopener'); }, 700);
-      }
-    },
-    {
       key: 'threads', label: '스레드',
       svg: '<svg viewBox="0 0 24 24"><text x="12" y="17.5" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Helvetica, Arial, sans-serif">@</text></svg>',
       go: function () {
@@ -441,6 +426,10 @@
     if (!ul) return;
     m.dataset.slShare = '1';
     m.classList.add('sl-share');
+
+    /* 차례를 세웁니다 — 카카오톡 · 스레드 · 네이버 · 라인 · 페이스북 · 링크 복사
+       (인스타그램은 웹에서 보낼 길이 없어 뺐습니다) */
+    var ORDER = ['sl-sns-kakao', 'sl-sns-threads', 'naver', 'line', 'face', 'sl-sns-copy'];
 
     /* 밴드·X 는 접습니다 (사장님이 안 쓰시는 곳입니다) */
     ['band', 'twitter'].forEach(function (k) {
@@ -461,6 +450,23 @@
       ul.insertBefore(li, ul.firstChild);
     });
 
+    /* 마지막 칸 — 링크 복사 (브라우저 모양). 아래 복사 단추와 같은 일을 합니다만
+       한 칸이 비면 격자가 어색해 여기도 둡니다. */
+    if (!ul.querySelector('.sl-sns-copy')) {
+      var cp = document.createElement('li');
+      cp.className = 'sl-sns sl-sns-copy';
+      cp.innerHTML = '<a href="#" role="button"><span class="ic">' +
+        '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="#fff" stroke-width="1.8"/>' +
+        '<path d="M3.5 12h17M12 3.5c3 3 3 14 0 17M12 3.5c-3 3-3 14 0 17" fill="none" stroke="#fff" stroke-width="1.6"/></svg>' +
+        '</span><span class="tx">링크 복사</span></a>';
+      cp.querySelector('a').addEventListener('click', function (e) {
+        e.preventDefault();
+        copyLink();
+        toast('링크를 복사했습니다. 원하시는 곳에 붙여넣어 주세요.');
+      });
+      ul.appendChild(cp);
+    }
+
     /* 라인·네이버·페이스북 — 아임웹 아이콘은 한 장짜리 그림(스프라이트)이라 크기를 바꾸면
        줄무늬가 됩니다. 우리 것과 결이 맞게 **같은 모양의 동그라미 아이콘**으로 갈아 끼웁니다.
        (누르면 하는 일(onclick)은 아임웹 것 그대로입니다) */
@@ -478,6 +484,12 @@
       li.classList.add('sl-sns', 'sl-sns-' + k);
       a.innerHTML = '<span class="ic" style="background:' + OLD[k].bg + '">' + OLD[k].svg + '</span>' +
                     '<span class="tx">' + OLD[k].label + '</span>';
+    });
+
+    /* 정한 차례대로 다시 세웁니다 */
+    ORDER.forEach(function (k) {
+      var li = ul.querySelector('li.' + k);
+      if (li) ul.appendChild(li);
     });
 
     /* 링크 칸 위에 「무엇을 공유하는지」 알약 */
