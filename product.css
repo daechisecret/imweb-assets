@@ -504,12 +504,15 @@ body.shop_view .comment_num_warp::after {
   }
   body.shop_view .comment_num_warp .btn:has(i.bt-share) { width: 36px; height: 36px; }
   body.shop_view .comment_num_warp i.bt-share { font-size: 15px !important; }
+  /* 말풍선은 단추 **왼쪽 옆** — 위는 값, 아래는 안내 띠라 자리가 없습니다 */
   body.shop_view .comment_num_warp::before {
-    bottom: auto; top: calc(100% + 9px); right: 0;
+    bottom: auto; top: 50%; transform: translateY(-50%);
+    right: calc(100% + 10px); font-size: 10.5px; padding: 5px 10px;
   }
   body.shop_view .comment_num_warp::after {
-    bottom: auto; top: calc(100% + 1px); right: 13px;
-    border-top-color: transparent; border-bottom-color: #e85a8a;
+    bottom: auto; top: 50%; transform: translateY(-50%);
+    right: calc(100% + 1px);
+    border-top-color: transparent; border-left-color: #e85a8a;
   }
   /* 값 칸 오른쪽에 단추 자리를 비워 둡니다 (「44% 할인」 딱지와 안 겹치게) */
   body.shop_view .pay_detail .holder.table-row { padding-right: 44px; }
