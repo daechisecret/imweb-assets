@@ -496,8 +496,30 @@
     }
   }, true);
 
+  /* ── 휴대폰 공유 단추 자리 ──
+     좌표로 못 박으면 후기 알약이 있는 상품과 없는 상품에서 자리가 달라집니다
+     (알약이 없으면 제목 위로 올라가 글자를 덮었습니다).
+     그래서 배지(SALE·BEST) 줄 **바로 아래 한 줄**로 옮겨, 어떤 상품이든 같은 자리입니다. */
+  var shareHome = null;
+  function placeShare() {
+    var w = document.querySelector('#prod_goods_form .comment_num_warp');
+    if (!w) return;
+    if (window.innerWidth <= 860) {
+      var tit = document.querySelector('#prod_goods_form .view_tit');
+      if (!tit || w.previousElementSibling === tit) return;
+      if (!shareHome) shareHome = { p: w.parentNode, n: w.nextSibling };
+      tit.parentNode.insertBefore(w, tit.nextSibling);
+      w.classList.add('sl-share-row');
+    } else if (shareHome) {
+      shareHome.p.insertBefore(w, shareHome.n);
+      w.classList.remove('sl-share-row');
+      shareHome = null;
+    }
+  }
+
   window.addEventListener('load', run);
   window.addEventListener('resize', fitTitle);
+  window.addEventListener('resize', placeShare);
   window.addEventListener('resize', fitCover);
   window.addEventListener('resize', cartOnPhone);
   window.addEventListener('resize', liftBuyRow);
@@ -505,8 +527,8 @@
   setTimeout(run, 1800);
   setTimeout(run, 3500);
   setTimeout(fitCover, 5000);
-  cartOnPhone(); liftBuyRow(); fitTitle();
+  cartOnPhone(); liftBuyRow(); fitTitle(); placeShare();
   [700, 2000, 4000].forEach(function (ms) {
-    setTimeout(function () { cartOnPhone(); liftBuyRow(); fitTitle(); }, ms);
+    setTimeout(function () { cartOnPhone(); liftBuyRow(); fitTitle(); placeShare(); }, ms);
   });
 })();

@@ -499,10 +499,11 @@ body.shop_view .comment_num_warp::after {
    말풍선은 위쪽에 값이 있어 겹치므로 단추 **아래**에 놓습니다. */
 @media (max-width: 860px) {
   body.shop_view .pay_detail { position: relative; }
-  /* 별점 알약 줄 오른쪽 끝에 올려 둡니다 (값 줄에 두면 「44% 할인」 딱지와 닿습니다) */
-  body.shop_view .comment_num_warp {
-    display: block !important; position: absolute !important;
-    right: 0 !important; top: -50px !important; z-index: 2;
+  /* 제목 바로 아래 한 줄 — 오른쪽 끝에 단추, 그 왼쪽에 말풍선 (themes/product.js 가 옮겨 놓습니다) */
+  body.shop_view .comment_num_warp.sl-share-row {
+    display: flex !important; position: relative !important; top: auto !important; right: auto !important;
+    justify-content: flex-end; align-items: center; gap: 8px;
+    margin: -2px 0 8px !important; z-index: 2;
   }
   body.shop_view .comment_num_warp .btn:has(i.bt-share) { width: 36px; height: 36px; }
   body.shop_view .comment_num_warp i.bt-share { font-size: 15px !important; }
@@ -525,14 +526,14 @@ body.shop_view .review_count_summary_wrap:not(:has(.bt-star, .review_count_summa
      위쪽(값 옆)에 이미 공유 단추와 찜하기가 있어 한 번이면 됩니다. */
   body.shop_view .categorize-mobile.buy_btns { display: none !important; }
 
-  /* ── ⑬ 휴대폰 말풍선 — 배지(SALE·BEST) 줄 오른쪽에 ──
-     단추 바로 위가 배지 줄이고 오른쪽 절반이 비어 있어 거기에 둡니다. */
-  body.shop_view .comment_num_warp::before {
-    display: block; bottom: calc(100% + 6px); right: 0;
-    font-size: 10px; padding: 4px 9px; white-space: nowrap;
+  /* ── ⑬ 휴대폰 말풍선 — 단추 왼쪽 옆, 같은 줄 ── */
+  body.shop_view .comment_num_warp.sl-share-row::before {
+    display: block; position: static; transform: none;
+    font-size: 10.5px; padding: 5px 10px; white-space: nowrap; order: 1;
   }
-  body.shop_view .comment_num_warp::after {
-    display: block; bottom: calc(100% - 2px); right: 13px;
-    border: 4px solid transparent; border-top-color: #e85a8a;
+  body.shop_view .comment_num_warp.sl-share-row::after {
+    display: block; position: static; transform: none; order: 2; margin: 0 -4px 0 -6px;
+    border: 5px solid transparent; border-left-color: #e85a8a;
   }
+  body.shop_view .comment_num_warp.sl-share-row .btn { order: 3; }
 }
