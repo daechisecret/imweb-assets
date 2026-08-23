@@ -354,7 +354,11 @@
   }
   function shareName() {
     var t = document.querySelector('.view_tit');
-    return t ? (t.textContent || '').replace(/\s+/g, ' ').trim() : document.title;
+    if (!t) return document.title;
+    /* 상품명 안에 SALE·BEST 같은 딱지(.ns-icon)가 같이 들어 있어 떼고 씁니다 */
+    var c = t.cloneNode(true);
+    c.querySelectorAll('.ns-icon, .sticker, .icon').forEach(function (x) { x.remove(); });
+    return (c.textContent || '').replace(/\s+/g, ' ').trim();
   }
   function shareThumb() {
     var i = document.querySelector('.goods_thumbs img, .prod-owl-list img, .goods_wrap img');

@@ -422,23 +422,30 @@ body.shop_view .comment_num_warp::after {
 #cocoaModal.sl-share .social-btn li {
   float: none !important; width: auto !important; margin: 0 !important; text-align: center;
 }
+/* 라인·네이버·페이스북은 아임웹이 **a 의 배경그림**으로 아이콘을 그립니다 —
+   그림 위치를 위 가운데로 두고 글자를 그 아래(padding-top)에 놓습니다. */
 #cocoaModal.sl-share .social-btn li a {
-  display: flex !important; flex-direction: column; align-items: center; gap: 6px;
-  width: auto !important; height: auto !important; background: none !important;
-  text-decoration: none; transition: transform .12s;
+  display: block !important; width: auto !important; height: auto !important;
+  padding-top: 60px !important; background-position: center top !important;
+  background-size: 54px 54px !important; background-repeat: no-repeat !important;
+  font-size: 11.5px !important; font-weight: 700 !important; color: #46617f !important;
+  line-height: 1.2 !important; text-decoration: none; transition: transform .12s;
 }
+/* 우리가 넣은 셋은 아이콘 칸(.ic)을 따로 가지므로 배경그림 자리를 쓰지 않습니다 */
+#cocoaModal.sl-share .social-btn li.sl-sns a {
+  display: flex !important; flex-direction: column; align-items: center; gap: 6px;
+  padding-top: 0 !important; background: none !important;
+}
+#cocoaModal.sl-share .social-btn li,
+#cocoaModal.sl-share .social-btn li a { min-height: 0 !important; line-height: 1.2 !important; }
 #cocoaModal.sl-share .social-btn li a:hover { transform: translateY(-2px); }
 /* 아임웹 기본 단추(라인·네이버·페이스북) — 동그라미에 연한 테두리 */
-#cocoaModal.sl-share .social-btn li a > i,
 #cocoaModal.sl-share .social-btn li a > span.ic {
   width: 54px; height: 54px; border-radius: 50%; flex: none;
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 3px 10px rgba(29, 58, 94, .12);
 }
-#cocoaModal.sl-share .social-btn li a > span.tx,
-#cocoaModal.sl-share .social-btn li a > span:not(.ic) {
-  font-size: 11.5px; font-weight: 700; color: #46617f; line-height: 1.2;
-}
+#cocoaModal.sl-share .social-btn li a > span.tx { font-size: 11.5px; font-weight: 700; color: #46617f; }
 #cocoaModal.sl-share .social-btn li a .ic svg { width: 28px; height: 28px; display: block; }
 #cocoaModal.sl-share .sl-sns-kakao .ic { background: #FEE500; }
 #cocoaModal.sl-share .sl-sns-insta .ic {
