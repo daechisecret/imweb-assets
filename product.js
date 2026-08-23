@@ -434,10 +434,13 @@
 
   function dressShare() {
     var m = document.getElementById('cocoaModal');
-    if (!m || m.dataset.slShare === '1') return;
+    if (!m) return;
     var ul = m.querySelector('.social-btn ul');
     if (!ul) return;
-    m.dataset.slShare = '1';
+    /* ⚠ 「이미 꾸몄다」 표시로 건너뛰면 안 됩니다 —
+       아임웹은 창을 **두 번째 열 때 안쪽을 통째로 다시 그립니다** (같은 상자, 새 내용).
+       그래서 표시가 아니라 **지금 안에 우리 단추가 있는지**를 봅니다. */
+    if (ul.querySelector('.sl-sns-kakao')) { m.classList.add('sl-share'); unifyCopyBox(); return; }
     m.classList.add('sl-share');
     unifyCopyBox();
 
