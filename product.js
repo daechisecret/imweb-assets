@@ -295,15 +295,36 @@
     carts[0].style.setProperty('display', 'flex', 'important');
   }
 
+  /* ── 휴대폰 : 사는 단추 줄을 값 바로 아래로 올립니다 ──
+     넓은 화면에서는 값 옆에 [장바구니][구매하기][♡] 가 붙어 있는데,
+     휴대폰에서는 아임웹이 이 줄을 **상세 설명을 다 지난 5,000px 쯤 아래**로 내려 둡니다.
+     값을 보시고 바로 담으실 수 있게 값 아래로 데려옵니다.
+     (화면 아래 떠 있는 막대는 그대로 둡니다 — 둘 다 있는 것이 편합니다.) */
+  var rowHome = null;
+  function liftBuyRow() {
+    var row = document.querySelector('#prod_goods_form .buy_btns.pc');
+    if (!row) return;
+    if (window.innerWidth <= 860) {
+      var price = document.querySelector('#prod_goods_form .opt_block.total.bottom');
+      if (!price || row.previousElementSibling === price) return;
+      if (!rowHome) rowHome = { p: row.parentNode, n: row.nextSibling };
+      price.parentNode.insertBefore(row, price.nextSibling);
+    } else if (rowHome) {                       /* 창을 넓히시면 제자리로 */
+      rowHome.p.insertBefore(row, rowHome.n);
+      rowHome = null;
+    }
+  }
+
   window.addEventListener('load', run);
   window.addEventListener('resize', fitCover);
   window.addEventListener('resize', cartOnPhone);
+  window.addEventListener('resize', liftBuyRow);
   setTimeout(run, 600);
   setTimeout(run, 1800);
   setTimeout(run, 3500);
   setTimeout(fitCover, 5000);
-  cartOnPhone();
-  setTimeout(cartOnPhone, 700);
-  setTimeout(cartOnPhone, 2000);
-  setTimeout(cartOnPhone, 4000);
+  cartOnPhone(); liftBuyRow();
+  [700, 2000, 4000].forEach(function (ms) {
+    setTimeout(function () { cartOnPhone(); liftBuyRow(); }, ms);
+  });
 })();
