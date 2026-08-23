@@ -452,8 +452,10 @@ body.shop_view .comment_num_warp::after {
   background: linear-gradient(45deg, #f9ce34 0%, #ee2a7b 50%, #6228d7 100%);
 }
 #cocoaModal.sl-share .sl-sns-threads .ic { background: #000; }
-/* 맨 앞 셋은 「추천」 — 살짝 테두리 */
-#cocoaModal.sl-share .sl-sns .ic { outline: 3px solid #fdeef3; }
+/* 맨 앞 셋(카카오·인스타·스레드)은 「추천」 — 분홍 테두리 한 겹 */
+#cocoaModal.sl-share .sl-sns-kakao .ic,
+#cocoaModal.sl-share .sl-sns-insta .ic,
+#cocoaModal.sl-share .sl-sns-threads .ic { outline: 3px solid #fdeef3; }
 
 /* 공유하는 자료 이름 — 분홍 알약 */
 #cocoaModal.sl-share .sl-share-name {

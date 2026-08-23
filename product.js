@@ -461,6 +461,25 @@
       ul.insertBefore(li, ul.firstChild);
     });
 
+    /* 라인·네이버·페이스북 — 아임웹 아이콘은 한 장짜리 그림(스프라이트)이라 크기를 바꾸면
+       줄무늬가 됩니다. 우리 것과 결이 맞게 **같은 모양의 동그라미 아이콘**으로 갈아 끼웁니다.
+       (누르면 하는 일(onclick)은 아임웹 것 그대로입니다) */
+    var OLD = {
+      line: { label: '라인', bg: '#06C755',
+        svg: '<svg viewBox="0 0 24 24"><path d="M12 4C7.3 4 3.5 7.1 3.5 10.9c0 3.4 3 6.2 7 6.8.3.1.6.2.7.5.1.2 0 .6 0 .9l-.1.7c0 .2-.2.9.8.5s5.1-3 7-5.2c1.3-1.4 1.6-2.8 1.6-4.2C20.5 7.1 16.7 4 12 4z" fill="#fff"/></svg>' },
+      naver: { label: '네이버', bg: '#03C75A',
+        svg: '<svg viewBox="0 0 24 24"><path d="M6 5h4.2l3.6 5.6V5H18v14h-4.2l-3.6-5.6V19H6z" fill="#fff"/></svg>' },
+      face: { label: '페이스북', bg: '#1877F2',
+        svg: '<svg viewBox="0 0 24 24"><path d="M13.5 20v-6.5h2.2l.4-2.7h-2.6V9.2c0-.8.3-1.3 1.4-1.3h1.3V5.5c-.3 0-1.1-.1-2-.1-2 0-3.4 1.2-3.4 3.5v2H8.5v2.7h2.3V20z" fill="#fff"/></svg>' }
+    };
+    Object.keys(OLD).forEach(function (k) {
+      var li = ul.querySelector('li.' + k), a = li && li.querySelector('a');
+      if (!a || a.querySelector('.ic')) return;
+      li.classList.add('sl-sns', 'sl-sns-' + k);
+      a.innerHTML = '<span class="ic" style="background:' + OLD[k].bg + '">' + OLD[k].svg + '</span>' +
+                    '<span class="tx">' + OLD[k].label + '</span>';
+    });
+
     /* 링크 칸 위에 「무엇을 공유하는지」 알약 */
     var copy = m.querySelector('.url-copy');
     if (copy && !m.querySelector('.sl-share-name')) {
