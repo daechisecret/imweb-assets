@@ -73,6 +73,12 @@ input, textarea, select, button { font-family: 'Noto Sans KR', 'Apple SD Gothic 
  #inline_header_mobile { box-shadow: 0 2px 10px rgba(36, 59, 83, .07); }
  #doz_header_wrap, #doz_header, .new_org_header { background: #fff !important; } }
 @media (max-width: 860px) { #kakao-talk-channel-chat-button { bottom: 14px !important; right: 10px !important; transform: scale(.86); transform-origin: 100% 100%; } }
+.sl-legal { padding: 14px 0 4px; font-size: 12.5px; line-height: 1.6; color: rgba(255,255,255,.75); }
+.sl-legal a { color: inherit; text-decoration: none; }
+.sl-legal a:hover { color: #fff; text-decoration: underline; }
+.sl-legal a b { font-weight: 800; color: #fff; }
+.sl-legal .sep { margin: 0 10px; opacity: .4; }
+@media (max-width: 860px) { .sl-legal { font-size: 12px; padding: 10px 12px 0; } .sl-legal .sep { margin: 0 7px; } }
 #myModalReview { --rv-rose: #e85a8a; --rv-rose2: #c33e6d; --rv-roseb: #fdeef3; --rv-ink: #1d3a5e; --rv-ink2: #46617f; --rv-mute: #7c90a8; --rv-line: #efe3e9; font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif; }
 #myModalReview .modal-dialog { width: 640px; max-width: calc(100% - 32px); margin: 40px auto; }
 #myModalReview .modal-content { position: relative; border: 0 !important; border-radius: 20px !important; overflow: hidden; box-shadow: 0 18px 60px rgba(29, 58, 94, .28) !important; }

@@ -213,7 +213,8 @@ else if (act === 'wish') addWish(idxOf(card), b);
 }, true);
 var SLIDER = '.swiper-container, .swiper-wrapper, .swiper, [class*="carousel"],' +
 '.type-slide, .owl-stage, .owl-stage-outer, ._item_container.type-slide';
-var SKIP = ['/', '/shop_mypage', '/login', '/search'];
+var SKIP = ['/', '/shop_mypage', '/login', '/search',
+'/shop_cart', '/shop_payment', '/shop_order', '/shop_wish', '/shop_mypage/order', '/site_join'];
 function pickHost() {
 if (SKIP.indexOf(location.pathname.replace(/\/$/, '')) >= 0) return null;
 var all = document.querySelectorAll(LIST_SEL);

@@ -74,7 +74,7 @@
 (function () {
   if (location.pathname.replace(/\/$/, '') !== '/search') return;
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
-  var V = '3334aa51';
+  var V = 'd2587b16';
   var css = document.createElement('link');
   css.rel = 'stylesheet'; css.href = BASE + 'search.css?v=' + V;
   document.head.appendChild(css);
@@ -85,7 +85,7 @@
 
 (function () {
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
-  var V = 'b80db0f2';
+  var V = '39d00460';
   var done = false;
   function go() {
     if (done || !document.getElementById('prod_detail')) return;
@@ -170,4 +170,27 @@
     var t = e.target;
     if (t && t.tagName === 'IMG' && t.closest && t.closest('#inline_header_mobile .widget.logo')) one();
   }, true);
+})();
+
+(function () {
+  function put() {
+    var foot = document.querySelector('.footer-section, #doz_footer, footer');
+    if (!foot || foot.querySelector('.sl-legal')) return;
+    var box = document.createElement('div');
+    box.className = 'sl-legal';
+    box.innerHTML =
+      '<a href="/?mode=policy" target="_blank" rel="noopener">이용약관</a>' +
+      '<span class="sep">|</span>' +
+      '<a href="/?mode=privacy" target="_blank" rel="noopener"><b>개인정보처리방침</b></a>' +
+      '<span class="sep">|</span>' +
+      '<a href="/faq">자주 묻는 질문</a>' +
+      '<span class="sep">|</span>' +
+      '<a href="/contact">문의하기</a>';
+    var host = foot.querySelector('.inline-inside, .section_inner, .container') || foot;
+    host.appendChild(box);
+  }
+  put();
+  window.addEventListener('load', put);
+  setTimeout(put, 1500);
+  setTimeout(put, 4000);
 })();

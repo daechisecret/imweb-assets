@@ -1,3 +1,17 @@
+/* ── 검색엔진에게 ──
+   검색 결과 화면은 검색어마다 주소가 달라 **같은 내용의 페이지가 수천 개**로 보입니다.
+   색인하지 말라고 알리고(noindex), 비어 있던 제목도 채웁니다. */
+(function () {
+  if (location.pathname.replace(/\/$/, '') !== '/search') return;
+  if (!document.querySelector('meta[name="robots"]')) {
+    var m = document.createElement('meta');
+    m.name = 'robots'; m.content = 'noindex, follow';
+    document.head.appendChild(m);
+  }
+  var q = new URLSearchParams(location.search).get('keyword') || new URLSearchParams(location.search).get('q') || '';
+  document.title = (q ? '「' + q + '」 검색 결과 | ' : '자료 검색 | ') + '대치동시크릿';
+})();
+
 /* ═══════════════════════════════════════════════════════════════
    대치동시크릿 검색 결과 화면  (/search)  — 짝꿍 : themes/search.css
 
