@@ -336,6 +336,143 @@
     }
   }
 
+  /* ═══════════════ 공유하기 창 ═══════════════
+     아임웹이 내놓는 공유 창(#cocoaModal)에는 라인·밴드·네이버·페이스북·X 다섯이 있습니다.
+     선생님들이 실제로 쓰시는 것은 **카카오톡·인스타그램·스레드** 라, 그 셋을 맨 앞에 세우고
+     밴드·X 는 접어 둡니다. 아래에는 어떤 자료를 공유하는지 이름을 알약으로 보여 드립니다.
+
+     ── 셋을 어떻게 보내는가 ──
+       카카오톡  : 이 사이트에 이미 카카오 SDK 가 올라와 있어(채널 상담 단추) 그대로 씁니다.
+                   창이 안 뜨면(설정이 막혀 있으면) 링크 복사로 넘어갑니다.
+       인스타그램: 웹에서 바로 보내는 길이 **없습니다**(인스타가 안 열어 줍니다).
+                   휴대폰이면 기기의 공유판을 띄우고, 아니면 링크를 복사해 드리고 인스타를 엽니다.
+       스레드    : 글쓰기 창을 여는 주소가 있어 그대로 씁니다.
+     ═══════════════════════════════════════════ */
+  function shareLink() {
+    var i = document.querySelector('#cocoaModal ._sns_copy_url');
+    return (i && i.value) || location.href.split('#')[0];
+  }
+  function shareName() {
+    var t = document.querySelector('.view_tit');
+    return t ? (t.textContent || '').replace(/\s+/g, ' ').trim() : document.title;
+  }
+  function shareThumb() {
+    var i = document.querySelector('.goods_thumbs img, .prod-owl-list img, .goods_wrap img');
+    return i && i.src ? i.src : '';
+  }
+  function toast(msg) {
+    var m = document.getElementById('cocoaModal');
+    var box = m && m.querySelector('.sl-share-toast');
+    if (!box) {
+      box = document.createElement('div');
+      box.className = 'sl-share-toast';
+      (m ? m.querySelector('.modal-body') : document.body).appendChild(box);
+    }
+    box.textContent = msg;
+    box.classList.add('on');
+    setTimeout(function () { box.classList.remove('on'); }, 2600);
+  }
+  function copyLink() {
+    var url = shareLink();
+    try {
+      if (navigator.clipboard) return navigator.clipboard.writeText(url);
+    } catch (e) {}
+    var i = document.querySelector('#cocoaModal ._sns_copy_url');
+    if (i) { i.select(); try { document.execCommand('copy'); } catch (e) {} }
+  }
+
+  var SNS = [
+    {
+      key: 'kakao', label: '카카오톡',
+      svg: '<svg viewBox="0 0 24 24"><ellipse cx="12" cy="11" rx="9.5" ry="8" fill="#3C1E1E"/>' +
+           '<path d="M7 17.5l-1 4 4.5-2.6z" fill="#3C1E1E"/></svg>',
+      go: function () {
+        try {
+          if (window.Kakao && Kakao.isInitialized() && Kakao.Share) {
+            Kakao.Share.sendDefault({
+              objectType: 'feed',
+              content: {
+                title: shareName(),
+                description: '대치동시크릿 영어자료',
+                imageUrl: shareThumb(),
+                link: { mobileWebUrl: shareLink(), webUrl: shareLink() }
+              },
+              buttons: [{ title: '자료 보러 가기', link: { mobileWebUrl: shareLink(), webUrl: shareLink() } }]
+            });
+            return;
+          }
+        } catch (e) {}
+        copyLink(); toast('카카오톡 공유가 막혀 있어 링크를 복사했습니다. 붙여넣어 보내 주세요.');
+      }
+    },
+    {
+      key: 'insta', label: '인스타그램',
+      svg: '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5" fill="none" stroke="#fff" stroke-width="1.9"/>' +
+           '<circle cx="12" cy="12" r="4" fill="none" stroke="#fff" stroke-width="1.9"/>' +
+           '<circle cx="17.2" cy="6.8" r="1.3" fill="#fff"/></svg>',
+      go: function () {
+        if (navigator.share) {
+          navigator.share({ title: shareName(), url: shareLink() }).catch(function () {});
+          return;
+        }
+        copyLink();
+        toast('링크를 복사했습니다 — 인스타그램에 붙여넣어 주세요.');
+        setTimeout(function () { window.open('https://www.instagram.com/', '_blank', 'noopener'); }, 700);
+      }
+    },
+    {
+      key: 'threads', label: '스레드',
+      svg: '<svg viewBox="0 0 24 24"><text x="12" y="17.5" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Helvetica, Arial, sans-serif">@</text></svg>',
+      go: function () {
+        var t = encodeURIComponent(shareName() + ' ' + shareLink());
+        window.open('https://www.threads.net/intent/post?text=' + t, '_blank', 'noopener');
+      }
+    }
+  ];
+
+  function dressShare() {
+    var m = document.getElementById('cocoaModal');
+    if (!m || m.dataset.slShare === '1') return;
+    var ul = m.querySelector('.social-btn ul');
+    if (!ul) return;
+    m.dataset.slShare = '1';
+    m.classList.add('sl-share');
+
+    /* 밴드·X 는 접습니다 (사장님이 안 쓰시는 곳입니다) */
+    ['band', 'twitter'].forEach(function (k) {
+      var li = ul.querySelector('li.' + k);
+      if (li) li.style.display = 'none';
+    });
+
+    /* 카카오톡·인스타그램·스레드를 **맨 앞에** — 뒤에서부터 끼워 넣습니다 */
+    SNS.slice().reverse().forEach(function (s) {
+      var li = document.createElement('li');
+      li.className = 'sl-sns sl-sns-' + s.key;
+      li.innerHTML = '<a href="#" role="button"><span class="ic">' + s.svg + '</span>' +
+                     '<span class="tx">' + s.label + '</span></a>';
+      li.querySelector('a').addEventListener('click', function (e) {
+        e.preventDefault();
+        s.go();
+      });
+      ul.insertBefore(li, ul.firstChild);
+    });
+
+    /* 링크 칸 위에 「무엇을 공유하는지」 알약 */
+    var copy = m.querySelector('.url-copy');
+    if (copy && !m.querySelector('.sl-share-name')) {
+      var pill = document.createElement('div');
+      pill.className = 'sl-share-name';
+      pill.textContent = shareName();
+      copy.parentNode.insertBefore(pill, copy);
+    }
+  }
+  /* 공유 창은 누르셔야 만들어집니다 — 누른 뒤에 꾸밉니다 */
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('.bt-share, .comment_num_warp .btn')) {
+      [60, 300, 800].forEach(function (ms) { setTimeout(dressShare, ms); });
+    }
+  }, true);
+
   window.addEventListener('load', run);
   window.addEventListener('resize', fitTitle);
   window.addEventListener('resize', fitCover);

@@ -338,11 +338,149 @@ body.shop_view .goods_summary .fr-view p { margin: 0 0 2px !important; }
   body.shop_view #prod_goods_form .buy_btns.pc a.btn.buy { width: calc(62% - 74px) !important; }
 }
 
-/* ── ⑦ 「최근 본 상품」 띠가 단추를 덮습니다 ──
-   아임웹이 화면 오른쪽에 붙박이로 띄우는 세로 띠인데, 상품 상세는 글 칸이 오른쪽 끝까지
-   차 있어 **찜하기 단추와 상품명 끝을 덮습니다** (1707px 화면에서 72px 겹침).
-   상세 페이지에서만 접어 둡니다 — 다른 화면에서는 그대로 보입니다.
-   (되살리시려면 이 한 줄만 지우면 됩니다) */
+/* ── ⑦ 글 칸 자리잡기 (「최근 본 상품」 띠와 겹치지 않게) ──
+   아임웹은 오른쪽에 「최근 본 상품」 세로 띠를 붙박이로 띄웁니다. 그런데 상품 글 칸이
+   화면 오른쪽 끝까지 차 있어 **찜하기 단추와 상품명 끝이 그 띠에 덮였습니다.**
+   한때 띠를 접어 봤지만 사장님이 쓰시는 기능이라 **띠는 그대로 두고 글 칸을 옮깁니다.**
+     · 왼쪽에 붙어 있던 101px 짜리 빈 여백을 없애 글이 왼쪽으로 오고,
+     · 오른쪽에 96px 를 비워 띠가 설 자리를 만듭니다.
+   결과적으로 제목·값·단추가 칸 가운데로 모입니다. */
 @media (min-width: 992px) {
-  body.shop_view .recent-product { display: none !important; }
+  body.shop_view .goods_form { padding-left: 0 !important; padding-right: 96px !important; }
 }
+
+/* ── ⑧ 「44% 할인」 딱지 높이 맞추기 ──
+   딱지가 값보다 8px 쯤 떠 있었습니다 (vertical-align 이 7px 로 박혀 있었습니다). */
+body.shop_view .sl-off-badge { vertical-align: baseline !important; margin-left: 8px; }
+
+/* ── ⑨ 공유 단추 — 눈에 띄게 + 말풍선 ── */
+body.shop_view .comment_num_warp { position: relative; text-align: right; }
+body.shop_view .comment_num_warp .btn:has(i.bt-share) {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: #fdeef3 !important; border: 1px solid #f2b8cd !important;
+  display: inline-flex !important; align-items: center; justify-content: center;
+  padding: 0 !important; transition: all .15s;
+}
+body.shop_view .comment_num_warp .btn:has(i.bt-share):hover {
+  background: #e85a8a !important; border-color: #e85a8a !important;
+  box-shadow: 0 4px 12px rgba(232, 90, 138, .32);
+}
+body.shop_view .comment_num_warp i.bt-share { color: #c33e6d !important; font-size: 17px !important; }
+body.shop_view .comment_num_warp .btn:has(i.bt-share):hover i.bt-share { color: #fff !important; }
+/* 말풍선 — 「이 상품을 공유해보세요!」 */
+body.shop_view .comment_num_warp::before {
+  content: '이 상품을 공유해보세요!';
+  position: absolute; right: 0; bottom: calc(100% + 11px); white-space: nowrap;
+  background: #e85a8a; color: #fff; border-radius: 100px;
+  padding: 6px 12px; font-size: 11.5px; font-weight: 750; letter-spacing: -.02em;
+  box-shadow: 0 4px 12px rgba(232, 90, 138, .28);
+}
+body.shop_view .comment_num_warp::after {
+  content: ''; position: absolute; right: 15px; bottom: calc(100% + 3px);
+  border: 5px solid transparent; border-top-color: #e85a8a;
+}
+@media (max-width: 860px) {
+  body.shop_view .comment_num_warp::before { font-size: 10.5px; padding: 5px 10px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   공유하기 창 (#cocoaModal) — 사이트 분홍옷
+   카카오톡·인스타그램·스레드는 themes/product.js 가 맨 앞에 끼워 넣습니다.
+   ═══════════════════════════════════════════════════════════════ */
+#cocoaModal.sl-share .modal-dialog { width: 380px; max-width: calc(100% - 28px); }
+#cocoaModal.sl-share .modal-content {
+  border: 0 !important; border-radius: 20px !important; overflow: hidden;
+  box-shadow: 0 18px 60px rgba(29, 58, 94, .26) !important;
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+}
+#cocoaModal.sl-share .modal-header {
+  padding: 18px 22px 10px !important; border: 0 !important;
+  background: linear-gradient(160deg, #fff6f9, #fdeef3);
+}
+#cocoaModal.sl-share .modal-title {
+  font-size: 17px !important; font-weight: 800 !important; color: #1d3a5e !important;
+  letter-spacing: -.02em;
+}
+#cocoaModal.sl-share .modal-title::after {
+  content: '어디로 보내 드릴까요?'; display: block; margin-top: 3px;
+  font-size: 12px; font-weight: 600; color: #7c90a8;
+}
+#cocoaModal.sl-share .close {
+  position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(255, 255, 255, .85) !important; color: #7c90a8 !important; opacity: 1 !important;
+  display: flex !important; align-items: center; justify-content: center; margin: 0 !important;
+}
+#cocoaModal.sl-share .close:hover { background: #fff !important; color: #c33e6d !important; }
+#cocoaModal.sl-share .modal-body { padding: 14px 22px 20px !important; background: #fff; }
+
+/* 단추 격자 — 3 × 2 */
+#cocoaModal.sl-share .social-btn { width: 100% !important; height: auto !important; }
+#cocoaModal.sl-share .social-btn ul {
+  display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 12px 8px;
+  height: auto !important; margin: 0 !important; padding: 0 !important; list-style: none;
+}
+#cocoaModal.sl-share .social-btn li {
+  float: none !important; width: auto !important; margin: 0 !important; text-align: center;
+}
+#cocoaModal.sl-share .social-btn li a {
+  display: flex !important; flex-direction: column; align-items: center; gap: 6px;
+  width: auto !important; height: auto !important; background: none !important;
+  text-decoration: none; transition: transform .12s;
+}
+#cocoaModal.sl-share .social-btn li a:hover { transform: translateY(-2px); }
+/* 아임웹 기본 단추(라인·네이버·페이스북) — 동그라미에 연한 테두리 */
+#cocoaModal.sl-share .social-btn li a > i,
+#cocoaModal.sl-share .social-btn li a > span.ic {
+  width: 54px; height: 54px; border-radius: 50%; flex: none;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 3px 10px rgba(29, 58, 94, .12);
+}
+#cocoaModal.sl-share .social-btn li a > span.tx,
+#cocoaModal.sl-share .social-btn li a > span:not(.ic) {
+  font-size: 11.5px; font-weight: 700; color: #46617f; line-height: 1.2;
+}
+#cocoaModal.sl-share .social-btn li a .ic svg { width: 28px; height: 28px; display: block; }
+#cocoaModal.sl-share .sl-sns-kakao .ic { background: #FEE500; }
+#cocoaModal.sl-share .sl-sns-insta .ic {
+  background: linear-gradient(45deg, #f9ce34 0%, #ee2a7b 50%, #6228d7 100%);
+}
+#cocoaModal.sl-share .sl-sns-threads .ic { background: #000; }
+/* 맨 앞 셋은 「추천」 — 살짝 테두리 */
+#cocoaModal.sl-share .sl-sns .ic { outline: 3px solid #fdeef3; }
+
+/* 공유하는 자료 이름 — 분홍 알약 */
+#cocoaModal.sl-share .sl-share-name {
+  margin: 18px 0 8px; padding: 7px 14px; border-radius: 100px;
+  background: #fdeef3; border: 1px solid #f7d3e0; color: #c33e6d;
+  font-size: 12.5px; font-weight: 750; letter-spacing: -.02em; line-height: 1.35;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+#cocoaModal.sl-share .sl-share-name::before { content: '🔗 '; }
+
+/* 링크 복사 줄 */
+#cocoaModal.sl-share .url-copy { width: 100% !important; }
+#cocoaModal.sl-share .url-copy .form-control-line {
+  display: flex !important; width: 100% !important; height: 42px !important;
+  border: 1.5px solid #f2b8cd !important; border-radius: 100px; overflow: hidden; background: #fffafc;
+}
+#cocoaModal.sl-share .url-copy input {
+  flex: 1; min-width: 0; height: 100% !important; border: 0 !important; background: none !important;
+  padding: 0 14px !important; font-size: 12.5px !important; color: #46617f !important;
+}
+#cocoaModal.sl-share .url-copy button,
+#cocoaModal.sl-share .url-copy .btn {
+  flex: none; height: 100% !important; border: 0 !important; border-radius: 0 !important;
+  background: #e85a8a !important; color: #fff !important; padding: 0 16px !important;
+  font-size: 12.5px !important; font-weight: 800 !important;
+}
+#cocoaModal.sl-share .url-copy .btn:hover { background: #c33e6d !important; }
+#cocoaModal.sl-share .copy_complete { font-size: 12px; color: #2f8f6b; font-weight: 700; }
+
+/* 알림 띠 (카카오 막힘·인스타 복사 안내) */
+#cocoaModal .sl-share-toast {
+  position: absolute; left: 14px; right: 14px; bottom: 14px; z-index: 5;
+  background: #1d3a5e; color: #fff; border-radius: 12px; padding: 10px 14px;
+  font-size: 12px; font-weight: 650; line-height: 1.45; text-align: center;
+  opacity: 0; transform: translateY(6px); pointer-events: none; transition: all .2s;
+}
+#cocoaModal .sl-share-toast.on { opacity: 1; transform: none; }
