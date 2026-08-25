@@ -577,6 +577,14 @@ window.SL_NOTICE_BOARD = '/notice';
 
   /* ── 눌렀을 때 — 자료실로 데려갑니다 ── */
   HOME.addEventListener('click', function (e) {
+    /* ⚠ 휴대폰에서는 arrange() 가 자료실(#sl-store)을 이 안으로 들여옵니다.
+       그러면 자료실 단추까지 이 손길받개로 올라옵니다 — 「샘플 보기」 단추에는
+       data-book 이 달려 있어서, 샘플 창이 뜨자마자 여기서 SL_STORE.go() 를 불러
+       자료실을 통째로 다시 그려 **창을 지우고 화면을 맨 위로 올려** 버렸습니다.
+       자료실 제 단추(data-act)는 자료실이 알아서 하니 여기서는 손대지 않습니다.
+       (「새 자료」 띠는 data-act 가 없어 그대로 잘 돕니다.) */
+    if (e.target.closest && e.target.closest('#sl-store [data-act]')) return;
+
     /* 앞뒤 화살표 — 자료실로 가지 않고 그 칸만 다시 그립니다 */
     var nv = e.target.closest('[data-nv]');
     if (nv) {
@@ -1096,6 +1104,43 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
   font-size: 12.5px; font-weight: 700; color: var(--rose2); white-space: nowrap;
 }
 
+/* ── 장바구니 「PDF / HWP 고르기」 창 ── */
+#sl-store .sh-pick { position: fixed; inset: 0; z-index: 10000; padding: 20px;
+  background: rgba(13,24,38,.55); backdrop-filter: blur(3px);
+  display: grid; place-items: center; }
+#sl-store .sh-pickin { background: var(--panel); border-radius: 16px; width: min(420px,100%);
+  padding: 18px 18px 16px; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+#sl-store .sh-pickh { position: relative; padding-right: 30px; margin-bottom: 14px; }
+#sl-store .sh-pickh b { display: block; font-size: 15px; font-weight: 800; letter-spacing: -.02em;
+  color: var(--ink); overflow-wrap: anywhere; }
+#sl-store .sh-pickh span { display: block; margin-top: 5px; font-size: 12.5px; color: var(--mute); line-height: 1.5; }
+#sl-store .sh-pickx { position: absolute; right: -4px; top: -4px; border: 0; background: none;
+  color: var(--mute); font-size: 15px; padding: 4px 8px; border-radius: 7px; cursor: pointer; }
+#sl-store .sh-pickx:hover { background: var(--bg2); color: var(--ink); }
+/* 고르는 단추 — 값까지 한눈에 보이게 넓게 세웁니다 */
+#sl-store .sh-pickb { display: flex; align-items: center; gap: 11px; width: 100%;
+  padding: 13px 14px; margin-bottom: 9px; border-radius: 12px; cursor: pointer;
+  border: 1.5px solid var(--line); background: var(--panel);
+  font-family: inherit; text-align: left; color: var(--ink); }
+#sl-store .sh-pickb .tg { flex: none; width: 44px; height: 28px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11.5px; font-weight: 800; font-style: normal; letter-spacing: .01em; color: #fff; }
+#sl-store .sh-pickb .tx { flex: 1; min-width: 0; }
+#sl-store .sh-pickb .tx b { display: block; font-size: 14px; font-weight: 750; }
+#sl-store .sh-pickb .tx em { display: block; margin-top: 2px; font-size: 11.5px; font-style: normal; color: var(--mute); }
+#sl-store .sh-pickb .am { flex: none; font-size: 14px; font-weight: 800; }
+#sl-store .sh-pickb.pdf { border-color: #f2b8cd; }
+#sl-store .sh-pickb.pdf .tg { background: var(--rose); }
+#sl-store .sh-pickb.pdf .am { color: var(--rose2); }
+#sl-store .sh-pickb.pdf:hover { background: var(--roseb); }
+/* 한글파일은 한컴 파랑으로 — 목록표 HWP 단추와 같은 빛깔입니다 */
+#sl-store .sh-pickb.hwp { border-color: #b9d4f2; }
+#sl-store .sh-pickb.hwp .tg { background: #1f6fd0; }
+#sl-store .sh-pickb.hwp .am { color: #1f6fd0; }
+#sl-store .sh-pickb.hwp:hover { background: #eef5fd; }
+#sl-store .sh-pickb:active { transform: scale(.99); }
+#sl-store .sh-pickf { margin-top: 10px; font-size: 11.5px; color: var(--dim); text-align: center; }
+
 /* ── 샘플 자료 창 ── */
 #sl-store .sh-modal { position: fixed; inset: 0; z-index: 9999; padding: 24px; background: rgba(13,24,38,.55); backdrop-filter: blur(3px); display: grid; place-items: center; }
 #sl-store .sh-modin { background: var(--panel); border-radius: 14px; width: min(920px,100%); height: min(88vh,100%); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
@@ -1150,6 +1195,10 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
   #sl-store .sh-lab { width: auto; }
   #sl-store .sh-modal { padding: 0; }
   #sl-store .sh-modin { height: 100%; max-height: none; border-radius: 0; }
+  /* 고르기 창은 손가락이 닿는 아래쪽에서 올라옵니다 */
+  #sl-store .sh-pick { padding: 0; place-items: end center; }
+  #sl-store .sh-pickin { width: 100%; border-radius: 18px 18px 0 0; padding: 18px 16px 22px; }
+  #sl-store .sh-pickb { padding: 15px 14px; }
 
   /* ── 서랍 → 바텀시트 ── */
   #sl-store .sh-drawer {
@@ -1783,16 +1832,24 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
 
   /* 장바구니 담기 — 아임웹이 어느 페이지에서나 쓸 수 있는 함수를 내어 줍니다
      (SITE_SHOP_CART.addCartAnywhere). 여러 강을 한 번에 결제하시라고 붙였습니다. */
-  function cartBtnHTML(x) {
-    var idx = idxOf(x.pdf);
-    if (!idx) return '';
-    /* 값이 없는 자료(교과서·쏠북 판매)는 담지 못하게 합니다 — 담으면 0원 주문이 됩니다 */
-    if (!(x.price || x.hwpPrice)) return '';
+  function cartBtnHTML(x, name) {
+    /* PDF 와 교사용 한글파일은 **서로 다른 상품**입니다 (값도 다릅니다).
+       예전에는 PDF 만 담겼습니다 — 한글파일을 사시려던 분은 상품 페이지로 다시 가셔야 했습니다.
+       이제 둘 다 있으면 눌렀을 때 「PDF 자료 담기 / HWP 자료 담기」를 골라 주십사 여쭙습니다.
+       값이 없는 자료(교과서·쏠북 판매)는 담지 못하게 합니다 — 담으면 0원 주문이 됩니다. */
+    var pdfIdx = x.price ? idxOf(x.pdf) : '';
+    var hwpIdx = x.hwpPrice ? idxOf(x.hwp) : '';
+    if (!pdfIdx && !hwpIdx) return '';
     /* 글자로 「장바구니」라고 쓰면 단추가 넓어져 값 칸까지 밀립니다.
        수레 그림 하나로 줄이고, 무슨 단추인지는 title 로 알려 줍니다.
        (아임웹 아이콘 글꼴은 쓰지 않습니다 — 글꼴이 안 잡히면 □ 로 깨집니다.) */
-    return '<button type="button" class="sh-btn xs cart" data-act="cart" data-idx="' + idx +
-      '" title="장바구니에 담기" aria-label="장바구니에 담기">' +
+    var both = !!(pdfIdx && hwpIdx);
+    var tip = both ? '장바구니에 담기 (PDF·HWP 고르기)' : '장바구니에 담기';
+    return '<button type="button" class="sh-btn xs cart" data-act="cart"' +
+      ' data-idx="' + pdfIdx + '" data-hwp="' + hwpIdx +
+      '" data-pp="' + (x.price || 0) + '" data-hp="' + (x.hwpPrice || 0) +
+      '" data-nm="' + esc(name || '') + '"' +
+      ' title="' + tip + '" aria-label="' + tip + '">' +
       '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">' +
       '<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" ' +
       'stroke-linejoin="round" d="M2.5 3h2.2l2.3 11h10.4l2.1-8H6.2"/>' +
@@ -1804,6 +1861,14 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
     var have = ch.items || {};
     for (var i = 0; i < KINDS.length; i++) if (hasSample(have[KINDS[i].id])) return true;
     return false;
+  }
+
+  /** 창에 적을 이름 — 강 이름에 교재 이름이 이미 들어 있으면 두 번 적지 않습니다
+      (모의고사는 강 이름이 「[1학년] 2025년 10월 모의고사 전체 라인업」 처럼 통째입니다) */
+  function chapName(b, ch, whole) {
+    var t = b.title, l = String(ch.label || '');
+    if (whole || !l) return t;
+    return l.indexOf(t) >= 0 ? l : t + ' ' + l;
   }
 
   function cardHTML(b, ch, idx) {
@@ -1873,7 +1938,8 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
         nameCell('go') +
         '<span class="pd"></span>' +
         '<span class="pp sl-num">' + priceHTML(x) + '</span>' +
-        '<span class="fb">' + buyHTML(x.pdf, 'PDF', 'rose', true) + hwpHTML(x) + cartBtnHTML(x) + '</span></div>';
+        '<span class="fb">' + buyHTML(x.pdf, 'PDF', 'rose', true) + hwpHTML(x) +
+          cartBtnHTML(x, chapName(b, ch, whole) + ' · ' + p.short) + '</span></div>';
     }).join('');
 
     return '<div class="sh-card' + (ch.pkg ? ' pack' : '') + '">' + head +
@@ -1969,6 +2035,15 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
 
     var anyVendor = list.some(function (b) { return !!b.vendor; });
 
+    /* ⚠ 휴대폰에서는 「새 자료」 띠가 자료실 안(#sl-tickslot)에 들어와 있습니다.
+       그대로 innerHTML 을 갈아 끼우면 띠까지 통째로 지워져, 무엇을 한 번 누르신
+       뒤로는 띠가 영영 사라졌습니다. 그리기 전에 잠깐 밖으로 빼 두었다가
+       아래 placeTicker() 가 제자리에 돌려 놓습니다. */
+    var tkNow = document.getElementById('hm-ticker');
+    if (tkNow && ROOT.contains(tkNow)) {
+      (document.getElementById('hm-lead') || document.body).appendChild(tkNow);
+    }
+
     ROOT.innerHTML =
       '<div class="sh-split">' +
         '<div>' +
@@ -2005,6 +2080,11 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
         '</div>' +
       '</div>';
 
+    /* 샘플 창·고르기 창은 ROOT 안에 떠 있어 innerHTML 을 갈아 끼우면 함께 지워집니다.
+       열려 있으면 도로 붙여 둡니다 (내용은 그 요소가 그대로 갖고 있습니다). */
+    if (modal) ROOT.appendChild(modal);
+    if (picker) ROOT.appendChild(picker);
+
     var box = ROOT.querySelector('.sh-dscroll');
     if (box) box.scrollTop = keepTop;
     if (window.pageYOffset !== keepWin) window.scrollTo(0, keepWin);
@@ -2040,6 +2120,66 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
     if (home && tk.parentNode !== home) home.appendChild(tk);
   }
   window.addEventListener('resize', function () { placeTicker(); });
+
+  /* ═══════════════ 장바구니 — PDF / HWP 고르기 창 ═══════════════
+     한 자료에 PDF 상품과 교사용 한글파일 상품이 따로 있습니다.
+     수레 단추를 누르면 어느 쪽을 담을지 여쭙고, 고르신 것만 담습니다. */
+  var picker = null;
+
+  function closePick() {
+    if (!picker) return;
+    picker.remove(); picker = null;
+    if (!modal) document.body.style.overflow = '';
+  }
+
+  /** 아임웹이 어느 페이지에서나 쓸 수 있게 열어 둔 담기 함수입니다.
+      상품 페이지로 보내지 않고 그 자리에서 담기므로, 여러 강을 이어서 고르실 수 있습니다. */
+  function addCart(idx) {
+    if (!idx) return;
+    var api = window.SITE_SHOP_CART;
+    if (api && typeof api.addCartAnywhere === 'function') {
+      api.addCartAnywhere(idx);
+    } else {
+      /* 아임웹 장바구니가 아직 안 실려 있으면 상품 페이지로 보냅니다.
+         (진열 칸과 상관없이 늘 열리는 /shop_view/번호 를 씁니다) */
+      window.open('/shop_view/' + idx, '_blank', 'noopener');
+    }
+  }
+
+  function openPick(btn) {
+    closePick();
+    var d = btn.dataset;
+    picker = document.createElement('div');
+    picker.className = 'sh-pick';
+    picker.innerHTML =
+      '<div class="sh-pickin" role="dialog" aria-modal="true" aria-label="담을 형식 고르기">' +
+        '<div class="sh-pickh">' +
+          '<b>' + esc(d.nm || '이 자료') + '</b>' +
+          '<span>PDF 와 교사용 한글파일(HWP) 이 따로 있습니다. 담으실 것을 골라 주십시오.</span>' +
+          '<button type="button" class="sh-pickx" data-act="pickclose" aria-label="닫기">✕</button>' +
+        '</div>' +
+        '<button type="button" class="sh-pickb pdf" data-act="pick" data-idx="' + esc(d.idx) + '">' +
+          '<i class="tg">PDF</i>' +
+          '<span class="tx"><b>PDF 자료 담기</b><em>인쇄해서 바로 쓰는 파일</em></span>' +
+          '<b class="am sl-num">' + fmt(+d.pp || 0) + '원</b></button>' +
+        '<button type="button" class="sh-pickb hwp" data-act="pick" data-idx="' + esc(d.hwp) + '">' +
+          '<i class="tg">HWP</i>' +
+          '<span class="tx"><b>HWP 자료 담기</b><em>한글에서 고쳐 쓰는 교사용 파일</em></span>' +
+          '<b class="am sl-num">' + fmt(+d.hp || 0) + '원</b></button>' +
+        '<div class="sh-pickf">둘 다 필요하시면 하나씩 두 번 담으시면 됩니다.</div>' +
+      '</div>';
+    ROOT.appendChild(picker);
+    document.body.style.overflow = 'hidden';
+
+    picker.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (e.target === picker) return closePick();
+      var t = e.target.closest('[data-act]');
+      if (!t) return;
+      if (t.dataset.act === 'pick') { var i = t.dataset.idx; closePick(); addCart(i); }
+      else closePick();
+    });
+  }
 
   /* ═══════════════ 샘플 창 ═══════════════
      PDF 는 브라우저가 그리게 두고 스크롤만 열어 줍니다.
@@ -2192,13 +2332,22 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
     modal.remove(); modal = null;
     document.body.style.overflow = '';
   }
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSample(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    closePick(); closeSample();
+  });
 
   /* ═══════════════ 손길 받기 ═══════════════ */
   ROOT.addEventListener('click', function (e) {
     var t = e.target.closest('[data-act]');
-    if (!t || (modal && modal.contains(t))) return;
+    if (!t || (modal && modal.contains(t)) || (picker && picker.contains(t))) return;
     var act = t.dataset.act, id = t.dataset.id;
+
+    /* ⚠ 휴대폰 첫 화면에서는 자료실이 #sl-home 안으로 들어갑니다.
+       그쪽 손길받개가 data-book 을 보고 자료실을 다시 그려 버려서
+       「샘플 보기」 창이 뜨자마자 지워지고 화면이 맨 위로 튀었습니다.
+       자료실 단추는 여기서 끝냅니다 — 위로 더 올려 보내지 않습니다. */
+    e.stopPropagation();
 
     if (act !== 'page') S.page = 1;
 
@@ -2250,15 +2399,9 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년6월모의고사","title":"6
       }
       t.textContent = t.closest('.sh-drawer').classList.contains('shut') ? '펼치기 ▾' : '접기 ▴';
     } else if (act === 'cart') {
-      /* 아임웹이 어느 페이지에서나 쓸 수 있게 열어 둔 함수입니다.
-         상품 페이지로 보내지 않고 그 자리에서 담기므로, 여러 강을 이어서 고르실 수 있습니다. */
-      var api = window.SITE_SHOP_CART;
-      if (api && typeof api.addCartAnywhere === 'function') {
-        api.addCartAnywhere(t.dataset.idx);
-      } else {
-        /* 아임웹 장바구니가 아직 안 실려 있으면 상품 페이지로 보냅니다 */
-        window.open('/?idx=' + t.dataset.idx, '_blank', 'noopener');
-      }
+      /* PDF·HWP 가 둘 다 있으면 어느 쪽을 담을지 먼저 여쭙습니다 */
+      if (t.dataset.idx && t.dataset.hwp) openPick(t);
+      else addCart(t.dataset.idx || t.dataset.hwp);
     } else if (act === 'sample') {
       openSample(t.dataset.book, Number(t.dataset.ch), t.dataset.kind);
     }
