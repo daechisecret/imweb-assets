@@ -195,10 +195,12 @@
   function foldHTML(rows) {
     var counts = {};
     rows.forEach(function (r) { r.cat = catOf(r.t); counts[r.cat] = (counts[r.cat] || 0) + 1; });
-    /* 갈래 차례로 묶어 보입니다 (회원/로그인 → 자료 찾기 → … ). 같은 갈래 안에서는 게시판 차례 그대로 */
+    /* 갈래 차례로 묶어 보입니다 (회원/로그인 → 자료 찾기 → … ).
+       같은 갈래 안에서는 게시판과 **거꾸로**(오래된 글부터) — 글을 올린 차례가 곧 읽는 차례이기 때문입니다
+       (「어떤 곳인가요」가 맨 위, 「샘플을 볼 수 있나요」가 자료 찾기 맨 위). */
     rows = rows.map(function (r, i) { return { r: r, i: i }; }).sort(function (a, b) {
       var ca = CATS.indexOf(a.r.cat), cb = CATS.indexOf(b.r.cat);
-      return ca !== cb ? ca - cb : a.i - b.i;
+      return ca !== cb ? ca - cb : b.i - a.i;
     }).map(function (x) { return x.r; });
     var chips = '<div class="sl-cats"><button type="button" class="on" data-cat="">전체 <em>' + rows.length + '</em></button>' +
       CATS.filter(function (c) { return counts[c]; }).map(function (c) {
