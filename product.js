@@ -127,24 +127,18 @@
     }).join('') + '</div>';
   }
 
-  /* 패키지 안내 한 줄 — **든 것만** 적습니다.
-       올인원 : 「올인원 패키지라 안에 든 변형문제 유형편·핵심요약·지문분석·워크북의 미리보기를 …」
-       갈래별 : 「핵심요약노트 패키지라 1강 핵심요약노트의 미리보기를 …」
-     예전에는 갈래별 패키지에도 여섯 갈래 단추를 다 세워, 핵심요약노트 패키지를
-     변형문제·워크북까지 든 것으로 오해하게 했습니다. */
+  /* 패키지 안내 한 줄 — 지금 고른 갈래만 짧게 적습니다.
+       「아래는 핵심요약노트 자료의 미리보기 이미지입니다.」
+     (사장님 지시 2026-08-26 : "…만 보여 드립니다, 다른 자료는 없습니다" 식으로 길게 쓰지 말 것.)
+     어떤 갈래 단추가 서는지는 pkg-samples.json 이 정합니다 —
+     모의고사 올인원은 네 갈래, 부교재의 갈래별 패키지는 그 갈래 하나. */
   function fromLine(kinds, cur) {
     if (!kinds || !kinds.length) return '';
     var k = null;
     kinds.forEach(function (x) { if (x.id === cur) k = x; });
-    var one = kinds.length === 1 && k && k.long;
-    if (one) {
-      return '<div class="sp-from"><b>' + esc(k.long) + ' 패키지</b>라 ' +
-             (k.from ? esc(k.from) + ' ' : '') + '<b>' + esc(k.long) + '</b>의 미리보기만 보여 드립니다. ' +
-             '다른 자료는 들어 있지 않습니다.</div>';
-    }
-    return '<div class="sp-from">패키지 상품이라 안에 든 <b>' +
-           esc(kinds.map(function (x) { return x.name; }).join('·')) +
-           '</b>의 미리보기를 보여 드립니다.</div>';
+    if (!k) return '';
+    return '<div class="sp-from">아래는 <b>' + esc(k.long || k.name) +
+           '</b> 자료의 미리보기 이미지입니다.</div>';
   }
 
   function paint(list, kinds, cur) {
