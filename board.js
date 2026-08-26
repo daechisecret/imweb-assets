@@ -242,14 +242,23 @@
       bqs[i].classList.add(/^\s*주의/.test(bqs[i].textContent) ? 'sl-warn' : 'sl-tip');
     }
     var ps = box.querySelectorAll('p');
+    var lastGal = null;   /* 바로 앞 액자의 그림들 — 「샘플 자세히 보기」가 이걸 크게 보기 창으로 엽니다 */
     for (var j = 0; j < ps.length; j++) {
       var t = ps[j].textContent.trim();
       if (/^카카오톡 채널/.test(t)) ps[j].classList.add('sl-kakao');
       else if (/^관련 질문/.test(t)) ps[j].classList.add('sl-rel');
       else if (/^순서\s*[:：]/.test(t)) timelineOf(ps[j], t);
       else if (ps[j].querySelector('img[alt="휴대폰"]')) ps[j].classList.add('sl-phones');
-      else if (ps[j].querySelectorAll('img[alt^="샘플"]').length > 1) galleryOf(ps[j]);
-      else if (ps[j].children.length === 1 && ps[j].firstElementChild.tagName === 'A' && /샘플 자세히/.test(t)) ps[j].classList.add('sl-more');
+      else if (ps[j].querySelectorAll('img[alt^="샘플"]').length > 1) lastGal = galleryOf(ps[j]);
+      else if (ps[j].children.length === 1 && ps[j].firstElementChild.tagName === 'A' && /샘플 자세히/.test(t)) {
+        ps[j].classList.add('sl-more');
+        /* 새 창으로 나가면 읽던 자리로 돌아오기 어렵습니다 — 같은 화면에서 크게 보기 창으로 엽니다 */
+        if (lastGal && lastGal.length) {
+          (function (srcs, a) {
+            a.addEventListener('click', function (e) { e.preventDefault(); openLb(srcs, 0); });
+          })(lastGal, ps[j].firstElementChild);
+        }
+      }
     }
     var as = box.querySelectorAll('.sl-rel a[href^="#fq="]');
     for (var q = 0; q < as.length; q++) {
@@ -284,6 +293,7 @@
       im.setAttribute('loading', 'lazy');
       im.addEventListener('click', function () { openLb(srcs, i); });
     });
+    return srcs;
   }
 
   var lb = null, lbList = [], lbAt = 0;
