@@ -6,6 +6,8 @@
    ③ 패키지 상품이면 그 안에 든 자료(변형문제·지문분석 …)를 단추로 세우고,
       누르시면 **그 자료의 진짜 샘플**을 불러옵니다.
       (패키지 상품 페이지에는 홍보 배너만 있어 보여 드릴 것이 없습니다.)
+      어떤 자료가 든 패키지인지는 build-pkg.py 가 pkg-samples.json 에 적어 둡니다 —
+      모의고사 올인원은 네 갈래, 부교재의 갈래별 패키지(핵심요약노트 패키지 …)는 그 갈래 하나만.
 
    아임웹 것은 지우지 않습니다 — 그림만 감추고 그 자리에 우리 것을 놓습니다.
    ═══════════════════════════════════════════════════════════════ */
@@ -125,18 +127,40 @@
     }).join('') + '</div>';
   }
 
+  /* 패키지 안내 한 줄 — **든 것만** 적습니다.
+       올인원 : 「올인원 패키지라 안에 든 변형문제 유형편·핵심요약·지문분석·워크북의 미리보기를 …」
+       갈래별 : 「핵심요약노트 패키지라 1강 핵심요약노트의 미리보기를 …」
+     예전에는 갈래별 패키지에도 여섯 갈래 단추를 다 세워, 핵심요약노트 패키지를
+     변형문제·워크북까지 든 것으로 오해하게 했습니다. */
+  function fromLine(kinds, cur) {
+    if (!kinds || !kinds.length) return '';
+    var k = null;
+    kinds.forEach(function (x) { if (x.id === cur) k = x; });
+    var one = kinds.length === 1 && k && k.long;
+    if (one) {
+      return '<div class="sp-from"><b>' + esc(k.long) + ' 패키지</b>라 ' +
+             (k.from ? esc(k.from) + ' ' : '') + '<b>' + esc(k.long) + '</b>의 미리보기만 보여 드립니다. ' +
+             '다른 자료는 들어 있지 않습니다.</div>';
+    }
+    return '<div class="sp-from">패키지 상품이라 안에 든 <b>' +
+           esc(kinds.map(function (x) { return x.name; }).join('·')) +
+           '</b>의 미리보기를 보여 드립니다.</div>';
+  }
+
   function paint(list, kinds, cur) {
     shots = list;
     var pk = kinds && kinds.length;
+    /* 단추가 하나뿐이면 고를 것이 없으니 단추 줄은 안 그립니다 */
+    var pills = pk && kinds.length > 1;
     mount.innerHTML =
       '<div class="sp-head"><h3>자료 미리보기</h3>' +
       (list.length ? '<span class="sp-cnt">' + list.length + '장</span>' : '') +
       '<span class="sp-tip">눌러서 크게 보세요!</span></div>' +
-      (pk ? '<div class="sp-kinds">' + kinds.map(function (k) {
+      (pills ? '<div class="sp-kinds">' + kinds.map(function (k) {
         return '<button type="button" class="sp-kind' + (k.id === cur ? ' on' : '') +
                '" data-kind="' + esc(k.id) + '">' + esc(k.name) + '</button>';
       }).join('') + '</div>' : '') +
-      (pk ? '<div class="sp-from">패키지 상품이라 <b>안에 든 자료</b>의 미리보기를 보여 드립니다.</div>' : '') +
+      (pk ? fromLine(kinds, cur) : '') +
       grid(list);
     showOnly();
   }
