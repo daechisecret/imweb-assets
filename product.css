@@ -53,6 +53,9 @@ body.sl-pd.sl-pd-on #prod_detail_body img[class*="fr-"] { display: none !importa
 .sp-kind.on { background: #e85a8a; border-color: #e85a8a; color: #fff; }
 .sp-from { font-size: 12px; color: #9db0c6; font-weight: 600; margin-bottom: 12px; }
 .sp-from b { color: #46617f; font-weight: 750; }
+.sp-note { font-size: 13px; color: #46617f; font-weight: 600; line-height: 1.6;
+  background: #fff5f8; border: 1px solid #f9d3e0; border-radius: 10px;
+  padding: 10px 14px; margin-bottom: 10px; }
 
 .sp-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .sp-grid img { width: 100%; aspect-ratio: 4/5; object-fit: cover; object-position: top;

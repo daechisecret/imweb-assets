@@ -14,6 +14,7 @@
 (function () {
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
   var PKG = null;                 /* 패키지 → 안에 든 자료 대응표 */
+  var PACK = null;                /* 지금 보는 상품이 패키지면 그 항목 */
   var mount = null, lb = null;
   var shots = [], at = 0;
 
@@ -137,7 +138,11 @@
     var k = null;
     kinds.forEach(function (x) { if (x.id === cur) k = x; });
     if (!k) return '';
-    return '<div class="sp-from">아래는 <b>' + esc(k.long || k.name) +
+    /* 모의고사 올인원은 구성 안내(pkg-samples.json 의 note)를 먼저 한 줄 —
+       「… "변형문제 유형편 · 핵심요약 · 지문분석 · 워크북"으로 구성되어 있습니다.
+          직전보강 · 변형문제 심화편은 패키지에 포함되지 않으며 따로 구매 가능합니다.」 */
+    var note = PACK && PACK.note ? '<div class="sp-note">' + esc(PACK.note) + '</div>' : '';
+    return note + '<div class="sp-from">아래는 <b>' + esc(k.long || k.name) +
            '</b> 자료의 미리보기 이미지입니다.</div>';
   }
 
@@ -233,6 +238,7 @@
 
     var me = idxNow();
     var pack = PKG && me && PKG[me];
+    PACK = pack || null;
     if (pack && pack.kinds.length) {
       /* 패키지 — 안에 든 자료를 단추로 세웁니다 */
       show(pack.kinds, pack.kinds[0].id);
