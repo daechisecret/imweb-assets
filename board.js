@@ -362,6 +362,41 @@
     if (++built > 5) return;          /* 어떤 일이 있어도 다섯 번을 넘기지 않습니다 */
     var rows = readRows(board);
     if (!rows.length) return;
+
+    /* ── 자주 묻는 질문은 쪽을 다 합칩니다 (2026-08-26) ──
+       아임웹 게시판은 한 쪽에 10개만 보여 줍니다. 70편이 일곱 쪽에 흩어지면 갈래 단추가 소용없으므로
+       2쪽부터 마지막 쪽까지 차례로 읽어 한 목록으로 만듭니다 (쪽마다 한 번, 순서대로). */
+    if (cfg.how === 'fold' && !board.dataset.slMerged) {
+      var pageLinks = board.querySelectorAll('a[href*="page="]');
+      var last = 1, tmpl = '';
+      for (var pl = 0; pl < pageLinks.length; pl++) {
+        var pm = /[?&]page=(\d+)/.exec(pageLinks[pl].getAttribute('href') || '');
+        if (pm) { last = Math.max(last, +pm[1]); tmpl = tmpl || pageLinks[pl].getAttribute('href'); }
+      }
+      if (last > 1 && last <= 15 && tmpl) {
+        board.dataset.slMerged = '1';
+        var urls = [];
+        for (var pg = 2; pg <= last; pg++) urls.push(tmpl.replace(/([?&]page=)\d+/, '$1' + pg));
+        var extra = [];
+        (function next(i) {
+          if (i >= urls.length) { render(board, rows.concat(extra)); return; }
+          fetch(urls[i], { credentials: 'same-origin' })
+            .then(function (r) { return r.text(); })
+            .then(function (h) {
+              var doc = new DOMParser().parseFromString(h, 'text/html');
+              var b2 = doc.querySelector('.widget.board');
+              if (b2) extra = extra.concat(readRows(b2));
+            })
+            .catch(function () {})
+            .then(function () { next(i + 1); });
+        })(0);
+        return;
+      }
+    }
+    render(board, rows);
+  }
+
+  function render(board, rows) {
     var pins = 0;
     for (var p = 0; p < rows.length; p++) if (rows[p].pin) pins++;
     pinUseful = pins <= rows.length / 2;
@@ -391,8 +426,9 @@
     board.parentNode.insertBefore(box, board);
     board.classList.add('sl-bd-wrap');
 
-    /* 원래 목록은 감추고, 쪽 넘김만 남깁니다 */
-    var hide = board.querySelectorAll('.li_board, .list, table, .li_header');
+    /* 원래 목록은 감추고, 쪽 넘김만 남깁니다 (쪽을 다 합친 자주 묻는 질문은 쪽 넘김도 감춥니다) */
+    var hide = board.querySelectorAll('.li_board, .list, table, .li_header' +
+      (board.dataset.slMerged ? ', .pagination, .paging, ._paging, .board_paging, .page_navi' : ''));
     for (var i = 0; i < hide.length; i++) hide[i].style.display = 'none';
 
     if (cfg.how === 'fold') {
