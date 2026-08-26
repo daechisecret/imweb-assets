@@ -366,6 +366,8 @@
     /* ── 자주 묻는 질문은 쪽을 다 합칩니다 (2026-08-26) ──
        아임웹 게시판은 한 쪽에 10개만 보여 줍니다. 70편이 일곱 쪽에 흩어지면 갈래 단추가 소용없으므로
        2쪽부터 마지막 쪽까지 차례로 읽어 한 목록으로 만듭니다 (쪽마다 한 번, 순서대로). */
+    /* 쪽을 합치는 중이면(아임웹이 목록을 다시 그려 build 가 또 불려도) 기다립니다 — 두 번 그리지 않게 */
+    if (cfg.how === 'fold' && board.dataset.slMerged === 'pending') return;
     if (cfg.how === 'fold' && !board.dataset.slMerged) {
       var pageLinks = board.querySelectorAll('a[href*="page="]');
       var last = 1, tmpl = '';
@@ -374,12 +376,12 @@
         if (pm) { last = Math.max(last, +pm[1]); tmpl = tmpl || pageLinks[pl].getAttribute('href'); }
       }
       if (last > 1 && last <= 15 && tmpl) {
-        board.dataset.slMerged = '1';
+        board.dataset.slMerged = 'pending';
         var urls = [];
         for (var pg = 2; pg <= last; pg++) urls.push(tmpl.replace(/([?&]page=)\d+/, '$1' + pg));
         var extra = [];
         (function next(i) {
-          if (i >= urls.length) { render(board, rows.concat(extra)); return; }
+          if (i >= urls.length) { board.dataset.slMerged = 'done'; render(board, rows.concat(extra)); return; }
           fetch(urls[i], { credentials: 'same-origin' })
             .then(function (r) { return r.text(); })
             .then(function (h) {
