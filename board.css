@@ -114,6 +114,9 @@
   flex: 1; min-width: 0; font-size: 14px; font-weight: 650; color: #1d3a5e;
   overflow: visible; white-space: normal; word-break: keep-all; line-height: 1.45;
 }
+/* 새 글 배지 — 작은 분홍 동그라미 N */
+.sl-bd-fold .sl-fq .sl-new { display: inline-grid; place-items: center; width: 16px; height: 16px; border-radius: 100px;
+  background: #e85a8a; color: #fff; font-size: 9.5px; font-weight: 900; line-height: 1; margin-left: 6px; vertical-align: 2px; }
 .sl-bd-fold .sl-fq .arw { color: #f2b8cd; font-size: 13px; transition: .15s; flex: none; }
 .sl-bd-fold .sl-fq.open .arw { transform: rotate(180deg); }
 .sl-bd-fold .sl-fq .a {

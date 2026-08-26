@@ -110,8 +110,11 @@
       if (!tit) continue;
       /* 새 글 표시(N)·아이콘 글자가 제목에 섞여 들어오지 않게 떼어 냅니다 */
       var tc = tit.cloneNode(true), icons = tc.querySelectorAll('i, .icon_new, .new, [class*="new"], [class*="icon"], .sticker');
+      var isNew = icons.length > 0;
       for (var ic2 = 0; ic2 < icons.length; ic2++) icons[ic2].parentNode.removeChild(icons[ic2]);
-      var t2 = (tc.textContent || '').replace(/\s+/g, ' ').replace(/\s+N$/, '').trim();
+      var t2raw = (tc.textContent || '').replace(/\s+/g, ' ').trim();
+      if (/\sN$/.test(t2raw)) isNew = true;
+      var t2 = t2raw.replace(/\s+N$/, '').trim();
       if (!t2 || t2 === '제목') continue;
       /* 제목 칸에는 링크가 둘 있습니다 — 글로 가는 것은 bmode=view 가 붙은 쪽입니다 */
       /* 제목 링크를 먼저 씁니다 — 비밀글은 이 링크에 아임웹의 확인이 걸려 있습니다 */
@@ -131,6 +134,7 @@
         d: txt(u, '.time') || txt(u, '.date'),
         v: (txt(u, '.read') || '').replace(/[^0-9]/g, ''),
         c: (txt(u, '.comment-count') || '').replace(/[^0-9]/g, ''),
+        n: isNew,
         pin: !!u.querySelector('.icon-flag, .sticker.notice')
       });
     }
@@ -212,7 +216,7 @@
     return chips + rows.map(function (r) {
       return '<div class="sl-fq" data-u="' + esc(r.u) + '" data-cat="' + esc(r.cat) + '">' +
         '<div class="q"><span class="mk">Q</span>' + tagOf(r) +
-        '<span class="t">' + esc(cleanQ(r.t)) + '</span>' +
+        '<span class="t">' + esc(cleanQ(r.t)) + (r.n ? ' <span class="sl-new" title="새 글">N</span>' : '') + '</span>' +
         '<span class="sl-cat">' + esc(r.cat) + '</span>' +
         '<span class="arw">▾</span></div>' +
         '<div class="a"><span class="wait">답변을 불러오는 중입니다…</span></div></div>';
