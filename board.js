@@ -316,6 +316,44 @@
     lb.querySelector('img').src = lbList[lbAt];
     lb.querySelector('.no').textContent = (lbAt + 1) + ' / ' + lbList.length;
   }
+
+  /* 열쇠(짧은 영문 이름) → 글 제목 조각. parts/faq/posts.py 의 TITLES 와 같은 제목을 씁니다 */
+  var KEYS = {
+    'about': '어떤 곳인가요', 'join': '회원가입은 어떻게', 'must-join': '꼭 해야 구매', 'find-id': '잊어버렸어요',
+    'login-fail': '로그인이 안 돼요', 'student': '학생도 구매', 'mobile': '휴대폰에서도', 'hours': '답변 시간',
+    'find-book': '어디서 찾나요', 'search': '검색은 어떻게', 'sample': '샘플을 볼 수', 'sample-same': '샘플과 실제',
+    'name': '상품 이름 읽는 법', 'soon': '예정', 'range': '전범위 패키지와 강별', 'sl-test': 'SL강',
+    'lineup': '어떤 유형으로 구성', 'basic': '유형편에는 어떤', 'advanced': '심화편은 유형편과', 'summary': '핵심요약노트는',
+    'boost': '직전보강은', 'analysis': '지문분석은', 'workbook': '워크북은', 'books': '어떤 교재의',
+    'mock-when': '언제 올라오나요', 'missing': '빠진 강', 'answers': '정답·해설', 'level': '난이도',
+    'pkg-in': '무엇이 들어', 'pkg-why': '왜 패키지에 없나요', 'pkg-off': '얼마나 할인', 'coupon-dup': '중복 적용',
+    'pkg-before': '개별로 다 샀다면', 'coupon': '쿠폰은 어디서', 'points': '적립금은',
+    'buy': '구매는 어떻게', 'cart': '한 번에 결제', 'pay-method': '결제 수단', 'pay-fail': '결제가 안 돼요',
+    'orders': '주문·결제 내역', 'receipt': '세금계산서', 'double': '두 번 결제', 'solvook': '쏠북으로 가나요', 'solvook-dl': '쏠북에서 산',
+    'download': '어디서 다운로드', 'zip': '압축 풀기', 'dl-fail': '다운로드 버튼이', 'dl-limit': '횟수 제한',
+    'redl': '다시 받을 수', 'phone-file': '받은 파일은 어디', 'pdf-open': 'PDF가 안 열려요', 'password': '비밀번호가 걸려',
+    'hwp-font': '글자가 깨져요', 'hwp-open': 'HWP 파일이 안 열려요', 'pdf-vs-hwp': '무엇을 사야', 'pdf-to-hwp': 'HWP로 바꾸고',
+    'print': '인쇄는 어떻게', 'devices': '여러 기기', 'online-only': '온라인 전용',
+    'refund': '환불·교환', 'wrong-buy': '잘못 구매', 'copy': '복사·배포', 'rebrand': '학원 이름을', 'copyright': '저작권 안내', 'share-class': '나눠 주거나',
+    'error': '오타·오류', 'fixed': '수정되면', 'contact': '기타 문의', 'notice': '공지·업데이트', 'review': '구매 후기'
+  };
+  /* 열쇠로 그 글을 찾아 펼치고 거기로 내려갑니다 (관련 질문 링크 · 주소의 #fq=) */
+  function openByKey(key) {
+    var frag = KEYS[key] || key;
+    var items = document.querySelectorAll('.sl-fq');
+    for (var i = 0; i < items.length; i++) {
+      var t = items[i].querySelector('.t');
+      if (t && t.textContent.indexOf(frag) >= 0) {
+        var all = document.querySelector('.sl-cats button[data-cat=""]');
+        if (all && !all.classList.contains('on')) all.click();
+        if (!items[i].classList.contains('open')) { items[i].classList.add('open'); if (typeof loadAnswer === 'function') loadAnswer(items[i]); }
+        var y = items[i].getBoundingClientRect().top + window.scrollY - 300;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        return true;
+      }
+    }
+    return false;
+  }
   /* @@answer-end */
 
   /* 펼칠 때 그 글을 받아 답만 꺼내 옵니다 (누를 때 한 번만) */
