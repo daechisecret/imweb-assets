@@ -151,6 +151,9 @@
 .sl-bd-fold .sl-fq .a blockquote.sl-warn strong { color: #a86a12; }
 .sl-bd-fold .sl-fq .a blockquote p { margin: 0; }
 .sl-bd-fold .sl-fq .a .sl-kakao { margin: 16px 0 0; padding: 10px 14px; border: 1px solid #e6ecf4; border-radius: 10px; background: #fff; font-size: 13px; }
+/* 답 본문의 링크는 눌러 볼 수 있게 보여야 합니다 — 굵게 + 밑줄 (관련 질문 알약·샘플 단추는 제외) */
+.sl-bd-fold .sl-fq .a a:not(.sl-rel a):not(.sl-more a) { color: #c33e6d; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+.sl-bd-fold .sl-fq .a a:not(.sl-rel a):not(.sl-more a):hover { color: #e85a8a; }
 .sl-bd-fold .sl-fq .a .sl-kakao strong:first-child { display: inline-block; background: #fae100; color: #3b1e1e; border-radius: 8px; padding: 4px 10px; font-size: 12px; margin-right: 8px; }
 .sl-bd-fold .sl-fq .a .sl-rel { margin: 16px 0 0; padding: 12px 0 0; border-top: 1px dashed #e6ecf4; font-size: 12.5px; color: #7c90a8; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .sl-bd-fold .sl-fq .a .sl-rel a { text-decoration: none; background: #fdeef3; color: #c33e6d; border-radius: 100px; padding: 3px 10px; font-weight: 700; }
