@@ -169,20 +169,23 @@
   /* ── 자주 묻는 질문 갈래 ──
      제목에 [주문/결제] 처럼 갈래를 적어 두시면 그것을 그대로 씁니다 (화면에서는 떼고 보여 줍니다).
      안 적혀 있으면 제목의 낱말로 짐작합니다 — 위에서부터 먼저 맞는 것이 이깁니다. */
-  var CATS = ['주문/결제', '제작 일정', '자료 문의', '오류 관련', '다운로드 관련', '할인/쿠폰/적립금', '기타'];
+  /* 2026-08-26 FAQ 정비 — 갈래 8개. 글 제목은 모두 「[갈래] 질문」 으로 적습니다. */
+  var CATS = ['회원/로그인', '자료 찾기', '자료 소개', '패키지/할인', '주문/결제', '다운로드/파일', '환불/저작권', '문의/오류'];
   var CAT_RULES = [
-    ['할인/쿠폰/적립금', /할인|쿠폰|적립|포인트|이벤트/],
-    ['오류 관련',        /오류|깨져|깨짐|잘못|안 ?보여|보이지 않|열리지|수정 요청/],
-    ['다운로드 관련',    /다운|받나요|받아|저장/],
-    ['주문/결제',        /결제|주문|구매|환불|취소|영수증|계산서/],
-    ['제작 일정',        /일정|언제|업로드|제작|출시|올라오|업데이트/],
-    ['자료 문의',        /자료|샘플|구성|유형|교재|학년|PDF|HWP|한글/]
+    ['회원/로그인',   /회원|가입|로그인|비밀번호|아이디/],
+    ['패키지/할인',   /패키지|할인|쿠폰|적립|포인트|이벤트/],
+    ['다운로드/파일', /다운|받나요|받아|저장|압축|PDF|HWP|한글|인쇄|편집|글꼴|폰트|열리/],
+    ['환불/저작권',   /환불|교환|저작권|복사|배포|공유/],
+    ['주문/결제',     /결제|주문|구매|취소|영수증|계산서|쏠북/],
+    ['문의/오류',     /오류|오타|수정|문의|상담|공지|후기/],
+    ['자료 찾기',     /찾|검색|샘플|미리보기|예정|전범위|SL|TEST/],
+    ['자료 소개',     /자료|구성|유형|교재|정답|난이도|업로드|올라오/]
   ];
   function catOf(title) {
     var m = /\[([^\]]{2,14})\]/.exec(title);
     if (m) { for (var i = 0; i < CATS.length; i++) if (CATS[i] === m[1].trim()) return CATS[i]; }
     for (var j = 0; j < CAT_RULES.length; j++) if (CAT_RULES[j][1].test(title)) return CAT_RULES[j][0];
-    return '기타';
+    return '문의/오류';
   }
   function cleanQ(t) {
     return t.replace(/^[\s💌📌📣✨🩷❤️💗]+/, '').replace(/^Q\.\s*/i, '')
@@ -192,6 +195,11 @@
   function foldHTML(rows) {
     var counts = {};
     rows.forEach(function (r) { r.cat = catOf(r.t); counts[r.cat] = (counts[r.cat] || 0) + 1; });
+    /* 갈래 차례로 묶어 보입니다 (회원/로그인 → 자료 찾기 → … ). 같은 갈래 안에서는 게시판 차례 그대로 */
+    rows = rows.map(function (r, i) { return { r: r, i: i }; }).sort(function (a, b) {
+      var ca = CATS.indexOf(a.r.cat), cb = CATS.indexOf(b.r.cat);
+      return ca !== cb ? ca - cb : a.i - b.i;
+    }).map(function (x) { return x.r; });
     var chips = '<div class="sl-cats"><button type="button" class="on" data-cat="">전체 <em>' + rows.length + '</em></button>' +
       CATS.filter(function (c) { return counts[c]; }).map(function (c) {
         return '<button type="button" data-cat="' + esc(c) + '">' + esc(c) + ' <em>' + counts[c] + '</em></button>';
@@ -205,6 +213,110 @@
         '<div class="a"><span class="wait">답변을 불러오는 중입니다…</span></div></div>';
     }).join('') + '<div class="sl-fq-none">이 갈래에는 아직 질문이 없습니다.</div>';
   }
+
+  /* @@answer-start — 여기부터 @@answer-end 까지는 build_faq.py 의 미리보기도 그대로 씁니다 */
+  /* ── 답 본문 서식 (2026-08-26 FAQ 정비) ──
+     글은 아임웹 편집기(Froala)로 올라가 있어 class 가 지워질 수 있습니다.
+     그래서 **글자와 alt** 로 상자를 알아봅니다 —
+       blockquote 가 「주의」로 시작 → 노란 주의 상자 / 그 밖의 blockquote → 파란 알아두기 상자
+       문단이 「카카오톡 채널」로 시작 → 카카오 마무리 줄
+       문단이 「관련 질문」으로 시작 → 관련 질문 알약 줄 (#fq=열쇠 → 그 글 펼치기)
+       문단이 「순서 :」로 시작 → 알약 타임라인 (A(가장 먼저) → B → C(마지막))
+       img alt="샘플 …" 여러 장 → 작은 액자 한 줄 + 누르면 크게 넘겨 보기
+       img alt="휴대폰"        → 휴대폰 화면 세 장 나란히
+       첫 문단(굵은 한 줄 답) → 큰 글씨 */
+  function dressAnswer(box) {
+    var first = box.querySelector('p, div');
+    if (first && !first.querySelector('img') && first.textContent.trim()) first.classList.add('sl-lead');
+    var bqs = box.querySelectorAll('blockquote');
+    for (var i = 0; i < bqs.length; i++) {
+      bqs[i].classList.add(/^\s*주의/.test(bqs[i].textContent) ? 'sl-warn' : 'sl-tip');
+    }
+    var ps = box.querySelectorAll('p');
+    for (var j = 0; j < ps.length; j++) {
+      var t = ps[j].textContent.trim();
+      if (/^카카오톡 채널/.test(t)) ps[j].classList.add('sl-kakao');
+      else if (/^관련 질문/.test(t)) ps[j].classList.add('sl-rel');
+      else if (/^순서\s*[:：]/.test(t)) timelineOf(ps[j], t);
+      else if (ps[j].querySelector('img[alt="휴대폰"]')) ps[j].classList.add('sl-phones');
+      else if (ps[j].querySelectorAll('img[alt^="샘플"]').length > 1) galleryOf(ps[j]);
+      else if (ps[j].children.length === 1 && ps[j].firstElementChild.tagName === 'A' && /샘플 자세히/.test(t)) ps[j].classList.add('sl-more');
+    }
+    var as = box.querySelectorAll('.sl-rel a[href^="#fq="]');
+    for (var q = 0; q < as.length; q++) {
+      as[q].addEventListener('click', function (e) {
+        e.preventDefault();
+        openByKey(decodeURIComponent(this.getAttribute('href').slice(4)));
+      });
+    }
+  }
+
+  /* 「순서 : A(가장 먼저) → B(그다음) → C → D(마지막)」 → 알약 줄. 괄호 안은 아래 작은 글씨 */
+  function timelineOf(pEl, text) {
+    var items = text.replace(/^순서\s*[:：]\s*/, '').split(/\s*(?:→|->)\s*/).filter(Boolean);
+    if (items.length < 2) return;
+    var h = '';
+    items.forEach(function (it, i) {
+      var m = /^(.*?)\s*\(([^)]*)\)\s*$/.exec(it);
+      var name = m ? m[1] : it, sub = m ? m[2] : '';
+      var on = /가장 먼저/.test(sub) || (!m && i === 0);
+      h += '<span class="sl-tl-it' + (on ? ' on' : '') + '"><b>' + esc(name) + '</b>' + (sub ? '<i>' + esc(sub) + '</i>' : '<i>&nbsp;</i>') + '</span>';
+    });
+    pEl.className += ' sl-tl';
+    pEl.innerHTML = h;
+  }
+
+  /* 샘플 액자 — 작은 그림을 한 줄로, 누르면 크게 보고 ‹ › 로 넘깁니다 */
+  function galleryOf(pEl) {
+    var imgs = [].slice.call(pEl.querySelectorAll('img'));
+    var srcs = imgs.map(function (im) { return im.getAttribute('src'); });
+    pEl.classList.add('sl-gal');
+    imgs.forEach(function (im, i) {
+      im.setAttribute('loading', 'lazy');
+      im.addEventListener('click', function () { openLb(srcs, i); });
+    });
+  }
+
+  var lb = null, lbList = [], lbAt = 0;
+  function openLb(list, i) {
+    lbList = list; lbAt = i;
+    if (!lb) {
+      lb = document.createElement('div');
+      lb.className = 'sl-lb';
+      lb.innerHTML = '<button type="button" class="x" aria-label="닫기">✕</button>' +
+        '<button type="button" class="nav prev" aria-label="이전">‹</button><img alt="">' +
+        '<button type="button" class="nav next" aria-label="다음">›</button><span class="no"></span>';
+      document.body.appendChild(lb);
+      lb.addEventListener('click', function (e) {
+        if (e.target.closest('.prev')) { stepLb(-1); return; }
+        if (e.target.closest('.next')) { stepLb(1); return; }
+        if (e.target.closest('img')) { stepLb(1); return; }
+        lb.classList.remove('on'); document.body.style.overflow = '';
+      });
+      document.addEventListener('keydown', function (e) {
+        if (!lb.classList.contains('on')) return;
+        if (e.key === 'Escape') { lb.classList.remove('on'); document.body.style.overflow = ''; }
+        if (e.key === 'ArrowLeft') stepLb(-1);
+        if (e.key === 'ArrowRight') stepLb(1);
+      });
+      /* 손가락으로 옆으로 밀어 넘기기 */
+      var x0 = 0, moved = false;
+      lb.addEventListener('touchstart', function (e) { if (e.touches.length === 1) { x0 = e.touches[0].clientX; moved = false; } }, { passive: true });
+      lb.addEventListener('touchmove', function (e) {
+        if (e.touches.length !== 1 || moved) return;
+        var dx = e.touches[0].clientX - x0;
+        if (Math.abs(dx) > 45) { moved = true; stepLb(dx < 0 ? 1 : -1); }
+      }, { passive: true });
+    }
+    showLb();
+    lb.classList.add('on'); document.body.style.overflow = 'hidden';
+  }
+  function stepLb(d) { lbAt = (lbAt + d + lbList.length) % lbList.length; showLb(); }
+  function showLb() {
+    lb.querySelector('img').src = lbList[lbAt];
+    lb.querySelector('.no').textContent = (lbAt + 1) + ' / ' + lbList.length;
+  }
+  /* @@answer-end */
 
   /* 펼칠 때 그 글을 받아 답만 꺼내 옵니다 (누를 때 한 번만) */
   function loadAnswer(item) {
@@ -232,6 +344,7 @@
         }
         var html = body ? body.innerHTML.trim() : '';
         box.innerHTML = html || '<span class="wait">글을 열어 확인해 주세요.</span>';
+        dressAnswer(box);
       })
       .catch(function () {
         box.innerHTML = '<span class="wait">답변을 불러오지 못했습니다.</span>';
@@ -283,6 +396,10 @@
     for (var i = 0; i < hide.length; i++) hide[i].style.display = 'none';
 
     if (cfg.how === 'fold') {
+      /* 주소에 #fq=열쇠 가 붙어 있으면 그 글을 바로 펼칩니다 (관련 질문 링크 · 다른 페이지에서 오는 링크) */
+      if (/^#fq=/.test(location.hash)) {
+        setTimeout(function () { openByKey(decodeURIComponent(location.hash.slice(4))); }, 300);
+      }
       box.addEventListener('click', function (e) {
         var b = e.target.closest('.sl-cats button');
         if (!b) return;
