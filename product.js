@@ -102,7 +102,6 @@
       if (!g || seen[g[1]]) continue;
       seen[g[1]] = 1;
       out.push(g[1]);
-      if (out.length >= 24) break;
     }
     return out;
   }
