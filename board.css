@@ -138,6 +138,8 @@
 .sl-ans h4:first-child { margin-top: 4px; }
 .sl-ans ol { list-style: none; counter-reset: sl-step; margin: 0 0 6px; padding: 0; display: flex; flex-direction: column; gap: 12px; }
 .sl-ans ol > li { position: relative; padding-left: 38px; min-height: 26px; }
+/* 아임웹 글 보기(.fr-view)는 li 자체에 list-style: decimal 을 박아 두어 숫자가 두 번 보입니다 — li 에서도 끕니다 */
+.sl-ans ol > li { list-style: none !important; }
 .sl-ans ol > li::before {
   counter-increment: sl-step; content: counter(sl-step);
   position: absolute; left: 0; top: 1px; width: 26px; height: 26px; border-radius: 100px;
