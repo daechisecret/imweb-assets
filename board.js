@@ -644,7 +644,8 @@
       if (!body) return;
       dressed = true;
       document.body.classList.add('sl-bv', 'sl-faqv');
-      dressAnswer(body);
+      /* 아임웹은 본문을 ._comment_body_… div 로 한 번 더 감싸고 옆에 .file_area 를 둡니다 — 안쪽 것에 입힙니다 */
+      dressAnswer(body.querySelector('[class*="_comment_body"]') || body);
       var h = document.querySelector('.board_view h1.view_tit, .board_view .view_tit');
       if (h) {
         var m = /^\[([^\]]{2,14})\]\s*(.+)$/.exec((h.textContent || '').replace(/\s+/g, ' ').trim());
