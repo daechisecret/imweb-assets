@@ -8,33 +8,37 @@
    어느 게시판을 어떤 모양으로 보일지
      /notice   공지사항  → 줄 목록
      /contact  문의하기  → 줄 목록 (답변완료/대기 딱지)
-     /faq      자주 묻는 질문 → 펼침 (누르면 그 자리에서 답이 열립니다)
+     /faq      자주 묻는 질문 → 줄 목록 + 갈래 단추 (2026-09-04, 게시판형)
+               쪽을 다 합쳐 70편을 한 목록으로 보이고, 줄을 누르면 그 글의 제 주소로 갑니다.
+               (예전 펼침 모양은 how:'fold' 로 남겨 두었습니다 — 답을 그 자리에서 받아 펼칩니다)
    나머지 게시판은 건드리지 않습니다 (/reviews 는 따로 만든 페이지가 있습니다).
 
-   글 보기(bmode=view)·글쓰기 화면에서는 아무것도 하지 않습니다.
+   글쓰기 화면에서는 아무것도 하지 않습니다.
+   글 보기(bmode=view)는 모양만 다듬고, 자주 묻는 질문 글은 본문에 답 서식(dressAnswer)을 입힙니다.
    ═══════════════════════════════════════════════════════════════ */
 (function () {
   var HOW = {
     '/notice':  { how: 'line', name: '공지사항' },
     '/contact': { how: 'line', name: '문의하기' },
-    '/faq':     { how: 'fold', name: '자주 묻는 질문' }
+    '/faq':     { how: 'line', name: '자주 묻는 질문', faq: true }
   };
 
-  var path = location.pathname.replace(/\/$/, '');
+  /* 시험용 미리보기는 <html data-sl-path="/faq"> 로 어느 게시판인 척할 수 있습니다 */
+  var path = (document.documentElement.getAttribute('data-sl-path') || location.pathname).replace(/\/$/, '');
   var cfg = HOW[path];
   if (!cfg) return;
   /* 글 보기 화면은 목록을 새로 그리지 않고 **모양만** 다듬습니다 (body 에 표시만 붙입니다).
      글쓰기·댓글·좋아요는 아임웹 기능이라 건드리면 안 됩니다. */
-  if (/[?&]bmode=(view|write|edit|reply)/.test(location.search)) {
-    if (/[?&]bmode=view/.test(location.search)) {
-      var mark = function () {
-        if (document.querySelector('.board_view')) document.body.classList.add('sl-bv');
-      };
-      mark();
-      window.addEventListener('load', mark);
-      setTimeout(mark, 400); setTimeout(mark, 1500);
-    }
-    return;
+  var VIEW = /[?&]bmode=view/.test(location.search);
+  if (!VIEW && /[?&]bmode=(write|edit|reply)/.test(location.search)) return;
+  if (VIEW) {
+    var mark = function () {
+      if (document.querySelector('.board_view')) document.body.classList.add('sl-bv');
+    };
+    mark();
+    window.addEventListener('load', mark);
+    setTimeout(mark, 400); setTimeout(mark, 1500);
+    /* 자주 묻는 질문 글은 아래 viewFaq() 가 마저 다듬습니다 (맨 아래에서 부릅니다) */
   }
 
   function esc(s) {
@@ -73,9 +77,10 @@
     return !!row.querySelector('.list_text_title.lock_on');
   }
 
-  function readRows(root) {
+  /* keep — 쪽을 합칠 때 앞 쪽의 원본 링크 표(ORIG)를 지우지 않고 뒤에 이어 붙입니다 */
+  function readRows(root, keep) {
     var out = [];
-    ORIG = [];
+    if (!keep) ORIG = [];
 
     var wraps = root.querySelectorAll('.post_link_wrap');
     for (var i = 0; i < wraps.length; i++) {
@@ -110,8 +115,14 @@
       if (!tit) continue;
       /* 새 글 표시(N)·아이콘 글자가 제목에 섞여 들어오지 않게 떼어 냅니다 */
       var tc = tit.cloneNode(true), icons = tc.querySelectorAll('i, .icon_new, .new, [class*="new"], [class*="icon"], .sticker');
-      var isNew = icons.length > 0;
-      for (var ic2 = 0; ic2 < icons.length; ic2++) icons[ic2].parentNode.removeChild(icons[ic2]);
+      /* 새 글(N) 표시 — 자물쇠처럼 모든 줄에 숨겨 둔 아이콘은 새 글 표시가 아닙니다 (2026-09-04) */
+      var isNew = false;
+      for (var ic2 = 0; ic2 < icons.length; ic2++) {
+        var icn = icons[ic2], icc = icn.className || '';
+        if (!/lock/.test(icc) && !/display:\s*none/.test(icn.getAttribute('style') || '') &&
+            (/new/i.test(icc) || (icn.textContent || '').trim() === 'N')) isNew = true;
+        icn.parentNode.removeChild(icn);
+      }
       var t2raw = (tc.textContent || '').replace(/\s+/g, ' ').trim();
       if (/\sN$/.test(t2raw)) isNew = true;
       var t2 = t2raw.replace(/\s+N$/, '').trim();
@@ -199,21 +210,46 @@
             .replace(/^\[([^\]]{2,14})\]\s*/, function (all, c) { return CATS.indexOf(c.trim()) >= 0 ? '' : all; });
   }
 
-  function foldHTML(rows) {
-    var counts = {};
-    rows.forEach(function (r) { r.cat = catOf(r.t); counts[r.cat] = (counts[r.cat] || 0) + 1; });
-    /* 갈래 차례로 묶어 보입니다 (회원/로그인 → 자료 찾기 → … ).
-       같은 갈래 안에서는 게시판과 **거꾸로**(오래된 글부터) — 글을 올린 차례가 곧 읽는 차례이기 때문입니다
-       (「어떤 곳인가요」가 맨 위, 「샘플을 볼 수 있나요」가 자료 찾기 맨 위). */
-    rows = rows.map(function (r, i) { return { r: r, i: i }; }).sort(function (a, b) {
+  /* 갈래 차례로 묶어 보입니다 (회원/로그인 → 자료 찾기 → … ).
+     같은 갈래 안에서는 게시판과 **거꾸로**(오래된 글부터) — 글을 올린 차례가 곧 읽는 차례이기 때문입니다
+     (「어떤 곳인가요」가 맨 위, 「샘플을 볼 수 있나요」가 자료 찾기 맨 위). */
+  function sortByCat(rows) {
+    return rows.map(function (r, i) { return { r: r, i: i }; }).sort(function (a, b) {
       var ca = CATS.indexOf(a.r.cat), cb = CATS.indexOf(b.r.cat);
       return ca !== cb ? ca - cb : b.i - a.i;
     }).map(function (x) { return x.r; });
-    var chips = '<div class="sl-cats"><button type="button" class="on" data-cat="">전체 <em>' + rows.length + '</em></button>' +
+  }
+  function chipsHTML(rows, counts) {
+    return '<div class="sl-cats"><button type="button" class="on" data-cat="">전체 <em>' + rows.length + '</em></button>' +
       CATS.filter(function (c) { return counts[c]; }).map(function (c) {
         return '<button type="button" data-cat="' + esc(c) + '">' + esc(c) + ' <em>' + counts[c] + '</em></button>';
       }).join('') + '</div>';
-    return chips + rows.map(function (r) {
+  }
+
+  /* ── 자주 묻는 질문 — 게시판형 (2026-09-04) ──
+     공지사항 같은 줄 목록에 갈래 단추·갈래 딱지를 얹습니다.
+     줄은 아임웹 글 보기 주소(/faq/?bmode=view&idx=…)로 가는 보통 링크라 질문 하나를 링크로 줄 수 있습니다. */
+  function faqListHTML(rows) {
+    var counts = {};
+    rows.forEach(function (r) { r.cat = catOf(r.t); counts[r.cat] = (counts[r.cat] || 0) + 1; });
+    rows = sortByCat(rows);
+    return chipsHTML(rows, counts) +
+      '<div class="sl-head"><b>제목</b><b>작성일</b><b>조회</b></div>' +
+      rows.map(function (r) {
+        return '<a class="sl-row" data-i="' + r.i + '" data-cat="' + esc(r.cat) + '" href="' + esc(r.u) + '">' +
+          '<span class="sl-tt"><span class="sl-tag cat">' + esc(r.cat) + '</span>' +
+          '<span class="t">' + esc(cleanQ(r.t)) + '</span>' +
+          (r.n ? '<span class="sl-new" title="새 글">N</span>' : '') + '</span>' +
+          '<span class="sl-d">' + esc((r.d || '').replace(/^\d{4}-/, '')) + '</span>' +
+          '<span class="sl-v">' + esc(r.v) + '</span></a>';
+      }).join('') + '<div class="sl-fq-none">이 갈래에는 아직 질문이 없습니다.</div>';
+  }
+
+  function foldHTML(rows) {
+    var counts = {};
+    rows.forEach(function (r) { r.cat = catOf(r.t); counts[r.cat] = (counts[r.cat] || 0) + 1; });
+    rows = sortByCat(rows);
+    return chipsHTML(rows, counts) + rows.map(function (r) {
       return '<div class="sl-fq" data-u="' + esc(r.u) + '" data-cat="' + esc(r.cat) + '">' +
         '<div class="q"><span class="mk">Q</span>' + tagOf(r) +
         '<span class="t">' + esc(cleanQ(r.t)) + (r.n ? ' <span class="sl-new" title="새 글">N</span>' : '') + '</span>' +
@@ -235,6 +271,7 @@
        img alt="휴대폰"        → 휴대폰 화면 세 장 나란히
        첫 문단(굵은 한 줄 답) → 큰 글씨 */
   function dressAnswer(box) {
+    box.classList.add('sl-ans');   /* board.css 의 답 본문 서식은 이 이름에 걸려 있습니다 */
     var first = box.querySelector('p, div');
     if (first && !first.querySelector('img') && first.textContent.trim()) first.classList.add('sl-lead');
     var bqs = box.querySelectorAll('blockquote');
@@ -260,12 +297,19 @@
         }
       }
     }
+    /* 관련 질문 링크(#fq=열쇠) — 글 번호를 알면 그 글의 제 주소로 바꿔 둡니다(복사해 가도 되는 링크).
+       펼침 모양(sl-bd-fold) 안에서는 그 자리에서 펼칩니다. */
     var as = box.querySelectorAll('.sl-rel a[href^="#fq="]');
     for (var q = 0; q < as.length; q++) {
-      as[q].addEventListener('click', function (e) {
-        e.preventDefault();
-        openByKey(decodeURIComponent(this.getAttribute('href').slice(4)));
-      });
+      (function (a) {
+        var key = decodeURIComponent(a.getAttribute('href').slice(4));
+        var u = urlOfKey(key);
+        if (u) a.setAttribute('href', u);
+        a.addEventListener('click', function (e) {
+          if (document.querySelector('.sl-bd-fold')) { e.preventDefault(); openByKey(key); return; }
+          if (!u) { e.preventDefault(); openByKey(key); }
+        });
+      })(as[q]);
     }
   }
 
@@ -356,7 +400,32 @@
     'refund': '환불·교환', 'wrong-buy': '잘못 구매', 'copy': '복사·배포', 'rebrand': '학원 이름을', 'copyright': '저작권 안내', 'share-class': '나눠 주거나',
     'error': '오타·오류', 'fixed': '수정되면', 'contact': '기타 문의', 'notice': '공지·업데이트', 'review': '구매 후기'
   };
-  /* 열쇠로 그 글을 찾아 펼치고 거기로 내려갑니다 (관련 질문 링크 · 주소의 #fq=) */
+  /* @@keyidx-start — 열쇠 → 글 번호(idx). parts/faq/done.json 그대로이며 build_faq.py 가 새로 씁니다 */
+  var KEY_IDX = {
+    'about': '167268585', 'join': '173456316', 'must-join': '173456403', 'find-id': '173456446',
+    'login-fail': '173456465', 'student': '173456471', 'mobile': '173456478', 'hours': '173456481',
+    'find-book': '173456489', 'search': '173456495', 'sample-same': '173456503', 'name': '173456508',
+    'soon': '173456513', 'range': '173456518', 'sl-test': '173456522', 'advanced': '173456535',
+    'summary': '173456537', 'boost': '173456543', 'analysis': '173456546', 'workbook': '173456551',
+    'missing': '173456681', 'level': '173456897', 'pkg-in': '173456997', 'pkg-why': '173457063',
+    'pkg-off': '173457101', 'coupon-dup': '169091896', 'pkg-before': '169066586', 'coupon': '173457110',
+    'points': '173457114', 'buy': '173457122', 'cart': '173457126', 'pay-method': '173457138',
+    'pay-fail': '173457145', 'orders': '173457151', 'receipt': '173457152', 'double': '173457153',
+    'solvook': '173457158', 'solvook-dl': '173457167', 'download': '167269006', 'zip': '170655170',
+    'dl-fail': '173457177', 'dl-limit': '173457179', 'redl': '173457183', 'phone-file': '173457188',
+    'pdf-open': '173457193', 'password': '173457196', 'hwp-font': '168670957', 'hwp-open': '173457205',
+    'pdf-vs-hwp': '170655178', 'pdf-to-hwp': '169196504', 'print': '167268970', 'devices': '173457217',
+    'online-only': '167268739', 'refund': '167268982', 'wrong-buy': '173457227', 'copy': '167268973',
+    'rebrand': '173457234', 'copyright': '173457238', 'share-class': '173457241', 'error': '167269011',
+    'fixed': '173457243', 'contact': '167269019', 'notice': '173457248', 'review': '173457255',
+    'sample': '167268989', 'basic': '167268962', 'lineup': '167268953', 'mock-when': '167268943',
+    'books': '167268942', 'answers': '167268932'
+  };
+  /* @@keyidx-end */
+  function urlOfKey(key) { return KEY_IDX[key] ? '/faq/?bmode=view&idx=' + KEY_IDX[key] : ''; }
+  /* 열쇠로 그 글을 엽니다 (관련 질문 링크 · 주소의 #fq=)
+       펼침 목록(.sl-fq)이 있으면 그 자리에서 펼치고, 게시판형 목록(.sl-bd-faq)이면 그 줄의 주소로,
+       둘 다 없으면(글 보기 화면) 글 번호 표로 주소를 만들어 갑니다. */
   function openByKey(key) {
     var frag = KEYS[key] || key;
     var items = document.querySelectorAll('.sl-fq');
@@ -371,6 +440,16 @@
         return true;
       }
     }
+    var rows = document.querySelectorAll('.sl-bd-faq .sl-row');
+    for (var j = 0; j < rows.length; j++) {
+      var tt = rows[j].querySelector('.t');
+      if (tt && tt.textContent.indexOf(frag) >= 0 && rows[j].getAttribute('href')) {
+        location.href = rows[j].getAttribute('href');
+        return true;
+      }
+    }
+    var u = urlOfKey(key);
+    if (u) { location.href = u; return true; }
     return false;
   }
   /* @@answer-end */
@@ -417,15 +496,17 @@
     if (mine && mine.isConnected) return;
     if (board.dataset.slBd === '1' && mine) return;
     if (++built > 5) return;          /* 어떤 일이 있어도 다섯 번을 넘기지 않습니다 */
+    /* 쪽을 합치는 중이면(아임웹이 목록을 다시 그려 build 가 또 불려도) 기다립니다 — 두 번 그리지 않게.
+       ⚠ readRows 보다 먼저 — readRows 가 원본 링크 표(ORIG)를 지우고 다시 채우므로,
+          합치는 동안 또 부르면 뒤 쪽 줄의 번호가 어긋나 엉뚱한 글이 열립니다. */
+    if (cfg.faq && board.dataset.slMerged === 'pending') return;
     var rows = readRows(board);
     if (!rows.length) return;
 
     /* ── 자주 묻는 질문은 쪽을 다 합칩니다 (2026-08-26) ──
        아임웹 게시판은 한 쪽에 10개만 보여 줍니다. 70편이 일곱 쪽에 흩어지면 갈래 단추가 소용없으므로
        2쪽부터 마지막 쪽까지 차례로 읽어 한 목록으로 만듭니다 (쪽마다 한 번, 순서대로). */
-    /* 쪽을 합치는 중이면(아임웹이 목록을 다시 그려 build 가 또 불려도) 기다립니다 — 두 번 그리지 않게 */
-    if (cfg.how === 'fold' && board.dataset.slMerged === 'pending') return;
-    if (cfg.how === 'fold' && !board.dataset.slMerged) {
+    if (cfg.faq && !board.dataset.slMerged) {
       var pageLinks = board.querySelectorAll('a[href*="page="]');
       var last = 1, tmpl = '';
       for (var pl = 0; pl < pageLinks.length; pl++) {
@@ -444,7 +525,7 @@
             .then(function (h) {
               var doc = new DOMParser().parseFromString(h, 'text/html');
               var b2 = doc.querySelector('.widget.board');
-              if (b2) extra = extra.concat(readRows(b2));
+              if (b2) extra = extra.concat(readRows(b2, true));
             })
             .catch(function () {})
             .then(function () { next(i + 1); });
@@ -470,13 +551,14 @@
       var mm = /(\d{1,5})\s*$/.exec((tt.textContent || '').trim());
       if (mm) total = parseInt(mm[1], 10);
     }
+    if (board.dataset.slMerged === 'done') total = rows.length;
 
     var box = document.createElement('div');
-    box.className = 'sl-bd ' + (cfg.how === 'fold' ? 'sl-bd-fold' : 'sl-bd-line');
+    box.className = 'sl-bd ' + (cfg.how === 'fold' ? 'sl-bd-fold' : 'sl-bd-line') + (cfg.faq ? ' sl-bd-faq' : '');
     box.innerHTML =
       '<div class="sl-bdtop"><div class="sl-bdtt"><h2>' + esc(cfg.name) + '</h2>' +
       (total ? '<span class="sl-bdcnt">' + total + '개</span>' : '') + '</div></div>' +
-      (cfg.how === 'fold' ? foldHTML(rows) : lineHTML(rows));
+      (cfg.how === 'fold' ? foldHTML(rows) : cfg.faq ? faqListHTML(rows) : lineHTML(rows));
 
     /* 아임웹 검색칸이 있으면 우리 머리줄로 옮겨 담습니다 (기능은 그대로) */
     var search = board.querySelector('.board_search, ._search_wrap, .search_wrap');
@@ -490,8 +572,8 @@
       (board.dataset.slMerged ? ', .pagination, .paging, ._paging, .board_paging, .page_navi' : ''));
     for (var i = 0; i < hide.length; i++) hide[i].style.display = 'none';
 
-    if (cfg.how === 'fold') {
-      /* 주소에 #fq=열쇠 가 붙어 있으면 그 글을 바로 펼칩니다 (관련 질문 링크 · 다른 페이지에서 오는 링크) */
+    if (cfg.faq) {
+      /* 주소에 #fq=열쇠 가 붙어 있으면 그 글을 바로 엽니다 (관련 질문 링크 · 다른 페이지에서 오는 링크) */
       if (/^#fq=/.test(location.hash)) {
         setTimeout(function () { openByKey(decodeURIComponent(location.hash.slice(4))); }, 300);
       }
@@ -501,7 +583,7 @@
         var cat = b.getAttribute('data-cat') || '';
         box.querySelectorAll('.sl-cats button').forEach(function (x) { x.classList.toggle('on', x === b); });
         var shown = 0;
-        box.querySelectorAll('.sl-fq').forEach(function (q) {
+        box.querySelectorAll('.sl-fq, .sl-row[data-cat]').forEach(function (q) {
           var ok = !cat || q.getAttribute('data-cat') === cat;
           q.style.display = ok ? '' : 'none';
           if (ok) shown++;
@@ -509,6 +591,8 @@
         var none = box.querySelector('.sl-fq-none');
         if (none) none.style.display = shown ? 'none' : 'block';
       });
+    }
+    if (cfg.how === 'fold') {
       box.addEventListener('click', function (e) {
         var q = e.target.closest('.q');
         if (!q) return;
@@ -536,7 +620,9 @@
     }
     var idx = parseInt(row.getAttribute('data-i'), 10);
     var orig = (idx >= 0 && ORIG[idx]) ? ORIG[idx] : null;
-    if (orig && orig.isConnected) {
+    /* ⚠ 다른 쪽에서 받아 온 줄의 원본 링크는 DOMParser 문서 안에 있어 isConnected 가 true 지만
+       이 화면의 것이 아니라서 눌러도 아무 일도 안 납니다 — 이 문서의 링크일 때만 대신 누릅니다. */
+    if (orig && orig.isConnected && orig.ownerDocument === document) {
       /* 원본을 대신 누릅니다 — 비밀글이면 아임웹이 비밀번호를 묻습니다 */
       e.preventDefault();
       orig.click();
@@ -546,6 +632,33 @@
     e.preventDefault();
     location.href = href;
   }, true);
+
+  /* ── 자주 묻는 질문 글 보기 ──
+     제목 「[갈래] 질문」의 갈래를 딱지로 바꾸고, 본문에 펼침과 같은 답 서식을 입힙니다.
+     아임웹이 본문을 늦게 그릴 수 있어 몇 번 되풀이해 봅니다. */
+  function viewFaq() {
+    var dressed = false;
+    function go() {
+      if (dressed) return;
+      var body = document.querySelector('.board_view .board_txt_area, .board_view .fr-view');
+      if (!body) return;
+      dressed = true;
+      document.body.classList.add('sl-bv', 'sl-faqv');
+      dressAnswer(body);
+      var h = document.querySelector('.board_view h1.view_tit, .board_view .view_tit');
+      if (h) {
+        var m = /^\[([^\]]{2,14})\]\s*(.+)$/.exec((h.textContent || '').replace(/\s+/g, ' ').trim());
+        if (m && CATS.indexOf(m[1].trim()) >= 0) {
+          h.innerHTML = '<span class="sl-tag cat">' + esc(m[1].trim()) + '</span>' + esc(m[2]);
+        }
+      }
+    }
+    go();
+    window.addEventListener('load', go);
+    setTimeout(go, 400); setTimeout(go, 1500); setTimeout(go, 3000);
+  }
+
+  if (VIEW) { if (cfg.faq) viewFaq(); return; }
 
   build();
   window.addEventListener('load', build);
