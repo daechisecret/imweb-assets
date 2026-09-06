@@ -15,6 +15,7 @@
 
    글쓰기 화면에서는 아무것도 하지 않습니다.
    글 보기(bmode=view)는 모양만 다듬고, 자주 묻는 질문 글은 본문에 답 서식(dressAnswer)을 입힙니다.
+   공지·문의 글은 이어진 사진을 격자로 모읍니다(viewGallery) — 8장까지 보이고 나머지는 「더 보기」 뒤에.
    ═══════════════════════════════════════════════════════════════ */
 (function () {
   var HOW = {
@@ -348,11 +349,16 @@
       lb.className = 'sl-lb';
       lb.innerHTML = '<button type="button" class="x" aria-label="닫기">✕</button>' +
         '<button type="button" class="nav prev" aria-label="이전">‹</button><img alt="">' +
-        '<button type="button" class="nav next" aria-label="다음">›</button><span class="no"></span>';
+        '<button type="button" class="nav next" aria-label="다음">›</button><span class="no"></span>' +
+        '<div class="strip"></div>';
       document.body.appendChild(lb);
       lb.addEventListener('click', function (e) {
         if (e.target.closest('.prev')) { stepLb(-1); return; }
         if (e.target.closest('.next')) { stepLb(1); return; }
+        /* 아래 썸네일 띠 — 누른 사진으로 바로 갑니다 */
+        var th = e.target.closest('.strip img');
+        if (th) { lbAt = parseInt(th.getAttribute('data-i'), 10) || 0; showLb(); return; }
+        if (e.target.closest('.strip')) return;
         if (e.target.closest('img')) { stepLb(1); return; }
         lb.classList.remove('on'); document.body.style.overflow = '';
       });
@@ -371,6 +377,15 @@
         if (Math.abs(dx) > 45) { moved = true; stepLb(dx < 0 ? 1 : -1); }
       }, { passive: true });
     }
+    /* 사진이 여러 장이면 아래에 작은 썸네일 띠를 깔아 몇 장째인지 보고 바로 건너뜁니다 (목록이 바뀔 때만 새로 만듭니다) */
+    if (lb._list !== list) {
+      lb._list = list;
+      var strip = lb.querySelector('.strip');
+      strip.innerHTML = list.length > 1 ? list.map(function (u, k) {
+        return '<img src="' + esc(u) + '" alt="" loading="lazy" data-i="' + k + '">';
+      }).join('') : '';
+      lb.classList.toggle('has-strip', list.length > 1);
+    }
     showLb();
     lb.classList.add('on'); document.body.style.overflow = 'hidden';
   }
@@ -378,6 +393,9 @@
   function showLb() {
     lb.querySelector('img').src = lbList[lbAt];
     lb.querySelector('.no').textContent = (lbAt + 1) + ' / ' + lbList.length;
+    var ths = lb.querySelectorAll('.strip img');
+    for (var k = 0; k < ths.length; k++) ths[k].classList.toggle('on', k === lbAt);
+    if (ths[lbAt] && ths[lbAt].scrollIntoView) ths[lbAt].scrollIntoView({ block: 'nearest', inline: 'center' });
   }
 
   /* 열쇠(짧은 영문 이름) → 글 제목 조각. parts/faq/posts.py 의 TITLES 와 같은 제목을 씁니다 */
@@ -659,7 +677,109 @@
     setTimeout(go, 400); setTimeout(go, 1500); setTimeout(go, 3000);
   }
 
-  if (VIEW) { if (cfg.faq) viewFaq(); return; }
+  /* ── 공지 글의 사진 격자 ──
+     사장님이 사진을 30~40장(때로는 100장 넘게) 올리시면 세로로 죽 이어져 글이 끝없이 길어지고,
+     아래 구매 안내까지 한참 내려가야 했습니다.
+     **이어진 사진 3장 이상**을 격자(PC 4칸·휴대폰 3칸) 하나로 모으고, 8장까지만 보이고
+     나머지는 마지막 칸의 「+N」 과 아래 「사진 N장 더 보기」 단추 뒤에 접어 둡니다.
+     사진을 누르면 크게 보기 창(openLb)이 열려 ‹ › 와 아래 썸네일 띠로 넘깁니다.
+     글 쓰시는 방식은 그대로입니다 — 아임웹 편집기에 사진을 그냥 올리시면 됩니다.
+     (사진 사이에 글이 끼면 거기서 격자가 나뉩니다. 빈 줄(<p><br></p>)은 사이에 있어도 이어진 것으로 봅니다.) */
+  var PG_SHOW = 8;
+  function isImgP(el) {
+    if (!/^(P|DIV|FIGURE)$/.test(el.tagName)) return false;
+    var ims = el.querySelectorAll('img');
+    return ims.length === 1 && !(el.textContent || '').trim();
+  }
+  function isBlank(el) {
+    return /^(P|DIV)$/.test(el.tagName) && !el.querySelector('img') && !(el.textContent || '').trim();
+  }
+  function gridOf(pEls, all) {
+    var g = document.createElement('div');
+    g.className = 'sl-pg';
+    var ims = pEls.map(function (p) { return p.querySelector('img'); });
+    var opened = false, btn = null;
+    function toggle() {
+      opened = !opened;
+      var its = g.querySelectorAll('.sl-pg-it');
+      for (var i = 0; i < its.length; i++) {
+        its[i].classList.toggle('hide', !opened && i >= PG_SHOW);
+        if (i === PG_SHOW - 1) its[i].classList.toggle('more', !opened);
+      }
+      if (btn) btn.textContent = opened ? '사진 접기 ▴' : '사진 ' + (ims.length - PG_SHOW) + '장 더 보기 ▾';
+      if (!opened) {
+        var top = g.getBoundingClientRect().top;
+        if (top < 0) window.scrollBy(0, top - 80);
+      }
+    }
+    ims.forEach(function (im, i) {
+      var a = document.createElement('a');
+      a.className = 'sl-pg-it' + (i >= PG_SHOW ? ' hide' : '');
+      a.href = im.getAttribute('src');
+      a.setAttribute('data-n', i + 1);
+      im.setAttribute('loading', 'lazy');
+      im.removeAttribute('width'); im.removeAttribute('height'); im.removeAttribute('style');
+      a.appendChild(im);
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (a.classList.contains('more')) { toggle(); return; }
+        openLb(all, parseInt(im.getAttribute('data-sl-i'), 10) || 0);
+      });
+      g.appendChild(a);
+    });
+    if (ims.length > PG_SHOW) {
+      var last = g.children[PG_SHOW - 1];
+      last.classList.add('more');
+      last.setAttribute('data-more', '+' + (ims.length - PG_SHOW));
+      btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'sl-pg-btn';
+      btn.textContent = '사진 ' + (ims.length - PG_SHOW) + '장 더 보기 ▾';
+      btn.addEventListener('click', toggle);
+    }
+    pEls[0].parentNode.insertBefore(g, pEls[0]);
+    if (btn) g.parentNode.insertBefore(btn, g.nextSibling);
+    pEls.forEach(function (p) { p.parentNode.removeChild(p); });
+  }
+  function viewGallery() {
+    var done = false;
+    function go() {
+      if (done) return;
+      var body = document.querySelector('.board_view .board_txt_area, .board_view .fr-view');
+      if (!body) return;
+      var box = body.querySelector('[class*="_comment_body"]') || body;
+      if (!box.children.length) return;   /* 아임웹이 본문을 아직 안 채웠습니다 — 다음 시도에서 */
+      done = true;
+      document.body.classList.add('sl-bv');
+      var imgs = [].slice.call(box.querySelectorAll('img'));
+      if (!imgs.length) return;
+      /* 글 안의 사진 전부를 한 줄로 — 격자가 여럿이어도 크게 보기 창에서는 처음부터 끝까지 이어 넘깁니다 */
+      var all = imgs.map(function (im, i) { im.setAttribute('data-sl-i', i); return im.getAttribute('src'); });
+      var runs = [], run = [];
+      function flush() {
+        while (run.length && !isImgP(run[run.length - 1])) run.pop();
+        var ps = run.filter(isImgP);
+        if (ps.length >= 3) runs.push(ps);
+        else ps.forEach(function (p) {
+          var im = p.querySelector('img');
+          im.style.cursor = 'zoom-in';
+          im.addEventListener('click', function () { openLb(all, parseInt(im.getAttribute('data-sl-i'), 10) || 0); });
+        });
+        run = [];
+      }
+      [].slice.call(box.children).forEach(function (el) {
+        if (isImgP(el)) run.push(el);
+        else if (isBlank(el) && run.length) run.push(el);
+        else flush();
+      });
+      flush();
+      runs.forEach(function (ps) { gridOf(ps, all); });
+    }
+    go();
+    window.addEventListener('load', go);
+    setTimeout(go, 400); setTimeout(go, 1500); setTimeout(go, 3000);
+  }
+
+  if (VIEW) { if (cfg.faq) viewFaq(); else viewGallery(); return; }
 
   build();
   window.addEventListener('load', build);

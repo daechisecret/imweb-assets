@@ -197,6 +197,15 @@
 .sl-lb .x:hover, .sl-lb .nav:hover { background: rgba(255, 255, 255, .3); }
 .sl-lb .no { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 12.5px; font-weight: 700;
   background: rgba(0, 0, 0, .35); border-radius: 100px; padding: 4px 12px; }
+/* 크게 보기 창 아래 썸네일 띠 — 사진이 두 장 이상일 때만 (board.js openLb) */
+.sl-lb .strip { position: absolute; left: 50%; bottom: 36px; transform: translateX(-50%); display: none; gap: 4px;
+  max-width: 92vw; overflow-x: auto; padding: 4px; scrollbar-width: none; }
+.sl-lb .strip::-webkit-scrollbar { display: none; }
+.sl-lb.has-strip .strip { display: flex; }
+.sl-lb .strip img { flex: none; width: 46px; height: 46px; max-width: none; max-height: none; object-fit: cover; border-radius: 4px;
+  opacity: .45; box-shadow: none; cursor: pointer; border: 2px solid transparent; }
+.sl-lb .strip img.on { opacity: 1; border-color: #e85a8a; }
+.sl-lb.has-strip > img { max-height: calc(100vh - 130px); }
 @media (max-width: 520px) {
   .sl-ans .sl-phones img { max-width: 48%; }
   .sl-ans .sl-gal img { height: 150px; }
@@ -291,6 +300,37 @@ body.sl-bv .board_view .board_txt_area {
   padding: 30px; font-size: 15px; line-height: 1.9; color: #2b4a70; min-height: 110px;
 }
 body.sl-bv .board_view .board_txt_area img { max-width: 100%; height: auto; border-radius: 8px; }
+
+/* ── 사진 격자 ── 이어진 사진 3장 이상은 격자로 모으고 8장까지만 보입니다 (board.js viewGallery)
+   글 사이의 빈 줄(<p><br></p>)이 격자 위아래에 남아도 어색하지 않게 여백은 작게 둡니다. */
+body.sl-bv .board_view .sl-pg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 8px 0 4px; }
+body.sl-bv .board_view .sl-pg-it {
+  position: relative; display: block; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 10px;
+  background: #f4f6fa; border: 1px solid #e6ecf4; cursor: zoom-in; text-decoration: none;
+}
+body.sl-bv .board_view .sl-pg-it img {
+  width: 100% !important; height: 100% !important; max-width: none !important; object-fit: cover; object-position: top;
+  display: block; margin: 0 !important; border-radius: 0 !important; transition: transform .25s;
+}
+body.sl-bv .board_view .sl-pg-it:hover img { transform: scale(1.04); }
+body.sl-bv .board_view .sl-pg-it::before {
+  content: attr(data-n); position: absolute; left: 7px; top: 7px; z-index: 1;
+  background: rgba(13, 24, 38, .55); color: #fff; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 100px; line-height: 1.4;
+}
+body.sl-bv .board_view .sl-pg-it.hide { display: none; }
+body.sl-bv .board_view .sl-pg-it.more::after {
+  content: attr(data-more); position: absolute; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: center;
+  background: rgba(13, 24, 38, .55); color: #fff; font-size: 22px; font-weight: 800;
+}
+body.sl-bv .board_view .sl-pg-btn {
+  display: block; margin: 10px auto 12px; border: 1px solid #f2b8cd; background: #fff; color: #c33e6d;
+  border-radius: 100px; padding: 9px 22px; font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: inherit; line-height: 1.4;
+}
+body.sl-bv .board_view .sl-pg-btn:hover { background: #fdeef3; }
+@media (max-width: 640px) {
+  body.sl-bv .board_view .sl-pg { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  body.sl-bv .board_view .sl-pg-it.more::after { font-size: 18px; }
+}
 
 /* 좋아요·댓글 수 줄 */
 body.sl-bv .board_view .comment-block {

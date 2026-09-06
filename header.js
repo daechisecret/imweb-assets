@@ -72,6 +72,39 @@
 })();
 
 (function () {
+  var FIXED = ['모의고사', '수능특강', '수능특강 영어독해연습', '수능특강 라이트', '올림포스', '심화변형', '지문분석'];
+  var HOT = ['공통영어 2', '고등영어 2', '공통영어 1', '고등영어 1', '영어독해와 작문'];
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function wire(form) {
+    var inp = form.querySelector('input[name="keyword"]');
+    if (!inp || form.querySelector('.sl-hot')) return;
+    var box = document.createElement('div');
+    box.className = 'sl-hot';
+    box.innerHTML = '<h6>인기 검색어</h6><div class="chips">' +
+      FIXED.concat(HOT).map(function (w) {
+        return '<a href="/search?keyword=' + encodeURIComponent(w) + '"><b>#</b>' + esc(w) + '</a>';
+      }).join('') + '</div>';
+    form.appendChild(box);
+    var sec = form.closest ? form.closest('._fixed_header_section') : null;
+    function lift(on) { if (sec) { if (on) sec.style.setProperty('z-index', '1001', 'important'); else sec.style.removeProperty('z-index'); } }
+    function open() { if (!inp.value) { box.classList.add('on'); lift(true); } }
+    function close() { box.classList.remove('on'); lift(false); }
+    inp.addEventListener('focus', open);
+    inp.addEventListener('click', open);
+    inp.addEventListener('input', function () { if (inp.value) close(); else open(); });
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    document.addEventListener('click', function (e) { if (!form.contains(e.target)) close(); });
+  }
+  function go() {
+    var forms = document.querySelectorAll('#inline_header_normal form[action="/search"], #inline_header_normal form[action$="/search"]');
+    for (var i = 0; i < forms.length; i++) wire(forms[i]);
+  }
+  go();
+  window.addEventListener('load', go);
+  setTimeout(go, 800);
+})();
+
+(function () {
   if (location.pathname.replace(/\/$/, '') !== '/search') return;
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
   var V = '1b05bf86';

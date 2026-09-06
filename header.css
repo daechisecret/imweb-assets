@@ -21,6 +21,14 @@ input, textarea, select, button { font-family: 'Noto Sans KR', 'Apple SD Gothic 
 #inline_header_normal .search_btn input.search_btn_form:focus { background: #fff !important; border-color: var(--sl-rose) !important; box-shadow: 0 0 0 5px var(--sl-rose-bg); }
 #inline_header_normal .search_btn form > a { position: absolute !important; right: 6px !important; left: auto !important; top: 50% !important; transform: translateY(-50%); display: flex !important; align-items: center; justify-content: center; width: 38px !important; height: 38px !important; border-radius: 50% !important; background: var(--sl-rose) !important; color: #fff !important; font-size: 15px; transition: all .13s; box-shadow: 0 2px 8px rgba(232,90,138,.3); }
 #inline_header_normal .search_btn form > a:hover { background: var(--sl-rose-dark) !important; }
+#inline_header_normal .search_btn form .sl-hot { display: none; position: absolute; left: 0; right: 0; top: calc(100% + 8px); z-index: 60; background: #fff; border: 1.5px solid #f2b8cd; border-radius: 18px; padding: 14px 16px 13px; box-shadow: 0 14px 36px rgba(232, 90, 138, .18); text-align: left; }
+#inline_header_normal .search_btn form .sl-hot.on { display: block; }
+#inline_header_normal .search_btn form .sl-hot h6 { margin: 0 0 9px; padding: 0; font-size: 13px; font-weight: 800; color: var(--sl-ink); line-height: 1.4; }
+#inline_header_normal .search_btn form .sl-hot .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+#inline_header_normal .search_btn form .sl-hot a { display: inline-flex; align-items: center; gap: 3px; padding: 6px 12px 6px 10px; border: 1px solid #f2b8cd; border-radius: 100px; background: #fffafc; color: var(--sl-ink); font-size: 13px; font-weight: 600; line-height: 1.3; text-decoration: none !important; white-space: nowrap; transition: all .12s; }
+#inline_header_normal .search_btn form .sl-hot a b { color: var(--sl-rose); font-weight: 800; }
+#inline_header_normal .search_btn form .sl-hot a:hover { background: var(--sl-rose); border-color: var(--sl-rose); color: #fff; }
+#inline_header_normal .search_btn form .sl-hot a:hover b { color: #fff; }
 @supports selector(:has(*)) { #inline_header_normal .search_btn input.search_btn_form::placeholder { color: transparent; }
  #inline_header_normal .search_btn form:has(.search_btn_form:placeholder-shown)::before { content: '교재 · 강 · 유형으로 찾기'; position: absolute; left: 22px; top: 50%; transform: translateY(-50%); color: #c8a3b3; font-size: 14.5px; font-weight: 500; pointer-events: none; white-space: nowrap; } }
 #inline_header_normal .btn-wrap { display: flex; align-items: center; gap: 2px; flex-wrap: nowrap; }
