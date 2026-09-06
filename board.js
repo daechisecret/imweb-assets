@@ -16,13 +16,15 @@
    글쓰기 화면에서는 아무것도 하지 않습니다.
    글 보기(bmode=view)는 모양만 다듬고, 자주 묻는 질문 글은 본문에 답 서식(dressAnswer)을 입힙니다.
    공지·문의 글은 이어진 사진을 격자로 모읍니다(viewGallery) — 8장까지 보이고 나머지는 「더 보기」 뒤에.
+   공지·FAQ 글쓰기(bmode=write|edit)에는 사진 서랍을 붙입니다(writeDrawer) — 커서 자리에 넣기·여러 장 옮기기.
    ═══════════════════════════════════════════════════════════════ */
 (function () {
   var HOW = {
-    '/notice':  { how: 'line', name: '공지사항' },
+    '/notice':  { how: 'line', name: '공지사항', drawer: true },
     '/contact': { how: 'line', name: '문의하기' },
-    '/faq':     { how: 'line', name: '자주 묻는 질문', faq: true }
+    '/faq':     { how: 'line', name: '자주 묻는 질문', faq: true, drawer: true }
   };
+  /* drawer — 글쓰기·고치기 화면에 「사진 서랍」을 붙입니다 (아래 writeDrawer). 문의 게시판은 손님이 쓰는 곳이라 안 붙입니다. */
 
   /* 시험용 미리보기는 <html data-sl-path="/faq"> 로 어느 게시판인 척할 수 있습니다 */
   var path = (document.documentElement.getAttribute('data-sl-path') || location.pathname).replace(/\/$/, '');
@@ -31,7 +33,9 @@
   /* 글 보기 화면은 목록을 새로 그리지 않고 **모양만** 다듬습니다 (body 에 표시만 붙입니다).
      글쓰기·댓글·좋아요는 아임웹 기능이라 건드리면 안 됩니다. */
   var VIEW = /[?&]bmode=view/.test(location.search);
-  if (!VIEW && /[?&]bmode=(write|edit|reply)/.test(location.search)) return;
+  var WRITE = !VIEW && /[?&]bmode=(write|edit)/.test(location.search);
+  if (!VIEW && !WRITE && /[?&]bmode=reply/.test(location.search)) return;
+  if (WRITE) { if (cfg.drawer) writeDrawer(); return; }
   if (VIEW) {
     var mark = function () {
       if (document.querySelector('.board_view')) document.body.classList.add('sl-bv');
@@ -619,6 +623,199 @@
         if (item.classList.contains('open')) loadAnswer(item);
       });
     }
+  }
+
+  /* ── 글쓰기 화면의 사진 서랍 ── (2026-09-06, 사장님이 고르신 ① 옆 판)
+     아임웹 편집기(Froala)에서는 사진을 원하는 자리에 넣기도, 여러 장을 한꺼번에 옮기기도 어렵습니다.
+     편집기 오른쪽에 떠 있는 판을 붙입니다.
+       · 사진을 판에 끌어다 놓으면 **커서가 있는 문단 뒤**에 들어갑니다 (분홍 점선이 그 자리를 보여 줍니다)
+       · 글에 든 사진이 번호 붙은 작은 그림으로 죽 보이고, 체크해서 여러 장을 넣을 자리·맨 위·맨 아래로 한꺼번에 옮깁니다
+       · 작은 그림을 끌어서 순서를 바꾸고, 누르면 글에서 그 자리로 갑니다
+     올리기는 **아임웹의 올리기 입력(input._image_upload_btn)을 그대로 씁니다** — 파일을 그 입력에 넣고 change 를 울리면
+     아임웹이 제 서버에 올리고 커서 자리에 <p><img class="fr-dii"></p> 로 넣습니다. 우리가 올리기를 흉내 내지 않습니다.
+     ⚠ 편집기 본문(.fr-element) 안에는 **아무것도 넣지 않습니다** — 넣으면 그대로 글에 저장됩니다.
+        자리 표시(점선)와 강조 상자는 body 에 떠 있는 요소를 좌표만 맞춰 그립니다. */
+  function writeDrawer() {
+    var tries = 0;
+    (function wait() {
+      var inst = window.FroalaEditor && FroalaEditor.INSTANCES && FroalaEditor.INSTANCES[0];
+      var ed = document.querySelector('.fr-box .fr-element');
+      var up = document.querySelector('input._image_upload_btn');
+      if (!inst || !ed || !up) { if (tries++ < 50) setTimeout(wait, 300); return; }
+      mountDrawer(inst, ed, up);
+    })();
+  }
+  function mountDrawer(inst, ed, up) {
+    if (document.querySelector('.sl-dw')) return;
+    var cur = null;          /* 커서가 든 문단 — 사진은 이 뒤에 들어갑니다. 없으면 글 끝 */
+    var sel = [];            /* 서랍에서 체크한 사진(img) */
+    var pending = false;     /* 우리가 올리기를 시킨 뒤 새 사진이 들어오길 기다리는 중 */
+
+    var wrap = document.createElement('div');
+    wrap.className = 'sl-dw';
+    wrap.innerHTML =
+      '<div class="hd"><b>📷 사진 서랍</b><span class="n"></span><button type="button" class="tg" title="접기/펼치기">›</button></div>' +
+      '<div class="bd">' +
+        '<div class="where">넣을 자리 : <b class="w">글 끝</b></div>' +
+        '<label class="drop">사진을 여기에 놓거나 눌러서 고르기<small>여러 장 한꺼번에 · 고른 순서대로 들어갑니다</small>' +
+          '<input type="file" accept=".jpg,.jpeg,.png,.gif" multiple></label>' +
+        '<div class="tl"></div>' +
+        '<div class="act">' +
+          '<button type="button" data-a="move">⤵ 체크한 사진을 넣을 자리로</button>' +
+          '<button type="button" data-a="top">⬆ 체크한 사진을 맨 위로</button>' +
+          '<button type="button" data-a="end">⬇ 체크한 사진을 맨 아래로</button>' +
+          '<button type="button" data-a="del">🗑 체크한 사진 빼기</button>' +
+        '</div>' +
+        '<div class="tip">작은 그림을 끌어서 순서를 바꿀 수 있습니다 · 그림을 누르면 글에서 그 자리로 갑니다 · 글을 누른 자리(점선) 뒤에 사진이 들어갑니다</div>' +
+      '</div>';
+    document.body.appendChild(wrap);
+    var tl = wrap.querySelector('.tl'), where = wrap.querySelector('.where .w'), nEl = wrap.querySelector('.hd .n');
+    var mark = document.createElement('div'); mark.className = 'sl-dw-mark'; mark.innerHTML = '<span>▶ 사진이 여기에 들어갑니다</span>';
+    var hi = document.createElement('div'); hi.className = 'sl-dw-hi';
+    document.body.appendChild(mark); document.body.appendChild(hi);
+    wrap.querySelector('.tg').addEventListener('click', function () { wrap.classList.toggle('min'); layout(); });
+
+    function txt(el) { return (el.textContent || '').replace(/\u200b/g, '').trim(); }
+    function blockOf(node) { while (node && node !== ed) { if (node.parentNode === ed) return node; node = node.parentNode; } return null; }
+    function imgs() { return [].slice.call(ed.querySelectorAll('img')); }
+    function standalone(b) { return b && b.querySelectorAll('img').length === 1 && !txt(b); }
+    /* 옮길 덩이 — 사진만 든 문단이면 그 문단째, 글과 섞여 있으면 사진만 새 문단으로 빼냅니다 */
+    function detach(im) {
+      var b = blockOf(im);
+      if (standalone(b)) { b.parentNode.removeChild(b); return b; }
+      var p = document.createElement('p'); p.style.textAlign = 'left';
+      im.parentNode.removeChild(im); p.appendChild(im); return p;
+    }
+    function inOrder(list) {
+      return list.slice().sort(function (a, b) { return (a.compareDocumentPosition(b) & 4) ? -1 : 1; });
+    }
+    function placeAfter(nodes, ref) {
+      var at = ref && ref.parentNode === ed ? ref.nextSibling : null;
+      nodes.forEach(function (n) { if (at) ed.insertBefore(n, at); else ed.appendChild(n); });
+    }
+    function commit(last) {
+      try { inst.undo.saveStep(); } catch (e) {}
+      try { inst.events.trigger('contentChanged'); } catch (e) {}
+      if (last) cur = last;
+      sel = []; draw(); layout();
+    }
+
+    /* ── 커서 자리 ── */
+    document.addEventListener('selectionchange', function () {
+      var s = document.getSelection();
+      if (!s || !s.anchorNode || !ed.contains(s.anchorNode)) return;
+      var b = blockOf(s.anchorNode);
+      if (b) { cur = b; layout(); }
+    });
+    ed.addEventListener('click', function (e) {
+      var im = e.target.closest && e.target.closest('img');
+      if (im) { cur = blockOf(im); layout(); }
+    });
+    function target() { return (cur && cur.parentNode === ed) ? cur : ed.lastElementChild; }
+    function layout() {
+      var t = target();
+      if (!t || wrap.classList.contains('min')) { mark.classList.remove('on'); }
+      else {
+        var r = t.getBoundingClientRect(), er = ed.getBoundingClientRect();
+        var y = Math.min(r.bottom, er.bottom);
+        if (y < er.top - 4 || y > er.bottom + 4 || r.width === 0) mark.classList.remove('on');
+        else { mark.style.top = y + 'px'; mark.style.left = er.left + 'px'; mark.style.width = er.width + 'px'; mark.classList.add('on'); }
+      }
+      if (!t || t === ed.lastElementChild && !(cur && cur.parentNode === ed)) where.textContent = '글 끝';
+      else {
+        var im = t.querySelector('img');
+        var label = txt(t) ? '「' + txt(t).slice(0, 16) + (txt(t).length > 16 ? '…' : '') + '」 뒤' :
+                    im ? '사진 ' + (imgs().indexOf(im) + 1) + '번 뒤' : t.tagName === 'HR' ? '구분선 뒤' : '빈 줄 뒤';
+        where.textContent = label;
+      }
+    }
+    window.addEventListener('scroll', layout, true);
+    window.addEventListener('resize', layout);
+    setInterval(function () { if (document.body.contains(wrap)) layout(); }, 600);
+
+    /* ── 목록 ── */
+    var drag = null;
+    function draw() {
+      var list = imgs();
+      nEl.textContent = list.length ? list.length + '장' : '';
+      tl.innerHTML = list.length ? list.map(function (im, i) {
+        return '<div class="it' + (sel.indexOf(im) >= 0 ? ' sel' : '') + '" draggable="true" data-i="' + i + '">' +
+          '<img src="' + esc(im.getAttribute('src') || '') + '" alt=""><span class="ck">✓</span><span class="no">' + (i + 1) + '</span></div>';
+      }).join('') : '<div class="empty">아직 사진이 없습니다</div>';
+      var on = sel.length > 0;
+      [].forEach.call(wrap.querySelectorAll('.act button'), function (b) { b.disabled = !on; if (!on) { b.classList.remove('armed'); if (b.dataset.a === 'del') b.textContent = '🗑 체크한 사진 빼기'; } });
+    }
+    function flash(im) {
+      var r = im.getBoundingClientRect();
+      hi.style.left = (r.left - 3) + 'px'; hi.style.top = (r.top - 3) + 'px'; hi.style.width = r.width + 'px'; hi.style.height = r.height + 'px';
+      hi.classList.add('on'); setTimeout(function () { hi.classList.remove('on'); }, 1600);
+    }
+    tl.addEventListener('click', function (e) {
+      var it = e.target.closest('.it'); if (!it) return;
+      var im = imgs()[+it.getAttribute('data-i')]; if (!im) return;
+      if (e.target.closest('.ck')) { var k = sel.indexOf(im); if (k >= 0) sel.splice(k, 1); else sel.push(im); draw(); return; }
+      im.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      cur = blockOf(im); setTimeout(function () { flash(im); layout(); }, 350);
+    });
+    tl.addEventListener('dragstart', function (e) { var it = e.target.closest('.it'); if (!it) return; drag = +it.getAttribute('data-i'); it.classList.add('drag'); try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', 'sl'); } catch (x) {} });
+    tl.addEventListener('dragover', function (e) { if (drag === null) return; e.preventDefault(); var it = e.target.closest('.it'); [].forEach.call(tl.children, function (c) { c.classList.toggle('tgt', c === it); }); });
+    tl.addEventListener('dragend', function () { drag = null; draw(); });
+    tl.addEventListener('drop', function (e) {
+      if (drag === null) return; e.preventDefault();
+      var it = e.target.closest('.it'); var list = imgs();
+      var a = list[drag], b = it ? list[+it.getAttribute('data-i')] : null;
+      drag = null;
+      if (!a || !b || a === b) { draw(); return; }
+      var to = blockOf(b), moving = detach(a);
+      if (list.indexOf(a) < list.indexOf(b)) placeAfter([moving], to); else ed.insertBefore(moving, to);
+      commit(moving);
+    });
+
+    /* ── 여러 장 한꺼번에 ── */
+    wrap.querySelector('.act').addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b || !sel.length) return;
+      var a = b.getAttribute('data-a'), picked = inOrder(sel);
+      if (a === 'del') {
+        if (!b.classList.contains('armed')) { b.classList.add('armed'); b.textContent = '한 번 더 누르면 글에서 뺍니다 (' + picked.length + '장)'; setTimeout(function () { b.classList.remove('armed'); b.textContent = '🗑 체크한 사진 빼기'; }, 3000); return; }
+        picked.forEach(function (im) { var d = detach(im); if (d.parentNode) d.parentNode.removeChild(d); });
+        commit(null); return;
+      }
+      var ref = a === 'move' ? target() : null;
+      var blocks = picked.map(detach);
+      if (a === 'top') blocks.slice().reverse().forEach(function (n) { ed.insertBefore(n, ed.firstChild); });
+      else if (a === 'end') blocks.forEach(function (n) { ed.appendChild(n); });
+      else placeAfter(blocks, ref && ref.parentNode === ed ? ref : null);
+      commit(blocks[blocks.length - 1]);
+    });
+
+    /* ── 올리기 : 아임웹 입력에 파일을 넣고 change 를 울립니다 ── */
+    var drop = wrap.querySelector('.drop'), file = drop.querySelector('input');
+    ['dragenter', 'dragover'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
+    ['dragleave', 'drop'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('over'); }); });
+    drop.addEventListener('drop', function (e) { if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) send(e.dataTransfer.files); });
+    file.addEventListener('change', function () { send(file.files); file.value = ''; });
+    function send(files) {
+      var list = [].filter.call(files, function (f) { return /^image\//.test(f.type); });
+      if (!list.length) return;
+      var t = target();
+      try { inst.events.focus(); if (t) inst.selection.setAtEnd(t); else inst.selection.setAtEnd(ed); inst.selection.restore(); } catch (e) {}
+      var dt = new DataTransfer();
+      list.forEach(function (f) { dt.items.add(f); });
+      up.files = dt.files;
+      pending = true;
+      where.textContent = list.length + '장 올리는 중…';
+      up.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    /* 편집기 본문이 바뀌면(올리기 끝, 손으로 지움…) 목록을 다시 그립니다. 우리가 올린 사진이면 그 뒤를 다음 자리로 잡습니다. */
+    var mo = new MutationObserver(function () {
+      if (mo._t) clearTimeout(mo._t);
+      mo._t = setTimeout(function () {
+        if (pending) { var list = imgs(); if (list.length) { cur = blockOf(list[list.length - 1]); pending = false; } }
+        draw(); layout();
+      }, 250);
+    });
+    mo.observe(ed, { childList: true, subtree: true, attributes: true, attributeFilter: ['src'] });
+    draw(); layout();
   }
 
   /* ── 글을 누르면 확실히 열리도록 ──
