@@ -142,6 +142,8 @@ body.sl-sc .search_widget .control_box input.form-control {
   font-size: 15.5px !important; font-weight: 700 !important; color: #243b53 !important; }
 body.sl-sc .search_widget .control_box input.form-control::placeholder {
   color: #c3d0de !important; font-weight: 500 !important; }
+/* 드래그 선택 색 — 아임웹 기본(검정 바탕·흰 글자) 대신 연분홍 바탕 */
+body.sl-sc .search_widget .control_box input.form-control::selection { background: #fbd3e1 !important; color: #243b53 !important; }
 /* 돋보기·지우기 단추는 아임웹 아이콘 글꼴을 그대로 두고 자리와 색만 잡습니다 */
 body.sl-sc .search_widget .control_box a.icon {
   position: absolute !important; left: 19px !important; top: 50% !important;
