@@ -422,11 +422,32 @@
     box._t = setTimeout(function () { box.classList.remove('on'); }, 2600);
   }
 
+  /* 「상세정보·구매평·Q&A」 탭 상자는 **두 벌**입니다 —
+     좁은 화면용 #fixed_tab_mobile 과 넓은 화면용 #fixed_tab.
+     한 쪽은 늘 display:none 이라, PC 것 앞에만 넣으면 휴대폰에서 통째로 안 보입니다.
+     그래서 **지금 화면에 보이는 쪽**을 찾아 그 앞에 놓고, 창 크기가 바뀌면 옮깁니다. */
+  function relAnchor() {
+    var ids = ['fixed_tab_mobile', 'fixed_tab'], i, e;
+    for (i = 0; i < ids.length; i++) {
+      e = document.getElementById(ids[i]);
+      if (e && e.offsetParent !== null && e.getBoundingClientRect().width > 0) return e;
+    }
+    /* 아직 아무것도 안 그려졌으면(늦게 그리는 중) 있는 것을 씁니다 */
+    return document.getElementById('fixed_tab') || document.getElementById('fixed_tab_mobile');
+  }
+
+  function placeRel() {
+    var box = document.getElementById('sl-rel');
+    var a = relAnchor();
+    if (!box || !a || box.nextElementSibling === a) return;
+    a.parentNode.insertBefore(box, a);
+  }
+
   var REL_DONE = false;
   function related() {
     if (REL_DONE) return;
     var me = idxNow();
-    var tab = document.getElementById('fixed_tab');
+    var tab = relAnchor();
     if (!me || !tab || document.getElementById('sl-rel')) return;
     REL_DONE = true;
     fetch(BASE + 'related/' + Math.floor(me / 100) + '.json')
@@ -446,7 +467,8 @@
         }
         h += relTabs(r, P);
         box.innerHTML = h;
-        tab.parentNode.insertBefore(box, tab);
+        var a = relAnchor() || tab;
+        a.parentNode.insertBefore(box, a);
 
         box.addEventListener('click', function (e) {
           var t = e.target.closest('.sr-tab');
@@ -474,6 +496,7 @@
     if (!root()) return;
     build();
     related();
+    placeRel();
     retellOwl();
     fitCover();
   }
@@ -760,14 +783,15 @@
   window.addEventListener('resize', fitTitle);
   window.addEventListener('resize', placeShare);
   window.addEventListener('resize', fitCover);
+  window.addEventListener('resize', placeRel);   /* 넓은 화면 ↔ 좁은 화면으로 바뀌면 보이는 탭 앞으로 옮깁니다 */
   window.addEventListener('resize', cartOnPhone);
   window.addEventListener('resize', liftBuyRow);
   setTimeout(run, 600);
   setTimeout(run, 1800);
   setTimeout(run, 3500);
   setTimeout(fitCover, 5000);
-  cartOnPhone(); liftBuyRow(); fitTitle(); placeShare();
+  cartOnPhone(); liftBuyRow(); fitTitle(); placeShare(); placeRel();
   [700, 2000, 4000].forEach(function (ms) {
-    setTimeout(function () { cartOnPhone(); liftBuyRow(); fitTitle(); placeShare(); }, ms);
+    setTimeout(function () { cartOnPhone(); liftBuyRow(); fitTitle(); placeShare(); placeRel(); }, ms);
   });
 })();
