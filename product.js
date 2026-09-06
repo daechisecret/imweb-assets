@@ -348,10 +348,10 @@
     var off = sum > price ? Math.round((1 - price / sum) * 100) : 0;
     return '<div class="sr-sum">' +
       '<div class="sr-sum-t">' + (off ? '패키지가 더 쌉니다' : '패키지로 한 번에') + '</div>' +
-      (r.note ? '<div class="sr-note"><b>' + esc(pk[4] || '패키지') + '</b> ' + esc(r.note) + '</div>' : '') +
+      (r.note ? '<div class="sr-note">' + esc(r.note).replace(/^([^:]+:)/, '<b>$1</b>') + '</div>' : '') +
       '<div class="sr-tot">' + (sum > price ? '<s>따로 ' + won(sum) + '</s>' : '') +
       '<b>' + won(price) + (off ? '<small>' + off + '% 할인</small>' : '') + '</b></div>' +
-      '<button type="button" class="sr-btn" data-add="' + r.pkg + '">' + esc(pk[4] || '패키지') + ' 담기</button>' +
+      '<button type="button" class="sr-btn" data-add="' + r.pkg + '">' + esc(pk[4] && /패키지/.test(pk[4]) ? pk[4] : (pk[4] || '') + ' 패키지') + ' 담기</button>' +
       '<a class="sr-more" href="' + esc(prodUrl(r.pkg)) + '">패키지 상품 보기 →</a>' +
       '</div>';
   }
