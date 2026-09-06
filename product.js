@@ -284,9 +284,196 @@
     window.dispatchEvent(new Event('resize'));
   }
 
+  /* ── ④ 연관상품 ──
+     아임웹 관리자의 연관상품은 이 테마가 화면에 그리지 않습니다. build-related.py 가
+     상품마다 「같은 시험(교재·강)의 다른 자료 / 패키지 / 다른 형식 / 다른 학년·교재·출판사」를
+     적어 둔 표(related/번호÷100.json)를 받아, 「상세정보·구매평·Q&A」 탭 **바로 위**에 세웁니다.
+
+     규칙 (2026-09-06 사장님)
+       · 패키지가 있는 상품만 오른쪽에 「따로 담으면 ○원 → 패키지 ○원」 상자. 없으면 상자 없음.
+       · 패키지 구성을 꼭 적습니다 — 모의고사 「변형문제 + 지문분석 + 워크북 + 핵심요약노트」,
+         부교재 「워크북 패키지 : 1강~18강 (6강 제외)」.
+       · 탭 이름은 모의고사 「다른 학년」 · 부교재 「다른 교재」 · 교과서 「다른 출판사」.
+       · 교과서(쏠북 판매)는 패키지 이야기를 안 하고, 담기 단추 대신 「쏠북에서 구매」로 보냅니다.
+         여기서 결제되면 안 되므로 장바구니에 절대 넣지 않습니다. */
+  var IMG_PRE = 'https://cdn.imweb.me/thumbnail/';
+  function won(n) { return String(n || 0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; }
+  function thumb(s) { return /^https?:/.test(s) ? s : IMG_PRE + s; }
+  function prodUrl(no) { return sameHost(location.origin + '/shop_view/' + no); }
+
+  /* 카드 한 장 — P[no] = [이름, 판매가, 정가, 표지, 갈래, 쏠북 주소] */
+  function relCard(no, P, now) {
+    var p = P[no];
+    if (!p) return '';
+    var price = p[1], org = p[2], sv = p[5];
+    var pr = sv || !price
+      ? '<div class="sr-pr sr-pr-sv">쏠북에서 판매</div>'
+      : '<div class="sr-pr">' + (org > price ? '<b>' + Math.round((1 - price / org) * 100) + '%</b>' : '') +
+        won(price) + (org > price ? '<s>' + won(org) + '</s>' : '') + '</div>';
+    var act = now ? ''
+      : sv ? '<a class="sr-add sr-go" href="' + esc(sv) + '" target="_blank" rel="noopener">쏠북에서 구매</a>'
+      : !price ? '<a class="sr-add sr-go" href="' + esc(prodUrl(no)) + '">자료 보기</a>'
+      : '<button type="button" class="sr-add" data-add="' + no + '">+ 담기</button>';
+    return '<div class="sr-card' + (now ? ' now' : '') + '">' +
+      '<a class="sr-th" href="' + esc(now ? '#' : prodUrl(no)) + '">' +
+      (p[4] ? '<span class="sr-kind">' + esc(p[4]) + '</span>' : '') +
+      (p[3] ? '<img src="' + esc(thumb(p[3])) + '" alt="" loading="lazy">' : '') + '</a>' +
+      '<a class="sr-nm" href="' + esc(now ? '#' : prodUrl(no)) + '">' + esc(p[0]) + '</a>' +
+      pr + act + '</div>';
+  }
+
+  function relHead(r, n) {
+    var what = r.top === '모의고사' ? '이 시험 자료' :
+               r.top === '교과서' ? '이 교재 자료' :
+               /·/.test(r.set) ? '이 강 자료' : '이 교재 자료';
+    if (r.isPkg) {
+      return '<h3 class="sr-t">이 패키지에 든 자료 <em>' + n + '종</em></h3>' +
+        (r.note ? '<p class="sr-s">' + esc(r.note) + '</p>' : '');
+    }
+    if (r.sv) {
+      return '<h3 class="sr-t">' + what + ', <em>' + r.same.length + '종</em>이 더 있어요</h3>' +
+        '<p class="sr-s">같은 교재 같은 과의 자료입니다. 교과서 자료는 쏠북에서 구매하실 수 있어요</p>';
+    }
+    if (n <= 1) {
+      return '<h3 class="sr-t">' + what + ', <em>패키지</em>로 더 싸게</h3>';
+    }
+    return '<h3 class="sr-t">' + what + ', <em>' + n + '종 중 1개</em>만 담으셨어요</h3>' +
+      '<p class="sr-s">나머지 자료를 함께 담으면 수업 준비가 끝납니다</p>';
+  }
+
+  function relSum(r, P) {
+    var pk = r.pkg && P[r.pkg];
+    if (!pk || r.sv || r.isPkg) return '';
+    var price = pk[1], sum = r.sum;
+    var off = sum > price ? Math.round((1 - price / sum) * 100) : 0;
+    return '<div class="sr-sum">' +
+      '<div class="sr-sum-t">' + (off ? '패키지가 더 쌉니다' : '패키지로 한 번에') + '</div>' +
+      (r.note ? '<div class="sr-note"><b>' + esc(pk[4] || '패키지') + '</b> ' + esc(r.note) + '</div>' : '') +
+      '<div class="sr-tot">' + (sum > price ? '<s>따로 ' + won(sum) + '</s>' : '') +
+      '<b>' + won(price) + (off ? '<small>' + off + '% 할인</small>' : '') + '</b></div>' +
+      '<button type="button" class="sr-btn" data-add="' + r.pkg + '">' + esc(pk[4] || '패키지') + ' 담기</button>' +
+      '<a class="sr-more" href="' + esc(prodUrl(r.pkg)) + '">패키지 상품 보기 →</a>' +
+      '</div>';
+  }
+
+  function relTabs(r, P) {
+    var tabs = [];
+    if (r.alt.length) tabs.push({ id: 'alt', label: r.altL, list: r.alt });
+    if (r.oth.length) tabs.push({ id: 'oth', label: r.othL, list: r.oth });
+    if (!tabs.length) return '';
+    var h = '<div class="sr-tabs">';
+    tabs.forEach(function (t) {
+      h += '<button type="button" class="sr-tab" data-pane="' + t.id + '">' + esc(t.label) +
+        '<small>' + t.list.length + '</small></button>';
+    });
+    h += '</div>';
+    tabs.forEach(function (t) {
+      h += '<div class="sr-pane" data-pane="' + t.id + '" hidden><div class="sr-cards">' +
+        t.list.map(function (no) { return relCard(no, P, false); }).join('') + '</div></div>';
+    });
+    return h;
+  }
+
+  /* 담기 — 상품 페이지의 「장바구니」 단추가 부르는 것과 같은 주소(/shop/add_cart.cm)로 보냅니다.
+     옵션 없는 디지털 자료라 상품 번호와 수량이면 됩니다. 못 담으면 그 상품 페이지로 보냅니다. */
+  function relAdd(no, btn) {
+    if (btn.disabled) return;
+    btn.disabled = true;
+    var was = btn.textContent;
+    btn.textContent = '담는 중…';
+    var body = 'prodIdx=' + encodeURIComponent(no) + '&orderCount=1&cart_type=&deliv_type=&deliv_pay_type=&deliv_country=&shipping_template_code=';
+    fetch('/shop/add_cart.cm', {
+      method: 'POST', credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'X-Requested-With': 'XMLHttpRequest' },
+      body: body
+    }).then(function (r) { return r.json(); }).then(function (res) {
+      if (!res || res.msg !== 'SUCCESS') throw res;
+      /* 담기는 됐습니다 — 이 아래에서 무엇이 어긋나도 상품 페이지로 보내면 안 됩니다 */
+      try {
+        btn.textContent = '담았어요 ✓';
+        btn.classList.add('done');
+        /* 머리말 장바구니 숫자 — 아임웹 셸이 이 신호를 받아 올립니다 (같은 상품 재담기는 안 올립니다) */
+        window.dispatchEvent(new CustomEvent('imweb:addToCart:added', { detail: { prodFound: !!res.prod_found } }));
+      } catch (e) { /* 뱃지는 못 올려도 담기는 됐습니다 */ }
+      try {
+        relToast('장바구니에 담았습니다');
+        var go = document.createElement('a');
+        go.className = 'sr-cart-go'; go.href = sameHost(location.origin + '/shop_cart'); go.textContent = '장바구니 보기 →';
+        var box = btn.closest('.sr-card, .sr-sum');
+        if (box && !box.querySelector('.sr-cart-go')) box.appendChild(go);
+      } catch (e) { /* 안내만 못 한 것입니다 */ }
+    }).catch(function () {
+      btn.textContent = was; btn.disabled = false;
+      location.href = prodUrl(no);
+    });
+  }
+
+  /* 아래 toast() 는 공유 창(cocoaModal) 안에 띄우는 것이라 창이 안 열려 있으면 못 씁니다 — 여기서는 화면 아래에 띄웁니다 */
+  function relToast(msg) {
+    var box = document.getElementById('sl-rel-toast');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'sl-rel-toast';
+      document.body.appendChild(box);
+    }
+    box.textContent = msg;
+    box.classList.add('on');
+    clearTimeout(box._t);
+    box._t = setTimeout(function () { box.classList.remove('on'); }, 2600);
+  }
+
+  var REL_DONE = false;
+  function related() {
+    if (REL_DONE) return;
+    var me = idxNow();
+    var tab = document.getElementById('fixed_tab');
+    if (!me || !tab || document.getElementById('sl-rel')) return;
+    REL_DONE = true;
+    fetch(BASE + 'related/' + Math.floor(me / 100) + '.json')
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (d) {
+        var r = d.r[me], P = d.p;
+        if (!r) return;
+        var strip = r.same.map(function (no) { return relCard(no, P, false); }).join('');
+        var n = r.same.length + (r.isPkg ? 0 : 1);
+        var box = document.createElement('div');
+        box.id = 'sl-rel';
+        box.className = 'sr-box';
+        var h = '<div class="sr-h"><div class="sr-eyebrow">' + esc(r.set) + '</div>' + relHead(r, n) + '</div>';
+        if (r.same.length || r.pkg) {
+          h += '<div class="sr-set' + (relSum(r, P) ? ' has-sum' : '') + '"><div class="sr-cards">' +
+            (r.isPkg ? '' : relCard(me, P, true) || '') + strip + '</div>' + relSum(r, P) + '</div>';
+        }
+        h += relTabs(r, P);
+        box.innerHTML = h;
+        tab.parentNode.insertBefore(box, tab);
+
+        box.addEventListener('click', function (e) {
+          var t = e.target.closest('.sr-tab');
+          if (t) {
+            var on = t.classList.contains('on');
+            box.querySelectorAll('.sr-tab').forEach(function (x) { x.classList.remove('on'); });
+            box.querySelectorAll('.sr-pane').forEach(function (p) { p.hidden = true; });
+            if (!on) {
+              t.classList.add('on');
+              var pane = box.querySelector('.sr-pane[data-pane="' + t.dataset.pane + '"]');
+              if (pane) pane.hidden = false;
+            }
+            return;
+          }
+          var a = e.target.closest('[data-add]');
+          if (a) { e.preventDefault(); relAdd(a.dataset.add, a); return; }
+          var self = e.target.closest('.sr-card.now a');
+          if (self) e.preventDefault();
+        });
+      })
+      .catch(function () { /* 표가 없으면 아무것도 안 그립니다 */ });
+  }
+
   function run() {
     if (!root()) return;
     build();
+    related();
     retellOwl();
     fitCover();
   }
