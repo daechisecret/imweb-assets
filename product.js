@@ -457,6 +457,27 @@
     a.parentNode.insertBefore(box, a);
   }
 
+  /* 꺾쇠 그림 — 글자(›)는 글꼴마다 아래로 처져 원 한가운데에 안 놓입니다 */
+  var ARROW = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="D" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  /* 카드 줄 옆 화살표 — 옆에 더 있을 때만 보이고, 끝에 닿은 쪽은 흐려집니다 */
+  function relArrows(box) {
+    var strip = box.querySelector('.sr-strip');
+    if (!strip) return;
+    var sc = strip.querySelector('.sr-cards');
+    function tell() {
+      var more = sc.scrollWidth - sc.clientWidth > 4;
+      strip.classList.toggle('can-scroll', more);
+      strip.classList.toggle('at-start', sc.scrollLeft <= 2);
+      strip.classList.toggle('at-end', sc.scrollLeft + sc.clientWidth >= sc.scrollWidth - 2);
+    }
+    sc.addEventListener('scroll', tell, { passive: true });
+    window.addEventListener('resize', tell);
+    tell();
+    setTimeout(tell, 300);
+    setTimeout(tell, 1200);
+  }
+
   var REL_DONE = false;
   function related() {
     if (REL_DONE) return;
@@ -476,15 +497,28 @@
         box.className = 'sr-box';
         var h = '<div class="sr-h"><div class="sr-eyebrow">' + esc(r.set) + '</div>' + relHead(r, n) + '</div>';
         if (strip || r.pkg) {
-          h += '<div class="sr-set' + (relSum(r, P) ? ' has-sum' : '') + '"><div class="sr-cards">' +
-            strip + '</div>' + relSum(r, P) + '</div>';
+          h += '<div class="sr-set' + (relSum(r, P) ? ' has-sum' : '') + '"><div class="sr-strip">' +
+            '<button type="button" class="sr-arr prev" data-arr="-1" aria-label="이전 자료">' + ARROW.replace('D', 'M15 6l-6 6 6 6') + '</button>' +
+            '<div class="sr-cards">' + strip + '</div>' +
+            '<button type="button" class="sr-arr next" data-arr="1" aria-label="다음 자료">' + ARROW.replace('D', 'M9 6l6 6-6 6') + '</button>' +
+            '</div>' + relSum(r, P) + '</div>';
         }
         h += relTabs(r, P);
         box.innerHTML = h;
         var a = relAnchor() || tab;
         a.parentNode.insertBefore(box, a);
 
+        relArrows(box);
+
         box.addEventListener('click', function (e) {
+          var ar = e.target.closest('[data-arr]');
+          if (ar) {
+            var sc = ar.parentNode.querySelector('.sr-cards');
+            var card = sc.querySelector('.sr-card');
+            var step = (card ? card.getBoundingClientRect().width + 12 : 162) * 2;
+            sc.scrollBy({ left: step * Number(ar.dataset.arr), behavior: 'smooth' });
+            return;
+          }
           var t = e.target.closest('.sr-tab');
           if (t) {
             var on = t.classList.contains('on');

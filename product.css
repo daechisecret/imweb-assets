@@ -556,6 +556,16 @@ body.shop_view .review_count_summary_wrap:not(:has(.bt-star, .review_count_summa
 .sr-set.has-sum { grid-template-columns: minmax(0, 1fr) 272px; }
 .sr-cards { display: grid; grid-auto-flow: column; grid-auto-columns: 150px; gap: 12px; justify-content: start;
   overflow-x: auto; padding-bottom: 4px; scroll-snap-type: x proximity; min-width: 0; }
+.sr-strip { position: relative; min-width: 0; }
+.sr-arr { display: none; position: absolute; top: 50%; z-index: 2; width: 36px; height: 36px; margin-top: -18px; border-radius: 50%;
+  border: 1px solid #e6ecf4; background: rgba(255, 255, 255, .96); color: #1d3a5e; align-items: center; justify-content: center;
+  padding: 0; cursor: pointer; box-shadow: 0 4px 14px rgba(29, 58, 94, .18); transition: .15s; }
+.sr-arr svg { display: block; }
+.sr-arr.prev { left: -6px; }
+.sr-arr.next { right: -6px; }
+.sr-arr:hover { background: #e85a8a; border-color: #e85a8a; color: #fff; }
+.sr-strip.can-scroll .sr-arr { display: flex; }
+.sr-strip.at-start .sr-arr.prev, .sr-strip.at-end .sr-arr.next { opacity: 0; pointer-events: none; }
 .sr-cards::-webkit-scrollbar { height: 6px; }
 .sr-cards::-webkit-scrollbar-thumb { background: #e6ecf4; border-radius: 3px; }
 .sr-card { position: relative; scroll-snap-align: start; border: 1px solid #e6ecf4; border-radius: 12px; overflow: hidden;
@@ -632,6 +642,10 @@ body.shop_view .review_count_summary_wrap:not(:has(.bt-star, .review_count_summa
   .sr-t { font-size: 16px; }
   .sr-set.has-sum { grid-template-columns: 1fr; gap: 14px; }
   .sr-cards { grid-auto-columns: 148px; }
+  .sr-arr { width: 30px; height: 30px; margin-top: -15px; }
+  .sr-arr svg { width: 15px; height: 15px; }
+  .sr-arr.prev { left: -4px; }
+  .sr-arr.next { right: -4px; }
 }
 @media (prefers-reduced-motion: reduce) { .sr-card, .sr-card:hover { transition: none; transform: none; } }
 #sl-rel-toast { position: fixed; left: 50%; bottom: 96px; transform: translate(-50%, 12px); z-index: 20000; pointer-events: none;
