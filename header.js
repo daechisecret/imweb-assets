@@ -107,7 +107,7 @@
 (function () {
   if (location.pathname.replace(/\/$/, '') !== '/search') return;
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
-  var V = '52a7e652';
+  var V = '762b5da9';
   var css = document.createElement('link');
   css.rel = 'stylesheet'; css.href = BASE + 'search.css?v=' + V;
   document.head.appendChild(css);

@@ -195,7 +195,7 @@
       if (sessionStorage.getItem(key)) return;
       sessionStorage.setItem(key, '1');
     } catch (e) { /* 저장소가 막혀 있어도 보냅니다 */ }
-    var body = JSON.stringify({ keyword: q, hits: hits, w: window.innerWidth, ref: document.referrer || '' });
+    var body = JSON.stringify({ keyword: q, hits: hits, w: window.innerWidth, ref: document.referrer || '', src: 'search' });
     try {
       fetch(LOG_URL, { method: 'POST', mode: 'cors', keepalive: true, credentials: 'omit',
         headers: { 'Content-Type': 'text/plain' }, body: body }).catch(function () {});
