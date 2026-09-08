@@ -179,9 +179,33 @@
       '</div></a>';
   }
 
+  /* ── 검색어 기록 ──
+     어떤 교재를 찾는지 알려고, 검색어와 걸린 개수를 시크릿루체 관리자(secretluce.com)로 한 번 보냅니다.
+     개인 정보는 없습니다 — 검색어·걸린 개수·화면 너비뿐이고, 같은 검색어는 한 세션에 한 번만 보냅니다.
+     보내기가 실패해도 검색 화면은 아무 영향이 없습니다. 관리자 → 검색어 화면에서 봅니다. */
+  var LOG_URL = 'https://secretluce.com/api/imweb/search-log';
+  var logged = false;
+  function logSearch(hits) {
+    if (logged) return;
+    logged = true;
+    var q = keyword();
+    if (!q || q.length > 80) return;
+    try {
+      var key = 'sl-sq:' + q;
+      if (sessionStorage.getItem(key)) return;
+      sessionStorage.setItem(key, '1');
+    } catch (e) { /* 저장소가 막혀 있어도 보냅니다 */ }
+    var body = JSON.stringify({ keyword: q, hits: hits, w: window.innerWidth, ref: document.referrer || '' });
+    try {
+      fetch(LOG_URL, { method: 'POST', mode: 'cors', keepalive: true, credentials: 'omit',
+        headers: { 'Content-Type': 'text/plain' }, body: body }).catch(function () {});
+    } catch (e) { /* 못 보내도 그만입니다 */ }
+  }
+
   function draw() {
     var list = ordered(narrowed());
     var q = keyword();
+    logSearch(matched().length);
     var chosen = picked.b.length + picked.k.length;
 
     var h = '<div class="sq-head"><div class="sq-h1">' +

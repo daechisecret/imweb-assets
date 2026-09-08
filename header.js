@@ -107,7 +107,7 @@
 (function () {
   if (location.pathname.replace(/\/$/, '') !== '/search') return;
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
-  var V = 'd13ce6f4';
+  var V = '40149f5e';
   var css = document.createElement('link');
   css.rel = 'stylesheet'; css.href = BASE + 'search.css?v=' + V;
   document.head.appendChild(css);
@@ -118,7 +118,7 @@
 
 (function () {
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
-  var V = 'd424d86f';
+  var V = '4c7765ad';
   var done = false;
   function go() {
     if (done || !document.getElementById('prod_detail')) return;
