@@ -460,6 +460,21 @@
   /* 꺾쇠 그림 — 글자(›)는 글꼴마다 아래로 처져 원 한가운데에 안 놓입니다 */
   var ARROW = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="D" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
+  /* 카드 줄을 부드럽게 옮깁니다 — scrollBy({behavior:'smooth'}) 는 스냅(scroll-snap) 상자에서
+     크롬이 그냥 무시하는 때가 있어 직접 240ms 동안 움직입니다 */
+  function relSlide(sc, delta) {
+    var from = sc.scrollLeft, to = Math.max(0, Math.min(sc.scrollWidth - sc.clientWidth, from + delta));
+    var t0 = null, dur = 240;
+    function step(t) {
+      if (t0 === null) t0 = t;
+      var k = Math.min(1, (t - t0) / dur);
+      k = 1 - (1 - k) * (1 - k);
+      sc.scrollLeft = from + (to - from) * k;
+      if (k < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
   /* 카드 줄 옆 화살표 — 옆에 더 있을 때만 보이고, 끝에 닿은 쪽은 흐려집니다 */
   function relArrows(box) {
     var strip = box.querySelector('.sr-strip');
@@ -516,7 +531,7 @@
             var sc = ar.parentNode.querySelector('.sr-cards');
             var card = sc.querySelector('.sr-card');
             var step = (card ? card.getBoundingClientRect().width + 12 : 162) * 2;
-            sc.scrollBy({ left: step * Number(ar.dataset.arr), behavior: 'smooth' });
+            relSlide(sc, step * Number(ar.dataset.arr));
             return;
           }
           var t = e.target.closest('.sr-tab');
