@@ -322,23 +322,37 @@
       pr + act + '</div>';
   }
 
+  /* 「준비 중」 자리표 — 아직 안 올라온 갈래의 자리를 같은 크기로 비워 둡니다 (자료가 올라오면 build-related.py 가 채웁니다) */
+  function relSlot(kind) {
+    return '<div class="sr-card sr-todo"><div class="sr-th"><span class="sr-kind">' + esc(kind) + '</span>' +
+      '<div class="sr-todo-in"><b>준비 중</b><span>올라오면 이 자리에<br>담깁니다</span></div></div>' +
+      '<div class="sr-nm">' + esc(kind) + '</div><div class="sr-pr sr-pr-sv">곧 올라와요</div>' +
+      '<span class="sr-add sr-wait">준비 중</span></div>';
+  }
+
+  /* 카드 줄 — r.slot 이 있으면 핵심 여섯 갈래 자리 그대로(지금 상품 포함 · 없는 자리는 「준비 중」),
+     없으면(옛 표) 지금 상품 + 같은 세트 */
+  function relStrip(r, P, me) {
+    if (r.slot && r.slot.length) {
+      return r.slot.map(function (x) {
+        return P[x] ? relCard(x, P, String(x) === String(me)) : relSlot(x);
+      }).join('');
+    }
+    return (r.isPkg ? '' : relCard(me, P, true)) + r.same.map(function (no) { return relCard(no, P, false); }).join('');
+  }
+
   function relHead(r, n) {
-    var what = r.top === '모의고사' ? '이 시험 자료' :
-               r.top === '교과서' ? '이 교재 자료' :
-               /·/.test(r.set) ? '이 강 자료' : '이 교재 자료';
+    var what = r.top === '모의고사' ? '이 시험' : '이 교재';
     if (r.isPkg) {
       return '<h3 class="sr-t">이 패키지에 든 자료 <em>' + n + '종</em></h3>' +
         (r.note ? '<p class="sr-s">' + esc(r.note) + '</p>' : '');
     }
-    if (r.sv) {
-      return '<h3 class="sr-t">' + what + ', <em>' + r.same.length + '종</em>이 더 있어요</h3>' +
-        '<p class="sr-s">같은 교재 같은 과의 자료입니다. 교과서 자료는 쏠북에서 구매하실 수 있어요</p>';
-    }
-    if (n <= 1) {
-      return '<h3 class="sr-t">' + what + ', <em>패키지</em>로 더 싸게</h3>';
-    }
-    return '<h3 class="sr-t">' + what + ', <em>' + n + '종 중 1개</em>만 담으셨어요</h3>' +
-      '<p class="sr-s">나머지 자료를 함께 담으면 수업 준비가 끝납니다</p>';
+    var todo = (r.slot || []).filter(function (x) { return !/^\d+$/.test(String(x)); }).length;
+    var sub = r.sv ? '교과서 자료는 쏠북에서 구매하실 수 있어요' :
+              todo ? '아직 없는 자료는 준비 중이에요. 올라오는 대로 이 자리에 채워집니다' :
+                     '함께 담아 두시면 한 번에 결제하실 수 있어요';
+    return '<h3 class="sr-t">' + what + '의 <em>다른 자료들</em>도 확인해보세요!</h3>' +
+      '<p class="sr-s">' + sub + '</p>';
   }
 
   function relSum(r, P) {
@@ -455,15 +469,15 @@
       .then(function (d) {
         var r = d.r[me], P = d.p;
         if (!r) return;
-        var strip = r.same.map(function (no) { return relCard(no, P, false); }).join('');
+        var strip = relStrip(r, P, me);
         var n = r.same.length + (r.isPkg ? 0 : 1);
         var box = document.createElement('div');
         box.id = 'sl-rel';
         box.className = 'sr-box';
         var h = '<div class="sr-h"><div class="sr-eyebrow">' + esc(r.set) + '</div>' + relHead(r, n) + '</div>';
-        if (r.same.length || r.pkg) {
+        if (strip || r.pkg) {
           h += '<div class="sr-set' + (relSum(r, P) ? ' has-sum' : '') + '"><div class="sr-cards">' +
-            (r.isPkg ? '' : relCard(me, P, true) || '') + strip + '</div>' + relSum(r, P) + '</div>';
+            strip + '</div>' + relSum(r, P) + '</div>';
         }
         h += relTabs(r, P);
         box.innerHTML = h;
