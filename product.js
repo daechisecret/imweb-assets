@@ -460,19 +460,28 @@
   /* 꺾쇠 그림 — 글자(›)는 글꼴마다 아래로 처져 원 한가운데에 안 놓입니다 */
   var ARROW = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="D" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-  /* 카드 줄을 부드럽게 옮깁니다 — scrollBy({behavior:'smooth'}) 는 스냅(scroll-snap) 상자에서
-     크롬이 그냥 무시하는 때가 있어 직접 240ms 동안 움직입니다 */
+  /* 카드 줄을 부드럽게 옮깁니다 — scrollBy({behavior:'smooth'}) 는 브라우저마다 속도·지원이 달라
+     직접 240ms 동안 움직입니다 (숨은 탭에서는 브라우저가 애니메이션을 멈추므로 보이는 화면에서만 움직입니다) */
   function relSlide(sc, delta) {
     var from = sc.scrollLeft, to = Math.max(0, Math.min(sc.scrollWidth - sc.clientWidth, from + delta));
-    var t0 = null, dur = 240;
+    var t0 = null, dur = 240, done = false;
     function step(t) {
+      if (done) return;
       if (t0 === null) t0 = t;
       var k = Math.min(1, (t - t0) / dur);
       k = 1 - (1 - k) * (1 - k);
       sc.scrollLeft = from + (to - from) * k;
-      if (k < 1) requestAnimationFrame(step);
+      if (k < 1) requestAnimationFrame(step); else finish();
+    }
+    function finish() {
+      done = true;
+      sc.scrollLeft = to;
+      /* 화살표 켜고 끄기(scroll 듣는 tell)는 그리기가 멈춘 탭에서 안 불리기도 해 직접 알립니다 */
+      try { sc.dispatchEvent(new Event('scroll')); } catch (e) { /* 옛 브라우저 */ }
     }
     requestAnimationFrame(step);
+    /* 애니메이션이 못 돌면(숨은 탭·절전) 그냥 끝자리로 */
+    setTimeout(function () { if (!done) finish(); }, 320);
   }
 
   /* 카드 줄 옆 화살표 — 옆에 더 있을 때만 보이고, 끝에 닿은 쪽은 흐려집니다 */

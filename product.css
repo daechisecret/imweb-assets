@@ -555,7 +555,8 @@ body.shop_view .review_count_summary_wrap:not(:has(.bt-star, .review_count_summa
 .sr-set { display: grid; grid-template-columns: 1fr; gap: 20px; align-items: stretch; }
 .sr-set.has-sum { grid-template-columns: minmax(0, 1fr) 272px; }
 .sr-cards { display: grid; grid-auto-flow: column; grid-auto-columns: 150px; gap: 12px; justify-content: start;
-  overflow-x: auto; padding-bottom: 4px; scroll-snap-type: x proximity; min-width: 0; }
+  overflow-x: auto; padding-bottom: 4px; min-width: 0; }
+/* scroll-snap 은 쓰지 않습니다 — 화살표로 두 장씩 옮길 때 스냅이 자리를 다시 잡아 어긋나지 않게 */
 .sr-strip { position: relative; min-width: 0; }
 .sr-arr { display: none; position: absolute; top: 50%; z-index: 2; width: 36px; height: 36px; margin-top: -18px; border-radius: 50%;
   border: 1px solid #e6ecf4; background: rgba(255, 255, 255, .96); color: #1d3a5e; align-items: center; justify-content: center;
@@ -568,7 +569,7 @@ body.shop_view .review_count_summary_wrap:not(:has(.bt-star, .review_count_summa
 .sr-strip.at-start .sr-arr.prev, .sr-strip.at-end .sr-arr.next { opacity: 0; pointer-events: none; }
 .sr-cards::-webkit-scrollbar { height: 6px; }
 .sr-cards::-webkit-scrollbar-thumb { background: #e6ecf4; border-radius: 3px; }
-.sr-card { position: relative; scroll-snap-align: start; border: 1px solid #e6ecf4; border-radius: 12px; overflow: hidden;
+.sr-card { position: relative; border: 1px solid #e6ecf4; border-radius: 12px; overflow: hidden;
   background: #fff; display: flex; flex-direction: column; transition: border-color .15s, transform .15s, box-shadow .15s; }
 .sr-card:hover { border-color: #e85a8a; transform: translateY(-3px); box-shadow: 0 10px 26px rgba(232, 90, 138, .16); }
 .sr-th { display: block; aspect-ratio: 1 / 1; background: #f7f9fc; overflow: hidden; position: relative; }
