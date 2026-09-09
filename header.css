@@ -90,7 +90,7 @@ input, textarea, select, button { font-family: 'Noto Sans KR', 'Apple SD Gothic 
 @media (max-width: 860px) { .sl-legal { font-size: 12px; padding: 10px 12px 0; } .sl-legal .sep { margin: 0 7px; } }
 .popup-banner-wrap .pop-container { visibility: hidden; }
 .popup-banner-wrap.sl-pop-off .pop-container { visibility: visible; }
-.sl-pop { position: fixed; inset: 0; z-index: 100000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(12, 18, 28, .62); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); animation: sl-pop-fade .18s ease-out; }
+.sl-pop { position: fixed; inset: 0; z-index: 100000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(12, 18, 28, .66); animation: sl-pop-fade .18s ease-out; }
 @keyframes sl-pop-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes sl-pop-rise { from { opacity: 0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: none; } }
 .sl-pop-stage { position: relative; width: 420px; max-width: 100%; }

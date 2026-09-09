@@ -264,7 +264,6 @@
   function teardown() {
     if (back && back.parentNode) back.parentNode.removeChild(back);
     back = null; list = [];
-    document.documentElement.style.removeProperty('overflow');
   }
 
   function next() {
@@ -297,7 +296,6 @@
     pops.forEach(function (el) { unpin(el); stage.insertBefore(el, count); });
     list = pops;
     document.body.appendChild(back);
-    document.documentElement.style.setProperty('overflow', 'hidden');
     show(0);
 
     if (window.MutationObserver) {
