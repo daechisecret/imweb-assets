@@ -144,6 +144,72 @@ body.sl-my .cart-btn-tools .btn.download:hover {
   background: #c33e6d !important; border-color: #c33e6d !important; color: #fff !important; }
 body.sl-my .order_title { font-size: 12.5px !important; font-weight: 700 !important; color: #7e93ab !important; }
 
+/* ── 구매평 말풍선 — 「구매평 작성」 단추 줄 바로 위 ── */
+/* 단추 칸(약 70px)보다 넓게 두 줄로 — 칸 밖 왼쪽으로 삐져나오고 꼬리는 오른쪽 단추를 가리킵니다 */
+body.sl-my .sl-rv-tip { display: block; position: relative; box-sizing: border-box; width: 168px; min-width: 168px; align-self: flex-end;
+  margin: 0 0 7px 5px; padding: 6px 10px; border-radius: 12px;
+  background: #fdeef3; color: #c33e6d; font-family: 'Noto Sans KR', sans-serif; font-size: 11.5px; font-weight: 800; line-height: 1.35;
+  letter-spacing: -.02em; text-align: center; word-break: keep-all; }
+body.sl-my .sl-rv-tip::after { content: ''; position: absolute; right: 26px; bottom: -5px; border: 5px solid transparent;
+  border-top-color: #fdeef3; border-bottom: 0; }
+
+/* ── 여러 자료 한번에 받기 ── */
+body.sl-my #sl-multi { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; margin: 0 0 12px;
+  font-family: 'Noto Sans KR', sans-serif; }
+body.sl-my #sl-multi .sl-mb-tools { display: none; align-items: center; gap: 6px; flex-wrap: wrap; padding: 8px 10px; border-radius: 12px;
+  background: #fff7fa; border: 1px solid #f3dae4; }
+body.sl-my #sl-multi.on .sl-mb-tools { display: flex; }
+body.sl-my #sl-multi.on .sl-mb-open { display: none; }
+body.sl-my #sl-multi .sl-mb-hint { font-size: 12px; color: #c33e6d; font-weight: 700; margin-right: 4px; }
+body.sl-my .sl-mb { font: inherit; font-size: 12.5px; font-weight: 800; padding: 8px 14px; border-radius: 100px; cursor: pointer;
+  border: 1px solid #e6ecf4; background: #fff; color: #5b768f; transition: .15s; }
+body.sl-my .sl-mb:hover { border-color: #f2b8cd; color: #c33e6d; }
+body.sl-my .sl-mb-open { border-color: #f2b8cd; color: #c33e6d; background: #fff; }
+body.sl-my .sl-mb-go { background: #e85a8a; border-color: #e85a8a; color: #fff; }
+body.sl-my .sl-mb-go:hover { background: #c33e6d; border-color: #c33e6d; color: #fff; }
+body.sl-my .sl-mb-go:disabled { background: #f1f4f8; border-color: #f1f4f8; color: #9fb0c3; cursor: default; }
+body.sl-my .sl-mb-x { padding: 8px 11px; }
+body.sl-my .sl-pick { display: none; align-items: center; gap: 6px; margin: 0 0 6px; padding: 5px 10px 5px 8px; border-radius: 100px;
+  border: 1.5px solid #f2b8cd; background: #fff; color: #c33e6d; font-size: 12px; font-weight: 800; cursor: pointer; width: max-content; }
+body.sl-my.sl-multi .sl-pick { display: inline-flex; }
+body.sl-my .sl-pick input { width: 16px; height: 16px; margin: 0; accent-color: #e85a8a; cursor: pointer; }
+body.sl-my .sl-pick:has(input:checked) { background: #e85a8a; border-color: #e85a8a; color: #fff; }
+
+/* ── 다운로드 확인 창 ── */
+body.sl-dl-open { overflow: hidden; }
+#sl-dl { position: fixed; inset: 0; z-index: 30000; display: flex; align-items: center; justify-content: center; padding: 20px;
+  font-family: 'Noto Sans KR', sans-serif; }
+#sl-dl .sl-dl-back { position: absolute; inset: 0; background: rgba(29, 58, 94, .45); }
+#sl-dl .sl-dl-box { position: relative; width: 100%; max-width: 440px; background: #fff; border-radius: 18px; padding: 26px 24px 20px;
+  box-shadow: 0 20px 60px rgba(29, 58, 94, .3); color: #1d3a5e; word-break: keep-all; animation: sl-dl-in .18s ease-out; }
+@keyframes sl-dl-in { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+#sl-dl .sl-dl-ic { width: 52px; height: 52px; border-radius: 50%; background: #fdeef3; display: flex; align-items: center; justify-content: center;
+  font-size: 24px; margin: 0 auto 12px; }
+#sl-dl .sl-dl-t { margin: 0; text-align: center; font-size: 19px; font-weight: 900; letter-spacing: -.03em; line-height: 1.3; }
+#sl-dl .sl-dl-s { margin: 8px 0 0; text-align: center; font-size: 13.5px; color: #46617f; line-height: 1.5; }
+#sl-dl .sl-dl-s b { color: #e85a8a; }
+#sl-dl .sl-dl-list-t { margin: 16px 0 6px; font-size: 11.5px; font-weight: 800; color: #c33e6d; letter-spacing: .04em; }
+#sl-dl .sl-dl-list { margin: 0; padding: 10px 12px; list-style: none; max-height: 190px; overflow-y: auto; border: 1px dashed #f3dae4;
+  border-radius: 10px; background: #fff7fa; font-size: 13px; font-weight: 700; line-height: 1.45; }
+#sl-dl .sl-dl-list li { padding: 4px 0 4px 16px; position: relative; }
+#sl-dl .sl-dl-list li::before { content: ''; position: absolute; left: 3px; top: 11px; width: 6px; height: 6px; border-radius: 50%; background: #e85a8a; }
+#sl-dl .sl-dl-list li + li { border-top: 1px solid #f9e3eb; }
+#sl-dl .sl-dl-btns { display: flex; gap: 8px; margin-top: 18px; }
+#sl-dl .sl-dl-btns button { flex: 1; height: 46px; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; transition: .15s; }
+#sl-dl .sl-dl-no { background: #fff; border: 1.5px solid #d6e0ee; color: #46617f; }
+#sl-dl .sl-dl-no:hover { border-color: #1d3a5e; color: #1d3a5e; }
+#sl-dl .sl-dl-ok { background: #e85a8a; border: 1.5px solid #e85a8a; color: #fff; box-shadow: 0 6px 14px rgba(232, 90, 138, .25); }
+#sl-dl .sl-dl-ok:hover { background: #c33e6d; border-color: #c33e6d; }
+#sl-my-toast { position: fixed; left: 50%; bottom: 40px; transform: translate(-50%, 12px); z-index: 30001; pointer-events: none;
+  background: #1d3a5e; color: #fff; font-family: 'Noto Sans KR', sans-serif; font-size: 13.5px; font-weight: 700;
+  padding: 11px 18px; border-radius: 100px; box-shadow: 0 8px 24px rgba(29, 58, 94, .25); opacity: 0; transition: .2s; }
+#sl-my-toast.on { opacity: 1; transform: translate(-50%, 0); }
+@media (max-width: 640px) {
+  #sl-dl .sl-dl-box { padding: 22px 18px 16px; border-radius: 16px; }
+  #sl-dl .sl-dl-t { font-size: 17px; }
+  #sl-dl .sl-dl-btns { flex-direction: column-reverse; }
+}
+
 /* ── ④ 최근 본 상품 · 위시 리스트 ──
    아임웹이 이미 **가로 카드**로 짜 두었습니다 — 왼쪽 86px 사진, 오른쪽 이름·값.
    사진을 큼직한 격자로 바꾸려면 카드 속을 다시 짜야 하는데,
