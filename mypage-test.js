@@ -284,7 +284,8 @@
       var tip = document.createElement('div');
       tip.className = 'sl-rv-tip';
       tip.textContent = REVIEW_TIP;
-      wrap.parentNode.insertBefore(tip, wrap);
+      /* 단추 줄은 column-reverse 라 **맨 뒤에** 붙이면 맨 위(구매평 작성 바로 위)에 보입니다 */
+      wrap.appendChild(tip);
     });
   }
 

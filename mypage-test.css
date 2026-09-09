@@ -145,7 +145,7 @@ body.sl-my .cart-btn-tools .btn.download:hover {
 body.sl-my .order_title { font-size: 12.5px !important; font-weight: 700 !important; color: #7e93ab !important; }
 
 /* ── 구매평 말풍선 — 「구매평 작성」 단추 줄 바로 위 ── */
-body.sl-my .sl-rv-tip { display: block; position: relative; box-sizing: border-box; max-width: 150px; margin: 0 0 9px auto; padding: 6px 10px; border-radius: 12px;
+body.sl-my .sl-rv-tip { display: block; position: relative; box-sizing: border-box; width: 100%; margin: 0 0 7px 5px; padding: 6px 8px; border-radius: 12px;
   background: #fdeef3; color: #c33e6d; font-family: 'Noto Sans KR', sans-serif; font-size: 11.5px; font-weight: 800; line-height: 1.35;
   letter-spacing: -.02em; text-align: center; word-break: keep-all; }
 body.sl-my .sl-rv-tip::after { content: ''; position: absolute; left: 50%; bottom: -5px; margin-left: -5px; border: 5px solid transparent;
