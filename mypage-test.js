@@ -279,7 +279,8 @@
     /* 구매평 말풍선 */
     document.querySelectorAll('#shop_mypage_orderlist .btn-write-review').forEach(function (b) {
       var wrap = b.parentNode;
-      if (!wrap || wrap.querySelector('.sl-rv-tip')) return;
+      if (!wrap || b.dataset.slTip === '1') return;
+      b.dataset.slTip = '1';
       var tip = document.createElement('div');
       tip.className = 'sl-rv-tip';
       tip.textContent = REVIEW_TIP;
