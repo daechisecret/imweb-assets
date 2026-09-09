@@ -96,7 +96,8 @@ input, textarea, select, button { font-family: 'Noto Sans KR', 'Apple SD Gothic 
 .sl-pop-stage { position: relative; width: 420px; max-width: 100%; }
 .sl-pop .pop-container { visibility: visible; display: none; }
 .sl-pop .pop-container.sl-on { display: block; animation: sl-pop-rise .24s cubic-bezier(.2, .9, .3, 1.1); }
-.sl-pop .pop-item { width: 100% !important; background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 26px 64px rgba(0, 0, 0, .38); }
+.sl-pop .pop-container.sl-on::after { content: ''; display: table; clear: both; }
+.sl-pop .pop-item { width: 100% !important; background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 26px 64px rgba(0, 0, 0, .38); float: none !important; clear: none !important; margin: 0 !important; }
 .sl-pop .pop-img { position: relative; line-height: 0; }
 .sl-pop .pop-img img { width: 100% !important; height: auto !important; max-height: 64vh; object-fit: contain; display: block; margin: 0 !important; }
 .sl-pop .pop-img a.del { position: absolute; right: 10px; top: 10px; z-index: 2; width: 32px; height: 32px; border-radius: 50%; background: rgba(12, 18, 28, .45); color: #fff !important; display: flex; align-items: center; justify-content: center; font-size: 15px; line-height: 1; text-decoration: none; }
