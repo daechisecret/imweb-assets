@@ -564,6 +564,69 @@
       .catch(function () { /* 표가 없으면 아무것도 안 그립니다 */ });
   }
 
+  /* ── ⑥ 쿠폰 — 값 바로 아래로 올리고 「한 번 더 할인」을 보입니다 — (2026-09-09 사장님)
+     아임웹은 「쿠폰 사용시 12,500원 · 쿠폰받기」 상자를 구매 단추 **아래**에 둡니다.
+     값을 보고 난 뒤 한참 내려가야 보이고, 쿠폰을 받을 수 있다는 것도 눈에 안 띄었습니다.
+     그래서 상자를 **값 바로 아래**(「여러 강을 담아…」 안내 위)로 올리고,
+     지금 값에 취소선을 한 번 더 그어 쿠폰 값과 할인율을 같이 적습니다.
+
+     「여러 강을 담아…」 안내는 .pay_detail 의 ::after 라 그 상자 **안에 마지막 아이로 넣으면**
+     저절로 안내보다 위에 서게 됩니다.
+     아임웹 상자를 다시 만들지 않고 **자리만 옮겨 글자를 더합니다** — 쿠폰받기 단추는 아임웹 것 그대로입니다.
+     쿠폰이 없는 상품은 상자 자체가 없으므로 아무 일도 안 생깁니다. */
+  function money(t) {
+    var m = /([\d,]+)\s*원/.exec(t || '');
+    return m ? parseInt(m[1].replace(/,/g, ''), 10) : 0;
+  }
+
+  function coupon() {
+    var pd = document.querySelector('#prod_goods_form .pay_detail');
+    var box = document.querySelector('#prod_goods_form .prod-detail-coupon-container-style-a');
+    if (!pd || !box) return;
+    var cp = money((document.getElementById('dynamic-coupon-text') || {}).textContent);
+    var now = money((pd.querySelector('.real_price') || {}).textContent);
+    var org = money((pd.querySelector('.sale_price') || {}).textContent);
+    if (!cp || !now || cp >= now) return;      /* 쿠폰이 없거나 값이 안 내려가면 그대로 둡니다 */
+
+    box.classList.add('sl-cpn');
+    if (box.parentNode !== pd) pd.appendChild(box);
+    /* 제목을 상자 맨 위 한 줄로 꺼냅니다 — 값 칸이 396px 밖에 안 되어
+       제목·값·단추를 한 줄에 넣으면 글자가 세 줄로 접힙니다. */
+    var cont = box.querySelector('.prod-detail-coupon-container');
+    var tt = box.querySelector('.coupon-title');
+    if (cont && tt && tt.parentNode !== cont) cont.insertBefore(tt, cont.firstChild);
+
+    var more = Math.round((1 - cp / now) * 100);
+    var tot = org > cp ? Math.round((1 - cp / org) * 100) : 0;
+
+    /* 값 칸이 396px 밖에 안 되어 한 줄에 다 못 담습니다 —
+       첫 줄에 「한 번 더 ○%」와 「총 ○%」, 둘째 줄에 값과 쿠폰받기 단추로 나눕니다. */
+    var t = box.querySelector('.coupon-title');
+    if (t) {
+      var head = t.querySelector('.sl-cpn-t');
+      if (!head) { t.innerHTML = '<span class="sl-cpn-t"></span>'; head = t.querySelector('.sl-cpn-t'); }
+      head.innerHTML = '🎟 쿠폰 쓰면 한 번 더 <b>' + more + '%</b> 할인!';
+      var tag = t.querySelector('.sl-cpn-tot');
+      if (!tag) {
+        tag = document.createElement('span');
+        tag.className = 'sl-cpn-tot';
+        t.appendChild(tag);
+      }
+      tag.textContent = tot ? '총 ' + tot + '% 할인' : '';
+      tag.style.display = tot ? '' : 'none';
+    }
+
+    var sub = box.querySelector('.coupon-sub-title');
+    if (!sub) return;
+    var was = sub.querySelector('.sl-cpn-was');
+    if (!was) {
+      was = document.createElement('s');
+      was.className = 'sl-cpn-was';
+      sub.insertBefore(was, sub.firstChild);
+    }
+    was.textContent = won(now);
+  }
+
   function run() {
     if (!root()) return;
     build();
@@ -571,6 +634,7 @@
     placeRel();
     retellOwl();
     fitCover();
+    coupon();
   }
 
   fetch(BASE + 'pkg-samples.json')
