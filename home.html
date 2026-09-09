@@ -1562,8 +1562,10 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년9월모의고사","title":"9
     try { history.replaceState(null, '', location.pathname + location.search + (p.length ? '#sl=' + p.join('&') : '')); } catch (e) {}
   }
 
-  /* 교재 한 벌에서 찾기에 걸릴 만한 글자를 다 모읍니다 — 한 번 만들어 두고 다시 씁니다 */
+  /* 교재 한 벌에서 찾기에 걸릴 만한 글자를 다 모읍니다 — 한 번 만들어 두고 다시 씁니다.
+     띄어쓰기를 없앤 판도 함께 만들어 둡니다 (손님이 붙여 치거나 띄어 쳐도 걸리게). */
   var TEXT_CACHE = {};
+  function sqFlat(s) { return String(s).replace(/\s+/g, '').toLowerCase(); }
   function bookText(b) {
     if (TEXT_CACHE[b.id]) return TEXT_CACHE[b.id];
     var t = [b.title, (b.path || []).join(' ')];
@@ -1575,7 +1577,73 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년9월모의고사","title":"9
         if (kd) t.push(kd.name, kd.short);
       }
     });
-    return (TEXT_CACHE[b.id] = t.join(' ').toLowerCase());
+    return (TEXT_CACHE[b.id] = sqFlat(t.join(' ')));
+  }
+
+  /* ── 같은 뜻인 말 ──
+     손님은 교재 정식 이름을 모릅니다. 줄여 쓰거나(수특), 브랜드로 부르거나(EBS),
+     예전 이름으로 부릅니다(단기특강). 오타도 냅니다.
+     ※ themes/search.js 에 같은 표가 있습니다. 한쪽을 고치면 다른 쪽도 고치세요. */
+  var SQ_ALIAS = [
+    { in: ['ebs', 'ens', '이비에스', 'ebs부교재', '부교재'], out: ['수능특강', '올림포스'] },
+    /* 「특강」 만으로 바꾸면 「수능특강」 이 딸려 오므로 긴 말로 짚습니다 */
+    { in: ['단기특강', '딘기특강', '방학특강', '수능대비', '특강자료'], out: ['특강자료', '어법어휘특강', '시크릿어법', '시크릿어휘'] },
+    { in: ['수특'], out: ['수능특강'] },
+    { in: ['수특라이트', '라이트'], out: ['수능특강라이트'] },
+    { in: ['영독', '독해연습'], out: ['영어독해연습'] },
+    { in: ['올포'], out: ['올림포스'] },
+    { in: ['모평', '모의'], out: ['모의고사'] },
+    { in: ['분석노트', '지문분석노트', '시크릿분석노트', '해석'], out: ['지문분석'] },
+    { in: ['요약노트', '핵심요약노트', '요약'], out: ['핵심요약'] },
+    { in: ['보강', '직전', '파이널', '실전'], out: ['직전보강'] },
+    { in: ['변형'], out: ['변형문제'] },
+    { in: ['심화', '심화변형'], out: ['심화'] },
+    { in: ['유형'], out: ['유형편'] },
+    { in: ['한글', 'hwp', '한컴'], out: ['한글파일'] },
+    { in: ['전범위', '올인원', '통합'], out: ['패키지'] }
+  ];
+  function sqSyn(w) {
+    var outs = [w];
+    for (var i = 0; i < SQ_ALIAS.length; i++)
+      for (var j = 0; j < SQ_ALIAS[i].in.length; j++)
+        if (sqFlat(SQ_ALIAS[i].in[j]) === w)
+          for (var k = 0; k < SQ_ALIAS[i].out.length; k++) {
+            var o = sqFlat(SQ_ALIAS[i].out[k]);
+            if (outs.indexOf(o) < 0) outs.push(o);
+          }
+    return outs;
+  }
+  function sqHas(hay, w) {
+    var c = sqSyn(w);
+    for (var i = 0; i < c.length; i++) if (hay.indexOf(c[i]) >= 0) return true;
+    return false;
+  }
+
+  /* 교재 전체 글자를 한 덩어리로 — 「그 낱말이 있기는 한가」 를 보려고 씁니다 */
+  var SQ_ALL = null;
+  function sqAll() {
+    if (SQ_ALL === null) SQ_ALL = BOOKS.map(bookText).join('|');
+    return SQ_ALL;
+  }
+  function sqAlive(w) {
+    var c = sqSyn(w), a = sqAll();
+    for (var i = 0; i < c.length; i++) if (a.indexOf(c[i]) >= 0) return true;
+    return false;
+  }
+
+  /* 검색어에 걸리는 교재 — 낱말이 모두 들어 있어야 합니다.
+     예전에는 친 말을 통째로 대조해서 「수능 특강 라이트」 처럼 띄어 쓰면 0건이었습니다.
+     **아예 없는 낱말은 버립니다** — 「고등1 국어 지학사」 에서 「국어」 는 우리에게
+     없으니 버리고 「지학사」 로 찾아 줍니다. 버릴 낱말밖에 없으면 정말 없는 것입니다. */
+  function bookMatches(b, needle) {
+    var words = String(needle).split(/\s+/).map(sqFlat).filter(Boolean);
+    if (!words.length) return true;
+    var live = [];
+    for (var i = 0; i < words.length; i++) if (sqAlive(words[i])) live.push(words[i]);
+    if (!live.length) return false;
+    var hay = bookText(b);
+    for (i = 0; i < live.length; i++) if (!sqHas(hay, live[i])) return false;
+    return true;
   }
 
   /* ── 지금 보여 줄 교재 ── */
@@ -1597,7 +1665,7 @@ window.SL_BOOKS = [{"id":"모의고사1학년2026년9월모의고사","title":"9
     /* 찾기 — 교재 이름·갈래뿐 아니라 **강 이름과 자료 종류까지** 뒤집니다.
        「패키지」로 찾으면 전범위 패키지가, 「워크북」으로 찾으면 워크북이 있는 교재가 나옵니다.
        (예전에는 교재 이름만 뒤져서 「패키지」가 0건이었습니다) */
-    if (needle) pool = pool.filter(function (b) { return bookText(b).indexOf(needle) >= 0; });
+    if (needle) pool = pool.filter(function (b) { return bookMatches(b, needle); });
 
     pool = pool.filter(function (b) { return bookHit(b, S.kind, S.fmt); });
 

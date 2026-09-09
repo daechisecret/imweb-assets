@@ -81,20 +81,124 @@
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
   function won(n) { return (n || 0).toLocaleString('ko-KR') + '원'; }
-  function flat(s) { return String(s).replace(/\s+/g, ''); }
+  function flat(s) { return String(s).replace(/\s+/g, '').toLowerCase(); }
+
+  /* ── 같은 뜻인 말 ──
+     손님은 교재 정식 이름을 모릅니다. 줄여 쓰거나(수특), 브랜드로 부르거나(EBS),
+     예전 이름으로 부릅니다(단기특강). 오타도 냅니다.
+     왼쪽을 치면 오른쪽 말들 중 **아무거나 하나라도** 걸리면 나오게 합니다.
+
+     ※ 여기를 고치면 imweb-store.html 의 같은 표도 함께 고쳐야 합니다. */
+  var ALIAS = [
+    /* EBS 부교재 8종 — 상품 이름에 「EBS」 라는 글자가 아예 없어서 0건이 나왔다 */
+    { in: ['ebs', 'ens', '이비에스', 'ebs부교재', '부교재'],
+      out: ['수능특강', '올림포스'] },
+    /* 특강 — 상품에는 「어법어휘 특강」(교재)·「특강자료」(유형) 로 들어 있다.
+       ※ 「특강」 만으로 바꾸면 「수능특강」 625개가 딸려 오므로 반드시 긴 말로 짚는다 */
+    { in: ['단기특강', '딘기특강', '방학특강', '수능대비', '특강자료'],
+      out: ['특강자료', '어법어휘특강'] },
+    /* 줄여 부르는 말 */
+    { in: ['수특'], out: ['수능특강'] },
+    { in: ['수특라이트', '수능특강라이트', '라이트'], out: ['수능특강라이트'] },
+    { in: ['영독', '독해연습', '영어독해연습'], out: ['영어독해연습'] },
+    { in: ['올포', '올림포스'], out: ['올림포스'] },
+    { in: ['모평', '모의', '모의고사'], out: ['모의고사'] },
+    /* 자료 유형을 다르게 부르는 말 */
+    { in: ['분석노트', '지문분석노트', '시크릿분석노트', '해석'], out: ['지문분석'] },
+    { in: ['요약노트', '핵심요약노트', '요약'], out: ['핵심요약'] },
+    { in: ['보강', '직전', '파이널', '실전'], out: ['직전보강'] },
+    { in: ['변형', '변형문제'], out: ['변형문제'] },
+    { in: ['심화', '심화변형'], out: ['심화'] },
+    { in: ['유형', '유형편'], out: ['유형편'] },
+    { in: ['한글', '한글파일', 'hwp', '한컴'], out: ['한글파일'] },
+    { in: ['전범위', '올인원', '통합'], out: ['패키지'] }
+  ];
+
+  /* 낱말 하나 → 그 낱말로 인정할 후보들 (자기 자신 포함) */
+  function synonyms(w) {
+    var outs = [w];
+    for (var i = 0; i < ALIAS.length; i++) {
+      for (var j = 0; j < ALIAS[i].in.length; j++) {
+        if (flat(ALIAS[i].in[j]) === w) {
+          for (var k = 0; k < ALIAS[i].out.length; k++) {
+            var o = flat(ALIAS[i].out[k]);
+            if (outs.indexOf(o) < 0) outs.push(o);
+          }
+        }
+      }
+    }
+    return outs;
+  }
+
+  /* 한 낱말이 걸리는가 — 같은 뜻인 말 중 하나라도 들어 있으면 걸린 것 */
+  function hasWord(hay, w) {
+    var cands = synonyms(w);
+    for (var i = 0; i < cands.length; i++) if (hay.indexOf(cands[i]) >= 0) return true;
+    return false;
+  }
 
   /* ── 검색어에 걸리는 상품 ──
      띄어쓰기로 나눈 낱말이 **모두** 들어 있어야 합니다.
        「수능특강 워크북」 → 수능특강 도 워크북 도 있는 것
-     상품 이름뿐 아니라 교재·유형 이름으로도 걸립니다 (「지문분석」 만 쳐도 나옵니다). */
+     상품 이름뿐 아니라 교재·유형 이름으로도 걸립니다 (「지문분석」 만 쳐도 나옵니다).
+
+     세 가지를 거칩니다.
+       1) 붙여 쓴 낱말 쪼개기 — 「시크릿분석노트」 처럼 붙여 친 말을
+          자료에 실제로 있는 조각으로 다시 나눕니다.
+          (예전에는 붙여 쓰면 0건: 「시크릿 분석노트」 21개 / 「시크릿분석노트」 0개)
+       2) **아예 없는 낱말은 버립니다** — 우리가 안 파는 말이 섞여도 나머지로 찾아 줍니다.
+          「고등1 국어 지학사」 → 「국어」 는 우리에게 없으니 버리고
+          「고등」·「1」·「지학사」 로 찾아 지학사 자료를 보여 줍니다.
+       3) 남은 낱말은 **모두** 들어 있어야 합니다. 하나라도 걸리면 되는 식으로 하면
+          엉뚱한 자료가 딸려 옵니다.
+     버릴 낱말밖에 없으면 정말 없는 것이므로 빈손으로 돌려줍니다. */
   function matched() {
-    var words = keyword().split(/\s+/).filter(Boolean).map(flat);
+    var words = keyword().split(/\s+/).filter(Boolean).map(flat).filter(Boolean);
     if (!words.length) return DATA.items.slice();
-    return DATA.items.filter(function (it) {
-      var hay = flat(it.n + it.b + it.k);
-      for (var i = 0; i < words.length; i++) if (hay.indexOf(words[i]) < 0) return false;
-      return true;
-    });
+
+    var items = DATA.items;
+    var hays = [];
+    for (var i = 0; i < items.length; i++) hays.push(flat(items[i].n + items[i].b + items[i].k));
+    var all = hays.join('|');
+
+    /* 그 낱말이 자료 어딘가에 있기는 한가 (같은 뜻인 말까지 쳐서) */
+    function alive(w) {
+      var c = synonyms(w);
+      for (var j = 0; j < c.length; j++) if (all.indexOf(c[j]) >= 0) return true;
+      return false;
+    }
+
+    /* 1) 붙여 쓴 낱말 쪼개기 — 자료에 실제로 있는 조각으로만 나눕니다 */
+    var parts = [];
+    for (var w = 0; w < words.length; w++) {
+      var word = words[w];
+      if (word.length <= 3 || alive(word)) { parts.push(word); continue; }
+      var got = [], rest = word, guard = 0;
+      while (rest && guard++ < 12) {
+        var took = 0;
+        for (var len = rest.length; len >= 2; len--) {
+          if (all.indexOf(rest.slice(0, len)) >= 0) { got.push(rest.slice(0, len)); took = len; break; }
+        }
+        if (!took) { got = []; break; }
+        rest = rest.slice(took);
+      }
+      if (got.length) { for (var g = 0; g < got.length; g++) parts.push(got[g]); }
+      else parts.push(word);
+    }
+
+    /* 2) 아예 없는 낱말은 버립니다 */
+    var live = [];
+    for (i = 0; i < parts.length; i++) if (alive(parts[i])) live.push(parts[i]);
+    if (!live.length) return [];
+
+    /* 3) 남은 낱말이 모두 들어 있는 것 */
+    var out = [];
+    for (i = 0; i < items.length; i++) {
+      var ok = true;
+      for (w = 0; w < live.length; w++) if (!hasWord(hays[i], live[w])) { ok = false; break; }
+      if (ok) out.push(items[i]);
+    }
+    return out;
   }
 
   function narrowed() {
