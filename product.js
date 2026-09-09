@@ -867,3 +867,29 @@
     setTimeout(function () { cartOnPhone(); liftBuyRow(); fitTitle(); placeShare(); placeRel(); }, ms);
   });
 })();
+
+/* ── 공지 글에서 「구매하기」로 오셨을 때 (#sl-buy) ── (2026-09-09)
+   공지사항 본문의 상품 링크 옆 「구매하기」는 그 상품 페이지로 오면서 주소 끝에 #sl-buy 를 답니다.
+   여기서 아임웹의 **진짜 구매 단추**(._btn_buy)를 대신 눌러 드려, 손님이 한 번 더 안 누르셔도
+   바로 결제 창이 열립니다. 결제를 대신 해 드리는 것이 아니라, 단추를 눌러 드리는 것뿐입니다.
+
+   · 화면 폭에 따라 단추가 두 벌(PC용·휴대폰용) 있어 **지금 보이는 쪽**만 누릅니다.
+   · 아임웹 상품 스크립트(SITE_SHOP_DETAIL)가 준비된 뒤에 눌러야 아무 일도 안 일어나는 것을 막습니다.
+   · 10초 안에 못 찾으면 그냥 둡니다 — 손님이 페이지의 단추를 직접 누르시면 됩니다.
+   · 표시(#sl-buy)는 곧바로 지웁니다. 새로 고침해도 다시 눌리지 않게. */
+(function () {
+  if (location.hash !== '#sl-buy') return;
+  try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* 주소만 남습니다 */ }
+  var n = 0;
+  var t = setInterval(function () {
+    if (++n > 40) { clearInterval(t); return; }          /* 0.25초 × 40 = 10초 */
+    if (!window.SITE_SHOP_DETAIL) return;
+    var bs = document.querySelectorAll('._btn_buy');
+    for (var i = 0; i < bs.length; i++) {
+      if (bs[i].offsetParent === null) continue;          /* 지금 안 보이는 한 벌은 건너뜁니다 */
+      clearInterval(t);
+      bs[i].click();
+      return;
+    }
+  }, 250);
+})();

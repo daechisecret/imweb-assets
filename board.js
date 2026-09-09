@@ -976,7 +976,247 @@
     setTimeout(go, 400); setTimeout(go, 1500); setTimeout(go, 3000);
   }
 
-  if (VIEW) { if (cfg.faq) viewFaq(); else viewGallery(); return; }
+  /* ── 글 안의 상품 링크 옆에 「장바구니 담기 · 구매하기」 ── (2026-09-09 사장님)
+     공지 글에 자료 주소를 붙여 넣으시면, 그 자리에서 바로 담고 살 수 있게 단추를 붙입니다.
+     글 쓰시는 방식은 그대로입니다 — 주소만 붙여 넣으시면 됩니다.
+
+     어떤 주소를 상품으로 보는가
+       · /shop_view/1356            → 틀림없는 상품 주소. 단추를 붙입니다.
+       · /mockexam1-2026-pdf/?idx=1057 → 진열 칸을 거친 상품 주소.
+         **게시글 주소(?idx=5&bmode=view)와 생김새가 같아** 표(related/…)에서 그 번호를 찾았을 때만 붙입니다.
+       · 다른 사이트 주소·사진에 걸린 링크는 건드리지 않습니다.
+
+     값·이름은 연관상품 표(related/번호÷100.json)에서 읽습니다 — 상품 페이지가 이미 쓰는 파일이라
+     따로 만들 것이 없고, 글에 상품 링크가 있을 때만 받아 옵니다.
+     · 쏠북에서 파는 교과서(값이 없는 것)는 **담기 단추를 안 붙입니다** — 여기서 결제되면 안 됩니다.
+     · 「장바구니 담기」는 상품 페이지의 담기 단추와 같은 주소(/shop/add_cart.cm)로 보냅니다.
+     · 「구매하기」는 그 상품 페이지로 가면서 #sl-buy 를 달아 둡니다 —
+       상품 페이지의 product.js 가 그것을 보고 아임웹의 진짜 구매 단추를 대신 눌러 줍니다. */
+  var SHOP_BASE = 'https://daechisecret.github.io/imweb-assets/';
+  var BOARD_PATHS = /^\/(notice|contact|faq|reviews|board)/;
+
+  function won(n) { return String(n || 0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; }
+
+  /* 자료 이름을 견주기 좋게 다듬습니다 — 그림글자·띄어쓰기·괄호·기호를 걷어내고
+     **숫자는 남깁니다** (「… 기본 1」과 「… 기본 2」를 갈라내는 것이 이 일의 핵심입니다). */
+  function normName(s) {
+    return String(s == null ? '' : s)
+      .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, '')   /* 그림글자 (🩷 처럼 두 칸을 쓰는 것) */
+      .replace(/[\u2190-\u2BFF\u2600-\u27BF\u200D\uFE0E\uFE0F\u3030\u303D]/g, '')  /* ❤ ▶ 같은 기호 */
+      .replace(/[\s\u00A0]+/g, '')                       /* 띄어쓰기 */
+      .replace(/[\u00B7\u30FB.,:;!?~\-\u2013\u2014_'"\u201C\u201D\u2018\u2019()\[\]{}<>\/]/g, '')  /* 괄호·따옴표·점 */
+      .toLowerCase();
+  }
+
+  /* 주소에서 상품 번호를 뽑습니다. sure=true 면 표에서 못 찾아도 단추를 붙입니다. */
+  function prodNoOf(href) {
+    if (!href) return null;
+    var u;
+    try { u = new URL(href, location.href); } catch (e) { return null; }
+    if (!/^(www\.)?daechisecret\.com$|^daechisecret\.imweb\.me$/.test(u.hostname) &&
+        u.hostname !== location.hostname) return null;
+    var q = /[?&]idx=(\d+)/.exec(u.search);
+    var m = /\/shop_view\/(\d+)/.exec(u.pathname);
+    if (m) return { no: m[1], sure: true };
+    /* /shop_view?idx=1533 — 사장님이 공지에 붙여 넣으시는 모양입니다 */
+    if (/\/shop_view\/?$/.test(u.pathname)) return q ? { no: q[1], sure: true } : null;
+    if (/[?&]bmode=/.test(u.search)) return null;          /* 게시글 주소입니다 */
+    if (BOARD_PATHS.test(u.pathname)) return null;
+    return q ? { no: q[1], sure: false } : null;
+  }
+
+  function plToast(msg) {
+    var box = document.getElementById('sl-pl-toast');
+    if (!box) { box = document.createElement('div'); box.id = 'sl-pl-toast'; document.body.appendChild(box); }
+    box.textContent = msg;
+    box.classList.add('on');
+    clearTimeout(box._t);
+    box._t = setTimeout(function () { box.classList.remove('on'); }, 2600);
+  }
+
+  /* 담기 — 못 담으면 그 상품 페이지로 보내 드립니다 (상품 페이지의 product.js 와 같은 방식) */
+  function plAdd(no, btn) {
+    if (btn.disabled) return;
+    btn.disabled = true;
+    var was = btn.textContent;
+    btn.textContent = '담는 중…';
+    fetch('/shop/add_cart.cm', {
+      method: 'POST', credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'X-Requested-With': 'XMLHttpRequest' },
+      body: 'prodIdx=' + encodeURIComponent(no) + '&orderCount=1&cart_type=&deliv_type=&deliv_pay_type=&deliv_country=&shipping_template_code='
+    }).then(function (r) { return r.json(); }).then(function (res) {
+      if (!res || res.msg !== 'SUCCESS') throw res;
+      /* 여기서부터는 담기가 **이미 된 것**입니다 — 무엇이 어긋나도 상품 페이지로 보내면 안 됩니다 */
+      try {
+        btn.textContent = '담았어요 ✓';
+        btn.classList.add('done');
+        window.dispatchEvent(new CustomEvent('imweb:addToCart:added', { detail: { prodFound: !!res.prod_found } }));
+      } catch (e) { /* 머리말 숫자만 못 올린 것입니다 */ }
+      try { plToast('장바구니에 담았습니다'); } catch (e) { /* 안내만 못 한 것입니다 */ }
+    }).catch(function () {
+      btn.textContent = was; btn.disabled = false;
+      location.href = '/shop_view/' + no;
+    });
+  }
+
+  /* 링크 하나에 단추 한 벌 — p 는 related 표의 [이름, 판매가, 정가, 표지, 갈래, 쏠북 주소] */
+  function plMount(w, p) {
+    if (!p && !w.sure) return;                    /* 상품인지 확실하지 않으면 그냥 둡니다 */
+    if (w.a.nextElementSibling && w.a.nextElementSibling.className === 'sl-pl') return;   /* 이미 붙였습니다 */
+    var sv = p && p[5], price = p ? p[1] : 0, org = p ? p[2] : 0;
+    var box = document.createElement('span');
+    box.className = 'sl-pl';
+    var h = '';
+    if (p && !sv && price) {
+      h += '<span class="sl-pl-pr">' +
+           (org > price ? '<b>' + Math.round((1 - price / org) * 100) + '%</b>' : '') +
+           won(price) + (org > price ? '<s>' + won(org) + '</s>' : '') + '</span>';
+    }
+    if (sv || (p && !price)) {
+      /* 쏠북에서 파는 교과서 — 여기서는 담지도 팔지도 않습니다 */
+      h += '<a class="sl-pl-b sl-pl-go" href="' + esc(sv || ('/shop_view/' + w.no)) + '"' +
+           (sv ? ' target="_blank" rel="noopener"' : '') + '>' + (sv ? '쏠북에서 구매' : '자료 보기') + '</a>';
+    } else {
+      h += '<button type="button" class="sl-pl-b sl-pl-cart" data-no="' + esc(w.no) + '">장바구니 담기</button>' +
+           '<a class="sl-pl-b sl-pl-buy" href="/shop_view/' + esc(w.no) + '#sl-buy">구매하기</a>';
+    }
+    if (w.fixed) {
+      /* 글에 적어 두신 이름과 링크가 서로 달라 **적으신 이름 쪽**으로 옮겼습니다.
+         손님께는 조용히 고쳐진 채로 보이고, 주소 뒤에 &sl=check 를 붙이시면 어디를 고쳤는지 보입니다. */
+      h = '<span class="sl-pl-fix" title="글에 적으신 이름과 링크가 달라 바로잡았습니다 (원래 링크는 '
+          + esc(w.was) + '번). 글도 고쳐 두시면 좋습니다.">링크 바로잡음</span>' + h;
+    }
+    box.innerHTML = h;
+    var cart = box.querySelector('.sl-pl-cart');
+    if (cart) cart.addEventListener('click', function () { plAdd(w.no, cart); });
+    if (w.fixed) {
+      w.a.setAttribute('href', '/shop_view/' + w.no);
+      w.a.setAttribute('data-sl-fixed', w.was + ' → ' + w.no);
+    }
+    w.a.parentNode.insertBefore(box, w.a.nextSibling);
+    w.a.classList.add('sl-pl-a');
+    /* 붙여 넣으신 주소가 그대로 글자로 보이면(https://…) 자료 이름으로 바꿔 읽기 쉽게 합니다.
+       주소(href)는 그대로입니다. 손으로 이름을 적어 두신 링크는 건드리지 않습니다. */
+    if (p) {
+      w.a.setAttribute('title', p[0]);
+      if (/^https?:\/\/\S+$/.test((w.a.textContent || '').trim())) w.a.textContent = p[0];
+    }
+  }
+
+  /* ── 적어 두신 이름과 링크가 다를 때 바로잡기 ── (2026-09-09 사장님)
+     「🩷…올림포스 영어독해 기본 1🩷 :」 이라 적어 두시고 링크는 「…기본 2」로 거신 경우입니다.
+     **적으신 글자가 어느 자료의 온전한 이름과 똑같을 때에만** 그 자료로 링크를 옮깁니다.
+     「고1 :」 처럼 줄여 적으신 것은 어느 이름과도 안 맞으니 손대지 않습니다 —
+     어림짐작으로 옮기면 오히려 엉뚱한 자료로 보내게 되므로, 확실할 때만 고칩니다.
+
+     찾는 곳 ① 이미 받아 둔 표(잘못 걸린 링크는 대개 바로 옆 번호라 여기서 걸립니다)
+            ② 그래도 없으면 자료 전부가 든 검색 색인(search-data.json)
+     돌려주는 것: 새로 받아야 할 표 조각 번호들 */
+  function fixLinks(want, P) {
+    var todo = want.filter(function (w) {
+      var p = P[w.no];
+      if (!p) return false;
+      if (/^https?:/i.test(w.label)) return false;   /* 주소를 그대로 붙여 넣으신 것 — 견줄 이름이 없습니다 */
+      var nl = normName(w.label), np = normName(p[0]);
+      return nl.length >= 8 && nl !== np;      /* 이름처럼 긴 글자인데 링크한 자료와 다릅니다 */
+    });
+    if (!todo.length) return Promise.resolve([]);
+
+    function apply(byName) {
+      var more = [];
+      todo.forEach(function (w) {
+        if (w.fixed) return;
+        var hit = byName['#' + normName(w.label)];   /* '#' — constructor 같은 이름과 부딪히지 않게 */
+        if (!hit || hit.length !== 1) return;                 /* 못 찾았거나 이름이 겹칩니다 */
+        if (String(hit[0]) === String(w.no)) return;          /* 이미 맞게 걸려 있습니다 */
+        w.was = w.no; w.no = String(hit[0]); w.fixed = true;
+        if (window.console && console.warn) {
+          console.warn('[대치동시크릿] 공지 글의 링크를 바로잡았습니다 — 「' + w.label + '」 ' +
+                       w.was + '번 → ' + w.no + '번. 글도 고쳐 두시면 좋습니다.');
+        }
+        if (!P[w.no]) more.push(Math.floor(w.no / 100));
+      });
+      return more;
+    }
+
+    var idx = {};
+    for (var k in P) {
+      var nm = '#' + normName(P[k][0]);
+      (idx[nm] = idx[nm] || []).push(k);
+    }
+    var more = apply(idx);
+    if (!todo.some(function (w) { return !w.fixed; })) return Promise.resolve(more);
+    return fetch(SHOP_BASE + 'search-data.json')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d || !d.items) return more;
+        var all = {};
+        d.items.forEach(function (it) {
+          var nm = '#' + normName(it.n);
+          (all[nm] = all[nm] || []).push(it.d);
+        });
+        return more.concat(apply(all));
+      })
+      .catch(function () { return more; });
+  }
+
+  function shopLinks(box) {
+    var want = [], chunks = {};
+    [].slice.call(box.querySelectorAll('a[href]')).forEach(function (a) {
+      if (a.querySelector('img')) return;          /* 사진에 걸린 링크는 그대로 둡니다 */
+      if (a.classList.contains('sl-pl-b')) return;
+      var label = (a.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!label) return;                          /* 글자가 없는 빈 링크 (편집기가 남긴 껍데기) */
+      var q = prodNoOf(a.getAttribute('href'));
+      if (!q) return;
+      want.push({ a: a, no: q.no, sure: q.sure, label: label });
+      chunks[Math.floor(q.no / 100)] = 1;
+    });
+    if (!want.length) return;
+
+    var P = {};
+    function grab(list) {
+      var seen = {};
+      return Promise.all(list.filter(function (c) {
+        if (seen[c]) return false;
+        seen[c] = 1; return true;
+      }).map(function (c) {
+        return fetch(SHOP_BASE + 'related/' + c + '.json')
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .catch(function () { return null; });
+      })).then(function (res) {
+        res.forEach(function (d) { if (d && d.p) for (var k in d.p) P[k] = d.p[k]; });
+      });
+    }
+    function paint() { want.forEach(function (w) { plMount(w, P[w.no]); }); }
+
+    grab(Object.keys(chunks))
+      .then(function () { return fixLinks(want, P); })
+      .then(function (more) { return (more && more.length) ? grab(more) : null; })
+      .then(paint)
+      .catch(paint);                               /* 표를 못 받아도 확실한 상품 링크에는 단추를 붙입니다 */
+  }
+
+  /* 본문이 늦게 그려질 수 있어 viewFaq·viewGallery 와 같은 걸음으로 몇 번 봅니다 */
+  function viewShop() {
+    var done = false;
+    function go() {
+      if (done) return;
+      var body = document.querySelector('.board_view .board_txt_area, .board_view .fr-view');
+      if (!body) return;
+      var box = body.querySelector('[class*="_comment_body"]') || body;
+      if (!box.children.length) return;
+      done = true;
+      /* 주소 뒤에 &sl=check 를 붙이시면 「링크 바로잡음」 딱지가 보입니다 (사장님 확인용) */
+      if (/[?&]sl=check/.test(location.search)) document.body.classList.add('sl-check');
+      shopLinks(box);
+    }
+    go();
+    window.addEventListener('load', go);
+    setTimeout(go, 400); setTimeout(go, 1500); setTimeout(go, 3000);
+  }
+
+  if (VIEW) { viewShop(); if (cfg.faq) viewFaq(); else viewGallery(); return; }
 
   build();
   window.addEventListener('load', build);

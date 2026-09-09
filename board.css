@@ -304,15 +304,22 @@ body.sl-bv .board_view .board_txt_area img { max-width: 100%; height: auto; bord
 /* ── 사진 격자 ── 이어진 사진 3장 이상은 격자로 모으고 8장까지만 보입니다 (board.js viewGallery)
    글 사이의 빈 줄(<p><br></p>)이 격자 위아래에 남아도 어색하지 않게 여백은 작게 둡니다. */
 body.sl-bv .board_view .sl-pg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 8px 0 4px; }
+/* 사진은 네모 칸에 **잘리지 않고 통째로** 들어갑니다 (2026-09-09 사장님).
+   길쭉하거나 넓적한 사진은 크기가 줄어 위아래(또는 좌우)에 흰 자리가 남지만,
+   글을 읽는 분이 사진 전체를 한눈에 보실 수 있습니다 — 잘라서 크게 보이는 것보다 이 편이 낫습니다.
+   (예전에는 object-fit:cover 로 칸을 꽉 채워 사진 가장자리가 잘렸습니다.) */
 body.sl-bv .board_view .sl-pg-it {
   position: relative; display: block; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 10px;
-  background: #f4f6fa; border: 1px solid #e6ecf4; cursor: zoom-in; text-decoration: none;
+  background: #fff; border: 1px solid #e6ecf4; cursor: zoom-in; text-decoration: none;
+  transition: border-color .2s, box-shadow .2s;
 }
 body.sl-bv .board_view .sl-pg-it img {
-  width: 100% !important; height: 100% !important; max-width: none !important; object-fit: cover; object-position: top;
-  display: block; margin: 0 !important; border-radius: 0 !important; transition: transform .25s;
+  width: 100% !important; height: 100% !important; max-width: none !important;
+  object-fit: contain; object-position: center;
+  display: block; margin: 0 !important; border-radius: 0 !important;
 }
-body.sl-bv .board_view .sl-pg-it:hover img { transform: scale(1.04); }
+/* 칸을 키우거나 사진을 확대하면 다시 잘립니다 — 테두리만 밝혀 「누를 수 있다」를 알립니다 */
+body.sl-bv .board_view .sl-pg-it:hover { border-color: #f2b8cd; box-shadow: 0 4px 14px rgba(232, 90, 138, .18); }
 body.sl-bv .board_view .sl-pg-it::before {
   content: attr(data-n); position: absolute; left: 7px; top: 7px; z-index: 1;
   background: rgba(13, 24, 38, .55); color: #fff; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 100px; line-height: 1.4;
@@ -331,6 +338,55 @@ body.sl-bv .board_view .sl-pg-btn:hover { background: #fdeef3; }
   body.sl-bv .board_view .sl-pg { grid-template-columns: repeat(3, 1fr); gap: 6px; }
   body.sl-bv .board_view .sl-pg-it.more::after { font-size: 18px; }
 }
+
+/* ── 글 안의 상품 링크 옆 「장바구니 담기 · 구매하기」 ── (board.js shopLinks, 2026-09-09)
+   공지 글에 자료 주소를 붙여 넣으시면 그 옆에 값과 단추가 붙습니다.
+   쏠북에서 파는 교과서는 담기 단추 없이 「쏠북에서 구매」 하나만 붙습니다. */
+body.sl-bv .board_view a.sl-pl-a {
+  font-weight: 700; color: #c33e6d !important; text-decoration: underline; text-underline-offset: 3px;
+}
+body.sl-bv .board_view .sl-pl {
+  display: inline-flex; align-items: center; gap: 5px; margin: 0 2px 0 7px;
+  vertical-align: middle; white-space: nowrap; line-height: 1.4;
+}
+body.sl-bv .board_view .sl-pl .sl-pl-pr {
+  font-size: 13px; font-weight: 800; color: #1d3a5e; display: inline-flex; align-items: center; gap: 4px;
+}
+body.sl-bv .board_view .sl-pl .sl-pl-pr b { color: #e85a8a; font-weight: 800; }
+body.sl-bv .board_view .sl-pl .sl-pl-pr s { color: #93a5bd; font-weight: 500; font-size: 12px; }
+body.sl-bv .board_view .sl-pl .sl-pl-b {
+  border-radius: 100px; padding: 6px 14px; font-size: 12.5px; font-weight: 700; line-height: 1.4;
+  font-family: inherit; cursor: pointer; text-decoration: none !important; white-space: nowrap;
+  border: 1px solid #f2b8cd; background: #fff; color: #c33e6d !important;
+}
+body.sl-bv .board_view .sl-pl .sl-pl-b:hover { background: #fdeef3; }
+body.sl-bv .board_view .sl-pl .sl-pl-buy,
+body.sl-bv .board_view .sl-pl .sl-pl-go {
+  background: #e85a8a; border-color: #e85a8a; color: #fff !important;
+}
+body.sl-bv .board_view .sl-pl .sl-pl-buy:hover,
+body.sl-bv .board_view .sl-pl .sl-pl-go:hover { background: #d94b7b; }
+body.sl-bv .board_view .sl-pl .sl-pl-cart.done { background: #fdeef3; border-color: #e85a8a; }
+body.sl-bv .board_view .sl-pl .sl-pl-b:disabled { opacity: .6; cursor: default; }
+/* 「링크 바로잡음」 — 글에 적으신 이름과 링크가 달라 우리가 옮긴 자리입니다.
+   손님 화면에는 안 보입니다. 주소 뒤에 &sl=check 를 붙이시면 보입니다 (board.js viewShop). */
+body.sl-bv .board_view .sl-pl .sl-pl-fix { display: none; }
+body.sl-bv.sl-check .board_view .sl-pl .sl-pl-fix {
+  display: inline-flex; align-items: center; background: #fff4d6; border: 1px solid #f0d089;
+  color: #8a6100; font-size: 11.5px; font-weight: 700; border-radius: 100px; padding: 3px 9px; cursor: help;
+}
+@media (max-width: 640px) {
+  /* 좁은 화면에서는 단추가 글줄 밖으로 밀려 나가지 않게 아랫줄로 내려 놓습니다 */
+  body.sl-bv .board_view .sl-pl { display: flex; margin: 7px 0 3px; flex-wrap: wrap; white-space: normal; }
+}
+/* 담았습니다 안내 */
+#sl-pl-toast {
+  position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 14px); z-index: 99999;
+  background: rgba(13, 24, 38, .9); color: #fff; font-size: 13.5px; font-weight: 700;
+  padding: 11px 20px; border-radius: 100px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+}
+#sl-pl-toast.on { opacity: 1; transform: translate(-50%, 0); }
 
 /* 좋아요·댓글 수 줄 */
 body.sl-bv .board_view .comment-block {

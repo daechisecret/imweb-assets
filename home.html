@@ -398,6 +398,13 @@ window.SL_NOTICE_BOARD = '/notice';
   (function loadNotices() {
     var board = window.SL_NOTICE_BOARD || '/notice';
     if (!window.fetch || !window.DOMParser) return;
+    /* ⬇ 공지사항 게시판 페이지는 500KB 가 넘습니다. 첫 화면이 다 그려지기 전에 받아 오면
+       그리는 일과 자리를 다투어 화면이 늦게 뜹니다. 위 SL_NOTICES 로 목록은 이미 보이고 있으므로,
+       브라우저가 한가해진 뒤에 받아 조용히 갈아 끼웁니다 (2026-09-09). */
+    var later = window.requestIdleCallback
+      ? function (f) { window.requestIdleCallback(f, { timeout: 3000 }); }
+      : function (f) { setTimeout(f, 1200); };
+    later(function () {
     fetch(board, { credentials: 'same-origin' })
       .then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); })
       .then(function (html) {
@@ -430,6 +437,7 @@ window.SL_NOTICE_BOARD = '/notice';
         if (out.length) paintNotices(out);
       })
       .catch(function () { /* 그대로 둡니다 */ });
+    });
   })();
 
   var board = document.getElementById('hm-notice-more');
