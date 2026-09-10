@@ -81,7 +81,17 @@
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
   function won(n) { return (n || 0).toLocaleString('ko-KR') + '원'; }
-  function flat(s) { return String(s).replace(/\s+/g, '').toLowerCase(); }
+  /* ── 글자 고르기 ──
+     상품 이름은 「🩷[14강][고2][변형문제] 2026올림포스전국연합기출(265제)🩷」 처럼
+     이모지·대괄호·괄호로 둘러싸여 있습니다. 손님은 그런 것을 치지 않습니다.
+     그래서 **한글·영문·숫자만 남기고** 나머지(이모지·괄호·기호·띄어쓰기)는 다 버린 뒤 견줍니다.
+       「[고2][변형문제]」 → 「고2변형문제」   「수능특강(라이트)」 → 「수능특강라이트」 */
+  var KEEP = /[^0-9a-z\uac00-\ud7a3\u3131-\u318e]+/g;
+  function flat(s) { return String(s).toLowerCase().replace(KEEP, ''); }
+
+  /* 친 말을 낱말로 자릅니다 — 띄어쓰기뿐 아니라 기호(· , / - 괄호)로도 자릅니다.
+     「수능특강-라이트」·「수능특강, 라이트」 도 두 낱말로 봅니다. */
+  function cut(q) { return String(q).toLowerCase().split(KEEP).filter(Boolean); }
 
   /* ── 같은 뜻인 말 ──
      손님은 교재 정식 이름을 모릅니다. 줄여 쓰거나(수특), 브랜드로 부르거나(EBS),
@@ -153,8 +163,10 @@
           엉뚱한 자료가 딸려 옵니다.
      버릴 낱말밖에 없으면 정말 없는 것이므로 빈손으로 돌려줍니다. */
   function matched() {
-    var words = keyword().split(/\s+/).filter(Boolean).map(flat).filter(Boolean);
-    if (!words.length) return DATA.items.slice();
+    var words = cut(keyword());
+    /* 기호만 치셨으면(「???」) 찾을 말이 없는 것입니다 — 전체를 쏟아 내지 않습니다.
+       아무것도 안 치셨을 때만 전체 자료를 보여 줍니다. */
+    if (!words.length) return keyword().trim() ? [] : DATA.items.slice();
 
     var items = DATA.items;
     var hays = [];
@@ -192,13 +204,43 @@
     if (!live.length) return [];
 
     /* 3) 남은 낱말이 모두 들어 있는 것 */
-    var out = [];
-    for (i = 0; i < items.length; i++) {
-      var ok = true;
-      for (w = 0; w < live.length; w++) if (!hasWord(hays[i], live[w])) { ok = false; break; }
-      if (ok) out.push(items[i]);
+    function andHit(list) {
+      var out = [];
+      for (var a = 0; a < items.length; a++) {
+        var ok = true;
+        for (var b = 0; b < list.length; b++) if (!hasWord(hays[a], list[b])) { ok = false; break; }
+        if (ok) out.push(items[a]);
+      }
+      return out;
     }
-    return out;
+    var hit = andHit(live);
+    if (hit.length) return hit;
+
+    /* 4) 그래도 0건이면 — **너무 흔한 낱말**을 빼고 한 번 더 찾습니다.
+       「고2 영어 올림포스」 가 0건이던 까닭: 「영어」 는 자료 1,384개 중 1,166개(84%)에
+       들어 있는 흔한 말인데, 정작 올림포스 전국연합 기출 상품 이름에는 「영어」 가 없습니다.
+       셋 다 들어 있어야 한다는 규칙에 걸려 아무것도 안 나왔습니다.
+       자료 절반 넘게 들어 있는 말은 찾는 데 보탬이 안 되므로 빼고 다시 봅니다.
+       「수능완성」·「쇼츠」 처럼 **아예 없는 말**은 2)에서 이미 버려졌으니 그대로 0건입니다. */
+    if (live.length >= 2) {
+      var COMMON = 0.5;
+      var freq = [];
+      for (i = 0; i < live.length; i++) {
+        var c = 0;
+        for (w = 0; w < hays.length; w++) if (hasWord(hays[w], live[i])) c++;
+        freq.push(c / hays.length);
+      }
+      var rare = [];
+      for (i = 0; i < live.length; i++) if (freq[i] < COMMON) rare.push(live[i]);
+      /* 흔한 말만 치셨다면 그중 가장 드문 하나로라도 찾아 줍니다 */
+      if (!rare.length) {
+        var at = 0;
+        for (i = 1; i < freq.length; i++) if (freq[i] < freq[at]) at = i;
+        rare = [live[at]];
+      }
+      if (rare.length < live.length) return andHit(rare);
+    }
+    return [];
   }
 
   function narrowed() {
