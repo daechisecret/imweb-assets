@@ -3,6 +3,11 @@ var LIST_SEL = '.shop-item._shop_item';
 var MANY = 9;            /* 알약이 이보다 많으면 접어 둡니다 */
 var KIND_ORDER = ['패키지', '교사용 한글파일 (편집가능)', '변형문제 (유형편)', '변형문제 (심화편)',
 '지문분석', '직전보강', '핵심요약', '워크북', '특강자료'];
+var ADVANCED_KINDS = ['핵심요약', '변형문제 (유형편)', '변형문제 (심화편)',
+'지문분석', '워크북', '직전보강', '교사용 한글파일 (편집가능)', '패키지'];
+function advancedPage() {
+return location.pathname.replace(/\/$/, '') === '/492' && !/[?&]idx=/.test(location.search);
+}
 var FMT_PAGES = ['/special-lecture'];
 var FMT_ORDER = ['PDF', 'HWP (편집가능)'];
 var HWP_RE = /교사용\s*HWP|HWP\s*파일|한글\s*파일|HWP/i;
@@ -31,7 +36,8 @@ var BOOK_GROUPS = [
 ['[2026] 올림포스 영어독해의 기본 1',   '영어독해의 기본 1',   '2026'],
 ['[2026] 올림포스 영어독해의 기본 2',   '영어독해의 기본 2',   '2026'],
 ['[2026] 올림포스 전국연합 기출 고1',   '전국연합 기출 고1',   '2026'],
-['[2026] 올림포스 전국연합 기출 고2',   '전국연합 기출 고2',   '2026']
+['[2026] 올림포스 전국연합 기출 고2',   '전국연합 기출 고2',   '2026'],
+['올림포스 고급영어독해 · 영미 비문학 읽기', '고급영어독해 · 영미 비문학', '']
 ]},
 { g: '교과서', list: [
 ['[1학년 교과서] 공통영어 1',      '공통영어 1',      '1학년'],
@@ -59,6 +65,8 @@ return /독해\s*연습|독해연습/.test(t)
 : '[2026] 수능특강 라이트 (Light) 영어'; }],
 [/올림포스\s*전국\s*연합|전국연합\s*기출/, function (t) {
 return /고\s*2|2학년/.test(t) ? '[2026] 올림포스 전국연합 기출 고2' : '[2026] 올림포스 전국연합 기출 고1'; }],
+[/올림포스\s*고급|영미\s*비문학/, function () {
+return '올림포스 고급영어독해 · 영미 비문학 읽기'; }],
 [/올림포스/, function (t) {
 return /기본\s*2|기본2/.test(t) ? '[2026] 올림포스 영어독해의 기본 2' : '[2026] 올림포스 영어독해의 기본 1'; }],
 [/(?:수능특강|수특)/, function (t) {
@@ -302,6 +310,42 @@ box.appendChild(body);
 tools.parentNode.insertBefore(box, tools);
 tools.style.display = 'none';
 }
+function advancedIntro(host, items, kindCount) {
+if (!advancedPage() || document.getElementById('sl-advanced-intro')) return;
+var intro = document.createElement('section');
+intro.id = 'sl-advanced-intro';
+intro.className = 'sl-book-intro';
+intro.setAttribute('aria-labelledby', 'sl-advanced-title');
+var fields = items.map(function (el) {
+var m = /Field\s*(\d+)/i.exec(titleOf(el));
+return m && el.dataset.slkind === '핵심요약' ? { n: Number(m[1]), url: urlOf(el) } : null;
+}).filter(Boolean).sort(function (a, b) { return a.n - b.n; });
+var available = ADVANCED_KINDS.filter(function (k) { return kindCount[k]; });
+intro.innerHTML =
+'<div class="sl-book-intro-head"><div><h1 id="sl-advanced-title">올림포스 고급영어독해 · 영미 비문학 읽기</h1>' +
+'<p>교재에 맞는 핵심요약·변형문제·지문분석·워크북 자료를 종류별로 찾아보세요.</p>' +
+'<p class="sl-book-status">현재 등록: ' + available.map(function (k) { return k + ' ' + kindCount[k] + '개'; }).join(' · ') + '</p></div>' +
+'<nav aria-label="다른 올림포스 교재"><a href="/olympos-basic1">영어독해의 기본 1 →</a><a href="/olympos-basic2">영어독해의 기본 2 →</a></nav></div>' +
+'<div class="sl-book-intro-row"><strong>자료 종류</strong><dl>' +
+'<div><dt>핵심요약</dt><dd>Field별 핵심 내용 정리</dd></div>' +
+'<div><dt>변형문제</dt><dd>유형편 · 심화편으로 구분</dd></div>' +
+'<div><dt>지문분석</dt><dd>지문을 자세히 살펴보는 자료</dd></div>' +
+'<div><dt>워크북</dt><dd>학습 내용을 연습하는 자료</dd></div>' +
+'<div><dt>직전보강</dt><dd>시험 전 복습을 위한 자료</dd></div>' +
+'<div><dt>교사용 한글파일</dt><dd>편집 가능한 자료 별도 분류</dd></div></dl></div>' +
+'<div class="sl-book-intro-row"><strong>Field별<br>핵심요약</strong><div class="sl-book-fields"></div></div>' +
+'<p class="sl-book-intro-note">아래에서 자료 종류를 선택하세요. 아직 등록되지 않은 종류는 미등록으로 표시됩니다.</p>';
+var links = intro.querySelector('.sl-book-fields');
+fields.forEach(function (field) {
+var a = document.createElement('a');
+a.href = field.url;
+a.textContent = 'Field ' + field.n;
+a.setAttribute('aria-label', 'Field ' + field.n + ' 핵심요약 상품 보기');
+links.appendChild(a);
+});
+var anchor = document.querySelector('.shop-tools') || host;
+anchor.parentNode.insertBefore(intro, anchor);
+}
 function build() {
 var got = pickHost();
 if (!got) return;
@@ -331,6 +375,10 @@ addGo(el);
 addActs(el);
 });
 kinds.sort(sortBy(fmtPage() ? FMT_ORDER : KIND_ORDER));
+if (advancedPage()) {
+kinds = ADVANCED_KINDS.concat(kinds.filter(function (k) { return ADVANCED_KINDS.indexOf(k) < 0; }));
+advancedIntro(host, items, kindCount);
+}
 var bar = document.createElement('div');
 bar.className = 'sl-pills';
 var any = false;
@@ -340,10 +388,11 @@ var line = document.createElement('div');
 line.className = 'sl-pillrow';
 line.innerHTML = '<span class="sl-plab">자료 종류</span>' +
 '<div class="sl-pset">' +
-'<button type="button" class="sl-pill on" data-k="kind" data-v="">전체</button>' +
+'<button type="button" class="sl-pill on" aria-pressed="true" data-k="kind" data-v="">전체</button>' +
 kinds.map(function (v) {
-return '<button type="button" class="sl-pill" data-k="kind" data-v="' +
-v.replace(/"/g, '&quot;') + '">' + v + '<em>' + kindCount[v] + '</em></button>';
+var count = kindCount[v] || 0;
+return '<button type="button" class="sl-pill' + (count ? '' : ' sl-unlisted') + '" aria-pressed="false" data-k="kind" data-v="' +
+v.replace(/"/g, '&quot;') + '">' + v + '<em>' + (count || '미등록') + '</em></button>';
 }).join('') +
 '</div>';
 bar.appendChild(line);
@@ -379,6 +428,14 @@ out.className = 'sl-pillcount';
 bar.appendChild(out);
 topBox(bar, host);
 var pick = { kind: '', book: '' };
+var empty;
+if (advancedPage()) {
+empty = document.createElement('p');
+empty.className = 'sl-filter-empty';
+empty.setAttribute('role', 'status');
+empty.hidden = true;
+host.parentNode.insertBefore(empty, host.nextSibling);
+}
 function apply() {
 var n = 0;
 items.forEach(function (el) {
@@ -390,6 +447,10 @@ if (ok) n++;
 out.textContent = n === items.length
 ? '모두 ' + items.length + '개'
 : items.length + '개 가운데 ' + n + '개';
+if (empty) {
+empty.hidden = n > 0;
+empty.textContent = n ? '' : '아직 등록된 ' + (pick.kind || '해당 종류의') + ' 자료가 없습니다. 전체 또는 핵심요약을 선택해 주세요.';
+}
 }
 apply();
 bar.addEventListener('click', function (e) {
@@ -407,8 +468,12 @@ var k = b.dataset.k;
 pick[k] = (pick[k] === b.dataset.v) ? '' : b.dataset.v;
 [].forEach.call(bar.querySelectorAll('[data-k="' + k + '"]'), function (x) {
 x.classList.toggle('on', x.dataset.v === pick[k]);
+x.setAttribute('aria-pressed', String(x.dataset.v === pick[k]));
 });
 apply();
+if (advancedPage()) {
+history.replaceState(null, '', location.pathname + location.search + (pick.kind ? '#sl=' + encodeURIComponent(pick.kind) : ''));
+}
 });
 var want = decodeURIComponent((location.hash || '').replace(/^#sl=/, ''));
 if (want && location.hash.indexOf('#sl=') === 0) {
