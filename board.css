@@ -219,6 +219,10 @@
 .sl-tag.cat { background: #f1f4f9; color: #7c90a8; }
 .sl-bd-faq .sl-row:hover .sl-tag.cat { background: #fdeef3; color: #c33e6d; }
 .sl-bd-faq .sl-new { margin-left: 2px; }
+/* 맨 위 고정 세 편 (board.js FAQ_TOP) — 남색 딱지 + 옅은 하늘 바탕 */
+.sl-tag.top { background: #1d3a5e; color: #fff; margin-right: 4px; }
+.sl-bd-faq .sl-row.top { background: #f5f8fc; }
+.sl-bd-faq .sl-row.top .sl-tt .t { font-weight: 700; }
 @media (max-width: 900px) {
   .sl-bd-faq .sl-row, .sl-bd-faq .sl-head { grid-template-columns: minmax(0, 1fr) 74px; }
   .sl-bd-faq .sl-head b:nth-child(2) { display: block; }

@@ -234,15 +234,30 @@
   /* ── 자주 묻는 질문 — 게시판형 (2026-09-04) ──
      공지사항 같은 줄 목록에 갈래 단추·갈래 딱지를 얹습니다.
      줄은 아임웹 글 보기 주소(/faq/?bmode=view&idx=…)로 가는 보통 링크라 질문 하나를 링크로 줄 수 있습니다. */
+  /* 맨 위 고정 (2026-10-01 사장님) — 가장 많이 받는 질문 세 편을 이 차례로 갈래와 상관없이 맨 위에 둡니다.
+     아임웹에서도 공지로 걸어 두었지만, 공지는 글 번호 차례로만 서고 이 목록은 갈래 차례로 다시 세우므로 여기서 정합니다.
+     갈래 단추를 누르면 제 갈래에서만 보입니다. 결제 완료 화면 안내 상자(order-guide.js)와 같은 세 편입니다. */
+  var FAQ_TOP = ['167269006', '168670957', '173457255'];   /* 다운로드 방법 · HWP 글꼴 · 구매 후기 적립금 */
+  function topFirst(rows) {
+    var top = [], rest = [];
+    rows.forEach(function (r) {
+      var m = /[?&]idx=(\d+)/.exec(r.u || '');
+      var k = m ? FAQ_TOP.indexOf(m[1]) : -1;
+      if (k >= 0 && !top[k]) { r.top = true; top[k] = r; } else rest.push(r);
+    });
+    return top.filter(Boolean).concat(rest);
+  }
+
   function faqListHTML(rows) {
     var counts = {};
     rows.forEach(function (r) { r.cat = catOf(r.t); counts[r.cat] = (counts[r.cat] || 0) + 1; });
-    rows = sortByCat(rows);
+    rows = topFirst(sortByCat(rows));
     return chipsHTML(rows, counts) +
       '<div class="sl-head"><b>제목</b><b>작성일</b><b>조회</b></div>' +
       rows.map(function (r) {
-        return '<a class="sl-row" data-i="' + r.i + '" data-cat="' + esc(r.cat) + '" href="' + esc(r.u) + '">' +
-          '<span class="sl-tt"><span class="sl-tag cat">' + esc(r.cat) + '</span>' +
+        return '<a class="sl-row' + (r.top ? ' top' : '') + '" data-i="' + r.i + '" data-cat="' + esc(r.cat) + '" href="' + esc(r.u) + '">' +
+          '<span class="sl-tt">' + (r.top ? '<span class="sl-tag top">필독</span>' : '') +
+          '<span class="sl-tag cat">' + esc(r.cat) + '</span>' +
           '<span class="t">' + esc(cleanQ(r.t)) + '</span>' +
           (r.n ? '<span class="sl-new" title="새 글">N</span>' : '') + '</span>' +
           '<span class="sl-d">' + esc((r.d || '').replace(/^\d{4}-/, '')) + '</span>' +
