@@ -1,0 +1,365 @@
+{
+ "_": "무료 0원 상품 페이지의 연관 자료 — items 의 키는 0원 상품 번호. href 는 리뉴얼 상품이 올라오면 상품 번호(숫자)로 바꾼다.",
+ "series": {
+  "grammar": {
+   "name": "시크릿어법 특강",
+   "line": "개념 · Practice · Training · Passage · Exam · 암기노트까지 한 강에!",
+   "grades": [
+    {
+     "grade": "예비고1",
+     "pkg": {
+      "name": "시크릿어법 예비고1 전범위 패키지",
+      "sub": "1~12강 전체",
+      "cover": "free/covers/grammar_pre1_pkg.jpg",
+      "href": "/secret-grammar"
+     },
+     "lessons": [
+      {
+       "no": 1,
+       "title": "정동사 vs 준동사",
+       "cover": "free/covers/grammar_pre1_01.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 2,
+       "title": "긴 주어의 수일치",
+       "cover": "free/covers/grammar_pre1_02.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 3,
+       "title": "보어 자리의 형용사 vs 부사",
+       "cover": "free/covers/grammar_pre1_03.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 4,
+       "title": "목적어 자리의 to부정사 vs 동명사",
+       "cover": "free/covers/grammar_pre1_04.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 5,
+       "title": "현재분사 vs 과거분사",
+       "cover": "free/covers/grammar_pre1_05.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 6,
+       "title": "분사구문과 with 부대상황",
+       "cover": "free/covers/grammar_pre1_06.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 7,
+       "title": "능동태 vs 수동태",
+       "cover": "free/covers/grammar_pre1_07.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 8,
+       "title": "관계대명사",
+       "cover": "free/covers/grammar_pre1_08.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 9,
+       "title": "관계부사 vs 관계대명사",
+       "cover": "free/covers/grammar_pre1_09.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 10,
+       "title": "that vs what · 접속사 vs 전치사",
+       "cover": "free/covers/grammar_pre1_10.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 11,
+       "title": "병렬구조 · 대명사 · 대동사",
+       "cover": "free/covers/grammar_pre1_11.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 12,
+       "title": "실전 어법 모의고사",
+       "cover": "free/covers/grammar_pre1_12.jpg",
+       "href": "/secret-grammar"
+      }
+     ]
+    },
+    {
+     "grade": "고1",
+     "pkg": {
+      "name": "시크릿어법 고1 전범위 패키지",
+      "sub": "1~12강 전체",
+      "cover": "free/covers/grammar_g1_pkg.jpg",
+      "href": "/secret-grammar"
+     },
+     "lessons": [
+      {
+       "no": 1,
+       "title": "문장의 형식",
+       "cover": "free/covers/grammar_g1_01.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 2,
+       "title": "to부정사·동명사",
+       "cover": "free/covers/grammar_g1_02.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 3,
+       "title": "분사구",
+       "cover": "free/covers/grammar_g1_03.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 4,
+       "title": "분사구문",
+       "cover": "free/covers/grammar_g1_04.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 5,
+       "title": "명사절 접속사",
+       "cover": "free/covers/grammar_g1_05.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 6,
+       "title": "관계사",
+       "cover": "free/covers/grammar_g1_06.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 7,
+       "title": "수동태",
+       "cover": "free/covers/grammar_g1_07.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 8,
+       "title": "수일치",
+       "cover": "free/covers/grammar_g1_08.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 9,
+       "title": "형용사·부사·대명사",
+       "cover": "free/covers/grammar_g1_09.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 10,
+       "title": "전치사·접속사",
+       "cover": "free/covers/grammar_g1_10.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 11,
+       "title": "조동사·가정법",
+       "cover": "free/covers/grammar_g1_11.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 12,
+       "title": "특수구문",
+       "cover": "free/covers/grammar_g1_12.jpg",
+       "href": "/secret-grammar"
+      }
+     ]
+    },
+    {
+     "grade": "고2",
+     "pkg": {
+      "name": "시크릿어법 고2 전범위 패키지",
+      "sub": "1~12강 전체",
+      "cover": "free/covers/grammar_g2_pkg.jpg",
+      "href": "/secret-grammar"
+     },
+     "lessons": [
+      {
+       "no": 1,
+       "title": "문장의 형식",
+       "cover": "free/covers/grammar_g2_01.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 2,
+       "title": "to부정사·동명사",
+       "cover": "free/covers/grammar_g2_02.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 3,
+       "title": "분사구",
+       "cover": "free/covers/grammar_g2_03.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 4,
+       "title": "분사구문",
+       "cover": "free/covers/grammar_g2_04.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 5,
+       "title": "명사절 접속사",
+       "cover": "free/covers/grammar_g2_05.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 6,
+       "title": "관계사",
+       "cover": "free/covers/grammar_g2_06.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 7,
+       "title": "수동태",
+       "cover": "free/covers/grammar_g2_07.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 8,
+       "title": "수일치",
+       "cover": "free/covers/grammar_g2_08.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 9,
+       "title": "형용사·부사·대명사",
+       "cover": "free/covers/grammar_g2_09.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 10,
+       "title": "전치사·접속사",
+       "cover": "free/covers/grammar_g2_10.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 11,
+       "title": "조동사·가정법",
+       "cover": "free/covers/grammar_g2_11.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 12,
+       "title": "특수구문",
+       "cover": "free/covers/grammar_g2_12.jpg",
+       "href": "/secret-grammar"
+      }
+     ]
+    },
+    {
+     "grade": "고3",
+     "pkg": {
+      "name": "시크릿어법 고3 전범위 패키지",
+      "sub": "1~12강 전체",
+      "cover": "free/covers/grammar_g3_pkg.jpg",
+      "href": "/secret-grammar"
+     },
+     "lessons": [
+      {
+       "no": 1,
+       "title": "문장의 형식",
+       "cover": "free/covers/grammar_g3_01.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 2,
+       "title": "to부정사·동명사",
+       "cover": "free/covers/grammar_g3_02.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 3,
+       "title": "분사구",
+       "cover": "free/covers/grammar_g3_03.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 4,
+       "title": "분사구문",
+       "cover": "free/covers/grammar_g3_04.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 5,
+       "title": "명사절 접속사",
+       "cover": "free/covers/grammar_g3_05.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 6,
+       "title": "관계사",
+       "cover": "free/covers/grammar_g3_06.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 7,
+       "title": "수동태",
+       "cover": "free/covers/grammar_g3_07.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 8,
+       "title": "수일치",
+       "cover": "free/covers/grammar_g3_08.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 9,
+       "title": "형용사·부사·대명사",
+       "cover": "free/covers/grammar_g3_09.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 10,
+       "title": "전치사·접속사",
+       "cover": "free/covers/grammar_g3_10.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 11,
+       "title": "조동사·가정법",
+       "cover": "free/covers/grammar_g3_11.jpg",
+       "href": "/secret-grammar"
+      },
+      {
+       "no": 12,
+       "title": "특수구문",
+       "cover": "free/covers/grammar_g3_12.jpg",
+       "href": "/secret-grammar"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "items": {
+  "TBD": {
+   "series": "grammar",
+   "topic": "관계대명사 · 관계부사",
+   "grade": "고1",
+   "focus": {
+    "예비고1": [
+     8,
+     9
+    ],
+    "고1": [
+     6
+    ],
+    "고2": [
+     6
+    ],
+    "고3": [
+     6
+    ]
+   }
+  }
+ }
+}

@@ -451,10 +451,16 @@
   }
 
   function placeRel() {
-    var box = document.getElementById('sl-rel');
     var a = relAnchor();
-    if (!box || !a || box.nextElementSibling === a) return;
-    a.parentNode.insertBefore(box, a);
+    if (!a) return;
+    /* 무료 자료 상자(#sl-free)가 있으면 그것이 맨 위, 그다음 연관상품 */
+    ['sl-rel', 'sl-free'].forEach(function (id) {
+      var box = document.getElementById(id);
+      if (!box) return;
+      var next = id === 'sl-free' && document.getElementById('sl-rel');
+      next = next && next.parentNode === a.parentNode ? next : a;
+      if (box.nextElementSibling !== next) a.parentNode.insertBefore(box, next);
+    });
   }
 
   /* 꺾쇠 그림 — 글자(›)는 글꼴마다 아래로 처져 원 한가운데에 안 놓입니다 */
@@ -564,6 +570,88 @@
       .catch(function () { /* 표가 없으면 아무것도 안 그립니다 */ });
   }
 
+  /* ── ⑤-2 무료 0원 상품의 「이어서 공부할 자료」 — (2026-10-30 사장님)
+     무료 정리표(0원 상품) 페이지에서는 연관상품이 **바로** 보여야 합니다.
+     학년을 고르면 위에 그 학년 **전체 패키지**, 아래에 **강별 표지 슬라이드**(이 정리표 강이 맨 앞).
+     표는 free-rel.json (parts/free/) — items 의 키가 0원 상품 번호입니다.
+     href 가 숫자면 상품 번호, 아니면 주소입니다 (리뉴얼 상품이 올라오기 전엔 시리즈 랜딩으로 보냅니다). */
+  function freeHref(h) { return /^\d+$/.test(String(h)) ? prodUrl(h) : sameHost(location.origin + h); }
+
+  function freePane(S, g, focus) {
+    var f = focus[g.grade] || [];
+    var ls = g.lessons.filter(function (l) { return f.indexOf(l.no) >= 0; })
+      .concat(g.lessons.filter(function (l) { return f.indexOf(l.no) < 0; }));
+    var no = function (n) { return (n < 10 ? '0' : '') + n + '강'; };
+    return '<div class="sf-pkg">' +
+        '<a class="sf-pkg-th" href="' + esc(freeHref(g.pkg.href)) + '"><img src="' + esc(BASE + g.pkg.cover) + '" alt="' + esc(g.pkg.name) + ' 표지" loading="lazy"></a>' +
+        '<div class="sf-pkg-tx"><span class="sf-tag">전체 패키지</span>' +
+          '<b>' + esc(g.pkg.name) + '</b><span class="sf-pkg-sub">' + esc(g.pkg.sub) + ' · ' + esc(S.line) + '</span>' +
+          '<a class="sf-btn" href="' + esc(freeHref(g.pkg.href)) + '">전체 패키지 보러 가기 →</a></div>' +
+      '</div>' +
+      '<div class="sf-sub">강별로 구매하기 <small>필요한 강만 골라 담을 수 있어요</small></div>' +
+      '<div class="sr-strip">' +
+        '<button type="button" class="sr-arr prev" data-arr="-1" aria-label="이전 강">' + ARROW.replace('D', 'M15 6l-6 6 6 6') + '</button>' +
+        '<div class="sr-cards">' + ls.map(function (l) {
+          var on = f.indexOf(l.no) >= 0;
+          return '<div class="sr-card sf-card' + (on ? ' sf-on' : '') + '">' +
+            '<a class="sr-th" href="' + esc(freeHref(l.href)) + '">' + (on ? '<span class="sr-kind">이 정리표 강</span>' : '') +
+            '<img src="' + esc(BASE + l.cover) + '" alt="' + esc(S.name + ' ' + g.grade + ' ' + no(l.no) + ' ' + l.title) + ' 표지" loading="lazy"></a>' +
+            '<a class="sr-nm" href="' + esc(freeHref(l.href)) + '"><em>' + no(l.no) + '</em> ' + esc(l.title) + '</a>' +
+            '<a class="sr-add sr-go" href="' + esc(freeHref(l.href)) + '">이 강 보기</a></div>';
+        }).join('') + '</div>' +
+        '<button type="button" class="sr-arr next" data-arr="1" aria-label="다음 강">' + ARROW.replace('D', 'M9 6l6 6-6 6') + '</button>' +
+      '</div>';
+  }
+
+  var FREE_DONE = false;
+  function freeRel() {
+    if (FREE_DONE) return;
+    var me = idxNow();
+    if (!me || !relAnchor() || document.getElementById('sl-free')) return;
+    FREE_DONE = true;
+    fetch(BASE + 'free-rel.json')
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (d) {
+        var it = d.items[me], S = it && d.series[it.series];
+        if (!S) return;
+        var box = document.createElement('div');
+        box.id = 'sl-free';
+        box.className = 'sr-box sf-box';
+        var h = '<div class="sr-h"><div class="sr-eyebrow">' + esc(S.name) + ' · ' + esc(it.topic) + '</div>' +
+          '<h3 class="sr-t">이 정리표, <em>' + esc(S.name) + '</em>으로 이어서 공부하세요</h3>' +
+          '<p class="sr-s">학년을 고르시면 그 학년 자료가 나와요</p></div><div class="sf-grades">';
+        S.grades.forEach(function (g) {
+          h += '<button type="button" class="sf-g' + (g.grade === it.grade ? ' on' : '') + '" data-g="' + esc(g.grade) + '">' + esc(g.grade) + '</button>';
+        });
+        h += '</div>';
+        S.grades.forEach(function (g) {
+          h += '<div class="sf-pane" data-g="' + esc(g.grade) + '"' + (g.grade === it.grade ? '' : ' hidden') + '>' + freePane(S, g, it.focus || {}) + '</div>';
+        });
+        box.innerHTML = h;
+        var a = relAnchor();
+        a.parentNode.insertBefore(box, a);
+        placeRel();
+        box.querySelectorAll('.sf-pane').forEach(function (p) { relArrows(p); });
+        box.addEventListener('click', function (e) {
+          var ar = e.target.closest('[data-arr]');
+          if (ar) {
+            var sc = ar.parentNode.querySelector('.sr-cards');
+            var card = sc.querySelector('.sr-card');
+            relSlide(sc, (card ? card.getBoundingClientRect().width + 12 : 162) * 2 * Number(ar.dataset.arr));
+            return;
+          }
+          var b = e.target.closest('.sf-g');
+          if (!b) return;
+          box.querySelectorAll('.sf-g').forEach(function (x) { x.classList.toggle('on', x === b); });
+          box.querySelectorAll('.sf-pane').forEach(function (p) {
+            p.hidden = p.dataset.g !== b.dataset.g;
+            if (!p.hidden) window.dispatchEvent(new Event('resize'));   /* 숨어 있던 줄의 화살표를 다시 잽니다 */
+          });
+        });
+      })
+      .catch(function () { /* 무료 상품이 아니면 아무것도 안 그립니다 */ });
+  }
+
   /* ── ⑥ 쿠폰 — 값 바로 아래로 올리고 「한 번 더 할인」을 보입니다 — (2026-09-09 사장님)
      아임웹은 「쿠폰 사용시 12,500원 · 쿠폰받기」 상자를 구매 단추 **아래**에 둡니다.
      값을 보고 난 뒤 한참 내려가야 보이고, 쿠폰을 받을 수 있다는 것도 눈에 안 띄었습니다.
@@ -630,6 +718,7 @@
   function run() {
     if (!root()) return;
     build();
+    freeRel();
     related();
     placeRel();
     retellOwl();

@@ -706,3 +706,34 @@ body.shop_view .sl-cpn .btn-coupon-square {
 @media (max-width: 640px) {
   body.shop_view .sl-cpn #dynamic-coupon-text { font-size: 21px !important; }
 }
+
+/* ── 무료 0원 상품의 「이어서 공부할 자료」 (#sl-free · product.js freeRel) ── */
+.sf-box { background: linear-gradient(180deg, #fff7fa 0%, #fff 160px); border-color: #f6dbe5; }
+.sf-grades { display: flex; flex-wrap: wrap; gap: 6px; margin: -4px 0 16px; }
+.sf-g { height: 32px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #f3dae4; background: #fff; color: #c33e6d;
+  font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; transition: .15s; }
+.sf-g:hover { border-color: #e85a8a; }
+.sf-g.on { background: #e85a8a; border-color: #e85a8a; color: #fff; }
+.sf-pkg { display: flex; gap: 18px; align-items: center; padding: 14px; border: 1px solid #e6ecf4; border-radius: 12px; background: #fff; }
+.sf-pkg-th { flex: 0 0 104px; border-radius: 8px; overflow: hidden; box-shadow: 0 6px 18px rgba(29, 58, 94, .14); }
+.sf-pkg-th img { display: block; width: 100%; height: auto; }
+.sf-pkg-tx { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.sf-tag { font-size: 11px; font-weight: 800; color: #fff; background: #1d3a5e; padding: 2px 8px; border-radius: 4px; }
+.sf-pkg-tx b { font-size: 17px; font-weight: 900; letter-spacing: -.03em; color: #1d3a5e; }
+.sf-pkg-sub { font-size: 12.5px; color: #46617f; line-height: 1.5; }
+.sf-btn { margin-top: 6px; display: inline-block; height: 36px; line-height: 36px; padding: 0 18px; border-radius: 999px;
+  background: #e85a8a; color: #fff !important; font-size: 13px; font-weight: 800; text-decoration: none; transition: .15s; }
+.sf-btn:hover { background: #c33e6d; }
+.sf-sub { margin: 20px 0 10px; font-size: 14.5px; font-weight: 900; color: #1d3a5e; letter-spacing: -.02em; }
+.sf-sub small { margin-left: 6px; font-size: 12px; font-weight: 500; color: #8fa3bb; }
+.sf-card .sr-th { aspect-ratio: 840 / 1188; }
+.sf-card .sr-nm { min-height: 0; -webkit-line-clamp: 2; }
+.sf-card .sr-nm em { font-style: normal; color: #e85a8a; font-weight: 900; }
+.sf-card.sf-on { border-color: #e85a8a; box-shadow: 0 0 0 2px #fde3ec; }
+.sf-card.sf-on .sr-kind { background: #e85a8a; }
+@media (max-width: 640px) {
+  .sf-pkg { gap: 12px; padding: 12px; }
+  .sf-pkg-th { flex-basis: 84px; }
+  .sf-pkg-tx b { font-size: 15px; }
+  .sf-card .sr-nm { font-size: 12px; }
+}

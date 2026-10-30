@@ -1,0 +1,7 @@
+{
+  "tool_name": "mcp__claude-in-chrome__computer",
+  "tool_input_preview": "{\"action\":\"screenshot\",\"tabId\":1116869082,\"scale\":0.6}",
+  "error": "Error capturing screenshot: CDP sendCommand \"Page.captureScreenshot\" timed out after 30000ms on tab 1116869082. The renderer may be frozen or unresponsive.",
+  "timestamp": "2026-10-01T04:33:42.966Z",
+  "retry_count": 1
+}
