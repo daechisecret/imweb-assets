@@ -1296,3 +1296,121 @@
   window.addEventListener('load', run);
   setTimeout(run, 1500);
 })();
+
+/* ── 회원용 시크릿자료(/secret-library) 게시판 모양 — 시안 A 깔끔형 (2026-10-30 사장님) ──
+   목록 화면: 아임웹 줄 목록은 감추고(링크는 그대로 둠) 칼럼 목록 표(column/index.json)로 소개 · 카드 · 대상별 안내 · 회원가입 띠를 그립니다.
+   글 보기: 제목 위에 갈래 딱지, 본문 오른쪽에 따라 내려오는 상자(이 글의 차례 · 무료로 받기 · 이 강 보기), 아래 함께 보면 좋은 자료.
+   표에 없는 글(번호가 없는 글)은 모양만 다듬고 오른쪽 상자는 그리지 않습니다. 글쓰기 · 댓글 · 좋아요는 아임웹 것 그대로입니다. */
+(function () {
+  var path = (document.documentElement.getAttribute('data-sl-path') || location.pathname).replace(/\/$/, '');
+  if (path !== '/secret-library') return;
+  if (/[?&]bmode=(write|edit|reply)/.test(location.search)) return;
+  var BASE = 'https://daechisecret.github.io/imweb-assets/';
+  var VIEW = /[?&]bmode=view/.test(location.search);
+  var JOIN = '/site_join_pattern_choice?back_url=' + btoa('/secret-library');
+  ['column/column.css?v=3', 'column/library.css?v=1'].forEach(function (f) {
+    var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = BASE + f; document.head.appendChild(l);
+  });
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function postUrl(p) { return '/secret-library/?bmode=view&idx=' + p.post; }
+  function prod(n) { return /^\d+$/.test(String(n)) ? '/shop_view/?idx=' + n : (n || '/secret-grammar'); }
+  function card(p) {
+    return '<a class="slc-card" href="' + esc(postUrl(p)) + '" data-area="' + esc(p.area) + '" data-q="' + esc((p.title + ' ' + p.sub + ' ' + p.topic).toLowerCase()) + '">' +
+      '<div class="th"><img src="' + esc(BASE + p.thumb) + '" alt="' + esc(p.title + ' 정리표 지면') + '" loading="lazy"></div>' +
+      '<span class="ar">' + esc(p.area) + ' · ' + esc(p.topic) + '</span><b>' + esc(p.title) + '</b>' +
+      (p.sub ? '<span class="sb">' + esc(p.sub.replace(/\s*\(무료 PDF\)$/, '')) + '</span>' : '') +
+      '<span class="ds">' + esc(p.desc) + '</span>' +
+      '<span class="mt">대치동시크릿 · ' + esc(p.read) + '분 읽기 <span class="slc-pill">PDF 무료</span></span></a>';
+  }
+  var DONE = false;
+  function run(posts) {
+    if (DONE) return;
+    if (VIEW) { if (!document.querySelector('.board_view .board_txt_area')) return; DONE = true; return view(posts); }
+    var lb = document.querySelector('.li_board');
+    if (!lb) return;
+    DONE = true; list(posts, lb);
+  }
+  function list(posts, lb) {
+    document.body.classList.add('slc-list');
+    var live = posts.filter(function (p) { return p.post; });
+    var areas = ['전체'].concat(['어법', '구문', '어휘', '독해'].filter(function (a) { return live.some(function (p) { return p.area === a; }); }));
+    var top = live[0];
+    var h = '<div class="slc slc-lib">' +
+      '<div class="slc-top"><span>대치동시크릿 › <b>회원용 시크릿자료</b></span><input type="search" placeholder="문법 개념 검색 (예: 관계대명사)" aria-label="칼럼 검색"></div>' +
+      '<div class="slc-tabs" role="tablist">' + areas.map(function (a, i) { return '<button type="button"' + (i ? '' : ' class="on"') + ' data-a="' + esc(a) + '">' + esc(a) + '</button>'; }).join('') + '</div>' +
+      '<section class="slc-hero"><div><div class="slc-eye">SECRET NOTE</div>' +
+        '<h2>헷갈리는 영어,<br><em>한 장으로</em> 정리해 드려요</h2>' +
+        '<p>중1부터 고3까지, 실제 기출 문장으로 정리한 개념 칼럼이에요.<br>정리표 PDF는 회원가입하면 무료로 받을 수 있어요.</p>' +
+        '<div class="slc-btns"><a class="slc-btn k" href="#slc-free">무료 정리표 받기</a><a class="slc-btn" href="#slc-who">칼럼 둘러보기</a></div></div>' +
+        (top ? '<div class="slc-hero-vis"><img src="' + esc(BASE + top.thumb) + '" alt="' + esc(top.title + ' 정리표 1쪽') + '"><img src="' + esc(BASE + 'column/' + top.id + '/fig1.png') + '" alt="' + esc(top.title + ' 지도') + '"><span>실제 정리표 지면 그대로</span></div>' : '') +
+      '</section>' +
+      '<section class="slc-sec" id="slc-free"><div class="slc-sh"><h3>회원 무료자료</h3><small>회원가입하면 PDF를 무료로 받아요</small></div>' +
+        (live.length ? '<div class="slc-grid' + (live.length >= 3 ? ' feat' : '') + '">' + live.map(card).join('') + '</div>' : '<div class="slc-empty">곧 올라와요</div>') +
+      '</section>' +
+      '<div class="slc-who" id="slc-who">' +
+        '<a href="#slc-free"><b>선생님 · 원장님</b><p>수업 끝 5분 테스트, 숙제용 정리표를 주제별로 골라 쓰세요.</p><em>수업 자료 보기 →</em></a>' +
+        '<a href="#slc-free"><b>학생</b><p>개념은 칼럼으로, 확인은 기출 문장으로. 혼자 공부할 때 순서대로 보세요.</p><em>개념 칼럼 보기 →</em></a>' +
+        '<a href="#slc-free"><b>학부모</b><p>아이 학년에 맞는 정리표를 받아 방학 계획에 넣어 보세요.</p><em>정리표 보기 →</em></a>' +
+      '</div>' +
+      '<div class="slc-join"><div><b>정리표 PDF, 회원은 무료</b><p>회원가입 한 번이면 모든 정리표 PDF를 받을 수 있어요.</p></div><a class="slc-btn p" href="' + esc(JOIN) + '">회원가입하고 받기</a></div>' +
+      '</div>';
+    lb.insertAdjacentHTML('beforebegin', h);
+    var box = lb.parentNode.querySelector('.slc-lib');
+    function filt() {
+      var on = box.querySelector('.slc-tabs .on');
+      var a = on ? on.getAttribute('data-a') : '전체';
+      var q = box.querySelector('.slc-top input').value.trim().toLowerCase();
+      box.querySelectorAll('.slc-card').forEach(function (c) {
+        c.style.display = ((a === '전체' || c.getAttribute('data-area') === a) && (!q || c.getAttribute('data-q').indexOf(q) >= 0)) ? '' : 'none';
+      });
+    }
+    box.addEventListener('click', function (e) {
+      var t = e.target.closest('.slc-tabs button'); if (!t) return;
+      box.querySelectorAll('.slc-tabs button').forEach(function (b) { b.classList.toggle('on', b === t); }); filt();
+    });
+    box.querySelector('.slc-top input').addEventListener('input', filt);
+  }
+  function view(posts) {
+    document.body.classList.add('slc-view');
+    var m = /[?&]idx=(\d+)/.exec(location.search), me = null;
+    posts.forEach(function (p) { if (m && String(p.post) === m[1]) me = p; });
+    var bv = document.querySelector('.board_view'), txt = bv.querySelector('.board_txt_area');
+    if (me) bv.insertAdjacentHTML('afterbegin', '<div class="slc-eye2">' + esc(me.area) + ' · ' + esc(me.topic) + '</div>');
+    var col = txt.querySelector('.dcs-col');
+    if (!me || !col) return;
+    var hs = [].slice.call(col.querySelectorAll('h2'));
+    hs.forEach(function (h, i) { h.id = h.id || 'slc-h' + (i + 1); });
+    var wrap = document.createElement('div'); wrap.className = 'slc slc-body';
+    txt.parentNode.insertBefore(wrap, txt); wrap.appendChild(txt);
+    wrap.insertAdjacentHTML('beforeend', '<aside class="slc-aside">' +
+      '<div class="slc-box"><h4>이 글의 차례</h4><ol>' + hs.map(function (h, i) {
+        var s = h.cloneNode(true); var sm = s.querySelector('small'); var no = sm ? sm.textContent.trim() : ''; if (sm) sm.remove();
+        return '<li data-to="' + h.id + '"' + (i ? '' : ' class="on"') + '>' + esc((/^\d+$/.test(no) ? no + ' ' : '') + s.textContent.trim()) + '</li>';
+      }).join('') + '</ol></div>' +
+      '<div class="slc-box slc-free"><img src="' + esc(BASE + me.thumb) + '" alt="' + esc(me.freeTitle) + ' 1쪽"><b>' + esc(me.freeTitle) + '</b>' +
+        '<a class="slc-btn p" href="' + esc(prod(me.free)) + '">무료로 받기</a><span>대치동시크릿 회원 전용 자료</span><small><a href="' + esc(JOIN) + '">회원가입 하고 무료 자료 받기</a></small></div>' +
+      '<div class="slc-box slc-side"><img src="' + esc(BASE + me.cover) + '" alt="' + esc(me.lessonTitle) + ' 표지"><b>이 내용 추가 자료 보기</b><span>' + esc(me.lessonTitle) + '</span>' +
+        '<a class="slc-btn k" href="' + esc(prod(me.lesson)) + '">이 강 보기 →</a><a class="slc-btn" href="' + esc(me.series) + '">어법특강 패키지 →</a></div>' +
+      '</aside>');
+    var lis = [].slice.call(wrap.querySelectorAll('.slc-aside li'));
+    wrap.addEventListener('click', function (e) {
+      var li = e.target.closest('.slc-aside li'); if (!li) return;
+      var t = document.getElementById(li.getAttribute('data-to'));
+      if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 120, behavior: 'smooth' });
+    });
+    window.addEventListener('scroll', function () {
+      var cur = hs[0];
+      hs.forEach(function (h) { if (h.getBoundingClientRect().top < 160) cur = h; });
+      lis.forEach(function (li) { li.classList.toggle('on', li.getAttribute('data-to') === cur.id); });
+    }, { passive: true });
+    var others = posts.filter(function (p) { return p.post && p !== me; });
+    if (others.length) {
+      bv.insertAdjacentHTML('afterend', '<div class="slc slc-rel"><div class="slc-sh"><h3>함께 보면 좋은 자료</h3></div><div class="slc-grid">' + others.slice(0, 3).map(card).join('') + '</div></div>');
+    }
+  }
+  fetch(BASE + 'column/index.json').then(function (r) { return r.json(); }).then(function (d) {
+    var posts = d.posts || [];
+    run(posts);
+    if (!DONE) { document.addEventListener('DOMContentLoaded', function () { run(posts); }); window.addEventListener('load', function () { run(posts); }); setTimeout(function () { run(posts); }, 1500); }
+  }).catch(function () { /* 표를 못 받으면 아임웹 기본 모양 그대로 */ });
+})();

@@ -1,0 +1,118 @@
+/* ═══ 회원용 시크릿자료(/secret-library) 게시판 — 시안 A 깔끔형 (2026-10-30 사장님 선택)
+   흰 바탕 · 가는 선 · 핑크 포인트 · 제목 Paperlogy. board.js(칼럼 게시판) 가 이 파일을 불러오고 화면을 그립니다.
+   목록: 소개 → 회원 무료자료 카드 → 대상별 안내 → 최신 칼럼(글이 4편 넘으면) → 회원가입 띠
+   글 보기: 큰 제목 + 오른쪽 따라오는 상자(차례 · 무료로 받기 · 이 강 보기) + 아래 함께 보면 좋은 자료 */
+.slc, .slc * { box-sizing: border-box; }
+.slc { --pink: #E4587E; --ink: #1d1d24; --sub: #6d6a75; --line: #e9e6ec; --soft: #f6f1f3; --blush: #fbf3f6;
+  --h: 'Paperlogy', 'Noto Sans KR', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif !important; color: var(--ink); word-break: keep-all; line-height: 1.6; }
+.slc * { font-family: inherit !important; }
+.slc a { color: inherit !important; text-decoration: none !important; }
+.slc img { display: block; max-width: 100%; }
+
+/* ── 목록 ── */
+body.slc-list .li_board, body.slc-list .li_footer, body.slc-list .board_list_title, body.slc-list ._list_wrap > .doz_row > .col-dz > :not(.slc) { display: none !important; }
+.slc-lib { max-width: 1120px; margin: 0 auto; padding: 8px 0 60px; }
+.slc-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 6px 0 14px; font-size: 13px; color: var(--sub); }
+.slc-top b { color: var(--ink); font-weight: 700; }
+.slc-top input { width: 260px; max-width: 46vw; height: 34px; border: 0; border-bottom: 1px solid var(--line); background: transparent;
+  font-size: 13px; padding: 0 2px 0 22px; outline: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236d6a75' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: 0 50%; }
+.slc-top input:focus { border-color: var(--ink); }
+.slc-tabs { display: flex; gap: 26px; border-bottom: 1px solid var(--line); font-size: 14px; overflow-x: auto; scrollbar-width: none; }
+.slc-tabs button { border: 0; background: none; padding: 12px 0; color: var(--sub); cursor: pointer; white-space: nowrap; font: inherit; }
+.slc-tabs button.on { color: var(--ink); font-weight: 700; box-shadow: inset 0 -2px 0 var(--ink); }
+
+.slc-hero { position: relative; display: grid; grid-template-columns: 1.05fr .95fr; gap: 30px; align-items: center; margin: 24px 0 56px;
+  padding: 58px 48px; background: var(--soft); border-radius: 4px; overflow: hidden; }
+.slc-eye { font-size: 13px; font-weight: 700; letter-spacing: .22em; color: var(--pink); }
+.slc-hero h2 { font-family: var(--h) !important; font-weight: 800; font-size: 40px; line-height: 1.28; letter-spacing: -.03em; margin: 12px 0 18px; color: var(--ink); }
+.slc-hero h2 em { font-style: normal; color: var(--pink); }
+.slc-hero p { font-size: 15.5px; color: var(--sub); margin: 0 0 26px; line-height: 1.75; }
+.slc-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+.slc-btn { display: inline-flex; align-items: center; height: 46px; padding: 0 22px; border: 1.5px solid var(--ink); font-weight: 700; font-size: 14.5px; cursor: pointer; background: #fff; }
+.slc-btn.k { background: var(--ink); color: #fff !important; }
+.slc-btn.p { background: var(--pink); border-color: var(--pink); color: #fff !important; border-radius: 999px; }
+.slc-hero-vis { position: relative; height: 290px; }
+.slc-hero-vis img { position: absolute; width: 62%; border: 1px solid var(--line); box-shadow: 0 18px 40px rgba(29,29,36,.14); background: #fff; }
+.slc-hero-vis img:nth-child(1) { right: 4%; top: 0; transform: rotate(3deg); }
+.slc-hero-vis img:nth-child(2) { right: 30%; top: 26px; transform: rotate(-2deg); }
+.slc-hero-vis span { position: absolute; right: 6%; bottom: 0; background: #fff; border: 1.5px solid var(--ink); border-radius: 999px; padding: 6px 16px; font-size: 13px; font-weight: 700; }
+
+.slc-sec { margin: 0 0 56px; }
+.slc-sh { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--line); margin-bottom: 26px; }
+.slc-sh h3 { font-family: var(--h) !important; font-weight: 800; font-size: 22px; margin: 0; padding-bottom: 12px; box-shadow: inset 0 -2px 0 var(--ink); }
+.slc-sh small { font-size: 13px; color: var(--sub); padding-bottom: 12px; }
+.slc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px 28px; }
+.slc-card { display: block; min-width: 0; }
+.slc-card .th { aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid var(--line); background: #fff; }
+.slc-card .th img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .25s; }
+.slc-card:hover .th img { transform: scale(1.03); }
+.slc-card .ar { display: block; margin: 14px 0 4px; font-size: 12.5px; font-weight: 700; color: var(--pink); }
+.slc-card b { display: block; font-family: var(--h) !important; font-weight: 800; font-size: 19px; line-height: 1.38; letter-spacing: -.02em; }
+.slc-card .sb { display: block; font-size: 14px; color: var(--sub); margin-top: 4px; }
+.slc-card .ds { display: block; font-size: 13px; color: var(--sub); margin-top: 10px; }
+.slc-card .mt { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 12.5px; color: var(--sub); }
+.slc-pill { display: inline-block; border: 1px solid #f3c3d4; color: var(--pink); border-radius: 999px; padding: 1px 10px; font-size: 12px; font-weight: 700; }
+.slc-grid.feat { grid-template-columns: 1.35fr 1fr 1fr; }
+.slc-grid.feat .slc-card:first-child { grid-row: span 2; }
+.slc-grid.feat .slc-card:first-child b { font-size: 24px; }
+.slc-who { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 0 0 56px; }
+.slc-who a { display: block; border: 1px solid var(--line); padding: 24px 22px; transition: border-color .15s; }
+.slc-who a:hover { border-color: var(--pink); }
+.slc-who b { display: block; font-size: 14px; margin-bottom: 8px; }
+.slc-who p { font-size: 14px; color: var(--sub); margin: 0 0 14px; line-height: 1.7; }
+.slc-who em { font-style: normal; font-size: 13.5px; font-weight: 700; color: var(--pink); }
+.slc-join { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 30px 36px; background: var(--blush); border-radius: 4px; }
+.slc-join b { display: block; font-family: var(--h) !important; font-weight: 800; font-size: 21px; }
+.slc-join p { margin: 4px 0 0; font-size: 14px; color: var(--sub); }
+.slc-empty { padding: 40px 0; text-align: center; color: var(--sub); font-size: 14px; }
+
+/* ── 글 보기 ── */
+body.slc-view .board_view .board-title { border: 0 !important; padding: 0 !important; }
+body.slc-view .board_view { max-width: 1120px; margin: 0 auto; }
+.slc-eye2 { max-width: 1120px; margin: 26px auto 0; font-size: 12.5px; font-weight: 700; letter-spacing: .14em; color: #E4587E; font-family: 'Noto Sans KR', sans-serif !important; }
+body.slc-view h1.view_tit { font-family: 'Paperlogy', 'Noto Sans KR', sans-serif !important; font-weight: 800 !important; font-size: 34px !important;
+  line-height: 1.34 !important; letter-spacing: -.02em !important; color: #1d1d24 !important; margin: 8px 0 14px !important; white-space: normal !important; }
+body.slc-view .board_summary { border-bottom: 1px solid #e9e6ec !important; padding-bottom: 18px !important; margin-bottom: 8px !important; }
+.slc-body { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 56px; align-items: start; }
+.slc-body > .board_txt_area { min-width: 0; }
+.slc-body .dcs-col { margin: 0 !important; }
+.slc-aside { position: sticky; top: 110px; }
+.slc-box { border: 1px solid var(--line); padding: 20px; margin-bottom: 16px; background: #fff; }
+.slc-box h4 { font-family: var(--h) !important; font-weight: 800; font-size: 15px; margin: 0 0 10px; }
+.slc-box ol { list-style: none; margin: 0; padding: 0; }
+.slc-box li { font-size: 13.5px; color: var(--sub); padding: 7px 0; border-top: 1px solid var(--line); cursor: pointer; line-height: 1.45; }
+.slc-box li:first-child { border-top: 0; }
+.slc-box li.on { color: var(--ink); font-weight: 700; }
+.slc-box li.on::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--pink); margin: 0 7px 2px 0; }
+.slc-free { text-align: center; background: var(--blush); border-color: #f6dbe5; }
+.slc-free img { width: 120px; margin: 4px auto 12px; border: 1px solid var(--line); box-shadow: 0 8px 20px rgba(29,29,36,.12); }
+.slc-free b, .slc-side b { display: block; font-family: var(--h) !important; font-weight: 800; font-size: 15.5px; margin-bottom: 10px; }
+.slc-free .slc-btn.p { width: 100%; justify-content: center; height: 42px; }
+.slc-free span { display: block; margin-top: 10px; font-size: 12.5px; font-weight: 700; }
+.slc-free small { display: block; margin-top: 2px; font-size: 12px; color: var(--sub); }
+.slc-side { text-align: center; }
+.slc-side img { width: 110px; margin: 2px auto 12px; }
+.slc-side span { display: block; font-size: 12.5px; color: var(--sub); margin: -6px 0 12px; }
+.slc-side .slc-btn { width: 100%; justify-content: center; height: 40px; font-size: 13.5px; border-radius: 999px; margin-top: 6px; }
+.slc-rel { max-width: 1120px; margin: 50px auto 0; }
+
+@media (max-width: 1000px) {
+  .slc-body { grid-template-columns: 1fr; }
+  .slc-aside { display: none; }
+  .slc-hero { grid-template-columns: 1fr; padding: 40px 26px; }
+  .slc-hero-vis { height: 220px; }
+  .slc-grid, .slc-grid.feat, .slc-who { grid-template-columns: 1fr 1fr; }
+  .slc-grid.feat .slc-card:first-child { grid-row: auto; grid-column: span 2; }
+}
+@media (max-width: 640px) {
+  .slc-lib { padding: 0 2px 40px; }
+  .slc-hero h2 { font-size: 29px; }
+  .slc-grid, .slc-grid.feat, .slc-who { grid-template-columns: 1fr; }
+  .slc-grid.feat .slc-card:first-child { grid-column: auto; }
+  .slc-join { flex-direction: column; align-items: flex-start; padding: 24px 22px; }
+  body.slc-view h1.view_tit { font-size: 25px !important; }
+  .slc-top input { display: none; }
+}
