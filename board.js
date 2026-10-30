@@ -1260,7 +1260,7 @@
     if (!col) return;
     done = true;
     var l = document.createElement('link');
-    l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=2';
+    l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=3';
     document.head.appendChild(l);
     var title = (document.querySelector('meta[property="og:title"]') || {}).content || document.title;
     var desc = (document.querySelector('meta[name="description"]') || {}).content || '';
