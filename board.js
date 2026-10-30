@@ -1260,7 +1260,7 @@
     if (!col) return;
     done = true;
     var l = document.createElement('link');
-    l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=1';
+    l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=2';
     document.head.appendChild(l);
     var title = (document.querySelector('meta[property="og:title"]') || {}).content || document.title;
     var desc = (document.querySelector('meta[name="description"]') || {}).content || '';
@@ -1274,12 +1274,17 @@
       dateModified: col.getAttribute('data-updated') || undefined,
       mainEntityOfPage: location.origin + location.pathname + location.search
     }];
-    var qs = [].slice.call(col.querySelectorAll('.faq details')).map(function (d) {
-      var q = txt(d.querySelector('summary')).replace(/^Q\d+\.\s*/, '');
-      var c = d.cloneNode(true); var s = c.querySelector('summary'); if (s) s.remove();
-      return q && { '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: txt(c) } };
+    /* 아임웹은 저장할 때 details·summary 를 지웁니다 → 질문과 답은 펼친 .qa(.q · .a) */
+    var qs = [].slice.call(col.querySelectorAll('.faq .qa')).map(function (d) {
+      var q = txt(d.querySelector('.q')).replace(/^Q\d+\.\s*/, '');
+      return q && { '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: txt(d.querySelector('.a')) } };
     }).filter(Boolean);
     if (qs.length) data.push({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: qs });
+    /* 기출 「정답 보기」 — 눌러야 정답이 보입니다 */
+    col.addEventListener('click', function (e) {
+      var b = e.target.closest('.ans-b');
+      if (b) b.parentNode.classList.toggle('open');
+    });
     data.forEach(function (d) {
       var s = document.createElement('script');
       s.type = 'application/ld+json'; s.text = JSON.stringify(d);
