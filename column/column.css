@@ -3,8 +3,9 @@
 @font-face{font-family:'Paperlogy';font-weight:800;font-display:swap;src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2')}
 @font-face{font-family:'Dahyun';font-display:swap;src:url('https://daechisecret.github.io/imweb-assets/landing/fonts/dahyun.woff2') format('woff2')}
 /* 칼럼 글 공통 — make_post.py 가 칼럼 CSS 를 .dcs-col 안으로 가둬 만듦. 손으로 고치지 말고 생성기를 고칠 것 */
-.dcs-col{--pink:#E4587E !important;--ink:#1d1d24 !important;--sub:#6d6a75 !important;--line:#e9e6ec !important;--soft:#f6f1f3 !important;--h:'Paperlogy','Noto Sans KR',sans-serif !important;max-width:760px !important;margin:0 auto !important;color:var(--ink) !important;font-family:'Noto Sans KR',sans-serif !important;font-size:16.5px !important;line-height:1.85 !important;word-break:keep-all !important}
+:is(.dcs-col,#dcs-z){--pink:#E4587E !important;--ink:#1d1d24 !important;--sub:#6d6a75 !important;--line:#e9e6ec !important;--soft:#f6f1f3 !important;--h:'Paperlogy','Noto Sans KR',sans-serif !important;max-width:760px !important;margin:0 auto !important;color:var(--ink) !important;font-family:'Noto Sans KR',sans-serif !important;font-size:16.5px !important;line-height:1.85 !important;word-break:keep-all !important}
 .dcs-col *{box-sizing:border-box !important}
+:is(.dcs-col,#dcs-z) *{font-family:inherit !important}
 .dcs-col a{color:inherit !important;text-decoration:none !important}
 .dcs-col .cat{font-size:12.5px !important;font-weight:700 !important;color:var(--pink) !important;letter-spacing:.14em !important;margin-bottom:6px !important}
 .dcs-col img{max-width:100% !important;height:auto !important}
@@ -13,15 +14,15 @@
 .dcs-col *{box-sizing:border-box !important;margin:0 !important;padding:0 !important}
 .dcs-col{max-width:720px !important}
 .dcs-col .answer{position:relative !important;background:#fdf0f4 !important;border-radius:14px !important;padding:30px 26px 20px !important;margin:38px 0 34px !important}
-.dcs-col .answer .lbl{position:absolute !important;top:-14px !important;left:22px !important;background:var(--pink) !important;color:#fff !important;font-family:Dahyun !important;font-size:19px !important;padding:1px 14px !important;border-radius:12px !important;transform:rotate(-2deg) !important}
-.dcs-col .answer p{font-family:Dahyun !important;font-size:21px !important;line-height:1.6 !important}
+:is(.dcs-col,#dcs-z) .answer .lbl{position:absolute !important;top:-14px !important;left:22px !important;background:var(--pink) !important;color:#fff !important;font-family:Dahyun !important;font-size:19px !important;padding:1px 14px !important;border-radius:12px !important;transform:rotate(-2deg) !important}
+:is(.dcs-col,#dcs-z) .answer p{font-family:Dahyun !important;font-size:21px !important;line-height:1.6 !important}
 .dcs-col .answer p :is(b,strong){font-weight:400 !important;color:var(--pink) !important}
 .dcs-col .toc{background:var(--soft) !important;padding:20px 26px !important;margin:0 0 44px !important;font-size:14.5px !important}
-.dcs-col .toc :is(b,strong){font-family:var(--h) !important;display:block !important;margin-bottom:6px !important}
+:is(.dcs-col,#dcs-z) .toc :is(b,strong){font-family:var(--h) !important;display:block !important;margin-bottom:6px !important}
 .dcs-col .toc ol{padding-left:18px !important;color:var(--sub) !important}
-.dcs-col h2{font-family:var(--h) !important;font-weight:800 !important;font-size:25px !important;line-height:1.4 !important;margin:56px 0 14px !important;letter-spacing:-.01em !important}
-.dcs-col h2 small{display:block !important;font-family:'Noto Sans KR' !important;font-size:12.5px !important;font-weight:700 !important;color:var(--pink) !important;letter-spacing:.14em !important;margin-bottom:4px !important}
-.dcs-col h3{font-family:var(--h) !important;font-weight:700 !important;font-size:18px !important;margin:28px 0 8px !important}
+:is(.dcs-col,#dcs-z) h2{font-family:var(--h) !important;font-weight:800 !important;font-size:25px !important;line-height:1.4 !important;margin:56px 0 14px !important;letter-spacing:-.01em !important}
+:is(.dcs-col,#dcs-z) h2 small{display:block !important;font-family:'Noto Sans KR' !important;font-size:12.5px !important;font-weight:700 !important;color:var(--pink) !important;letter-spacing:.14em !important;margin-bottom:4px !important}
+:is(.dcs-col,#dcs-z) h3{font-family:var(--h) !important;font-weight:700 !important;font-size:18px !important;margin:28px 0 8px !important}
 .dcs-col p{margin:12px 0 !important}
 .dcs-col mark{background:linear-gradient(transparent 60%,#ffef8a 60%) !important;color:inherit !important}
 .dcs-col table{width:100% !important;border-collapse:collapse !important;font-size:15px !important;margin:18px 0 6px !important}
@@ -37,17 +38,17 @@
 .dcs-col .ex .ans-b{cursor:pointer !important;color:var(--ink) !important;font-weight:700 !important;font-size:13.5px !important}
 .dcs-col .mist{counter-reset:m !important;list-style:none !important}
 .dcs-col .mist li{counter-increment:m !important;padding:14px 0 14px 46px !important;border-bottom:1px solid var(--line) !important;position:relative !important}
-.dcs-col .mist li::before{content:counter(m,decimal-leading-zero) !important;position:absolute !important;left:0 !important;top:12px !important;font-family:'Paperlogy' !important;font-weight:800 !important;font-size:22px !important;color:#e8e2ea !important}
+:is(.dcs-col,#dcs-z) .mist li::before{content:counter(m,decimal-leading-zero) !important;position:absolute !important;left:0 !important;top:12px !important;font-family:'Paperlogy' !important;font-weight:800 !important;font-size:22px !important;color:#e8e2ea !important}
 .dcs-col .mist li :is(b,strong){display:block !important}
 .dcs-col .cta{border:1.5px solid var(--ink) !important;display:grid !important;grid-template-columns:150px 1fr !important;gap:24px !important;align-items:center !important;padding:22px !important;margin:44px 0 !important}
 .dcs-col .cta img{width:100% !important;border:1px solid var(--line) !important}
 .dcs-col .cta .k{font-size:12px !important;font-weight:700 !important;color:var(--pink) !important;letter-spacing:.14em !important}
-.dcs-col .cta :is(b,strong){font-family:var(--h) !important;font-size:19px !important;display:block !important;margin:2px 0 4px !important}
+:is(.dcs-col,#dcs-z) .cta :is(b,strong){font-family:var(--h) !important;font-size:19px !important;display:block !important;margin:2px 0 4px !important}
 .dcs-col .cta p{font-size:14px !important;color:var(--sub) !important;margin:0 0 12px !important}
 .dcs-col .btn{display:inline-block !important;padding:11px 20px !important;font-weight:700 !important;font-size:14px !important;border:1.5px solid var(--ink) !important;background:var(--ink) !important;color:#fff !important}
 .dcs-col .btn.o{background:#fff !important;color:var(--ink) !important}
 .dcs-col .teacher{background:var(--soft) !important;padding:22px 26px !important;margin:30px 0 !important}
-.dcs-col .teacher :is(b,strong){font-family:var(--h) !important;font-size:17px !important}
+:is(.dcs-col,#dcs-z) .teacher :is(b,strong){font-family:var(--h) !important;font-size:17px !important}
 .dcs-col .teacher p{font-size:14.5px !important;color:var(--sub) !important;margin:6px 0 12px !important}
 .dcs-col .faq .qa{border-bottom:1px solid var(--line) !important;padding:16px 0 !important}
 .dcs-col .faq .qa:first-of-type{border-top:1.5px solid var(--ink) !important}
@@ -69,7 +70,7 @@
 .dcs-col .book-vis .pg1{width:150px !important;left:70px !important;top:60px !important;z-index:2 !important;transform:rotate(5deg) !important;height:120px !important;object-fit:cover !important;object-position:top !important}
 .dcs-col .book-vis .pg2{width:150px !important;left:55px !important;top:170px !important;z-index:1 !important;transform:rotate(-4deg) !important;height:120px !important;object-fit:cover !important;object-position:top !important}
 .dcs-col .book .k{font-size:12px !important;font-weight:700 !important;color:var(--pink) !important;letter-spacing:.14em !important}
-.dcs-col .book :is(b,strong){font-family:var(--h) !important;font-size:20px !important;display:block !important;margin:2px 0 6px !important}
+:is(.dcs-col,#dcs-z) .book :is(b,strong){font-family:var(--h) !important;font-size:20px !important;display:block !important;margin:2px 0 6px !important}
 .dcs-col .book p{font-size:14.5px !important;color:var(--sub) !important;margin:0 0 10px !important}
 .dcs-col .chips{list-style:none !important;display:flex !important;flex-wrap:wrap !important;gap:6px !important;margin:0 0 14px !important}
 .dcs-col .chips li{font-size:12.5px !important;border:1px solid var(--line) !important;background:#fff !important;padding:2px 10px !important;border-radius:20px !important}
@@ -80,42 +81,49 @@
 .dcs-col .pkg em{margin-left:auto !important;font-style:normal !important;font-weight:700 !important}
 .dcs-col .teacher{display:grid !important;grid-template-columns:110px 1fr !important;gap:22px !important;align-items:center !important}
 .dcs-col .teacher img{width:110px !important;box-shadow:0 8px 20px rgba(40,20,40,.14) !important}
-.dcs-col .teacher p :is(b,strong){font-family:inherit !important;font-size:inherit !important;color:var(--ink) !important}
+:is(.dcs-col,#dcs-z) .teacher p :is(b,strong){font-family:inherit !important;font-size:inherit !important;color:var(--ink) !important}
 .dcs-col .pdfthumb{width:120px !important;display:block !important;margin:0 auto 12px !important;box-shadow:0 6px 16px rgba(40,20,40,.14) !important;transform:rotate(-2deg) !important}
-.dcs-col > p:not(.cap){font-family:Dahyun !important;font-size:20px !important;line-height:1.7 !important}
-.dcs-col > p:not(.cap) :is(b,strong){font-family:Dahyun !important;font-weight:400 !important;color:var(--pink) !important}
-.dcs-col .mist li :is(b,strong){font-family:var(--h) !important;font-weight:800 !important;font-size:16.5px !important}
-.dcs-col .mist li{font-family:Dahyun !important;font-size:19px !important}
+:is(.dcs-col,#dcs-z) > p:not(.cap){font-family:Dahyun !important;font-size:20px !important;line-height:1.7 !important}
+:is(.dcs-col,#dcs-z) > p:not(.cap) :is(b,strong){font-family:Dahyun !important;font-weight:400 !important;color:var(--pink) !important}
+:is(.dcs-col,#dcs-z) .mist li :is(b,strong){font-family:var(--h) !important;font-weight:800 !important;font-size:16.5px !important}
+:is(.dcs-col,#dcs-z) .mist li{font-family:Dahyun !important;font-size:19px !important}
 .dcs-col .qa-gc{margin:10px 0 0 !important;border:1px solid var(--line) !important;border-radius:8px !important;padding:10px 14px 10px 64px !important;position:relative !important;background:#fff !important}
 .dcs-col .qa-gc span{position:absolute !important;left:12px !important;top:12px !important;font-size:11.5px !important;font-weight:700 !important;color:#fff !important;background:var(--pink) !important;padding:1px 8px !important;border-radius:10px !important}
 .dcs-col .qa-gc p{margin:0 !important;font-size:15px !important;color:var(--ink) !important}
 .dcs-col .qa-gc p :is(b,strong){color:var(--pink) !important}
-.dcs-col .qa-gc em{display:block !important;font-style:normal !important;font-family:Dahyun !important;font-size:16px !important;color:var(--sub) !important;margin-top:2px !important}
+:is(.dcs-col,#dcs-z) .qa-gc em{display:block !important;font-style:normal !important;font-family:Dahyun !important;font-size:16px !important;color:var(--sub) !important;margin-top:2px !important}
 .dcs-col .faq .a > p{font-size:15.5px !important;line-height:1.85 !important}
 .dcs-col .teacher > div > :is(b,strong){font-size:17px !important;line-height:1.5 !important}
-.dcs-col .teacher p.hand{font-family:Dahyun !important;font-size:18px !important;color:var(--ink) !important}
+:is(.dcs-col,#dcs-z) .teacher p.hand{font-family:Dahyun !important;font-size:18px !important;color:var(--ink) !important}
 .dcs-col ul.hearts{list-style:none !important;margin:14px 0 8px !important;padding:0 !important}
-.dcs-col ul.hearts li{position:relative !important;padding-left:26px !important;margin:6px 0 !important;font-family:Dahyun !important;font-size:20px !important;line-height:1.6 !important}
+:is(.dcs-col,#dcs-z) ul.hearts li{position:relative !important;padding-left:26px !important;margin:6px 0 !important;font-family:Dahyun !important;font-size:20px !important;line-height:1.6 !important}
 .dcs-col ul.hearts li::before{content:"" !important;position:absolute !important;left:2px !important;top:.55em !important;width:14px !important;height:13px !important;background:url("data:image/svg+xml !important;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 22'><path fill='%23E4587E' d='M12 21.3 10.6 20C5.4 15.4 2 12.3 2 8.5 2 5.4 4.4 3 7.5 3c1.7 0 3.4.8 4.5 2.1C13.1 3.8 14.8 3 16.5 3 19.6 3 22 5.4 22 8.5c0 3.8-3.4 6.9-8.6 11.5L12 21.3z'/></svg>") no-repeat center/contain !important}
-.dcs-col ul.hearts li :is(b,strong){font-family:Dahyun !important;font-weight:400 !important;color:var(--pink) !important}
+:is(.dcs-col,#dcs-z) ul.hearts li :is(b,strong){font-family:Dahyun !important;font-weight:400 !important;color:var(--pink) !important}
 .dcs-col .author{display:flex !important;gap:16px !important;align-items:center !important;border-top:1px solid var(--line) !important;border-bottom:1px solid var(--line) !important;padding:22px 0 !important;margin-top:50px !important}
 .dcs-col .author img{height:44px !important}
-.dcs-col .author :is(b,strong){font-family:var(--h) !important}
+:is(.dcs-col,#dcs-z) .author :is(b,strong){font-family:var(--h) !important}
 .dcs-col .author p{font-size:13.5px !important;color:var(--sub) !important;margin:2px 0 0 !important}
 .dcs-col table td:first-child,.dcs-col table th:first-child{min-width:6.5em !important}
-.dcs-col .mist li :is(b,strong):not(.mt){display:inline !important;font-family:inherit !important;font-weight:700 !important;font-size:inherit !important;color:var(--pink) !important}
+:is(.dcs-col,#dcs-z) .mist li :is(b,strong):not(.mt){display:inline !important;font-family:inherit !important;font-weight:700 !important;font-size:inherit !important;color:var(--pink) !important}
 .dcs-col .ex .ans-t{display:none !important;margin-top:4px !important;color:var(--sub) !important}
 .dcs-col .ex .ans.open .ans-t{display:block !important}
 .dcs-col .ex .ans-b{display:inline-block !important;cursor:pointer !important;user-select:none !important}
 .dcs-col .ex .ans-b::after{content:' ▾' !important;color:var(--pink) !important}
 .dcs-col .ex .ans.open .ans-b::after{content:' ▴' !important}
-.dcs-col .faq .q{font-family:'Paperlogy','Noto Sans KR',sans-serif !important;font-weight:700 !important;font-size:17px !important;line-height:1.5 !important;margin:0 0 8px !important;color:var(--ink) !important}
+:is(.dcs-col,#dcs-z) .faq .q{font-family:'Paperlogy','Noto Sans KR',sans-serif !important;font-weight:700 !important;font-size:17px !important;line-height:1.5 !important;margin:0 0 8px !important;color:var(--ink) !important}
 .dcs-col .mist li{list-style:none !important}
 .dcs-col .faq ol,.dcs-col .faq ul{margin:0 !important}
 .dcs-col .cta .k{display:block !important}
-.dcs-col p.copy{margin-top:14px !important;padding:14px 16px !important;background:var(--soft) !important;border-radius:10px !important;font-family:'Noto Sans KR',sans-serif !important;font-size:13.5px !important;color:var(--sub) !important;line-height:1.7 !important}
+:is(.dcs-col,#dcs-z) p.copy{margin-top:14px !important;padding:14px 16px !important;background:var(--soft) !important;border-radius:10px !important;font-family:'Noto Sans KR',sans-serif !important;font-size:13.5px !important;color:var(--sub) !important;line-height:1.7 !important}
 .dcs-col p.copy :is(b,strong){color:var(--ink) !important}
-.dcs-col p.upd{font-family:'Noto Sans KR',sans-serif !important;font-size:13px !important;color:var(--sub) !important;margin:4px 0 0 !important}
+.dcs-col .more{display:grid !important;grid-template-columns:96px 1fr !important;gap:20px !important;align-items:center !important;margin:-44px 0 44px !important;padding:18px 22px !important;border:1.5px solid var(--ink) !important;border-top:1px dashed var(--line) !important;background:var(--soft) !important}
+.dcs-col .more img{width:96px !important;border:1px solid var(--line) !important;box-shadow:0 6px 14px rgba(29,29,36,.12) !important}
+.dcs-col .more .k{display:block !important;font-size:12px !important;font-weight:700 !important;color:var(--pink) !important;letter-spacing:.08em !important}
+:is(.dcs-col,#dcs-z) .more :is(b,strong){display:block !important;font-family:var(--h) !important;font-weight:800 !important;font-size:17px !important;margin:2px 0 !important}
+:is(.dcs-col,#dcs-z) .more p{font-size:13.5px !important;color:var(--sub) !important;margin:0 0 10px !important;font-family:'Noto Sans KR',sans-serif !important;line-height:1.6 !important}
+.dcs-col .more .two{display:flex !important;gap:8px !important;flex-wrap:wrap !important}
+.dcs-col .more .btn{margin:0 !important}
+:is(.dcs-col,#dcs-z) p.upd{font-family:'Noto Sans KR',sans-serif !important;font-size:13px !important;color:var(--sub) !important;margin:4px 0 0 !important}
 @media (max-width:900px){.dcs-col .book{grid-template-columns:1fr !important}
 .dcs-col .teacher{grid-template-columns:1fr !important}}
 @media (max-width:900px){.dcs-col .cta{grid-template-columns:1fr !important}}

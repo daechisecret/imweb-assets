@@ -1260,7 +1260,7 @@
     if (!col) return;
     done = true;
     var l = document.createElement('link');
-    l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=3';
+    l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=4';
     document.head.appendChild(l);
     var title = (document.querySelector('meta[property="og:title"]') || {}).content || document.title;
     var desc = (document.querySelector('meta[name="description"]') || {}).content || '';
@@ -1299,7 +1299,7 @@
 
 /* ── 회원용 시크릿자료(/secret-library) 게시판 모양 — 시안 A 깔끔형 (2026-10-30 사장님) ──
    목록 화면: 아임웹 줄 목록은 감추고(링크는 그대로 둠) 칼럼 목록 표(column/index.json)로 소개 · 카드 · 대상별 안내 · 회원가입 띠를 그립니다.
-   글 보기: 제목 위에 갈래 딱지, 본문 오른쪽에 따라 내려오는 상자(이 글의 차례 · 무료로 받기 · 이 강 보기), 아래 함께 보면 좋은 자료.
+   글 보기: 제목 위에 갈래 딱지, 본문 오른쪽에 따라 내려오는 상자(이 글의 차례 · 무료로 받기 — 「이 강 보기」는 본문 무료 PDF 상자 바로 아래로 옮김, 사장님 10-30), 아래 함께 보면 좋은 자료.
    표에 없는 글(번호가 없는 글)은 모양만 다듬고 오른쪽 상자는 그리지 않습니다. 글쓰기 · 댓글 · 좋아요는 아임웹 것 그대로입니다. */
 (function () {
   var path = (document.documentElement.getAttribute('data-sl-path') || location.pathname).replace(/\/$/, '');
@@ -1308,7 +1308,7 @@
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
   var VIEW = /[?&]bmode=view/.test(location.search);
   var JOIN = '/site_join_pattern_choice?back_url=' + btoa('/secret-library');
-  ['column/column.css?v=3', 'column/library.css?v=1'].forEach(function (f) {
+  ['column/column.css?v=4', 'column/library.css?v=2'].forEach(function (f) {
     var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = BASE + f; document.head.appendChild(l);
   });
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -1389,8 +1389,6 @@
       }).join('') + '</ol></div>' +
       '<div class="slc-box slc-free"><img src="' + esc(BASE + me.thumb) + '" alt="' + esc(me.freeTitle) + ' 1쪽"><b>' + esc(me.freeTitle) + '</b>' +
         '<a class="slc-btn p" href="' + esc(prod(me.free)) + '">무료로 받기</a><span>대치동시크릿 회원 전용 자료</span><small><a href="' + esc(JOIN) + '">회원가입 하고 무료 자료 받기</a></small></div>' +
-      '<div class="slc-box slc-side"><img src="' + esc(BASE + me.cover) + '" alt="' + esc(me.lessonTitle) + ' 표지"><b>이 내용 추가 자료 보기</b><span>' + esc(me.lessonTitle) + '</span>' +
-        '<a class="slc-btn k" href="' + esc(prod(me.lesson)) + '">이 강 보기 →</a><a class="slc-btn" href="' + esc(me.series) + '">어법특강 패키지 →</a></div>' +
       '</aside>');
     var lis = [].slice.call(wrap.querySelectorAll('.slc-aside li'));
     wrap.addEventListener('click', function (e) {
