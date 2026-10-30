@@ -572,38 +572,48 @@
 
   /* ── ⑤-2 무료 0원 상품의 「이어서 공부할 자료」 — (2026-10-30 사장님)
      무료 정리표(0원 상품) 페이지에서는 연관상품이 **바로** 보여야 합니다.
-     학년을 고르면 위에 그 학년 **전체 패키지**, 아래에 **강별 표지 슬라이드**(이 정리표 강이 맨 앞).
+     학년별 **전체 패키지 카드를 두 단**(예비고1 · 고1 / 고2 · 고3)으로 모두 펼쳐 두고,
+     카드마다 [전체 패키지 보러 가기] [강별로 구매]. 「강별로 구매」를 누르면 그 학년 **강별 표지 슬라이드**가
+     카드들 아래에 열립니다(이 정리표 강이 맨 앞). 학년 버튼만 있을 때 「고1만 있는 것처럼 보인다」(사장님) → 이렇게 바꿈.
      표는 free-rel.json (parts/free/) — items 의 키가 0원 상품 번호입니다.
-     href 가 숫자면 상품 번호, 아니면 주소입니다 (리뉴얼 상품이 올라오기 전엔 시리즈 랜딩으로 보냅니다). */
+     href 가 숫자면 상품 번호(담기 단추), 아니면 주소입니다 (패키지 상품이 올라오기 전엔 시리즈 랜딩으로 보냅니다). */
   function freeHref(h) { return /^\d+$/.test(String(h)) ? prodUrl(h) : sameHost(location.origin + h); }
+  function freeNo(n) { return (n < 10 ? '0' : '') + n + '강'; }
 
-  function freePane(S, g, focus) {
-    var f = focus[g.grade] || [];
+  function freeCard(S, g, f) {
+    var hit = g.lessons.filter(function (l) { return f.indexOf(l.no) >= 0; })
+      .map(function (l) { return freeNo(l.no) + ' ' + l.title; }).join(' · ');
+    return '<div class="sf-pk" data-g="' + esc(g.grade) + '">' +
+      '<a class="sf-pk-th" href="' + esc(freeHref(g.pkg.href)) + '"><img src="' + esc(BASE + g.pkg.cover) + '" alt="' + esc(g.pkg.name) + ' 표지" loading="lazy"></a>' +
+      '<div class="sf-pk-tx"><span class="sf-gr">' + esc(g.grade) + '</span>' +
+        '<b>' + esc(g.pkg.name) + '</b><span class="sf-pk-sub">' + esc(g.pkg.sub) + '</span>' +
+        (hit ? '<span class="sf-hit">이 정리표 내용 · <em>' + esc(hit) + '</em></span>' : '') +
+        '<div class="sf-btns"><a class="sf-btn" href="' + esc(freeHref(g.pkg.href)) + '">전체 패키지 보러 가기</a>' +
+        '<button type="button" class="sf-btn2" data-g="' + esc(g.grade) + '">강별로 구매 <span aria-hidden="true">▾</span></button></div>' +
+      '</div></div>';
+  }
+
+  function freeLessons(S, g, f) {
     var ls = g.lessons.filter(function (l) { return f.indexOf(l.no) >= 0; })
       .concat(g.lessons.filter(function (l) { return f.indexOf(l.no) < 0; }));
-    var no = function (n) { return (n < 10 ? '0' : '') + n + '강'; };
-    return '<div class="sf-pkg">' +
-        '<a class="sf-pkg-th" href="' + esc(freeHref(g.pkg.href)) + '"><img src="' + esc(BASE + g.pkg.cover) + '" alt="' + esc(g.pkg.name) + ' 표지" loading="lazy"></a>' +
-        '<div class="sf-pkg-tx"><span class="sf-tag">전체 패키지</span>' +
-          '<b>' + esc(g.pkg.name) + '</b><span class="sf-pkg-sub">' + esc(g.pkg.sub) + ' · ' + esc(S.line) + '</span>' +
-          '<a class="sf-btn" href="' + esc(freeHref(g.pkg.href)) + '">전체 패키지 보러 가기 →</a></div>' +
-      '</div>' +
-      '<div class="sf-sub">강별로 구매하기 <small>필요한 강만 골라 담을 수 있어요</small></div>' +
+    return '<div class="sf-pane" data-g="' + esc(g.grade) + '" hidden>' +
+      '<div class="sf-sub"><b>' + esc(S.name) + ' ' + esc(g.grade) + '</b> 강별로 구매하기 <small>필요한 강만 골라 담을 수 있어요</small>' +
+        '<button type="button" class="sf-close" data-close="1" aria-label="닫기">닫기 ✕</button></div>' +
       '<div class="sr-strip">' +
         '<button type="button" class="sr-arr prev" data-arr="-1" aria-label="이전 강">' + ARROW.replace('D', 'M15 6l-6 6 6 6') + '</button>' +
         '<div class="sr-cards">' + ls.map(function (l) {
           var on = f.indexOf(l.no) >= 0;
           return '<div class="sr-card sf-card' + (on ? ' sf-on' : '') + '">' +
             '<a class="sr-th" href="' + esc(freeHref(l.href)) + '">' + (on ? '<span class="sr-kind">이 정리표 강</span>' : '') +
-            '<img src="' + esc(BASE + l.cover) + '" alt="' + esc(S.name + ' ' + g.grade + ' ' + no(l.no) + ' ' + l.title) + ' 표지" loading="lazy"></a>' +
-            '<a class="sr-nm" href="' + esc(freeHref(l.href)) + '"><em>' + no(l.no) + '</em> ' + esc(l.title) + '</a>' +
+            '<img src="' + esc(BASE + l.cover) + '" alt="' + esc(S.name + ' ' + g.grade + ' ' + freeNo(l.no) + ' ' + l.title) + ' 표지" loading="lazy"></a>' +
+            '<a class="sr-nm" href="' + esc(freeHref(l.href)) + '"><em>' + freeNo(l.no) + '</em> ' + esc(l.title) + '</a>' +
             (l.price ? '<div class="sr-pr">' + won(l.price) + '</div>' : '') +
             (/^\d+$/.test(String(l.href))
               ? '<button type="button" class="sr-add" data-add="' + esc(l.href) + '">+ 담기</button>'
               : '<a class="sr-add sr-go" href="' + esc(freeHref(l.href)) + '">이 강 보기</a>') + '</div>';
         }).join('') + '</div>' +
         '<button type="button" class="sr-arr next" data-arr="1" aria-label="다음 강">' + ARROW.replace('D', 'M9 6l6 6-6 6') + '</button>' +
-      '</div>';
+      '</div></div>';
   }
 
   var FREE_DONE = false;
@@ -617,24 +627,27 @@
       .then(function (d) {
         var it = d.items[me], S = it && d.series[it.series];
         if (!S) return;
+        var f = it.focus || {};
         var box = document.createElement('div');
         box.id = 'sl-free';
         box.className = 'sr-box sf-box';
         var h = '<div class="sr-h"><div class="sr-eyebrow">' + esc(S.name) + ' · ' + esc(it.topic) + '</div>' +
           '<h3 class="sr-t">이 정리표, <em>' + esc(S.name) + '</em>으로 이어서 공부하세요</h3>' +
-          '<p class="sr-s">학년을 고르시면 그 학년 자료가 나와요</p></div><div class="sf-grades">';
-        S.grades.forEach(function (g) {
-          h += '<button type="button" class="sf-g' + (g.grade === it.grade ? ' on' : '') + '" data-g="' + esc(g.grade) + '">' + esc(g.grade) + '</button>';
-        });
-        h += '</div>';
-        S.grades.forEach(function (g) {
-          h += '<div class="sf-pane" data-g="' + esc(g.grade) + '"' + (g.grade === it.grade ? '' : ' hidden') + '>' + freePane(S, g, it.focus || {}) + '</div>';
-        });
+          '<p class="sr-s">' + esc(S.line) + '</p></div>' +
+          '<div class="sf-pks">' + S.grades.map(function (g) { return freeCard(S, g, f[g.grade] || []); }).join('') + '</div>' +
+          S.grades.map(function (g) { return freeLessons(S, g, f[g.grade] || []); }).join('');
         box.innerHTML = h;
         var a = relAnchor();
         a.parentNode.insertBefore(box, a);
         placeRel();
         box.querySelectorAll('.sf-pane').forEach(function (p) { relArrows(p); });
+        function open(gr) {
+          box.querySelectorAll('.sf-pk').forEach(function (x) { x.classList.toggle('on', x.dataset.g === gr); });
+          box.querySelectorAll('.sf-pane').forEach(function (p) { p.hidden = p.dataset.g !== gr; });
+          window.dispatchEvent(new Event('resize'));   /* 숨어 있던 줄의 화살표를 다시 잽니다 */
+          var p = gr && box.querySelector('.sf-pane[data-g="' + gr + '"]');
+          if (p) p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
         box.addEventListener('click', function (e) {
           var ar = e.target.closest('[data-arr]');
           if (ar) {
@@ -645,13 +658,9 @@
           }
           var ad = e.target.closest('[data-add]');
           if (ad) { e.preventDefault(); relAdd(ad.dataset.add, ad); return; }
-          var b = e.target.closest('.sf-g');
-          if (!b) return;
-          box.querySelectorAll('.sf-g').forEach(function (x) { x.classList.toggle('on', x === b); });
-          box.querySelectorAll('.sf-pane').forEach(function (p) {
-            p.hidden = p.dataset.g !== b.dataset.g;
-            if (!p.hidden) window.dispatchEvent(new Event('resize'));   /* 숨어 있던 줄의 화살표를 다시 잽니다 */
-          });
+          if (e.target.closest('[data-close]')) { open(''); return; }
+          var b = e.target.closest('.sf-btn2');
+          if (b) open(b.closest('.sf-pk').classList.contains('on') ? '' : b.dataset.g);
         });
       })
       .catch(function () { /* 무료 상품이 아니면 아무것도 안 그립니다 */ });
