@@ -1243,3 +1243,51 @@
      화면이 멈추고, 목록이 생겼다 사라지기를 되풀이해 눌러도 안 열렸습니다.
      감시는 걷어내고, 아래 몇 번의 시도만 남깁니다. */
 })();
+
+/* ── 칼럼 글(회원용 시크릿자료) — 2026-10-30 ──
+   본문이 <div class="dcs-col"> 로 감싸여 있으면(make_post.py 가 만든 글)
+   ① 칼럼 꾸미기(column/column.css)를 불러오고
+   ② 검색엔진용 구조화 데이터(Article + 본문 「자주 묻는 질문」의 FAQPage)를 붙입니다.
+   아임웹 편집기는 <style>·<script> 를 지우므로 글 안에 넣을 수 없어 여기서 붙입니다.
+   게시판 경로와 상관없이 .dcs-col 이 있는 화면에서만 움직입니다. */
+(function () {
+  var BASE = 'https://daechisecret.github.io/imweb-assets/';
+  var done = false;
+  function txt(e) { return (e && e.textContent || '').replace(/\s+/g, ' ').trim(); }
+  function run() {
+    if (done) return;
+    var col = document.querySelector('.dcs-col');
+    if (!col) return;
+    done = true;
+    var l = document.createElement('link');
+    l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=1';
+    document.head.appendChild(l);
+    var title = (document.querySelector('meta[property="og:title"]') || {}).content || document.title;
+    var desc = (document.querySelector('meta[name="description"]') || {}).content || '';
+    var img = col.querySelector('.fig img, img');
+    var data = [{
+      '@context': 'https://schema.org', '@type': 'Article',
+      headline: title.replace(/\s*[|:-]\s*회원용 시크릿자료.*$/, ''), description: desc,
+      image: img ? img.src : undefined,
+      author: { '@type': 'Organization', name: '대치동시크릿', url: 'https://www.daechisecret.com/' },
+      publisher: { '@type': 'Organization', name: '대치동시크릿', url: 'https://www.daechisecret.com/' },
+      dateModified: col.getAttribute('data-updated') || undefined,
+      mainEntityOfPage: location.origin + location.pathname + location.search
+    }];
+    var qs = [].slice.call(col.querySelectorAll('.faq details')).map(function (d) {
+      var q = txt(d.querySelector('summary')).replace(/^Q\d+\.\s*/, '');
+      var c = d.cloneNode(true); var s = c.querySelector('summary'); if (s) s.remove();
+      return q && { '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: txt(c) } };
+    }).filter(Boolean);
+    if (qs.length) data.push({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: qs });
+    data.forEach(function (d) {
+      var s = document.createElement('script');
+      s.type = 'application/ld+json'; s.text = JSON.stringify(d);
+      document.head.appendChild(s);
+    });
+  }
+  run();
+  document.addEventListener('DOMContentLoaded', run);
+  window.addEventListener('load', run);
+  setTimeout(run, 1500);
+})();
