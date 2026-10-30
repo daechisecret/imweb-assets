@@ -1,5 +1,5 @@
 {
- "_": "무료 0원 상품 페이지의 연관 자료 — items 의 키는 0원 상품 번호. href 는 리뉴얼 상품이 올라오면 상품 번호(숫자)로 바꾼다.",
+ "_": "무료 0원 상품 페이지의 연관 자료 — items 의 키는 0원 상품 번호. href 가 숫자면 상품 번호(담기 단추 나옴), 아니면 주소. 패키지 상품이 올라오면 pkg.href 를 번호로.",
  "series": {
   "grammar": {
    "name": "시크릿어법 특강",
@@ -18,73 +18,85 @@
        "no": 1,
        "title": "정동사 vs 준동사",
        "cover": "free/covers/grammar_pre1_01.jpg",
-       "href": "/secret-grammar"
+       "href": "2019",
+       "price": 2900
       },
       {
        "no": 2,
        "title": "긴 주어의 수일치",
        "cover": "free/covers/grammar_pre1_02.jpg",
-       "href": "/secret-grammar"
+       "href": "2020",
+       "price": 2900
       },
       {
        "no": 3,
        "title": "보어 자리의 형용사 vs 부사",
        "cover": "free/covers/grammar_pre1_03.jpg",
-       "href": "/secret-grammar"
+       "href": "2021",
+       "price": 2900
       },
       {
        "no": 4,
        "title": "목적어 자리의 to부정사 vs 동명사",
        "cover": "free/covers/grammar_pre1_04.jpg",
-       "href": "/secret-grammar"
+       "href": "2022",
+       "price": 2900
       },
       {
        "no": 5,
        "title": "현재분사 vs 과거분사",
        "cover": "free/covers/grammar_pre1_05.jpg",
-       "href": "/secret-grammar"
+       "href": "2023",
+       "price": 2900
       },
       {
        "no": 6,
        "title": "분사구문과 with 부대상황",
        "cover": "free/covers/grammar_pre1_06.jpg",
-       "href": "/secret-grammar"
+       "href": "2024",
+       "price": 2900
       },
       {
        "no": 7,
        "title": "능동태 vs 수동태",
        "cover": "free/covers/grammar_pre1_07.jpg",
-       "href": "/secret-grammar"
+       "href": "2025",
+       "price": 2900
       },
       {
        "no": 8,
        "title": "관계대명사",
        "cover": "free/covers/grammar_pre1_08.jpg",
-       "href": "/secret-grammar"
+       "href": "2026",
+       "price": 2900
       },
       {
        "no": 9,
        "title": "관계부사 vs 관계대명사",
        "cover": "free/covers/grammar_pre1_09.jpg",
-       "href": "/secret-grammar"
+       "href": "2027",
+       "price": 2900
       },
       {
        "no": 10,
        "title": "that vs what · 접속사 vs 전치사",
        "cover": "free/covers/grammar_pre1_10.jpg",
-       "href": "/secret-grammar"
+       "href": "2028",
+       "price": 2900
       },
       {
        "no": 11,
        "title": "병렬구조 · 대명사 · 대동사",
        "cover": "free/covers/grammar_pre1_11.jpg",
-       "href": "/secret-grammar"
+       "href": "2029",
+       "price": 2900
       },
       {
        "no": 12,
        "title": "실전 어법 모의고사",
        "cover": "free/covers/grammar_pre1_12.jpg",
-       "href": "/secret-grammar"
+       "href": "2030",
+       "price": 2900
       }
      ]
     },
@@ -101,73 +113,85 @@
        "no": 1,
        "title": "문장의 형식",
        "cover": "free/covers/grammar_g1_01.jpg",
-       "href": "/secret-grammar"
+       "href": "1983",
+       "price": 2900
       },
       {
        "no": 2,
        "title": "to부정사·동명사",
        "cover": "free/covers/grammar_g1_02.jpg",
-       "href": "/secret-grammar"
+       "href": "1984",
+       "price": 2900
       },
       {
        "no": 3,
        "title": "분사구",
        "cover": "free/covers/grammar_g1_03.jpg",
-       "href": "/secret-grammar"
+       "href": "1985",
+       "price": 2900
       },
       {
        "no": 4,
        "title": "분사구문",
        "cover": "free/covers/grammar_g1_04.jpg",
-       "href": "/secret-grammar"
+       "href": "1986",
+       "price": 2900
       },
       {
        "no": 5,
        "title": "명사절 접속사",
        "cover": "free/covers/grammar_g1_05.jpg",
-       "href": "/secret-grammar"
+       "href": "1987",
+       "price": 2900
       },
       {
        "no": 6,
        "title": "관계사",
        "cover": "free/covers/grammar_g1_06.jpg",
-       "href": "/secret-grammar"
+       "href": "1988",
+       "price": 2900
       },
       {
        "no": 7,
        "title": "수동태",
        "cover": "free/covers/grammar_g1_07.jpg",
-       "href": "/secret-grammar"
+       "href": "1989",
+       "price": 2900
       },
       {
        "no": 8,
        "title": "수일치",
        "cover": "free/covers/grammar_g1_08.jpg",
-       "href": "/secret-grammar"
+       "href": "1990",
+       "price": 2900
       },
       {
        "no": 9,
        "title": "형용사·부사·대명사",
        "cover": "free/covers/grammar_g1_09.jpg",
-       "href": "/secret-grammar"
+       "href": "1991",
+       "price": 2900
       },
       {
        "no": 10,
        "title": "전치사·접속사",
        "cover": "free/covers/grammar_g1_10.jpg",
-       "href": "/secret-grammar"
+       "href": "1992",
+       "price": 2900
       },
       {
        "no": 11,
        "title": "조동사·가정법",
        "cover": "free/covers/grammar_g1_11.jpg",
-       "href": "/secret-grammar"
+       "href": "1993",
+       "price": 2900
       },
       {
        "no": 12,
        "title": "특수구문",
        "cover": "free/covers/grammar_g1_12.jpg",
-       "href": "/secret-grammar"
+       "href": "1994",
+       "price": 2900
       }
      ]
     },
@@ -184,73 +208,85 @@
        "no": 1,
        "title": "문장의 형식",
        "cover": "free/covers/grammar_g2_01.jpg",
-       "href": "/secret-grammar"
+       "href": "1995",
+       "price": 2900
       },
       {
        "no": 2,
        "title": "to부정사·동명사",
        "cover": "free/covers/grammar_g2_02.jpg",
-       "href": "/secret-grammar"
+       "href": "1996",
+       "price": 2900
       },
       {
        "no": 3,
        "title": "분사구",
        "cover": "free/covers/grammar_g2_03.jpg",
-       "href": "/secret-grammar"
+       "href": "1997",
+       "price": 2900
       },
       {
        "no": 4,
        "title": "분사구문",
        "cover": "free/covers/grammar_g2_04.jpg",
-       "href": "/secret-grammar"
+       "href": "1998",
+       "price": 2900
       },
       {
        "no": 5,
        "title": "명사절 접속사",
        "cover": "free/covers/grammar_g2_05.jpg",
-       "href": "/secret-grammar"
+       "href": "1999",
+       "price": 2900
       },
       {
        "no": 6,
        "title": "관계사",
        "cover": "free/covers/grammar_g2_06.jpg",
-       "href": "/secret-grammar"
+       "href": "2000",
+       "price": 2900
       },
       {
        "no": 7,
        "title": "수동태",
        "cover": "free/covers/grammar_g2_07.jpg",
-       "href": "/secret-grammar"
+       "href": "2001",
+       "price": 2900
       },
       {
        "no": 8,
        "title": "수일치",
        "cover": "free/covers/grammar_g2_08.jpg",
-       "href": "/secret-grammar"
+       "href": "2002",
+       "price": 2900
       },
       {
        "no": 9,
        "title": "형용사·부사·대명사",
        "cover": "free/covers/grammar_g2_09.jpg",
-       "href": "/secret-grammar"
+       "href": "2003",
+       "price": 2900
       },
       {
        "no": 10,
        "title": "전치사·접속사",
        "cover": "free/covers/grammar_g2_10.jpg",
-       "href": "/secret-grammar"
+       "href": "2004",
+       "price": 2900
       },
       {
        "no": 11,
        "title": "조동사·가정법",
        "cover": "free/covers/grammar_g2_11.jpg",
-       "href": "/secret-grammar"
+       "href": "2005",
+       "price": 2900
       },
       {
        "no": 12,
        "title": "특수구문",
        "cover": "free/covers/grammar_g2_12.jpg",
-       "href": "/secret-grammar"
+       "href": "2006",
+       "price": 2900
       }
      ]
     },
@@ -267,73 +303,85 @@
        "no": 1,
        "title": "문장의 형식",
        "cover": "free/covers/grammar_g3_01.jpg",
-       "href": "/secret-grammar"
+       "href": "2007",
+       "price": 2900
       },
       {
        "no": 2,
        "title": "to부정사·동명사",
        "cover": "free/covers/grammar_g3_02.jpg",
-       "href": "/secret-grammar"
+       "href": "2008",
+       "price": 2900
       },
       {
        "no": 3,
        "title": "분사구",
        "cover": "free/covers/grammar_g3_03.jpg",
-       "href": "/secret-grammar"
+       "href": "2009",
+       "price": 2900
       },
       {
        "no": 4,
        "title": "분사구문",
        "cover": "free/covers/grammar_g3_04.jpg",
-       "href": "/secret-grammar"
+       "href": "2010",
+       "price": 2900
       },
       {
        "no": 5,
        "title": "명사절 접속사",
        "cover": "free/covers/grammar_g3_05.jpg",
-       "href": "/secret-grammar"
+       "href": "2011",
+       "price": 2900
       },
       {
        "no": 6,
        "title": "관계사",
        "cover": "free/covers/grammar_g3_06.jpg",
-       "href": "/secret-grammar"
+       "href": "2012",
+       "price": 2900
       },
       {
        "no": 7,
        "title": "수동태",
        "cover": "free/covers/grammar_g3_07.jpg",
-       "href": "/secret-grammar"
+       "href": "2013",
+       "price": 2900
       },
       {
        "no": 8,
        "title": "수일치",
        "cover": "free/covers/grammar_g3_08.jpg",
-       "href": "/secret-grammar"
+       "href": "2014",
+       "price": 2900
       },
       {
        "no": 9,
        "title": "형용사·부사·대명사",
        "cover": "free/covers/grammar_g3_09.jpg",
-       "href": "/secret-grammar"
+       "href": "2015",
+       "price": 2900
       },
       {
        "no": 10,
        "title": "전치사·접속사",
        "cover": "free/covers/grammar_g3_10.jpg",
-       "href": "/secret-grammar"
+       "href": "2016",
+       "price": 2900
       },
       {
        "no": 11,
        "title": "조동사·가정법",
        "cover": "free/covers/grammar_g3_11.jpg",
-       "href": "/secret-grammar"
+       "href": "2017",
+       "price": 2900
       },
       {
        "no": 12,
        "title": "특수구문",
        "cover": "free/covers/grammar_g3_12.jpg",
-       "href": "/secret-grammar"
+       "href": "2018",
+       "price": 2900
       }
      ]
     }
@@ -341,7 +389,7 @@
   }
  },
  "items": {
-  "TBD": {
+  "2218": {
    "series": "grammar",
    "topic": "관계대명사 · 관계부사",
    "grade": "고1",

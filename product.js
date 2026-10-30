@@ -597,7 +597,10 @@
             '<a class="sr-th" href="' + esc(freeHref(l.href)) + '">' + (on ? '<span class="sr-kind">이 정리표 강</span>' : '') +
             '<img src="' + esc(BASE + l.cover) + '" alt="' + esc(S.name + ' ' + g.grade + ' ' + no(l.no) + ' ' + l.title) + ' 표지" loading="lazy"></a>' +
             '<a class="sr-nm" href="' + esc(freeHref(l.href)) + '"><em>' + no(l.no) + '</em> ' + esc(l.title) + '</a>' +
-            '<a class="sr-add sr-go" href="' + esc(freeHref(l.href)) + '">이 강 보기</a></div>';
+            (l.price ? '<div class="sr-pr">' + won(l.price) + '</div>' : '') +
+            (/^\d+$/.test(String(l.href))
+              ? '<button type="button" class="sr-add" data-add="' + esc(l.href) + '">+ 담기</button>'
+              : '<a class="sr-add sr-go" href="' + esc(freeHref(l.href)) + '">이 강 보기</a>') + '</div>';
         }).join('') + '</div>' +
         '<button type="button" class="sr-arr next" data-arr="1" aria-label="다음 강">' + ARROW.replace('D', 'M9 6l6 6-6 6') + '</button>' +
       '</div>';
@@ -640,6 +643,8 @@
             relSlide(sc, (card ? card.getBoundingClientRect().width + 12 : 162) * 2 * Number(ar.dataset.arr));
             return;
           }
+          var ad = e.target.closest('[data-add]');
+          if (ad) { e.preventDefault(); relAdd(ad.dataset.add, ad); return; }
           var b = e.target.closest('.sf-g');
           if (!b) return;
           box.querySelectorAll('.sf-g').forEach(function (x) { x.classList.toggle('on', x === b); });
