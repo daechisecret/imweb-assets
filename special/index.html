@@ -296,7 +296,7 @@ body{background:linear-gradient(160deg,#FCE6EE 0%,#FFF6F2 38%,#F3EEFB 100%) fixe
 .allin{overflow:visible!important}
 
 .bar{position:static!important}
-.gmodal{position:absolute!important;inset:auto 0 auto 0!important;height:auto!important;background:transparent!important;padding:0 16px!important}
+.gmodal{position:absolute!important;left:0!important;right:0!important;bottom:auto!important;height:auto!important;background:transparent!important;padding:0 16px!important;z-index:30!important}
 .gmodal .box{max-height:780px;box-shadow:0 20px 60px -10px rgba(80,30,60,.45)}
 .gmodal .sc2{max-height:660px}
 html,body{overflow:hidden}
@@ -451,7 +451,7 @@ document.addEventListener('click', e=>{
   if (t.dataset.open) { st.open = st.open===t.dataset.open?null:t.dataset.open; renderCards(); return; }
   if (t.dataset.cart) { const id=+t.dataset.cart; cart.has(id)?cart.delete(id):cart.set(id,+t.dataset.price); renderCards(); renderTray(); return; }
   if (t.id==='trayClear') { cart.clear(); renderCards(); renderTray(); return; }
-  if (t.dataset.guide) { const b=books[+t.dataset.guide]; const m=document.createElement('div'); m.className='gmodal'; m.innerHTML=`<div class="box" role="dialog" aria-label="이용 가이드"><div class="hd"><b>${esc(b.name)} · 교재 이용 가이드</b><button type="button" data-close="1">닫기</button></div><div class="sc2"><img src="${b.guide}" alt="${esc(b.name)} 이용 가이드 ${b.gpages}쪽"></div><div class="ft">스크롤하면 이용 가이드 전 쪽을 볼 수 있습니다.</div></div>`; m.style.top = Math.max(0, (t.getBoundingClientRect().top + scrollY) - 120) + 'px'; document.body.appendChild(m); fit(); return; }
+  if (t.dataset.guide) { const b=books[+t.dataset.guide]; const m=document.createElement('div'); m.className='gmodal'; m.innerHTML=`<div class="box" role="dialog" aria-label="이용 가이드"><div class="hd"><b>${esc(b.name)} · 교재 이용 가이드</b><button type="button" data-close="1">닫기</button></div><div class="sc2"><img src="${b.guide}" alt="${esc(b.name)} 이용 가이드 ${b.gpages}쪽"></div><div class="ft">스크롤하면 이용 가이드 전 쪽을 볼 수 있습니다.</div></div>`; m.style.top = Math.max(0, (t.getBoundingClientRect().top + scrollY) - 120) + 'px'; var abs = new URL(b.guide, location.href).href; var shown = false; var onAck = function (ev) { if (ev.data && ev.data.sl === 'special-guide-ok') shown = true; }; window.addEventListener('message', onAck); try { parent.postMessage({sl:'special-guide', src: abs, title: b.name + ' · 교재 이용 가이드'}, '*'); } catch (er) {} setTimeout(function () { window.removeEventListener('message', onAck); if (!shown) { document.body.appendChild(m); fit(); } }, 350); return; }
   if (t.dataset.close) { t.closest('.gmodal').remove(); fit(); return; }
   if (t.dataset.go) { document.getElementById(t.dataset.go).scrollIntoView({behavior:'smooth',block:'start'}); return; }
   if (t.dataset.f) { const s=F[t.dataset.f]; s.has(t.dataset.v)?s.delete(t.dataset.v):s.add(t.dataset.v); renderSmart(); return; }
@@ -461,7 +461,7 @@ document.addEventListener('click', e=>{
 document.getElementById('fq').addEventListener('input', e=>{ F.q=e.target.value; renderSmart(); });
 window.addEventListener('resize', ()=>{ if (st.open) renderCards(); });
 all(); renderSmart(); renderMap();
-function fit(){ try { parent.postMessage({sl:'special-h', h: document.documentElement.scrollHeight}, '*'); } catch(e) {} }
+function fit(){ var w = document.querySelector('.wrap'); var h = w ? Math.ceil(w.getBoundingClientRect().bottom + scrollY + 10) : document.body.scrollHeight; var m = document.querySelector('.gmodal'); if (m) h = Math.max(h, Math.ceil(m.getBoundingClientRect().bottom + scrollY + 20)); try { parent.postMessage({sl:'special-h', h: h}, '*'); } catch(e) {} }
 try { new ResizeObserver(fit).observe(document.body); } catch(e) {} window.addEventListener('load', fit); setInterval(fit, 1500);
 try { new IntersectionObserver(([e])=>document.querySelector('.bar').classList.toggle('stuck', !e.isIntersecting)).observe(document.getElementById('barTop')); } catch(e) {}
 </script>
