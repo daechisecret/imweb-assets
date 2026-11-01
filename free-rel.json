@@ -1,5 +1,5 @@
 {
- "_": "무료 0원 상품 페이지의 연관 자료 — items 의 키는 0원 상품 번호. href 가 숫자면 상품 번호(담기 단추 나옴), 아니면 주소. 패키지 상품이 올라오면 pkg.href 를 번호로.",
+ "_": "무료 0원 상품 페이지의 연관 자료 — items 의 키는 0원 상품 번호. href 가 숫자면 상품 번호(담기 단추 나옴), 아니면 주소. 패키지 상품이 올라오면 pkg.href 를 번호로. (2026-11-01: 어법 패키지 상품 올라옴 → pkg.href 를 상품 번호로)",
  "series": {
   "grammar": {
    "name": "시크릿어법 특강",
@@ -11,7 +11,7 @@
       "name": "시크릿어법 예비고1 전범위 패키지",
       "sub": "1~12강 전체",
       "cover": "free/covers/grammar_pre1_pkg.jpg",
-      "href": "/secret-grammar"
+      "href": "2241"
      },
      "lessons": [
       {
@@ -106,7 +106,7 @@
       "name": "시크릿어법 고1 전범위 패키지",
       "sub": "1~12강 전체",
       "cover": "free/covers/grammar_g1_pkg.jpg",
-      "href": "/secret-grammar"
+      "href": "2220"
      },
      "lessons": [
       {
@@ -201,7 +201,7 @@
       "name": "시크릿어법 고2 전범위 패키지",
       "sub": "1~12강 전체",
       "cover": "free/covers/grammar_g2_pkg.jpg",
-      "href": "/secret-grammar"
+      "href": "2226"
      },
      "lessons": [
       {
@@ -296,7 +296,7 @@
       "name": "시크릿어법 고3 전범위 패키지",
       "sub": "1~12강 전체",
       "cover": "free/covers/grammar_g3_pkg.jpg",
-      "href": "/secret-grammar"
+      "href": "2234"
      },
      "lessons": [
       {

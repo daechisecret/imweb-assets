@@ -23,13 +23,13 @@ function show(g){
   if($('cvPkg')){$('cvPkg').src=b.cover;$('cvAll').src=DATA.all[g]||DATA.all['고1']} $('pkImg').src=b.cover; $('allImg').src=DATA.all[g]||DATA.all['고1'];
   $('cvMemo').textContent=b.book+' · '+b.lessons.length+(ED==='실전 모의고사'?'회':'강'); $('pkName').textContent=b.book+' 전범위 패키지'; $('allName').textContent=g+' 학년 올인원';
   $('lsEye').textContent=b.book;
-  $('lessons').innerHTML=b.lessons.map((t,i)=>`<div class="ls"><span class="no">${String(i+1).padStart(2,'0')}</span><span class="nm">${t}</span><span class="bt"><a href="#">PDF</a><a class="h" href="#">교사용 HWP</a></span></div>`).join('');
+  $('lessons').innerHTML=b.lessons.map((t,i)=>`<div class="ls"><span class="no">${String(i+1).padStart(2,'0')}</span><span class="nm">${t}</span><span class="bt"><a href="/special-lecture">PDF</a><a class="h" href="/special-lecture">교사용 HWP</a></span></div>`).join('');
   document.querySelectorAll('[data-ed]').forEach(x=>x.classList.toggle('on',x.dataset.ed===ED));
 }
 function showTb(g){
   mark({tb:g}); $('tbBlk').style.display=''; $('lsBlk').style.display='none';
   $('tbEye').textContent=g+' · 출판사를 골라 주세요';
-  $('pubs').innerHTML=DATA.tb[g].map(p=>`<div class="pub"><img src="${p.cover}" alt="${p.book} 표지"><b>${p.pub}</b><span>${p.lessons}강 · ${g}</span><a href="#">자료 보기 →</a></div>`).join('');
+  $('pubs').innerHTML=DATA.tb[g].map(p=>`<div class="pub"><img src="${p.cover}" alt="${p.book} 표지"><b>${p.pub}</b><span>${p.lessons}강 · ${g}</span><a href="/special-lecture">자료 보기 →</a></div>`).join('');
   $('tbBlk').scrollIntoView({behavior:'smooth',block:'start'});
 }
 document.querySelectorAll('[data-ed]').forEach(x=>x.onclick=()=>{ED=x.dataset.ed;if(DATA.edv[ED]){tr.innerHTML=DATA.edv[ED].car;tr.scrollLeft=0;bindZoom();upd();$('parts').innerHTML=DATA.edv[ED].parts;if(x.classList.contains('ed-card'))$('carSec').scrollIntoView({behavior:'smooth',block:'start'})}rows();show(G)});
@@ -40,3 +40,9 @@ if(location.hash.startsWith('#tb-')&&DATA.tb) showTb(decodeURIComponent(location
 // 사이트 고정 헤더 높이만큼 학년 탭을 내려 붙인다
 (function(){var t=document.querySelector("#dcs-land .tabs");if(!t)return;var fx=[];function scan(){fx=[].filter.call(document.querySelectorAll("body *"),function(e){if(e.closest("#dcs-land"))return false;var p=getComputedStyle(e).position;return(p==="fixed"||p==="sticky")&&e.offsetWidth>innerWidth*0.6})}function f(){var b=0;fx.forEach(function(e){var r=e.getBoundingClientRect();if(r.top<=1&&r.bottom>b&&r.bottom<320)b=r.bottom});t.style.top=b+"px"}scan();f();addEventListener("scroll",function(){requestAnimationFrame(f)},{passive:true});addEventListener("resize",function(){scan();f()})})();
 })();
+
+/* 2026-11-01 사장님: 「패키지 보기」「올인원 보기」「한글 파일 보기」와 예전 /secret-special 링크는 모두 방학특강 자료 페이지로.
+   위젯 HTML 은 아임웹 안에 붙어 있어 여기서 주소만 바꿔 줍니다(강 목록처럼 나중에 그려지는 링크도). */
+(function(){var GO='/special-lecture';
+function fix(){document.querySelectorAll('a.buy,a[href="/secret-special"],#lessons a[href="#"],#pubs a[href="#"],.al a[href="#"]').forEach(function(a){if(a.getAttribute('href')!==GO)a.setAttribute('href',GO)})}
+fix();new MutationObserver(fix).observe(document.body,{childList:true,subtree:true});})();
