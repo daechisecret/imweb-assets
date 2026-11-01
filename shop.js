@@ -518,3 +518,15 @@ setTimeout(build, 400);
 setTimeout(build, 1500);
 setTimeout(build, 3000);
 })();
+/* ── 상품 상세 본문 꾸미기 (2026-11-01 사장님) ─────────────────────────────
+   상세페이지 본문(#prod_detail_body)에 product-desc.css(제목 페이퍼로지 · 본문 프리젠테이션 · 번호 줄 박다현체 · 하트 목록 · 안내 상자)와
+   product-desc.js(안내 상자 · ■ 소제목 · 번호 줄 표시)를 붙인다. 상세페이지에서만. */
+(function () {
+  if (!/^\/shop_view/.test(location.pathname)) return;
+  if (document.getElementById('sl-desc-css')) return;
+  var B = 'https://daechisecret.github.io/imweb-assets/', V = '?v=1';
+  var l = document.createElement('link'); l.id = 'sl-desc-css'; l.rel = 'stylesheet'; l.href = B + 'product-desc.css' + V;
+  (document.head || document.documentElement).appendChild(l);
+  var s = document.createElement('script'); s.src = B + 'product-desc.js' + V; s.defer = true;
+  (document.head || document.documentElement).appendChild(s);
+})();
