@@ -488,3 +488,15 @@
 (function () {
   if (/^\/secret-(special|grammar|voca|syntax|reading)\/?$/.test(location.pathname)) location.replace('/special-lecture' + location.hash);
 })();
+
+/* ── 리뉴얼 전 자료(/579) (2026-11-01 사장님) ─────────────────────────────
+   방학특강 자료 페이지의 하위 메뉴라 그 페이지의 방학특강 화면(#sl-special iframe)이 함께 붙어 나오고
+   상품 목록(.shop-content)이 숨겨져 있었다 → /579 에서는 그 화면을 빼고 리뉴얼 전 상품 목록을 보인다. */
+(function () {
+  if (location.pathname.replace(/\/$/, '') !== '/579') return;
+  var st = document.createElement('style');
+  st.textContent = '#sl-special{display:none!important} html body .shop-content.widget{display:block!important}';
+  (document.head || document.documentElement).appendChild(st);
+  function drop() { var f = document.getElementById('sl-special-frame'); if (f) f.remove(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', drop); else drop();
+})();
