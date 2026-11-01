@@ -117,3 +117,6 @@ body.slc-view .board_summary { border-bottom: 1px solid #e9e6ec !important; padd
   body.slc-view h1.view_tit { font-size: 25px !important; }
   .slc-top input { display: none; }
 }
+
+/* 무료 정리표 위젯(#dcs-notes) 좌우를 칼럼 글·게시판 소개 폭(1120px)에 맞춤 — PC만 (2026-11-01 사장님) */
+@media (min-width:761px){#dcs-notes{max-width:1120px!important;margin-left:auto!important;margin-right:auto!important;box-sizing:border-box!important}}
