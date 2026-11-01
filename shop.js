@@ -522,9 +522,9 @@ setTimeout(build, 3000);
    상세페이지 본문(#prod_detail_body)에 product-desc.css(제목 페이퍼로지 · 본문 프리젠테이션 · 번호 줄 박다현체 · 하트 목록 · 안내 상자)와
    product-desc.js(안내 상자 · ■ 소제목 · 번호 줄 표시)를 붙인다. 상세페이지에서만. */
 (function () {
-  if (!/^\/shop_view/.test(location.pathname)) return;
+  if (!/^\/shop_view/.test(location.pathname) && !/[?&]bmode=view/.test(location.search)) return; // 상세페이지 · 게시판 글 보기
   if (document.getElementById('sl-desc-css')) return;
-  var B = 'https://daechisecret.github.io/imweb-assets/', V = '?v=2';
+  var B = 'https://daechisecret.github.io/imweb-assets/', V = '?v=3';
   var l = document.createElement('link'); l.id = 'sl-desc-css'; l.rel = 'stylesheet'; l.href = B + 'product-desc.css' + V;
   (document.head || document.documentElement).appendChild(l);
   var s = document.createElement('script'); s.src = B + 'product-desc.js' + V; s.defer = true;

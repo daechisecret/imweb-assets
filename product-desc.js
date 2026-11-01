@@ -4,7 +4,9 @@
    ③ 「1. …」 줄 → 번호 동그라미 + 박다현체(.sl-num) */
 (function () {
   function run() {
-    var body = document.querySelectorAll('[id=prod_detail_body]');
+    // 게시판 글 본문도(2026-11-01 사장님 「전 영역」) — 칼럼 글(.dcs-col)은 자기 디자인이 있어 뺀다
+    document.querySelectorAll('.board_view .board_txt_area').forEach(function (b) { if (!b.querySelector('.dcs-col')) b.setAttribute('data-sl-desc', ''); });
+    var body = document.querySelectorAll('[id=prod_detail_body],[data-sl-desc]');
     body.forEach(function (b) {
       var uls = b.querySelectorAll('ul');
       uls.forEach(function (u, k) {
