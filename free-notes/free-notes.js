@@ -54,11 +54,13 @@
     var cat = '<span class="nt-cat">' + esc(it.area) + '</span>';
     if (isOpen(it)) {
       var img = '<img src="' + BASE + it.thumb + '.jpg" alt="' + esc(it.title) + ' 무료 정리표 첫 쪽" loading="lazy">';
-      var thumb = it.shop ? '<a class="nt-thumb" href="' + esc(it.shop) + '">' + img + '</a>' : '<div class="nt-thumb">' + img + '</div>';
-      var get = it.shop
-        ? '<a class="nt-get" href="' + esc(it.shop) + '">무료로 받기</a>'
+      /* 「무료로 받기」는 바로 내려받는 0원 상품이 아니라 칼럼 글로 — 칼럼을 읽고 그 안에서 받는다. 「칼럼 읽기」 단추는 뺌(사장님 2026-11-01) */
+      var go = it.col || it.shop;
+      var thumb = go ? '<a class="nt-thumb" href="' + esc(go) + '">' + img + '</a>' : '<div class="nt-thumb">' + img + '</div>';
+      var get = go
+        ? '<a class="nt-get" href="' + esc(go) + '">무료로 받기</a>'
         : '<span class="nt-get nt-wait">준비 중이에요</span>';
-      var col = it.col ? '<a class="nt-col" href="' + esc(it.col) + '">칼럼 읽기 &rarr;</a>' : '';
+      var col = '';
       return '<article class="nt-card nt-open">' + thumb +
         '<div class="nt-meta">' + cat + '<span class="nt-free">PDF 무료</span></div>' +
         '<h3 class="nt-ttl">' + esc(it.title) + '</h3>' +

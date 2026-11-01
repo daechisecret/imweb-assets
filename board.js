@@ -1260,7 +1260,7 @@
     if (!col) return;
     done = true;
     var l = document.createElement('link');
-    l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=4';
+    l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=5';
     document.head.appendChild(l);
     var title = (document.querySelector('meta[property="og:title"]') || {}).content || document.title;
     var desc = (document.querySelector('meta[name="description"]') || {}).content || '';
@@ -1308,12 +1308,12 @@
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
   var VIEW = /[?&]bmode=view/.test(location.search);
   var JOIN = '/site_join_pattern_choice?back_url=' + btoa('/secret-library');
-  ['column/column.css?v=4', 'column/library.css?v=3'].forEach(function (f) {
+  ['column/column.css?v=5', 'column/library.css?v=3'].forEach(function (f) {
     var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = BASE + f; document.head.appendChild(l);
   });
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function postUrl(p) { return '/secret-library/?bmode=view&idx=' + p.post; }
-  function prod(n) { return /^\d+$/.test(String(n)) ? '/shop_view/?idx=' + n : (n || '/secret-grammar'); }
+  function prod(n) { return /^\d+$/.test(String(n)) ? '/shop_view/?idx=' + n : (n && !/^\/secret-(grammar|voca|syntax|reading|special)/.test(n) ? n : '/special-lecture'); }
   function card(p) {
     return '<a class="slc-card" href="' + esc(postUrl(p)) + '" data-area="' + esc(p.area) + '" data-q="' + esc((p.title + ' ' + p.sub + ' ' + p.topic).toLowerCase()) + '">' +
       '<div class="th"><img src="' + esc(BASE + p.thumb) + '" alt="' + esc(p.title + ' 정리표 지면') + '" loading="lazy"></div>' +
@@ -1421,3 +1421,28 @@
     if (!DONE) { document.addEventListener('DOMContentLoaded', function () { run(posts); }); window.addEventListener('load', function () { run(posts); }); setTimeout(function () { run(posts); }, 1500); }
   }).catch(function () { /* 표를 못 받으면 아임웹 기본 모양 그대로 */ });
 })();
+
+/* ── 칼럼 글 본문의 시리즈 링크 (2026-11-01 사장님) ─────────────────────────────
+   시리즈 랜딩(/secret-grammar 등)은 없앴다 → 이미 올린 글 본문의 「시크릿어법 패키지」「1~12강 전범위 풀패키지」는
+   그 글의 학년 패키지 상품(column/index.json 의 series)으로, 「교사용 한글 패키지 보기」는 「준비 중이에요」(양옆 하트)로 바꾼다. */
+(function () {
+  var path = location.pathname.replace(/\/$/, '');
+  if (path !== '/secret-library' || !/[?&]bmode=view/.test(location.search)) return;
+  var m = location.search.match(/[?&]idx=(\d+)/); if (!m) return;
+  var OLD = 'a[href*="/secret-grammar"], a[href*="/secret-voca"], a[href*="/secret-syntax"], a[href*="/secret-reading"], a[href*="/secret-special"]';
+  fetch('https://daechisecret.github.io/imweb-assets/column/index.json?v=' + Date.now().toString(36).slice(0, -4))
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var me = (d.posts || []).filter(function (p) { return String(p.post) === m[1]; })[0];
+      var to = me && /^\d+$/.test(String(me.series)) ? '/shop_view/?idx=' + me.series : '/special-lecture';
+      function fix() {
+        document.querySelectorAll(OLD).forEach(function (a) {
+          if (/교사용 한글/.test(a.textContent)) { var s = document.createElement('span'); s.className = 'soon'; s.textContent = '준비 중이에요'; a.replaceWith(s); }
+          else a.setAttribute('href', to);
+        });
+      }
+      fix(); new MutationObserver(fix).observe(document.body, { childList: true, subtree: true });
+    })
+    .catch(function () {});
+})();
+

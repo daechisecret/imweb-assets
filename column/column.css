@@ -97,7 +97,7 @@
 :is(.dcs-col,#dcs-z) .teacher p.hand{font-family:Dahyun !important;font-size:18px !important;color:var(--ink) !important}
 .dcs-col ul.hearts{list-style:none !important;margin:14px 0 8px !important;padding:0 !important}
 :is(.dcs-col,#dcs-z) ul.hearts li{position:relative !important;padding-left:26px !important;margin:6px 0 !important;font-family:Dahyun !important;font-size:20px !important;line-height:1.6 !important}
-.dcs-col ul.hearts li::before{content:"" !important;position:absolute !important;left:2px !important;top:.55em !important;width:14px !important;height:13px !important;background:url("data:image/svg+xml !important;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 22'><path fill='%23E4587E' d='M12 21.3 10.6 20C5.4 15.4 2 12.3 2 8.5 2 5.4 4.4 3 7.5 3c1.7 0 3.4.8 4.5 2.1C13.1 3.8 14.8 3 16.5 3 19.6 3 22 5.4 22 8.5c0 3.8-3.4 6.9-8.6 11.5L12 21.3z'/></svg>") no-repeat center/contain !important}
+.dcs-col ul.hearts li::before{content:"" !important;position:absolute !important;left:2px !important;top:.55em !important;width:14px !important;height:13px !important;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 22'><path fill='%23E4587E' d='M12 21.3 10.6 20C5.4 15.4 2 12.3 2 8.5 2 5.4 4.4 3 7.5 3c1.7 0 3.4.8 4.5 2.1C13.1 3.8 14.8 3 16.5 3 19.6 3 22 5.4 22 8.5c0 3.8-3.4 6.9-8.6 11.5L12 21.3z'/></svg>") no-repeat center/contain !important}
 :is(.dcs-col,#dcs-z) ul.hearts li :is(b,strong){font-family:Dahyun !important;font-weight:400 !important;color:var(--pink) !important}
 .dcs-col .author{display:flex !important;gap:16px !important;align-items:center !important;border-top:1px solid var(--line) !important;border-bottom:1px solid var(--line) !important;padding:22px 0 !important;margin-top:50px !important}
 .dcs-col .author img{height:44px !important}
@@ -127,3 +127,7 @@
 @media (max-width:900px){.dcs-col .book{grid-template-columns:1fr !important}
 .dcs-col .teacher{grid-template-columns:1fr !important}}
 @media (max-width:900px){.dcs-col .cta{grid-template-columns:1fr !important}}
+
+/* 교사용 한글(HWP) 「준비 중이에요」 — 양옆 하트 (2026-11-01 사장님) */
+:is(.dcs-col,#dcs-z) .soon{display:inline-flex !important;align-items:center !important;gap:8px !important;padding:11px 20px !important;border:1.5px dashed #F2A9BF !important;border-radius:999px !important;background:#FFF1F5 !important;color:#D0466E !important;font-family:Dahyun,'Noto Sans KR',sans-serif !important;font-size:18px !important;line-height:1 !important;cursor:default !important}
+:is(.dcs-col,#dcs-z) .soon::before,:is(.dcs-col,#dcs-z) .soon::after{content:"" !important;width:14px !important;height:13px !important;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 22'><path fill='%23E4587E' d='M12 21.3 10.6 20C5.4 15.4 2 12.3 2 8.5 2 5.4 4.4 3 7.5 3c1.7 0 3.4.8 4.5 2.1C13.1 3.8 14.8 3 16.5 3 19.6 3 22 5.4 22 8.5c0 3.8-3.4 6.9-8.6 11.5L12 21.3z'/></svg>") no-repeat center/contain !important}
