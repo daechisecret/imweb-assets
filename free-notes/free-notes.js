@@ -96,9 +96,23 @@
     }
   }
 
+  /* 글 보기 화면(?bmode=view)에서는 칼럼 글이 바로 보이게, 위젯 섹션을 게시글 섹션 뒤로 옮긴다(사장님 2026-11-01).
+   * 목록 화면에서는 그대로 맨 위. 위젯 섹션 = .dcs-notes 를 품은 .section_wrap, 게시글 섹션 = 그 다음 .section_wrap. */
+  function moveBelowPost(root) {
+    if (!/[?&]bmode=view(&|$)/.test(location.search)) return;
+    var sec = root.closest ? root.closest('.section_wrap') : null;
+    if (!sec || sec.getAttribute('data-nt-moved')) return;
+    var post = sec.nextElementSibling;
+    while (post && !(post.classList && post.classList.contains('section_wrap'))) post = post.nextElementSibling;
+    if (!post) return;
+    post.parentNode.insertBefore(sec, post.nextSibling);
+    sec.setAttribute('data-nt-moved', '1');
+    sec.classList.add('nt-after-post');
+  }
+
   function init() {
     var roots = document.querySelectorAll('.dcs-notes');
-    for (var i = 0; i < roots.length; i++) render(roots[i]);
+    for (var i = 0; i < roots.length; i++) { render(roots[i]); moveBelowPost(roots[i]); }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();

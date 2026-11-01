@@ -666,6 +666,98 @@
       .catch(function () { /* 무료 상품이 아니면 아무것도 안 그립니다 */ });
   }
 
+  /* ── ⑤-3 무료자료(0원) 상품 — 비회원이 「구매하기」·「장바구니」를 누르면 회원 안내 창 — (2026-11-01 사장님)
+     아임웹 상품 설정에는 「회원만 구매」가 없습니다(구매 제한은 수량뿐 — 관리자 2218 확인).
+     그래서 여기서 단추 누름을 **가로채** 예쁜 안내 창을 띄웁니다. 회원은 아무 일 없이 원래대로 사집니다.
+
+     무료자료인지 :  ① 아래 FREE_IDS 에 번호가 있거나  ② 값이 「0원」으로 찍혀 있으면.
+       · 교과서(쏠북) 상품은 값 자리에 「쏠북에서 구매 가능합니다」가 찍히고 사는 단추도 없어 걸리지 않습니다.
+       · 새 무료자료는 0원으로 올리기만 하면 저절로 들어옵니다. 혹시 값이 0원이 아닌데 막고 싶으면 FREE_IDS 에 번호를 더합니다.
+     비회원인지 :  아임웹이 페이지마다 심어 두는 전역 변수 IS_GUEST(true/false), 없으면 MEMBER_UID 가 비었는지. */
+  var FREE_IDS = ['2218'];
+
+  function gateGuest() {
+    if (typeof window.IS_GUEST === 'boolean') return window.IS_GUEST;
+    return !window.MEMBER_UID;
+  }
+  function gateFree() {
+    if (FREE_IDS.indexOf(idxNow()) >= 0) return true;
+    var p = document.querySelector('#prod_goods_form .real_price');
+    return !!p && /^0\s*원$/.test((p.textContent || '').trim());
+  }
+  function gateName() {
+    var t = document.querySelector('#prod_goods_form .view_tit') || document.querySelector('.view_tit');
+    if (!t) return '';
+    var c = t.cloneNode(true);
+    c.querySelectorAll('.ns-icon, .badge, span[class*="icon"]').forEach(function (x) { x.remove(); });
+    return (c.textContent || '').replace(/\s+/g, ' ').replace(/\s*NEW$/, '').trim();
+  }
+  function gateBack() {
+    try { return encodeURIComponent(btoa(location.pathname + location.search)); } catch (e) { return ''; }
+  }
+
+  var gateBox = null, gateLast = null;
+  function gateClose() {
+    if (!gateBox) return;
+    gateBox.classList.remove('on');
+    document.documentElement.classList.remove('dcs-gate-lock');
+    if (gateLast && gateLast.focus) { try { gateLast.focus(); } catch (e) {} }
+  }
+  function gateOpen(from) {
+    gateLast = from || null;
+    if (!gateBox) {
+      var back = gateBack();
+      var name = gateName();
+      gateBox = document.createElement('div');
+      gateBox.id = 'dcs-gate';
+      gateBox.setAttribute('role', 'dialog');
+      gateBox.setAttribute('aria-modal', 'true');
+      gateBox.setAttribute('aria-labelledby', 'dcs-gate-t');
+      gateBox.innerHTML =
+        '<div class="gt-dim" data-gt-close="1"></div>' +
+        '<div class="gt-card">' +
+          '<span class="gt-tape" aria-hidden="true"></span>' +
+          '<button type="button" class="gt-x" data-gt-close="1" aria-label="닫기">' +
+            '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>' +
+          '<div class="gt-tag">회원 전용 무료자료</div>' +
+          '<h3 class="gt-t" id="dcs-gate-t">이 자료는 <em>대치동시크릿 회원님</em>들을<br>위한 자료예요</h3>' +
+          (name ? '<div class="gt-name">' + esc(name) + '</div>' : '') +
+          '<p class="gt-s">빠르고 쉽게 가입(또는 로그인)하고<br>자료를 무료로 받아 가세요.</p>' +
+          '<p class="gt-hand">한 번 가입하면 기한 없이 계속 무료예요!</p>' +
+          '<div class="gt-btns">' +
+            '<a class="gt-join" href="/site_join_pattern_choice?back_url=' + back + '">회원가입하기</a>' +
+            '<a class="gt-login" href="/login?back_url=' + back + '&amp;used_login_btn=Y">로그인하기</a>' +
+          '</div>' +
+          '<button type="button" class="gt-later" data-gt-close="1">다음에 받을게요</button>' +
+        '</div>';
+      document.body.appendChild(gateBox);
+      gateBox.addEventListener('click', function (e) {
+        if (e.target.closest('[data-gt-close]')) { e.preventDefault(); gateClose(); }
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && gateBox.classList.contains('on')) gateClose();
+      });
+    }
+    document.documentElement.classList.add('dcs-gate-lock');
+    gateBox.classList.add('on');
+    var j = gateBox.querySelector('.gt-join');
+    if (j) { try { j.focus({ preventScroll: true }); } catch (e) {} }
+  }
+
+  /* 사는 단추 — 넓은 화면·휴대폰·옵션 판·아래 막대 모두 #prod_goods_form 안에 있습니다.
+     (연관 자료 상자의 「+ 담기」는 다른 유료 상품이라 건드리지 않습니다 — #sl-free · #sl-rel 밖만.)
+     창(window)에서 **먼저(capture)** 받아 막아야 단추에 박힌 onclick 보다 앞섭니다. */
+  var GATE_BTN = '._btn_buy, ._btn_cart, .defualt-cart, [onclick*="addCart"], [onclick*="confirmOrder"]';
+  window.addEventListener('click', function (e) {
+    var b = e.target && e.target.closest && e.target.closest(GATE_BTN);
+    if (!b || !b.closest('#prod_goods_form') || b.closest('#sl-free, #sl-rel')) return;
+    if (!gateGuest() || !gateFree()) return;
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    gateOpen(b);
+  }, true);
+
   /* ── ⑥ 쿠폰 — 값 바로 아래로 올리고 「한 번 더 할인」을 보입니다 — (2026-09-09 사장님)
      아임웹은 「쿠폰 사용시 12,500원 · 쿠폰받기」 상자를 구매 단추 **아래**에 둡니다.
      값을 보고 난 뒤 한참 내려가야 보이고, 쿠폰을 받을 수 있다는 것도 눈에 안 띄었습니다.

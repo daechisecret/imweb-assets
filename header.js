@@ -118,7 +118,7 @@
 
 (function () {
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
-  var V = '1b1e1108';
+  var V = '1b85608c';
   var done = false;
   function go() {
     if (done || !document.getElementById('prod_detail')) return;
