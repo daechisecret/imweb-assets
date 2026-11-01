@@ -1,0 +1,79 @@
+<!-- 대치동시크릿 SECRET NOTE 무료 정리표 · deploy_widget.py 로 생성 -->
+<style>
+@font-face{font-family:'DCS Paperlogy';font-weight:500;src:url('https://daechisecret.github.io/imweb-assets/free-notes/fonts/Paperlogy-5Medium.woff2?v=58103e79') format('woff2')}
+@font-face{font-family:'DCS Paperlogy';font-weight:700;src:url('https://daechisecret.github.io/imweb-assets/free-notes/fonts/Paperlogy-7Bold.woff2?v=e1abfb2c') format('woff2')}
+@font-face{font-family:'DCS Paperlogy';font-weight:800;src:url('https://daechisecret.github.io/imweb-assets/free-notes/fonts/Paperlogy-8ExtraBold.woff2?v=76b28ec7') format('woff2')}
+@font-face{font-family:'DCS Dahyun';src:url('https://daechisecret.github.io/imweb-assets/free-notes/fonts/dahyun.woff2?v=47968b97') format('woff2')}
+
+/* 칼럼 게시판 시안 A(깔끔형) 토큰 그대로: 흰 바탕 · 가는 선 · 핑크 포인트 · Paperlogy 제목 · Noto 본문 */
+#dcs-notes,#dcs-notes *{font-family:inherit!important;box-sizing:border-box}
+#dcs-notes{font-family:'DCS Noto','Noto Sans KR',sans-serif!important;color:#1d1d24;font-size:15px;line-height:1.6;
+  --pink:#E4587E;--ink:#1d1d24;--sub:#6d6a75;--line:#e9e6ec;--soft:#fdf1f4;
+  margin:0 0 60px;-webkit-font-smoothing:antialiased}
+#dcs-notes h2,#dcs-notes h3,#dcs-notes p{margin:0;padding:0}
+#dcs-notes a{text-decoration:none!important;color:inherit}
+#dcs-notes .nt-h,#dcs-notes .nt-ttl,#dcs-notes .nt-get,#dcs-notes .nt-more{font-family:'DCS Paperlogy','Paperlogy',sans-serif!important}
+#dcs-notes .nt-hand,#dcs-notes .nt-soon{font-family:'DCS Dahyun',sans-serif!important}
+
+/* 머리: 게시판 섹션 제목(.sec) 모양 */
+#dcs-notes .nt-eyebrow{font-size:13px;font-weight:700;letter-spacing:.18em;color:var(--pink);margin-bottom:8px}
+#dcs-notes .nt-sec{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);margin-bottom:24px}
+#dcs-notes .nt-h{font-size:20px;font-weight:700;padding-bottom:12px;box-shadow:inset 0 -2px 0 var(--ink);line-height:1.4}
+#dcs-notes .nt-hand{font-size:18px;color:var(--sub);padding-bottom:12px;line-height:1.3}
+#dcs-notes .nt-hand b{font-weight:400;color:var(--pink)}
+
+/* 카드 격자 */
+#dcs-notes .nt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:34px 24px}
+#dcs-notes .nt-card{display:flex;flex-direction:column;min-width:0}
+#dcs-notes .nt-thumb{position:relative;display:block;aspect-ratio:16/10;overflow:hidden;border:1px solid var(--line);border-radius:2px;background:#fff}
+#dcs-notes .nt-thumb img{width:100%;height:100%;object-fit:cover;object-position:left top;display:block}
+#dcs-notes .nt-meta{display:flex;align-items:center;gap:6px;margin-top:14px}
+#dcs-notes .nt-cat{font-size:11.5px;font-weight:700;color:var(--pink);letter-spacing:.04em}
+#dcs-notes .nt-free{font-size:11px;font-weight:700;padding:1px 8px;border-radius:20px;background:var(--soft);color:var(--pink);border:1px solid #f6c9d6}
+#dcs-notes .nt-ttl{font-size:16.5px;font-weight:700;line-height:1.38;letter-spacing:-.01em;margin-top:4px;word-break:keep-all}
+#dcs-notes .nt-act{margin-top:auto;padding-top:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#dcs-notes .nt-get{display:inline-block;background:var(--pink);color:#fff!important;font-size:13.5px;font-weight:700;padding:8px 20px;border-radius:30px}
+#dcs-notes .nt-get:hover{background:#cf4670}
+#dcs-notes .nt-get.nt-wait{background:#f3f0f2;color:var(--sub)!important}
+#dcs-notes .nt-col{font-size:13px;font-weight:700;color:var(--sub)}
+#dcs-notes .nt-col:hover{color:var(--ink)}
+
+/* 잠금 카드 */
+#dcs-notes .nt-locked .nt-thumb{background:#faf8f9}
+#dcs-notes .nt-locked .nt-thumb img{opacity:.7}
+#dcs-notes .nt-lock{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center}
+#dcs-notes .nt-lock svg{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+#dcs-notes .nt-locked .nt-ttl{color:#8a8590}
+#dcs-notes .nt-soon{font-size:19px;color:var(--pink);line-height:1.2;margin-top:auto;padding-top:12px}
+
+/* 모두 보기 */
+#dcs-notes.nt-fold .nt-o8{display:none}
+#dcs-notes .nt-more{display:block;margin:34px auto 0;background:#fff;border:1.5px solid var(--ink);border-radius:4px;padding:11px 26px;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer}
+#dcs-notes:not(.nt-fold) .nt-more,#dcs-notes .nt-more.nt-m-only{display:none}
+
+@media (max-width:760px){
+  #dcs-notes .nt-sec{flex-direction:column;align-items:flex-start;gap:2px}
+  #dcs-notes .nt-hand{font-size:17px}
+  #dcs-notes .nt-grid{grid-template-columns:repeat(2,1fr);gap:28px 14px}
+  #dcs-notes .nt-ttl{font-size:14.5px}
+  #dcs-notes .nt-get{font-size:13px;padding:7px 16px}
+  #dcs-notes .nt-act{gap:8px}
+  #dcs-notes .nt-lock{width:38px;height:38px;margin:-19px 0 0 -19px}
+  #dcs-notes .nt-lock svg{width:17px;height:17px}
+  #dcs-notes .nt-soon{font-size:17px}
+  #dcs-notes.nt-fold .nt-o6{display:none}
+  #dcs-notes .nt-more{width:100%;margin-top:28px}
+  #dcs-notes.nt-fold .nt-more.nt-m-only{display:block}
+}
+</style>
+
+<section id="dcs-notes" class="dcs-notes nt-fold" aria-labelledby="dcs-notes-h">
+  <p class="nt-eyebrow">SECRET NOTE</p>
+  <div class="nt-sec">
+    <h2 class="nt-h" id="dcs-notes-h">무료 정리표</h2>
+    <p class="nt-hand">회원가입하면 <b>무료로</b> 받을 수 있어요</p>
+  </div>
+  <div class="nt-grid" data-nt="cards"></div>
+  <button type="button" class="nt-more" data-nt="more">곧 공개될 정리표 모두 보기</button>
+</section>
+<script src="https://daechisecret.github.io/imweb-assets/free-notes/free-notes.js?v=44da05fa"></script>
