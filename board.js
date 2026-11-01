@@ -1308,7 +1308,7 @@
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
   var VIEW = /[?&]bmode=view/.test(location.search);
   var JOIN = '/site_join_pattern_choice?back_url=' + btoa('/secret-library');
-  ['column/column.css?v=4', 'column/library.css?v=2'].forEach(function (f) {
+  ['column/column.css?v=4', 'column/library.css?v=3'].forEach(function (f) {
     var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = BASE + f; document.head.appendChild(l);
   });
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -1341,21 +1341,16 @@
       '<section class="slc-hero"><div><div class="slc-eye">SECRET NOTE</div>' +
         '<h2>헷갈리는 영어,<br><em>한 장으로</em> 정리해 드려요</h2>' +
         '<p>중1부터 고3까지, 실제 기출 문장으로 정리한 개념 칼럼이에요.<br>정리표 PDF는 회원가입하면 무료로 받을 수 있어요.</p>' +
-        '<div class="slc-btns"><a class="slc-btn k" href="#slc-free">무료 정리표 받기</a><a class="slc-btn" href="#slc-who">칼럼 둘러보기</a></div></div>' +
+        '<div class="slc-btns"><a class="slc-btn k" href="#slc-free">무료 정리표 받기</a><a class="slc-btn" href="#slc-free">칼럼 둘러보기</a></div></div>' +
         (top ? '<div class="slc-hero-vis"><img src="' + esc(BASE + top.thumb) + '" alt="' + esc(top.title + ' 정리표 1쪽') + '"><img src="' + esc(BASE + 'column/' + top.id + '/fig1.png') + '" alt="' + esc(top.title + ' 지도') + '"><span>실제 정리표 지면 그대로</span></div>' : '') +
       '</section>' +
       '<section class="slc-sec" id="slc-free"><div class="slc-sh"><h3>회원 무료자료</h3><small>회원가입하면 PDF를 무료로 받아요</small></div>' +
         (live.length ? '<div class="slc-grid' + (live.length >= 3 ? ' feat' : '') + '">' + live.map(card).join('') + '</div>' : '<div class="slc-empty">곧 올라와요</div>') +
       '</section>' +
-      '<div class="slc-who" id="slc-who">' +
-        '<a href="#slc-free"><b>선생님 · 원장님</b><p>수업 끝 5분 테스트, 숙제용 정리표를 주제별로 골라 쓰세요.</p><em>수업 자료 보기 →</em></a>' +
-        '<a href="#slc-free"><b>학생</b><p>개념은 칼럼으로, 확인은 기출 문장으로. 혼자 공부할 때 순서대로 보세요.</p><em>개념 칼럼 보기 →</em></a>' +
-        '<a href="#slc-free"><b>학부모</b><p>아이 학년에 맞는 정리표를 받아 방학 계획에 넣어 보세요.</p><em>정리표 보기 →</em></a>' +
-      '</div>' +
-      '<div class="slc-join"><div><b>정리표 PDF, 회원은 무료</b><p>회원가입 한 번이면 모든 정리표 PDF를 받을 수 있어요.</p></div><a class="slc-btn p" href="' + esc(JOIN) + '">회원가입하고 받기</a></div>' +
       '</div>';
     lb.insertAdjacentHTML('beforebegin', h);
     var box = lb.parentNode.querySelector('.slc-lib');
+    joinBand(box);
     function filt() {
       var on = box.querySelector('.slc-tabs .on');
       var a = on ? on.getAttribute('data-a') : '전체';
@@ -1370,8 +1365,22 @@
     });
     box.querySelector('.slc-top input').addEventListener('input', filt);
   }
+  /* 「정리표 PDF, 회원은 무료」 띠 — SECRET NOTE 무료 정리표 위젯(.dcs-notes) 바로 아래에 둡니다(사장님 11-01).
+     위젯 섹션 안에 넣으므로 글 보기에서 free-notes.js 가 위젯을 글 아래로 옮길 때 띠도 같이 따라갑니다.
+     위젯이 없으면 목록 화면에서만 칼럼 목록 맨 아래에 둡니다. (대상별 안내 카드 세 개는 11-01 사장님 지시로 뺌) */
+  function joinBand(fallback) {
+    var html = '<div class="slc slc-joinwrap"><div class="slc-join"><div><b>정리표 PDF, 회원은 무료</b><p>회원가입 한 번이면 모든 정리표 PDF를 받을 수 있어요.</p></div><a class="slc-btn p" href="' + esc(JOIN) + '">회원가입하고 받기</a></div></div>';
+    var notes = document.querySelectorAll('.dcs-notes');
+    if (!notes.length) { if (fallback) fallback.insertAdjacentHTML('beforeend', html); return; }
+    for (var i = 0; i < notes.length; i++) {
+      var n = notes[i], nx = n.nextElementSibling;
+      if (nx && nx.classList.contains('slc-joinwrap')) continue;
+      n.insertAdjacentHTML('afterend', html);
+    }
+  }
   function view(posts) {
     document.body.classList.add('slc-view');
+    joinBand(null);
     var m = /[?&]idx=(\d+)/.exec(location.search), me = null;
     posts.forEach(function (p) { if (m && String(p.post) === m[1]) me = p; });
     var bv = document.querySelector('.board_view'), txt = bv.querySelector('.board_txt_area');
