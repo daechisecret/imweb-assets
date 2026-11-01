@@ -387,7 +387,11 @@
 
   function me() {
     var a = acct(), name = '', img = '';
-    var src = [a.prof, document.querySelector('#mobile_slide_menu .profile-area .member-info'), document.querySelector('#mobile_slide_menu .profile-area')];
+    var mi = document.querySelector('#mobile_slide_menu .profile-area .member-info');
+    if (mi) for (var n = mi.firstChild; n; n = n.nextSibling) { if (n.nodeType === 3 && n.textContent.trim()) { name = n.textContent.trim(); break; } }
+    var pim = document.querySelector('#mobile_slide_menu .profile-area #imagepath');
+    if (pim && pim.value) img = pim.value;
+    var src = [mi, document.querySelector('#mobile_slide_menu .profile-area'), a.prof];
     for (var i = 0; i < src.length; i++) {
       var s = src[i]; if (!s) continue;
       var im = s.querySelector && s.querySelector('img');
