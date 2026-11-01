@@ -482,3 +482,19 @@
   }, COMPLETE ? 500 : 1000);
   place();
 })();
+/* ── 방학특강 랜딩 링크 (2026-11-01 사장님) ─────────────────────────────
+   시크릿 특강 허브(/secret-special)와 어법·보카·구문·독해 랜딩의 위젯 HTML 은 아임웹 안에 붙어 있어
+   빈 링크(#)·예전 허브 링크가 남아 있었다. 여기서 주소만 바꾼다:
+   패키지·올인원·한글·강별 단추와 /secret-special → /special-lecture, 「무료 자료 받으러 가기」 → /secret-library(무료 정리표). */
+(function () {
+  if (!/^\/secret-(special|grammar|voca|syntax|reading)\/?$/.test(location.pathname)) return;
+  function set(sel, to) {
+    document.querySelectorAll(sel).forEach(function (a) { if (a.getAttribute('href') !== to) a.setAttribute('href', to); });
+  }
+  function fix() {
+    set('.freebox a[href="#"]', '/secret-library');
+    set('a.buy, a[href="/secret-special"], .al a[href="#"], #lessons a[href="#"], #pubs a[href="#"]', '/special-lecture');
+  }
+  function start() { fix(); new MutationObserver(fix).observe(document.body, { childList: true, subtree: true }); }
+  if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);
+})();
