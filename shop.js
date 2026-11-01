@@ -524,7 +524,7 @@ setTimeout(build, 3000);
 (function () {
   if (!/^\/shop_view/.test(location.pathname)) return;
   if (document.getElementById('sl-desc-css')) return;
-  var B = 'https://daechisecret.github.io/imweb-assets/', V = '?v=1';
+  var B = 'https://daechisecret.github.io/imweb-assets/', V = '?v=2';
   var l = document.createElement('link'); l.id = 'sl-desc-css'; l.rel = 'stylesheet'; l.href = B + 'product-desc.css' + V;
   (document.head || document.documentElement).appendChild(l);
   var s = document.createElement('script'); s.src = B + 'product-desc.js' + V; s.defer = true;
