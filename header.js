@@ -332,6 +332,263 @@
 })();
 
 (function () {
+  var SHORT = {
+    '(할인가) 패키지 상품 기획전': '패키지 기획전',
+    '공지사항 / 후기 / FAQ': '공지 · 후기 · FAQ',
+    '수능대비/방학특강 자료': '수능 · 방학특강',
+    '회원용 시크릿자료': '시크릿자료'
+  };
+  var FREE_URL = 'secret-library';
+  var ICON = {
+    bag: '<path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>',
+    user: '<circle cx="12" cy="8.5" r="3.6"/><path d="M5 20c.8-3.6 3.6-5.4 7-5.4s6.2 1.8 7 5.4"/>',
+    bell: '<path d="M6.5 16.5V11a5.5 5.5 0 0 1 11 0v5.5l1.5 1.5H5z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',
+    out: '<path d="M10 5H6a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h4"/><path d="M14 8l4 4-4 4M18 12H9"/>',
+    inn: '<path d="M14 5h4a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-4"/><path d="M10 8l4 4-4 4M14 12H5"/>',
+    chev: '<path d="M9 6l6 6-6 6"/>',
+    x: '<path d="M6 6l12 12M18 6L6 18"/>'
+  };
+  function svg(k) { return '<svg class="sl-ico" viewBox="0 0 24 24" aria-hidden="true">' + ICON[k] + '</svg>'; }
+  function esc(t) { return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function txt(el) { return el ? (el.textContent || '').replace(/\s+/g, ' ').trim() : ''; }
+
+  function head() { return document.getElementById('inline_header_mobile'); }
+  function guest() {
+    if (typeof window.IS_GUEST === 'boolean') return window.IS_GUEST;
+    return !window.MEMBER_UID;
+  }
+
+  function acct() {
+    var h = head(), w = h && h.querySelector('.widget.login_btn');
+    var a = { w: w, cart: null, my: null, alarm: null, login: null, join: null, logout: null, prof: null };
+    if (!w) return a;
+    w.querySelectorAll('a, button').forEach(function (el) {
+      var href = el.getAttribute('href') || '', oc = el.getAttribute('onclick') || '', t = txt(el);
+      if (/shop_cart/.test(href)) a.cart = a.cart || el;
+      else if (/logout/.test(href) || /로그아웃/.test(t)) a.logout = a.logout || el;
+      else if (/site_join/.test(href) || /회원가입/.test(t)) a.join = a.join || el;
+      else if (/mypage/i.test(href) || /마이페이지/.test(t)) a.my = a.my || el;
+      else if (/alarm|notification/i.test(oc + href + el.className) || /^알림/.test(t)) a.alarm = a.alarm || el;
+      else if (/\/login/.test(href) || /^로그인/.test(t)) a.login = a.login || el;
+      else if (el.querySelector('img') || /profile/i.test(el.className)) a.prof = a.prof || el;
+    });
+    return a;
+  }
+  function cartCount() {
+    var b = document.querySelector('#inline_header_mobile ._shop_cart_badge_cnt_wrap') || document.querySelector('._shop_cart_badge_cnt_wrap');
+    var n = parseInt(txt(b), 10);
+    return isNaN(n) ? 0 : n;
+  }
+  function backUrl() {
+    try { return encodeURIComponent(btoa(location.pathname + location.search)); } catch (e) { return ''; }
+  }
+  function loginHref(type) { return '/login?back_url=' + backUrl() + '&used_login_btn=Y' + (type ? '&type=' + type : ''); }
+  function joinHref() { return '/site_join_pattern_choice?back_url=' + backUrl(); }
+
+  function me() {
+    var a = acct(), name = '', img = '';
+    var src = [a.prof, document.querySelector('#mobile_slide_menu .profile-area .member-info'), document.querySelector('#mobile_slide_menu .profile-area')];
+    for (var i = 0; i < src.length; i++) {
+      var s = src[i]; if (!s) continue;
+      var im = s.querySelector && s.querySelector('img');
+      if (!img && im && im.getAttribute('src')) img = im.getAttribute('src');
+      var c = s.cloneNode(true);
+      c.querySelectorAll('button, .btn-group, .badge, sup').forEach(function (x) { x.remove(); });
+      var t = txt(c).replace(/로그아웃|마이페이지|알림|로그인이 필요합니다\.?|로그인/g, '').trim();
+      if (!name && t) name = t;
+    }
+    if (/^\/common\/img\/app_login/.test(img)) img = '';
+    return { name: (name || '회원').replace(/\s*님$/, ''), img: img };
+  }
+
+  function proxy(el, fallback) {
+    if (el) {
+      var href = el.getAttribute('href') || '';
+      if (el.getAttribute('onclick') || !href || /^javascript|^#/.test(href)) { el.click(); return; }
+      location.href = href; return;
+    }
+    if (fallback) location.href = fallback;
+  }
+
+  function bar() {
+    var h = head(); if (!h || document.getElementById('sl-mbar')) return;
+    var a = acct(); if (!a.w) return;
+    var sec = a.w.closest('._fixed_header_section') || a.w.closest('.inline-section-wrap'); if (!sec) return;
+    var g = guest(), n = cartCount(), html;
+    if (g) {
+      html = '<div class="mb-who"><a class="mb-pill" data-act="login" href="' + esc(loginHref()) + '">로그인</a><span class="mb-dot">·</span>' +
+        '<a class="mb-pill" data-act="join" href="' + esc(joinHref()) + '">회원가입</a></div>' +
+        '<a class="mb-ic" data-act="cart" href="/shop_cart">' + svg('bag') + '<span>장바구니</span><b class="mb-n"' + (n ? '' : ' hidden') + '>' + n + '</b></a>' +
+        '<a class="mb-ic" data-act="my" href="' + esc(loginHref('mypage')) + '">' + svg('user') + '<span>마이페이지</span></a>';
+    } else {
+      var m = me();
+      html = '<div class="mb-who">' + (m.img ? '<img src="' + esc(m.img) + '" alt="">' : '<i class="mb-av">' + esc(m.name.charAt(0)) + '</i>') +
+        '<span><b>' + esc(m.name) + '</b>님</span></div>' +
+        '<a class="mb-ic" data-act="cart" href="/shop_cart">' + svg('bag') + '<span>장바구니</span><b class="mb-n"' + (n ? '' : ' hidden') + '>' + n + '</b></a>' +
+        '<a class="mb-ic" data-act="my" href="/shop_mypage">' + svg('user') + '<span>마이페이지</span></a>' +
+        '<a class="mb-ic" data-act="alarm" href="#">' + svg('bell') + '<span>알림</span></a>' +
+        '<a class="mb-ic" data-act="logout" href="#">' + svg('out') + '<span>로그아웃</span></a>';
+    }
+    var d = document.createElement('div');
+    d.id = 'sl-mbar';
+    d.innerHTML = html;
+    sec.classList.add('sl-mb-sec');
+    sec.appendChild(d);
+    d.addEventListener('click', act);
+  }
+
+  function act(e) {
+    var t = e.target.closest('[data-act]'); if (!t) return;
+    var k = t.getAttribute('data-act'), a = acct();
+    if (k === 'cart') return;                                  /* 그냥 링크 */
+    if (k === 'login' && a.login) { e.preventDefault(); return proxy(a.login, loginHref()); }
+    if (k === 'join' && a.join) { e.preventDefault(); return proxy(a.join, joinHref()); }
+    if (k === 'my' && a.my) { e.preventDefault(); return proxy(a.my, '/shop_mypage'); }
+    if (k === 'alarm') { e.preventDefault(); closePanel(); return proxy(a.alarm, '/shop_mypage'); }
+    if (k === 'logout') { e.preventDefault(); return proxy(a.logout, '/logout.cm?back_url=' + backUrl()); }
+  }
+
+  function syncCount() {
+    var n = cartCount();
+    document.querySelectorAll('#sl-mbar .mb-n, #sl-mpanel .mb-n').forEach(function (b) {
+      b.textContent = n; if (n) b.removeAttribute('hidden'); else b.setAttribute('hidden', '');
+    });
+  }
+
+  function ownTabs() {
+    var h = head(); if (!h || document.getElementById('sl-mtabs')) return;
+    var bar = document.getElementById('sl-mbar'); if (!bar) return;
+    var items = menus(); if (!items.length) return;
+    var d = document.createElement('div');
+    d.id = 'sl-mtabs';
+    d.innerHTML = '<div class="mt-sc">' + items.map(function (it) {
+      return '<a href="' + esc(it.h) + '" aria-label="' + esc(it.t) + '">' + esc(SHORT[it.t] || it.t) + '</a>';
+    }).join('') + '</div>';
+    var sec = bar.closest('.sl-mb-sec');
+    sec.parentNode.insertBefore(d, sec.nextSibling);
+  }
+  function tabs() {
+    var car = document.getElementById('mobile_carousel_menu');
+    if (!car) { ownTabs(); return; }
+    if (car.getAttribute('data-sl-tabs')) return;
+    car.setAttribute('data-sl-tabs', '1');
+    car.querySelectorAll('td.nav-item a .plain_name').forEach(function (s) {
+      var full = txt(s);
+      if (SHORT[full]) { s.setAttribute('data-full', full); s.textContent = SHORT[full]; s.closest('a').setAttribute('aria-label', full); }
+    });
+    var on = car.querySelector('td.active, td.on');
+    var sc = car.querySelector('.mobile_table_nav');
+    function reveal() {
+      if (!on || !sc) return;
+      var l = on.offsetLeft, w = on.offsetWidth, cw = sc.clientWidth;
+      if (l + w > sc.scrollLeft + cw - 24 || l < sc.scrollLeft) sc.scrollLeft = Math.max(0, l - (cw - w) / 2);
+    }
+    reveal(); setTimeout(reveal, 400); window.addEventListener('load', reveal);
+  }
+
+  function current() {
+    var on = document.querySelector('#mobile_carousel_menu td.active, #mobile_carousel_menu td.on');
+    return on ? on.getAttribute('data-code') : '';
+  }
+  function menus() {
+    var out = [];
+    document.querySelectorAll('#mobile_slide_menu li.depth-01').forEach(function (li) {
+      var a = li.querySelector(':scope > a'); if (!a) return;
+      var kids = [];
+      li.querySelectorAll(':scope > ul > li.depth-02 > a').forEach(function (k) { kids.push({ t: txt(k.querySelector('.plain_name') || k), h: k.getAttribute('href') || '#' }); });
+      out.push({ code: li.getAttribute('data-code'), url: a.getAttribute('data-url') || '', t: txt(a.querySelector('.plain_name') || a), h: a.getAttribute('href') || '#', kids: kids });
+    });
+    if (!out.length) {
+      document.querySelectorAll('#mobile_carousel_menu td.nav-item[data-code]').forEach(function (td) {
+        var a = td.querySelector('a'), s = td.querySelector('.plain_name');
+        if (a) out.push({ code: td.getAttribute('data-code'), url: td.getAttribute('data-url') || '', t: (s && s.getAttribute('data-full')) || txt(s || a), h: a.getAttribute('href'), kids: [] });
+      });
+    }
+    return out;
+  }
+  var panel = null;
+  function buildPanel() {
+    var g = guest(), n = cartCount(), cur = current();
+    var logo = document.querySelector('#inline_header_mobile .widget.logo img.normal_logo[src]');
+    var lsrc = '';
+    document.querySelectorAll('#inline_header_mobile .widget.logo img.normal_logo').forEach(function (im) { if (!lsrc && im.naturalWidth > 20) lsrc = im.getAttribute('src'); });
+    if (!lsrc && logo) lsrc = logo.getAttribute('src');
+    var prof;
+    if (g) {
+      prof = '<div class="mp-prof mp-guest"><b>반가워요!</b><p>로그인하면 회원용 무료자료를 받을 수 있어요.</p>' +
+        '<div class="mp-pb"><a class="mp-login" data-act="login" href="' + esc(loginHref()) + '">로그인</a><a class="mp-join" data-act="join" href="' + esc(joinHref()) + '">회원가입</a></div></div>';
+    } else {
+      var m = me();
+      prof = '<div class="mp-prof">' + (m.img ? '<img src="' + esc(m.img) + '" alt="">' : '<i class="mb-av">' + esc(m.name.charAt(0)) + '</i>') +
+        '<div class="mp-nm"><b>' + esc(m.name) + ' 님</b><span>반가워요!</span></div>' +
+        '<a class="mp-out" data-act="logout" href="#">로그아웃</a></div>';
+    }
+    var quick = '<div class="mp-quick">' +
+      '<a data-act="cart" href="/shop_cart">' + svg('bag') + '<span>장바구니</span><b class="mb-n"' + (n ? '' : ' hidden') + '>' + n + '</b></a>' +
+      '<a data-act="my" href="' + esc(g ? loginHref('mypage') : '/shop_mypage') + '">' + svg('user') + '<span>마이페이지</span></a>' +
+      (g ? '<a href="' + esc(loginHref()) + '">' + svg('bell') + '<span>알림</span></a>'
+         : '<a data-act="alarm" href="#">' + svg('bell') + '<span>알림</span></a>') + '</div>';
+    var list = '<ul class="mp-list">' + menus().map(function (it, i) {
+      var on = it.code && it.code === cur;
+      var free = it.url === FREE_URL ? '<small class="mp-free">무료</small>' : '';
+      var sub = it.kids.length ? '<ul class="mp-sub" hidden>' + it.kids.map(function (k) { return '<li><a href="' + esc(k.h) + '">' + esc(k.t) + '</a></li>'; }).join('') + '</ul>' : '';
+      return '<li class="' + (on ? 'on' : '') + (it.kids.length ? ' has' : '') + '">' +
+        '<div class="mp-row"><a href="' + esc(it.h) + '"><span>' + esc(it.t) + '</span>' + free + '</a>' +
+        (it.kids.length ? '<button type="button" class="mp-tg" aria-expanded="false" aria-label="' + esc(it.t) + ' 하위 메뉴">' + svg('chev') + '</button>'
+                        : '<span class="mp-ar">' + svg('chev') + '</span>') + '</div>' + sub + '</li>';
+    }).join('') + '</ul>';
+    panel = document.createElement('div');
+    panel.id = 'sl-mpanel';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'true');
+    panel.setAttribute('aria-label', '메뉴');
+    panel.innerHTML = '<div class="mp-dim" data-close="1"></div><aside class="mp-box">' +
+      '<div class="mp-top"><a href="/main" class="mp-logo">' + (lsrc ? '<img src="' + esc(lsrc) + '" alt="대치동시크릿">' : '<b>대치동시크릿</b>') + '</a>' +
+      '<button type="button" class="mp-x" data-close="1" aria-label="메뉴 닫기">' + svg('x') + '</button></div>' +
+      prof + quick + list + '</aside>';
+    document.body.appendChild(panel);
+    panel.addEventListener('click', function (e) {
+      if (e.target.closest('[data-close]')) { e.preventDefault(); closePanel(); return; }
+      var tg = e.target.closest('.mp-tg');
+      if (tg) {
+        var ul = tg.closest('li').querySelector('.mp-sub'), open = tg.getAttribute('aria-expanded') !== 'true';
+        tg.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (ul) ul.hidden = !open;
+        return;
+      }
+      act(e);
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePanel(); });
+  }
+  function openPanel() {
+    if (!panel) buildPanel();
+    syncCount();
+    panel.classList.add('on');
+    document.documentElement.classList.add('sl-mp-lock');
+  }
+  function closePanel() {
+    if (!panel) return;
+    panel.classList.remove('on');
+    document.documentElement.classList.remove('sl-mp-lock');
+  }
+  window.addEventListener('click', function (e) {
+    if (window.innerWidth > 860) return;
+    var t = e.target.closest && e.target.closest('#inline_header_mobile a[onclick*="slideNavToggle"]');
+    if (!t) return;
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    openPanel();
+  }, true);
+
+  function go() {
+    if (!head()) return;
+    bar(); tabs(); syncCount();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
+  window.addEventListener('load', function () { go(); syncCount(); });
+  setInterval(syncCount, 2000);
+})();
+
+(function () {
   'use strict';
   if (window.__slHeartLogoB) return;
   window.__slHeartLogoB = true;
@@ -481,22 +738,4 @@
     if (COMPLETE && ++n >= 20) clearInterval(timer);
   }, COMPLETE ? 500 : 1000);
   place();
-})();
-/* ── 방학특강 예전 페이지 없애기 (2026-11-01 사장님) ─────────────────────────────
-   시크릿 특강 허브(/secret-special)와 시리즈 랜딩(/secret-grammar · voca · syntax · reading)은 열리지 않고
-   방학특강 자료 페이지(/special-lecture)로 바로 넘어간다. 아임웹 메뉴에서 페이지를 지우면 이 줄은 없어도 된다. */
-(function () {
-  if (/^\/secret-(special|grammar|voca|syntax|reading)\/?$/.test(location.pathname)) location.replace('/special-lecture' + location.hash);
-})();
-
-/* ── 리뉴얼 전 자료(/579) (2026-11-01 사장님) ─────────────────────────────
-   방학특강 자료 페이지의 하위 메뉴라 그 페이지의 방학특강 화면(#sl-special iframe)이 함께 붙어 나오고
-   상품 목록(.shop-content)이 숨겨져 있었다 → /579 에서는 그 화면을 빼고 리뉴얼 전 상품 목록을 보인다. */
-(function () {
-  if (location.pathname.replace(/\/$/, '') !== '/579') return;
-  var st = document.createElement('style');
-  st.textContent = '#sl-special{display:none!important} html body .shop-content.widget{display:block!important}';
-  (document.head || document.documentElement).appendChild(st);
-  function drop() { var f = document.getElementById('sl-special-frame'); if (f) f.remove(); }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', drop); else drop();
 })();
