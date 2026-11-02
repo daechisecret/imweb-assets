@@ -14,24 +14,39 @@
    * shop  : 0원 상품 주소(아직 없으면 '')
    * col   : 칼럼 글 주소(아직 없으면 '')
    */
+  /* 폴더 번호 순서(2026-11-02 사장님). 공개하는 날: 그 편 open:true · shop(0원 상품) · col(칼럼) */
   var NOTES = [
-    { open: true, area: '어법', title: '관계대명사 · 관계부사 한 장 정리', thumb: 'n01',
-      shop: 'https://www.daechisecret.com/shop_view/?idx=2218',
-      col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175348213' },
-    { open: false, area: '어법', title: '분사구문 한 장 정리', thumb: 'n04', shop: '', col: '' },
+    { open: true, area: '어법', title: '관계대명사 · 관계부사 한 장 정리', thumb: 'n01', shop: 'https://www.daechisecret.com/shop_view/?idx=2218', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175348213' },
+    { open: true, area: '어법', title: '전치사 vs 접속사 구별표', thumb: 'n02', shop: 'https://www.daechisecret.com/shop_view/?idx=2267', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175381579' },
     { open: false, area: '어법', title: 'to부정사 · 동명사 한 장 정리', thumb: 'n03', shop: '', col: '' },
-    { open: false, area: '어법', title: '수동태 한 장 정리', thumb: 'n06', shop: '', col: '' },
+    { open: false, area: '어법', title: '분사구문 한 장 정리', thumb: 'n04', shop: '', col: '' },
     { open: false, area: '어법', title: '조동사 · 가정법 한 장 정리', thumb: 'n05', shop: '', col: '' },
+    { open: false, area: '어법', title: '수동태 한 장 정리', thumb: 'n06', shop: '', col: '' },
+    { open: false, area: '어법', title: '도치 · 강조 · 부분부정 한 장 정리', thumb: 'n07', shop: '', col: '' },
+    { open: false, area: '어법', title: '영어 문장의 5형식 한 장 정리', thumb: 'n08', shop: '', col: '' },
+    { open: false, area: '어법', title: '영어 불규칙 동사표', thumb: 'n09', shop: '', col: '' },
+    { open: false, area: '어법', title: '현재완료 한 장 정리', thumb: 'n10', shop: '', col: '' },
     { open: false, area: '어휘', title: '기출 숙어 50 총정리', thumb: 'n11', shop: '', col: '' },
+    { open: false, area: '어휘', title: '짝 표현(콜로케이션) 40', thumb: 'n12', shop: '', col: '' },
     { open: false, area: '어휘', title: '기출 다의어 20', thumb: 'n13', shop: '', col: '' },
-    { open: false, area: '어휘', title: '감정 · 심경 영어 단어 모음', thumb: 'n21', shop: '', col: '' },
     { open: false, area: '구문', title: '구문 해석 연습 — 끊어 읽기', thumb: 'n14', shop: '', col: '' },
+    { open: false, area: '독해', title: '영어 연결어 · 독해 신호 표현', thumb: 'n15', shop: '', col: '' },
+    { open: false, area: '구문', title: '사역동사 · 지각동사 한 장 정리', thumb: 'n16', shop: '', col: '' },
+    { open: false, area: '구문', title: '비교 구문 한 장 정리', thumb: 'n17', shop: '', col: '' },
     { open: false, area: '구문', title: '명사절 · 복합관계사 한 장 정리', thumb: 'n18', shop: '', col: '' },
+    { open: false, area: '구문', title: '가주어 · 진주어 한 장 정리', thumb: 'n19', shop: '', col: '' },
+    { open: false, area: '어휘', title: '수능 영단어 주제별 정리 ① 경제·소비', thumb: 'n20', shop: '', col: '' },
+    { open: false, area: '어휘', title: '감정 · 심경 영어 단어 모음', thumb: 'n21', shop: '', col: '' },
     { open: false, area: '독해', title: '주제 선지 표현 모음', thumb: 'n22', shop: '', col: '' },
     { open: false, area: '독해', title: '제목 선지 표현 모음', thumb: 'n23', shop: '', col: '' },
+    { open: false, area: '독해', title: '주장 신호어 모음', thumb: 'n24', shop: '', col: '' },
     { open: false, area: '독해', title: '순서 · 삽입 단서 모음', thumb: 'n25', shop: '', col: '' },
+    { open: false, area: '독해', title: '오답이 정답을 이긴 문항 (고1)', thumb: 'n26', shop: '', col: '' },
     { open: false, area: '독해', title: '모의고사 오답률 TOP 20 (고1)', thumb: 'n27', shop: '', col: '' },
+    { open: false, area: '독해', title: '회차별 오답률 1위 문항 (고1)', thumb: 'n28', shop: '', col: '' },
+    { open: false, area: '독해', title: '오답이 정답을 이긴 문항 (고2)', thumb: 'n30', shop: '', col: '' },
     { open: false, area: '독해', title: '모의고사 오답률 TOP 20 (고2)', thumb: 'n31', shop: '', col: '' },
+    { open: false, area: '독해', title: '오답이 정답을 이긴 문항 (고3)', thumb: 'n32', shop: '', col: '' },
     { open: false, area: '독해', title: '모의고사 오답률 TOP 20 (고3)', thumb: 'n33', shop: '', col: '' }
   ];
 
@@ -54,13 +69,11 @@
     var cat = '<span class="nt-cat">' + esc(it.area) + '</span>';
     if (isOpen(it)) {
       var img = '<img src="' + BASE + it.thumb + '.jpg" alt="' + esc(it.title) + ' 무료 정리표 첫 쪽" loading="lazy">';
-      /* 「무료로 받기」는 바로 내려받는 0원 상품이 아니라 칼럼 글로 — 칼럼을 읽고 그 안에서 받는다. 「칼럼 읽기」 단추는 뺌(사장님 2026-11-01) */
-      var go = it.col || it.shop;
-      var thumb = go ? '<a class="nt-thumb" href="' + esc(go) + '">' + img + '</a>' : '<div class="nt-thumb">' + img + '</div>';
-      var get = go
-        ? '<a class="nt-get" href="' + esc(go) + '">무료로 받기</a>'
+      var thumb = it.shop ? '<a class="nt-thumb" href="' + esc(it.shop) + '">' + img + '</a>' : '<div class="nt-thumb">' + img + '</div>';
+      var get = it.shop
+        ? '<a class="nt-get" href="' + esc(it.shop) + '">무료로 받기</a>'
         : '<span class="nt-get nt-wait">준비 중이에요</span>';
-      var col = '';
+      var col = it.col ? '<a class="nt-col" href="' + esc(it.col) + '">칼럼 읽기 &rarr;</a>' : '';
       return '<article class="nt-card nt-open">' + thumb +
         '<div class="nt-meta">' + cat + '<span class="nt-free">PDF 무료</span></div>' +
         '<h3 class="nt-ttl">' + esc(it.title) + '</h3>' +
