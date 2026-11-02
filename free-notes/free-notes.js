@@ -18,7 +18,7 @@
   var NOTES = [
     { open: true, area: '어법', title: '관계대명사 · 관계부사 한 장 정리', thumb: 'n01', shop: 'https://www.daechisecret.com/shop_view/?idx=2218', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175348213' },
     { open: true, area: '어법', title: '전치사 vs 접속사 구별표', thumb: 'n02', shop: 'https://www.daechisecret.com/shop_view/?idx=2267', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175381579' },
-    { open: false, area: '어법', title: 'to부정사 · 동명사 한 장 정리', thumb: 'n03', shop: '', col: '' },
+    { open: true, area: '어법', title: 'to부정사 · 동명사 한 장 정리', thumb: 'n03', shop: 'https://www.daechisecret.com/shop_view/?idx=2316', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175387029' },
     { open: false, area: '어법', title: '분사구문 한 장 정리', thumb: 'n04', shop: '', col: '' },
     { open: false, area: '어법', title: '조동사 · 가정법 한 장 정리', thumb: 'n05', shop: '', col: '' },
     { open: false, area: '어법', title: '수동태 한 장 정리', thumb: 'n06', shop: '', col: '' },
