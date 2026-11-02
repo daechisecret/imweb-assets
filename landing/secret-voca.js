@@ -12,7 +12,6 @@ let ED=Object.keys(DATA.books)[0], G='고1';
 function $(i){return document.getElementById(i)}
 function rows(){
   const gs=DATA.groups[ED]; let h=gs.map(([lb,gr])=>`<div class="row"><span class="lb">${lb}</span>${gr.map(g=>`<button class="gr" data-g="${g}">${g}</button>`).join('')}</div>`).join('');
-  if(DATA.tb) h+=`<div class="row"><span class="lb">중등 교과서별 어법</span>${Object.keys(DATA.tb).map(g=>`<button class="gr" data-tb="${g}">${g}</button>`).join('')}</div>`;
   $('gradeRows').innerHTML=h;
   document.querySelectorAll('button.gr').forEach(b=>b.onclick=()=>b.dataset.tb?showTb(b.dataset.tb):show(b.dataset.g));
 }
