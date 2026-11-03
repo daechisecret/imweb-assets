@@ -72,6 +72,42 @@
    "series": "2220",
    "updated": "2026년 11월 3일",
    "read": 6
+  },
+  {
+   "id": "parsing",
+   "post": null,
+   "area": "구문",
+   "topic": "끊어 읽기",
+   "title": "구문 해석 연습 정리본 무료 PDF자료",
+   "sub": "기출 문장 10개 끊어 읽기",
+   "desc": "끊어 읽기 표 · 기출 문장 5개 · 자주 하는 실수 · 질문과 답 7개",
+   "thumb": "column/parsing/parsing_pdf1.jpg",
+   "free": "2318",
+   "freeTitle": "끊어 읽기 한 장 정리 PDF",
+   "lesson": "1815",
+   "lessonTitle": "시크릿구문 1강 주어 찾기",
+   "cover": "column/parsing/parsing_cover.jpg",
+   "series": "2221",
+   "updated": "2026년 11월 3일",
+   "read": 6
+  },
+  {
+   "id": "idiom",
+   "post": null,
+   "area": "어휘",
+   "topic": "숙어",
+   "title": "영어 숙어 모음 무료 PDF자료",
+   "sub": "모의고사 기출 숙어 50 총정리",
+   "desc": "숙어 표 · 기출 문장 5개 · 자주 하는 실수 · 질문과 답 8개",
+   "thumb": "column/idiom/idiom_pdf1.jpg",
+   "free": "2319",
+   "freeTitle": "숙어 한 장 정리 PDF",
+   "lesson": "2221",
+   "lessonTitle": "시크릿구문 고1",
+   "cover": "column/idiom/idiom_cover.jpg",
+   "series": "2221",
+   "updated": "2026년 11월 3일",
+   "read": 6
   }
  ]
 }
