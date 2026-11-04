@@ -365,7 +365,7 @@ html,body{overflow:hidden}
     <div class="mapx"><table class="map" id="map"></table></div>
   </section>
 
-  <div class="sec"><span class="s">Study Plan</span><h2>패키지 구매 시 드리는 진도표 엑셀</h2><p>교재 패키지 · 올인원을 구매하시면 진도표 엑셀 파일을 함께 드려요. 입력 칸만 바꾸면 회차별 날짜 · 수업 내용 · 숙제가 자동으로 채워져요.</p></div>
+  <div class="sec" id="jindo"><span class="s">Study Plan</span><h2>패키지 구매 시 드리는 진도표 엑셀</h2><p>교재 패키지 · 올인원을 구매하시면 진도표 엑셀 파일을 함께 드려요. 입력 칸만 바꾸면 회차별 날짜 · 수업 내용 · 숙제가 자동으로 채워져요.</p></div>
   <div class="plan">
     <div class="pv">
       <video controls playsinline preload="none" poster="img/jindo-guide-poster.jpg"><source src="video/jindo-guide.mp4?v=2" type="video/mp4"></video>
@@ -506,6 +506,13 @@ all(); renderSmart(); renderMap();
 function fit(){ var w = document.querySelector('.wrap'); var h = w ? Math.ceil(w.getBoundingClientRect().bottom + scrollY + 10) : document.body.scrollHeight; var m = document.querySelector('.gmodal'); if (m) h = Math.max(h, Math.ceil(m.getBoundingClientRect().bottom + scrollY + 20)); try { parent.postMessage({sl:'special-h', h: h}, '*'); } catch(e) {} }
 try { new ResizeObserver(fit).observe(document.body); } catch(e) {} window.addEventListener('load', fit); setInterval(fit, 1500);
 try { new IntersectionObserver(([e])=>document.querySelector('.bar').classList.toggle('stuck', !e.isIntersecting)).observe(document.getElementById('barTop')); } catch(e) {}
+</script>
+<script>
+/* 앵커 링크 #jindo — 아임웹 페이지(special-lecture#jindo)가 iframe 주소 끝에 #jindo 를 넘기면 진도표 자리 높이를 알려 그 자리로 스크롤(2026-11-05) */
+(function(){ if (location.hash !== '#jindo') return;
+  function go(){ var el = document.getElementById('jindo'); if (!el) return; var y = Math.round(el.getBoundingClientRect().top + scrollY);
+    if (parent !== window) { try { parent.postMessage({sl:'special-scroll', y: y}, '*'); } catch(e) {} } else el.scrollIntoView(); }
+  window.addEventListener('load', function(){ setTimeout(go, 300); setTimeout(go, 1500); }); })();
 </script>
 
 </html>
