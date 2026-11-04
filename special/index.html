@@ -305,6 +305,7 @@ html,body{overflow:hidden}
 .plan .pv,.plan .pp{background:rgba(255,255,255,.86);border-radius:16px;box-shadow:0 10px 24px -18px rgba(150,60,100,.45);padding:12px}
 .plan video{display:block;width:100%;aspect-ratio:16/9;border-radius:10px;background:#F6E9EE}
 .plan .cap{display:block;margin-top:8px;font-size:12.5px;color:var(--sub);text-align:center}
+.plan .cap .full{color:var(--brand-ink);font-weight:700;text-decoration:underline;text-underline-offset:3px}
 .plan .shot{position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
 .plan .shot img{display:block;width:100%;height:auto}
 .plan .box{position:absolute;border:2.5px solid var(--brand);border-radius:6px}
@@ -368,7 +369,7 @@ html,body{overflow:hidden}
   <div class="plan">
     <div class="pv">
       <video controls playsinline preload="none" poster="img/jindo-guide-poster.jpg"><source src="video/jindo-guide.mp4?v=2" type="video/mp4"></video>
-      <span class="cap">사용법 영상 1분 15초 · 소리를 켜고 보세요</span>
+      <span class="cap">사용법 영상 1분 15초 · 소리를 켜고 보세요 · <a class="full" href="https://daechisecret.github.io/imweb-assets/special/video/jindo-guide.mp4?v=2" target="_blank" rel="noopener">전체 화면으로 보기 ↗</a></span>
     </div>
     <div class="pp">
       <div class="shot"><img src="img/jindo-sheet.jpg?v=2" width="1495" height="1032" alt="방학특강 진도표 엑셀 화면 — 수업 설정 · 교재 선택 · 자동 계산 · 회차별 진도표" loading="lazy">
