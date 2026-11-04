@@ -300,6 +300,23 @@ body{background:linear-gradient(160deg,#FCE6EE 0%,#FFF6F2 38%,#F3EEFB 100%) fixe
 .gmodal .box{max-height:780px;box-shadow:0 20px 60px -10px rgba(80,30,60,.45)}
 .gmodal .sc2{max-height:660px}
 html,body{overflow:hidden}
+/* 진도표 엑셀 안내(커리큘럼 맵 아래) */
+.plan{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;align-items:start}
+.plan .pv,.plan .pp{background:rgba(255,255,255,.86);border-radius:16px;box-shadow:0 10px 24px -18px rgba(150,60,100,.45);padding:12px}
+.plan video{display:block;width:100%;aspect-ratio:16/9;border-radius:10px;background:#F6E9EE}
+.plan .cap{display:block;margin-top:8px;font-size:12.5px;color:var(--sub);text-align:center}
+.plan .shot{position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.plan .shot img{display:block;width:100%;height:auto}
+.plan .box{position:absolute;border:2.5px solid var(--brand);border-radius:6px}
+.plan .box i{position:absolute;left:-11px;top:-11px;width:22px;height:22px;border-radius:50%;background:var(--brand);color:#fff;font-style:normal;font-weight:900;font-size:12.5px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(150,60,100,.35)}
+.plan ol{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px;counter-reset:st}
+.plan li{display:grid;grid-template-columns:22px 1fr;gap:8px;font-size:13.5px;line-height:1.5}
+.plan li::before{counter-increment:st;content:counter(st);width:22px;height:22px;border-radius:50%;background:var(--brand);color:#fff;font-weight:900;font-size:12.5px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.plan li b{color:var(--ink)}
+.plan li span{color:var(--sub)}
+@media (max-width:760px){.plan{grid-template-columns:1fr}}
+.plan .tip{margin-top:12px;background:var(--soft);border-radius:12px;padding:10px 14px;display:grid;gap:4px;font-size:13px;line-height:1.55;color:var(--sub)}
+.plan .tip b{color:var(--brand-ink);font-size:13.5px}
 </style>
 
 <div class="wrap">
@@ -346,6 +363,29 @@ html,body{overflow:hidden}
   <section id="pMap">
     <div class="mapx"><table class="map" id="map"></table></div>
   </section>
+
+  <div class="sec"><span class="s">Study Plan</span><h2>패키지 구매 시 드리는 진도표 엑셀</h2><p>교재 패키지 · 올인원을 구매하시면 진도표 엑셀 파일을 함께 드려요. 입력 칸만 바꾸면 회차별 날짜 · 수업 내용 · 숙제가 자동으로 채워져요.</p></div>
+  <div class="plan">
+    <div class="pv">
+      <video controls playsinline preload="none" poster="img/jindo-guide-poster.jpg"><source src="video/jindo-guide.mp4?v=2" type="video/mp4"></video>
+      <span class="cap">사용법 영상 1분 15초 · 소리를 켜고 보세요</span>
+    </div>
+    <div class="pp">
+      <div class="shot"><img src="img/jindo-sheet.jpg?v=2" width="1495" height="1032" alt="방학특강 진도표 엑셀 화면 — 수업 설정 · 교재 선택 · 자동 계산 · 회차별 진도표" loading="lazy">
+        <span class="box" style="left:.8%;top:24.6%;width:40%;height:41.6%"><i>1</i></span>
+        <span class="box" style="left:44.2%;top:24.6%;width:22%;height:41.6%"><i>2</i></span>
+        <span class="box" style="left:69.6%;top:24.6%;width:29.2%;height:41.6%"><i>3</i></span>
+        <span class="box" style="left:.8%;top:69%;width:98%;height:30.6%"><i>4</i></span>
+      </div>
+      <ol>
+        <li><div><b>수업 설정</b> <span>학년 · 시작 날짜 · 총 회차 · 주 수업 횟수 · 수업 시간을 넣어요. 칸을 누르면 ▼ 목록에서 골라요.</span></div></li>
+        <li><div><b>교재 선택</b> <span>쓸 교재는 O, 안 쓸 교재는 X. 고른 교재를 번갈아 섞어 배분해요.</span></div></li>
+        <li><div><b>자동 계산</b> <span>필요한 시간 · 추천 회차를 보여 주고, 회당 시간이 넘치면 빨갛게 알려 줘요.</span></div></li>
+        <li><div><b>회차별 진도표</b> <span>날짜 · 수업 내용 · 숙제가 채워져요. 휴강일을 넣으면 다음 수업일로 넘어가요. 그대로 인쇄해서 쓰세요.</span></div></li>
+      </ol>
+      <div class="tip"><b>고쳐 쓰기 · 되돌리기</b><span>쓰기 전에 파일을 복사해서 사본으로 작업하세요. 원본을 남겨 두면 언제든 처음 상태로 돌아갈 수 있어요.</span><span>모든 칸은 직접 고쳐 쓸 수 있어요. 칸을 한 번 누르고 바로 입력하면 바뀌어요(여러 줄은 Alt + Enter).</span><span>처음 상태로 돌리려면 Ctrl + Z, 또는 받은 파일을 다시 열거나 카카오톡 플러스친구로 요청해 주세요.</span></div>
+    </div>
+  </div>
 
   <div class="sec"><h2>자료 구성</h2></div>
   <div class="foot">
