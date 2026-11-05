@@ -762,3 +762,30 @@
   function drop() { var f = document.getElementById('sl-special-frame'); if (f) f.remove(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', drop); else drop();
 })();
+
+/* ── 방학특강 화면: 메뉴 학년 → 그 학년으로 열기 · #jindo 스크롤 (2026-11-06 사장님 「네가 해」) ─────────────
+   중1~고3 · 예비고1 메뉴(/573~/578, /580)는 방학특강 페이지의 하위 카테고리라 같은 iframe(#sl-special-frame)을 쓴다.
+   그 iframe 주소에 ?g=학년 을 붙여 그 학년으로 연다. /special-lecture?g=고2 도 된다. #jindo 면 진도표 자리로 스크롤. */
+(function () {
+  var GP = { '580': '예비고1', '573': '중1', '574': '중2', '575': '중3', '576': '고1', '577': '고2', '578': '고3' };
+  var pg = (location.pathname.match(/^\/(\d+)/) || [])[1];
+  if (/[?&](idx|q)=/.test(location.search)) return;
+  var g = '';
+  try { g = new URLSearchParams(location.search).get('g') || GP[pg] || ''; } catch (e) {}
+  var jindo = location.hash === '#jindo';
+  if (!g && !jindo) return;
+  var BASE = 'https://daechisecret.github.io/imweb-assets/special/';
+  function go() {
+    var f = document.getElementById('sl-special-frame'); if (!f) return false;
+    if (f.getAttribute('data-sl-g') === '1') return true;
+    f.setAttribute('data-sl-g', '1');
+    f.src = BASE + '?v=' + Date.now() + (g ? '&g=' + encodeURIComponent(g) : '') + (jindo ? '#jindo' : '');
+    return true;
+  }
+  if (!go()) { var n = 0, t = setInterval(function () { if (go() || ++n > 40) clearInterval(t); }, 150); document.addEventListener('DOMContentLoaded', go); }
+  if (jindo) window.addEventListener('message', function (e) {
+    if (!e.data || e.data.sl !== 'special-scroll') return;
+    var fr = document.getElementById('sl-special-frame');
+    if (fr && e.data.y >= 0) window.scrollTo({ top: fr.getBoundingClientRect().top + window.pageYOffset + e.data.y - 90, behavior: 'smooth' });
+  });
+})();
