@@ -97,23 +97,29 @@
      (사장님 2026-11-05) 그 사진도 샘플과 함께 미리보기 격자에 넣되, 칸에 통째로 들어가게 줄여(.sp-fit) 잘리지 않게 합니다.
      가려내는 법: 상세 맨 끝에 이어 붙은 사진 묶음(= 샘플)보다 앞에 있고, 뒤에 글이 더 나오는 사진. */
   var GUIDE = {};
-  function isHwpPack() { return /교사용 한글\(HWP\)/.test(document.title + ' ' + ((document.querySelector('meta[property="og:title"]') || {}).content || '')); }
+  function isHwpPack() { var t = document.title + ' ' + ((document.querySelector('meta[property="og:title"]') || {}).content || ''); if (/방학특강/.test(t) && /전범위/.test(t)) return true;   /* PDF 방학특강 패키지 · 올인원도(11-05) */
+    return /교사용 한글\(HWP\)/.test(document.title + ' ' + ((document.querySelector('meta[property="og:title"]') || {}).content || '')); }
   function keyOf(u) { var m = /\/upload\/([^?#\s"]+)/.exec(u || ''); return m ? m[1] : ''; }   /* cdn.imweb.me · cdn-optimized.imweb.me 둘 다 같은 열쇠 */
   function srcOf(im) { return im.getAttribute('src') || im.getAttribute('data-src') || im.getAttribute('data-original') || ''; }
-  function markGuides() {
-    if (!isHwpPack()) return;
-    document.querySelectorAll('[id="prod_detail_body"]').forEach(function (bd) {
-      var kids = Array.prototype.slice.call(bd.children), textAfter = false;
+  function markGuides(html) {
+    /* 화면에 그려진 상세는 늦게 붙을 때가 있어, 미리보기를 뽑는 그 글자(html)에서 바로 가린다(11-05) */
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var bodies = doc.querySelectorAll('[id="prod_detail_body"]');
+    var ok = isHwpPack() || [].some.call(bodies, function (bd) { return /방학특강/.test(bd.textContent || ''); });
+    if (!ok) return;
+    [].forEach.call(bodies, function (bd) {
+      /* 다른 스크립트(product-desc.js)가 문단을 상자로 묶기도 해서 바로 아래 자식 말고 문서 순서대로 P · 표를 모두 본다 */
+      var kids = Array.prototype.slice.call(bd.querySelectorAll('p, table, h1, h2, h3, h4, h5, h6')).filter(function (x) { return !x.closest('ul, .sl-notice'); }), textAfter = false;
       for (var i = kids.length - 1; i >= 0; i--) {
         var el = kids[i], im = el.querySelectorAll('img');
-        if (!/^(P|TABLE|H[1-6])$/.test(el.tagName)) continue;   /* 상세 글은 P · 표뿐 — 안내 상자(UL · DIV, 아임웹이 화면 폭마다 다르게 붙임)는 셈에서 뺌 */
         var c = el.cloneNode(true); c.querySelectorAll('style,script,noscript').forEach(function (z) { z.remove(); });
-        var txt = (c.textContent || '').replace(/\s+/g, '');   /* 아임웹이 사진 앞에 넣는 <style> 글자는 뺌 */
-        if (im.length && !txt) { if (textAfter) im.forEach(function (x) { x.classList.add('sl-guide'); el.classList.add('sl-guide-p'); var u = keyOf(srcOf(x)); if (u) GUIDE[u] = 1; }); }
+        var txt = (c.textContent || '').replace(/\s+/g, '');
+        if (im.length && !txt) { if (textAfter) im.forEach(function (x) { var u = keyOf(srcOf(x)); if (u) GUIDE[u] = 1; }); }
         else if (txt) textAfter = true;
       }
     });
   }
+
 
   function pick(html) {
     var seen = {}, out = [], m;
@@ -275,11 +281,17 @@
          상세정보 사진은 **스크롤할 때 늦게 불러오도록** 되어 있어서,
          지금 화면에 그려진 <img> 를 세면 아직 한 장도 없습니다.
          받아 온 글자에는 처음부터 다 들어 있으므로 거기서 찾습니다. */
-      markGuides();
-      var here = pick(document.documentElement.innerHTML);
+      var html = document.documentElement.innerHTML;
+      markGuides(html);
+      var here = pick(html);
       if (!here.length) { mount.remove(); mount = null; return; }
       paint(here, null, null);
       showOnly();
+      /* 상세 글이 늦게 그려지면 처음엔 설명 사진을 못 가린다 → 조금 뒤 다시 가려 칸 맞춤만 고친다 */
+      [1200, 3000, 6000].forEach(function (ms) { setTimeout(function () {
+        markGuides(document.documentElement.innerHTML);
+        document.querySelectorAll('.sp-grid img').forEach(function (im) { if (GUIDE[keyOf(im.getAttribute('src'))]) im.classList.add('sp-fit'); });
+      }, ms); });
     }
 
     mount.addEventListener('click', function (e) {
