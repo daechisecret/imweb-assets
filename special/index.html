@@ -580,5 +580,157 @@ function hwpLinks(){
   all = function(){ _all(); hwpLinks(); renderHwp(); };
   hwpLinks(); renderHwp(); })();
 </script><!-- HWP-JS-END -->
+<!-- V2-START 구매 정보 한눈에 · 토스형(사장님 2026-11-06 선택) -->
+<style>
+.howbuy{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 6px}
+.howbuy .hb{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px 16px;display:grid;gap:6px;box-shadow:0 6px 18px -12px rgba(160,60,100,.35)}
+.howbuy .hb .k{display:flex;align-items:center;gap:8px;font-weight:900;font-size:15.5px}
+.howbuy .hb .k em{font-style:normal;background:var(--brand);color:#fff;border-radius:999px;padding:2px 9px;font-size:12px}
+.howbuy .hb .k em.lt{background:var(--soft);color:var(--brand-ink)}
+.howbuy .hb p{margin:0;font-size:12.5px;color:var(--sub)}
+.howbuy .hb .pp{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px;margin-top:2px}
+.howbuy .hb .pp span{color:var(--sub)} .howbuy .hb .pp b{font-variant-numeric:tabular-nums}
+.howbuy .hb .pp b.h{color:#2F5C9E}
+.cards{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+.card.v2{display:grid!important;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:14px!important;align-items:start}
+.card.v2 .cv{border-radius:12px;overflow:hidden;position:relative;margin:0!important}
+.card.v2 .cv img{width:100%;display:block}
+.card.v2 .cv .flt{transform:scale(.72);transform-origin:top right;top:4px!important;right:4px!important}
+.card.v2 .bd{padding:0!important;display:grid;gap:8px}
+.card.v2 h3{margin:2px 0 0;font-size:17px}
+.card.v2 .meta{font-size:12.5px;color:var(--sub)}
+.buy{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.buy th,.buy td{padding:8px 9px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
+.buy tr:last-child th,.buy tr:last-child td{border-bottom:0}
+.buy thead th{background:var(--wash);font-size:12px;color:var(--sub);font-weight:800}
+.buy thead th.h{color:#2F5C9E;background:#EEF3FB}
+.buy tbody th{font-weight:800;white-space:nowrap;font-size:12.5px}
+.buy tbody th small{display:block;color:var(--brand-ink);font-size:11px;font-weight:800}
+.buy a.pb{display:flex;flex-direction:column;text-decoration:none;color:var(--ink);font-weight:900;font-variant-numeric:tabular-nums;font-size:14.5px;line-height:1.25}
+.buy a.pb s{color:var(--sub);font-weight:500;font-size:11px}
+.buy a.pb i{font-style:normal;font-size:11px;color:var(--brand-ink);font-weight:800}
+.buy td.h a.pb{color:#2F5C9E} .buy td.h a.pb i{color:#2F5C9E}
+.buy td.u{font-size:12.5px;color:var(--sub)} .buy td.u b{color:var(--ink);font-size:13.5px}
+.buy td.u.h b{color:#2F5C9E}
+.card.v2 .row2{display:flex;gap:6px;flex-wrap:wrap}
+.card.v2 .row2 button{flex:1;border:1.5px solid var(--brand);background:var(--panel);color:var(--brand-ink);border-radius:10px;padding:8px 10px;font:800 13px var(--f);cursor:pointer}
+.card.v2 .row2 button.gd{flex:0 0 auto;border-color:var(--line);color:var(--sub);font-weight:700}
+.lessons.v2{padding:14px!important}
+.lessons.v2 .hd{padding:0 2px 10px!important}
+.lessons.v2 .lgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 14px}
+.lessons.v2 .lr{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;gap:6px;align-items:center;padding:7px 4px;border-bottom:1px dashed var(--line);font-size:13px}
+.lessons.v2 .lr .n{font-weight:900;color:var(--c)}
+.lessons.v2 .lr .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lessons.v2 .lr a{font-size:12px;font-weight:800;text-decoration:none;border-radius:8px;padding:5px 8px;white-space:nowrap;background:var(--soft);color:var(--brand-ink)}
+.lessons.v2 .lr a.h{background:#EEF3FB;color:#2F5C9E}
+.allin.v2{display:grid!important;grid-template-columns:200px minmax(0,1fr)!important;gap:20px}
+.allin.v2 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.allin.v2 .two a{display:grid;gap:2px;border-radius:14px;padding:12px 14px;text-decoration:none;background:var(--soft);color:var(--ink)}
+.allin.v2 .two a.h{background:#EEF3FB}
+.allin.v2 .two a span{font-size:12px;color:var(--sub);font-weight:700}
+.allin.v2 .two a b{font-size:19px;font-variant-numeric:tabular-nums}
+.allin.v2 .two a s{font-size:12px;color:var(--sub)}
+.allin.v2 .two a.h b{color:#2F5C9E}
+#hwp,#hwpSec,.hwpnote{display:none!important}
+@media (max-width:640px){
+  .hero{padding:18px 16px!important;grid-template-columns:1fr!important;gap:10px!important}
+  .hero .covers{display:none!important}
+  .hero h1{font-size:22px!important}
+  .bar{padding:8px 0!important}
+  .bar .rowA{min-width:0}
+  #grades{flex-wrap:wrap!important;gap:4px!important;min-width:0}
+  #grades .gg i{display:none}
+  #grades .gg{display:contents}
+  #areas{flex-wrap:wrap!important;min-width:0}
+  .bar .g,.bar .a{padding:6px 11px!important;font-size:14px!important;min-width:0!important}
+  .howbuy{grid-template-columns:1fr;gap:8px}
+  .howbuy .hb{grid-template-columns:auto 1fr;align-items:center;padding:10px 12px;gap:2px 12px}
+  .howbuy .hb p{display:none}
+  .cards{grid-template-columns:1fr!important;gap:10px!important}
+  .card.v2{grid-template-columns:84px minmax(0,1fr);gap:10px;padding:10px!important;grid-template-areas:"cv hd" "buy buy" "row row"}
+  .card.v2 .bd{display:contents}
+  .card.v2 .cv{grid-area:cv} .card.v2 .hd2{grid-area:hd;align-self:center} .card.v2 .buy{grid-area:buy} .card.v2 .row2{grid-area:row}
+  .card.v2 .cv .flt{display:none}
+  .card.v2 h3{font-size:15.5px}
+  .lessons.v2 .lgrid{grid-template-columns:1fr}
+  .lessons.v2 .lr{grid-template-columns:38px minmax(0,1fr) auto auto}
+  .allin.v2{grid-template-columns:90px minmax(0,1fr)!important;gap:12px}
+  .allin.v2 .formula,.allin.v2 .ibs{display:none!important}
+  .allin.v2 .two{grid-template-columns:1fr}
+}
+</style>
+<script>
+document.body.classList.add('v-a');
+document.addEventListener('DOMContentLoaded', function(){
+  const HW = name => HWP[name];
+  const listOfH = x => x.list || x.price*2;
+  // 1) 구매 방법 한눈에
+  const sec = document.getElementById('ttlBooks').closest('.sec');
+  sec.insertAdjacentHTML('beforebegin', '<div class="howbuy" id="howbuy"></div>');
+  function renderHow(){
+    const g = st.grade, a = D.allin[g], ha = HWPALL[g];
+    const bs = books.filter(b=>b.grade===g&&!b.soon&&b.pk);
+    const minP = Math.min(...bs.map(b=>b.pk.price)), minH = Math.min(...bs.filter(b=>HW(b.name)).map(b=>HW(b.name).price));
+    document.getElementById('howbuy').innerHTML =
+      `<div class="hb"><div class="k">올인원 <em>55%</em></div><p>${g} 4권(어휘 · 어법 · 구문 · 독해) 전 강</p><div class="pp"><span>PDF</span><b>${a?won(a.price)+'원':'-'}</b><span>한글</span><b class="h">${ha?won(ha.price)+'원':'-'}</b></div></div>`+
+      `<div class="hb"><div class="k">교재 패키지 <em>50%</em></div><p>교재 한 권 전 강 + 진도표</p><div class="pp"><span>PDF</span><b>${won(minP)}원~</b><span>한글</span><b class="h">${isFinite(minH)?won(minH)+'원~':'-'}</b></div></div>`+
+      `<div class="hb"><div class="k">강별 <em class="lt">필요한 강만</em></div><p>한 강씩 골라서</p><div class="pp"><span>PDF</span><b>강마다 2,900원</b><span>한글</span><b class="h">강마다 4,300원</b></div></div>`;
+  }
+  // 2) 교재 카드 = 표지 + 구매표
+  card = function(b){
+    const c = AC[b.area], id = 'bk'+books.indexOf(b), sub = b.kind && b.kind!=='교과서별' ? b.kind : '', h = HW(b.name);
+    if (b.soon) return `<article class="card v2 soon" id="${id}" style="--c:${c}"><div class="cv">${b.img?`<img src="${b.img}" alt="">`:''}</div><div class="bd"><div class="hd2"><span class="chip">${b.area}${sub?' · '+sub:''}</span><h3>${esc(b.name)}</h3><div class="meta">곧 열려요</div></div></div></article>`;
+    return `<article class="card v2" id="${id}" style="--c:${c}">
+      <div class="cv"><img src="${b.img}" alt="${esc(b.name)} 표지"><span class="flt"><b>50%</b><small>패키지 할인</small></span></div>
+      <div class="bd"><div class="hd2"><span class="chip">${b.area}${sub?' · '+sub:''}</span><h3>${esc(b.name)}</h3><div class="meta">${nOf(b)}${unitOf(b)} · 진도표 포함</div></div>
+        <table class="buy"><thead><tr><th></th><th>PDF</th><th class="h">교사용 한글</th></tr></thead><tbody>
+          <tr><th>전범위 패키지<small>50% 할인</small></th><td><a class="pb" href="${SHOP(b.pk.id)}" target="_top">${won(b.pk.price)}원<s>${won(listOf(b))}원</s></a></td><td class="h">${h?`<a class="pb" href="${SHOP(h.id)}" target="_top">${won(h.price)}원<s>${won(listOfH(h))}원</s></a>`:'-'}</td></tr>
+          <tr><th>${unitW(b)}별</th><td class="u">${unitOf(b)}마다 <b>2,900원</b></td><td class="u h">${h?`${unitOf(b)}마다 <b>4,300원</b>`:'-'}</td></tr>
+        </tbody></table>
+        <div class="row2"><button type="button" aria-expanded="${st.open===id}" data-open="${id}">${unitW(b)}별 골라 사기 ${st.open===id?'▴':'▾'}</button>${b.guide?`<button type="button" class="gd" data-guide="${books.indexOf(b)}">이용 가이드</button>`:''}</div>
+      </div></article>`;
+  };
+  // 3) 강별 = 한 줄에 PDF · 한글 버튼
+  lessonsPanel = function(b){
+    const c = AC[b.area], m = HWPL[b.name] || {};
+    return `<div class="lessons v2" style="--c:${c}"><div class="hd"><b>${esc(b.name)} · ${unitW(b)}별</b><span>PDF ${unitOf(b)}마다 2,900원 · 한글 ${unitOf(b)}마다 4,300원</span></div><div class="lgrid">${b.lessons.map(l=>{const x=m[l.no];return `<div class="lr"><span class="n">${String(l.no).padStart(2,'0')}${unitOf(b)}</span><span class="t">${esc(l.t)}</span><a href="${SHOP(l.id)}" target="_top">PDF</a>${x?`<a class="h" href="${SHOP(x[0])}" target="_top">한글</a>`:'<span></span>'}</div>`;}).join('')}</div></div>`;
+  };
+  // 4) 올인원 = PDF · 한글 나란히
+  const _ra = renderAllin;
+  renderAllin = function(){ _ra(); const a = D.allin[st.grade], ha = HWPALL[st.grade], el = document.getElementById('allin'); if (!a) return;
+    el.classList.add('v2'); const btns = el.querySelector('.price.ap'); const bb = el.querySelector('.btns');
+    if (btns) btns.remove(); if (bb) bb.outerHTML = `<div class="two"><a href="${SHOP(a.id)}" target="_top"><span>PDF 올인원</span><b>${won(a.price)}원</b><s>${won(a.list||0)}원</s></a>${ha?`<a class="h" href="${SHOP(ha.id)}" target="_top"><span>교사용 한글 올인원</span><b>${won(ha.price)}원</b><s>${won(ha.list)}원</s></a>`:''}</div>`; };
+  hwpLinks = function(){}; renderHwp = function(){};
+  const _all2 = all; all = function(){ _all2(); renderHow(); };
+  all();
+});
+</script>
+
+
+<style>
+/* A. 토스형 — 테두리 없음, 회색 바탕, 큰 숫자, 둥근 정도 낮게 */
+body.v-a{--bg:#F2F4F6;--panel:#FFFFFF;--line:#EEF0F3;--ink:#191F28;--sub:#8B95A1;--wash:#F9FAFB;--soft:#FFF0F4}
+body.v-a .hero{border-radius:0!important;background:#fff!important}
+body.v-a .bar{background:#F2F4F6!important;border:0!important}
+body.v-a .g,body.v-a .a{border-radius:8px!important}
+body.v-a .howbuy .hb{border:0;border-radius:14px;box-shadow:none}
+body.v-a .howbuy .hb .k em{border-radius:6px}
+body.v-a .card.v2{border:0!important;border-radius:14px!important;box-shadow:none!important;background:#fff}
+body.v-a .card.v2 .cv{border-radius:8px}
+body.v-a .buy{border:0;border-radius:0}
+body.v-a .buy thead th{background:none;padding-top:0}
+body.v-a .buy thead th.h{background:none}
+body.v-a .buy th,body.v-a .buy td{border-bottom:1px solid #F2F4F6}
+body.v-a .buy a.pb{font-size:17px;letter-spacing:-.3px}
+body.v-a .chip{border-radius:6px!important}
+body.v-a .card.v2 .row2 button{border:0;background:#F2F4F6;color:#4E5968;border-radius:8px;padding:11px}
+body.v-a .card.v2 .row2 button:not(.gd){background:var(--brand);color:#fff}
+body.v-a .lessons.v2{border:0!important;border-radius:14px!important}
+body.v-a .lessons.v2 .lr{border-bottom:1px solid #F2F4F6}
+body.v-a .lessons.v2 .lr a{border-radius:6px}
+body.v-a .allin{border:0!important;border-radius:14px!important;box-shadow:none!important}
+body.v-a .allin.v2 .two a{border-radius:10px}
+</style>
+<!-- V2-END -->
 
 </html>
