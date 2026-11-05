@@ -319,6 +319,26 @@ html,body{overflow:hidden}
 .plan .tip{margin-top:12px;background:var(--soft);border-radius:12px;padding:10px 14px;display:grid;gap:4px;font-size:13px;line-height:1.55;color:var(--sub)}
 .plan .tip b{color:var(--brand-ink);font-size:13.5px}
 </style>
+<!-- HWP-CSS-START --><style>
+.hwpsec{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.hwpsec .card .chip{background:#3E6FB5}
+.hwpsec .card h3{font-size:15.5px}
+.hwpsec .card.all{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr);align-items:center}
+.hwpsec .card.all .btns{margin-top:12px}
+.hwpsec .card.all .four{font-size:13px;color:var(--sub)}
+.hwpsec .chip{color:#fff!important;background:#3E6FB5!important}
+.hwpsec .card.all .bd{justify-content:center}
+.hwpsec .card .btns{grid-template-columns:1fr}
+.hwpsec .none{grid-column:1/-1;background:var(--panel);border:1px dashed var(--line);border-radius:16px;padding:18px;color:var(--sub);font-size:14px}
+.hwpnote{display:flex;flex-wrap:wrap;gap:6px 14px;margin:-4px 0 14px;font-size:13px;color:var(--sub)}
+.hwpnote b{color:var(--ink)}
+.card .hwpl{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-top:6px;padding:8px 10px;border-radius:10px;background:#EEF3FB;color:#2F5C9E;font-size:12.5px;font-weight:800;text-decoration:none}
+.card .hwpl b{font-variant-numeric:tabular-nums}
+@media (max-width:640px){.hwpsec{grid-template-columns:repeat(2,minmax(0,1fr))}.hwpsec .card.all{grid-template-columns:1fr}}
+</style><!-- HWP-CSS-END -->
+
+
+
 
 <div class="wrap">
 
@@ -330,6 +350,7 @@ html,body{overflow:hidden}
         <li>중1부터 고3까지 학년별 4개 영역</li>
         <li>필요한 강만 2,900원, 교재 한 권은 패키지로</li>
         <li>학생용 · 정답 및 해설 · 교사용 PDF를 바로 다운로드</li>
+        <li><a href="#hwp" style="color:inherit">편집 가능한 교사용 한글(HWP) 파일도 따로 판매</a></li>
       </ul>
       <div class="ebA"><div class="one"><b>얼리버드 최대 <em>55%</em> 할인 혜택</b><small>~11월 30일 마감</small></div></div>
     </div>
@@ -350,6 +371,10 @@ html,body{overflow:hidden}
   <div class="sec"><span class="s">All-in-one</span><h2 id="ttlAll"></h2><p>그 학년 어휘 · 어법 · 구문 · 독해 4권을 한 번에.</p></div>
   <section class="allin" id="allin"></section>
 
+      <!-- HWP-SEC-START --><div class="sec" id="hwp"><span class="s">Editable</span><h2 id="ttlHwp"></h2><p>문제 순서 · 문구를 수업에 맞게 고칠 수 있는 교사용 한글 파일이에요.</p></div>
+  <div class="hwpnote"><span><b>hwpx</b> 한글 2014 이상</span><span><b>hwp</b> 위 파일이 안 열릴 때</span><span><b>글꼴 24종</b> 함께 드려요</span><span><b>진도표 · 추가 자료(Appendix)</b> 포함</span></div>
+  <section class="hwpsec" id="hwpSec"></section>
+<!-- HWP-SEC-END -->
   <div class="sec"><span class="s">Pick</span><h2>우리 반에 맞는 구성 고르기</h2><p>커리큘럼 맵에서 학년 · 영역별 교재를 한눈에 보고, 스마트 검색으로 필요한 강을 찾으세요.</p></div>
   <div class="tabs" role="tablist"><button type="button" role="tab" id="tMap" aria-selected="true">커리큘럼 맵</button><button type="button" role="tab" id="tSmart" aria-selected="false">스마트 검색</button></div>
   <section id="pSmart" hidden>
@@ -392,6 +417,7 @@ html,body{overflow:hidden}
   <div class="foot">
     <div class="fi"><h4>강별 자료</h4><ul><li>학생용</li><li>학생용 + 정답 및 해설</li><li>교사용</li></ul></div>
     <div class="fi"><h4>교재 패키지</h4><ul><li>전 강 자료 + Appendix</li><li>[전강통합] 한 권 PDF</li><li>OMR · 진도표</li></ul></div>
+    <div class="fi"><h4>교사용 한글(HWP)</h4><ul><li>hwpx(한글 2014 이상) · hwp(위 파일이 안 열릴 때)</li><li>글꼴 24종 · 진도표 · 추가 자료(Appendix)</li></ul></div>
     <div class="fi"><h4>교재 이용 가이드</h4><ul><li>교재마다 강 구성 · 실제 페이지 · 추가 자료를 정리했습니다</li><li>교재 카드의 「교재 이용 가이드 미리보기」에서 바로 볼 수 있습니다</li></ul></div>
   </div>
   <div class="old"><span>예전 시크릿 어법 12강 · 시크릿 VOCA 8종을 찾으세요?</span><a href="#old">리뉴얼 전 자료 보기 →</a></div>
@@ -514,5 +540,31 @@ try { new IntersectionObserver(([e])=>document.querySelector('.bar').classList.t
     if (parent !== window) { try { parent.postMessage({sl:'special-scroll', y: y}, '*'); } catch(e) {} } else el.scrollIntoView(); }
   window.addEventListener('load', function(){ setTimeout(go, 300); setTimeout(go, 1500); }); })();
 </script>
+<!-- HWP-JS-START --><script>
+/* 교사용 한글(HWP) 패키지 — hk_landing.py 가 만든 덩어리(사장님 2026-11-05). 학년을 바꾸면 같이 바뀜. */
+const HWP = {"시크릿보카 고1": {"id": 2326, "price": 25800, "list": 51600, "img": "img/hwp-ff2a50da509d.jpg"}, "시크릿보카 고2": {"id": 2334, "price": 25800, "list": 51600, "img": "img/hwp-e05feca3703f.jpg"}, "시크릿보카 고3": {"id": 2342, "price": 25800, "list": 51600, "img": "img/hwp-3f033281adf0.jpg"}, "시크릿어법 고1": {"id": 2327, "price": 25800, "list": 51600, "img": "img/hwp-4a059805c3c2.jpg"}, "시크릿어법 고2": {"id": 2335, "price": 25800, "list": 51600, "img": "img/hwp-69006004f5b9.jpg"}, "시크릿어법 고3": {"id": 2343, "price": 25800, "list": 51600, "img": "img/hwp-80ebd52a4dca.jpg"}, "시크릿구문 고1": {"id": 2328, "price": 25800, "list": 51600, "img": "img/hwp-e8560d3f27e6.jpg"}, "시크릿구문 고2": {"id": 2336, "price": 25800, "list": 51600, "img": "img/hwp-ce9ffd1e1581.jpg"}, "시크릿구문 고3": {"id": 2344, "price": 25800, "list": 51600, "img": "img/hwp-ff85b9446537.jpg"}, "시크릿독해 유형편 고1": {"id": 2329, "price": 21500, "list": 43000, "img": "img/hwp-a32594abbe88.jpg"}, "시크릿독해 유형편 고2": {"id": 2337, "price": 21500, "list": 43000, "img": "img/hwp-0ab05da3c89d.jpg"}, "시크릿독해 유형편 고3": {"id": 2345, "price": 23600, "list": 47300, "img": "img/hwp-8e49d3ec9793.jpg"}, "시크릿독해 테마편 고1": {"id": 2330, "price": 25800, "list": 51600, "img": "img/hwp-f45c4b2b690f.jpg"}, "시크릿독해 테마편 고2": {"id": 2338, "price": 25800, "list": 51600, "img": "img/hwp-017758191398.jpg"}, "시크릿독해 테마편 고3": {"id": 2346, "price": 25800, "list": 51600, "img": "img/hwp-a7c18bf1b578.jpg"}, "시크릿독해 상위오답률편 고1": {"id": 2331, "price": 25800, "list": 51600, "img": "img/hwp-a2bc85a2198a.jpg"}, "시크릿독해 상위오답률편 고2": {"id": 2339, "price": 25800, "list": 51600, "img": "img/hwp-8808c74334f6.jpg"}, "시크릿독해 상위오답률편 고3": {"id": 2347, "price": 25800, "list": 51600, "img": "img/hwp-f87a12f0cf1c.jpg"}, "시크릿독해 실전 고1": {"id": 2332, "price": 32200, "list": 64500, "img": "img/hwp-68d743ede90b.jpg"}, "시크릿독해 실전 고2": {"id": 2340, "price": 32200, "list": 64500, "img": "img/hwp-302431637cda.jpg"}, "시크릿독해 실전 고3": {"id": 2348, "price": 32200, "list": 64500, "img": "img/hwp-a1310d24ffbf.jpg"}}, HWPALL = {"고1": {"id": 2333, "price": 89000, "list": 197800, "img": "img/hwp-9852792b69ae.jpg"}, "고2": {"id": 2341, "price": 89000, "list": 197800, "img": "img/hwp-fffcfc8970de.jpg"}, "고3": {"id": 2349, "price": 90900, "list": 202100, "img": "img/hwp-9d2172ed1d5c.jpg"}};
+function renderHwp(){
+  const g = st.grade, box = document.getElementById('hwpSec'); if (!box) return;
+  document.getElementById('ttlHwp').textContent = `${g} 교사용 한글(HWP) 파일`;
+  const list = books.filter(b=>b.grade===g && HWP[b.name]);
+  const a = HWPALL[g];
+  let h = '';
+  if (a) h += `<article class="card all" style="--c:#3E6FB5"><div class="cv"><img src="${a.img}" alt="${g} 올인원 교사용 한글 파일 표지"><span class="flt"><b>55%</b><small>패키지 할인</small></span></div><div class="bd"><span><span class="chip">학년 올인원 · 한글(HWP)</span></span><h3>${g} 어휘 · 어법 · 구문 · 독해 4권 한글 파일</h3><div class="four">${books.filter(b=>b.grade===g&&HWP[b.name]&&(b.area!=='독해'||b.kind==='유형편')).map(b=>esc(b.name)).join(' · ')} · 진도표</div><div class="price"><span class="now">${won(a.price)}원</span><span class="was">${won(a.list)}원</span><span class="off">올인원 55%</span></div><div class="btns" style="max-width:320px"><a class="btn pri" href="${SHOP(a.id)}" target="_top">한글 올인원 보기</a></div></div></article>`;
+  h += list.map(b=>{const x=HWP[b.name]; const sub=b.kind&&b.kind!=='교과서별'?' · '+b.kind:''; return `<article class="card" style="--c:#3E6FB5"><div class="cv"><img src="${x.img}" alt="${esc(b.name)} 교사용 한글 파일 표지" loading="lazy"><span class="flt"><b>50%</b><small>패키지 할인</small></span></div><div class="bd"><span><span class="chip">${b.area}${sub} · 한글</span></span><h3>${esc(b.name)}</h3><div class="price"><span class="now">${won(x.price)}원</span><span class="was">${won(x.list)}원</span></div><div class="btns"><a class="btn pri" href="${SHOP(x.id)}" target="_top">한글 패키지 보기</a></div></div></article>`;}).join('');
+  if (!h) h = `<div class="none">${g} 교사용 한글 파일은 곧 열려요. 지금은 고1 · 고2 · 고3 한글 파일을 받으실 수 있어요.</div>`;
+  box.innerHTML = h;
+}
+function hwpLinks(){
+  document.querySelectorAll('#cards article.card[id^="bk"]').forEach(el=>{
+    const b = books[+el.id.slice(2)], x = b && HWP[b.name];
+    if (!x || el.querySelector('.hwpl')) return;
+    el.querySelector('.bd').insertAdjacentHTML('beforeend', `<a class="hwpl" href="${SHOP(x.id)}" target="_top"><span>교사용 한글(HWP) 파일</span><b>${won(x.price)}원 →</b></a>`);
+  });
+}
+(function(){ const _rc = renderCards, _all = all;
+  renderCards = function(){ _rc(); hwpLinks(); };
+  all = function(){ _all(); hwpLinks(); renderHwp(); };
+  hwpLinks(); renderHwp(); })();
+</script><!-- HWP-JS-END -->
 
 </html>
