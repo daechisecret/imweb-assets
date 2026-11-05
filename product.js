@@ -93,6 +93,28 @@
   var SRC = /src="(https:\/\/cdn\.imweb\.me\/upload\/[A-Za-z0-9]+\/[A-Za-z0-9._-]+\.(?:png|jpe?g|gif|webp))"/i;
   var FR = /class="(?:[^"]*\s)?fr-[a-z]/i;
 
+  /* 한글판(교사용 한글(HWP)) 방학특강 상품은 상세 글 사이에 설명 사진(한글 버전 · 폰트 · 진도표 · ZIP 구성)이 있습니다.
+     (사장님 2026-11-05) 그 사진은 미리보기 격자에 넣지 않고, 글 안 제자리에 잘리지 않게 크게 둡니다.
+     가려내는 법: 상세 맨 끝에 이어 붙은 사진 묶음(= 샘플)보다 앞에 있고, 뒤에 글이 더 나오는 사진. */
+  var GUIDE = {};
+  function isHwpPack() { return /교사용 한글\(HWP\)/.test(document.title + ' ' + ((document.querySelector('meta[property="og:title"]') || {}).content || '')); }
+  function keyOf(u) { var m = /\/upload\/([^?#\s"]+)/.exec(u || ''); return m ? m[1] : ''; }   /* cdn.imweb.me · cdn-optimized.imweb.me 둘 다 같은 열쇠 */
+  function srcOf(im) { return im.getAttribute('src') || im.getAttribute('data-src') || im.getAttribute('data-original') || ''; }
+  function markGuides() {
+    if (!isHwpPack()) return;
+    document.querySelectorAll('[id="prod_detail_body"]').forEach(function (bd) {
+      var kids = Array.prototype.slice.call(bd.children), textAfter = false;
+      for (var i = kids.length - 1; i >= 0; i--) {
+        var el = kids[i], im = el.querySelectorAll('img');
+        if (/(^|\s)(sl-notice|sp-box)(\s|$)/.test(el.className || '') || el.tagName === 'STYLE' || el.tagName === 'UL') continue;   /* 우리가 붙인 안내 상자(sl-notice 등)는 셈에서 뺌 */
+        var c = el.cloneNode(true); c.querySelectorAll('style,script,noscript').forEach(function (z) { z.remove(); });
+        var txt = (c.textContent || '').replace(/\s+/g, '');   /* 아임웹이 사진 앞에 넣는 <style> 글자는 뺌 */
+        if (im.length && !txt) { if (textAfter) im.forEach(function (x) { x.classList.add('sl-guide'); el.classList.add('sl-guide-p'); var u = keyOf(srcOf(x)); if (u) GUIDE[u] = 1; }); }
+        else if (txt) textAfter = true;
+      }
+    });
+  }
+
   function pick(html) {
     var seen = {}, out = [], m;
     TAG.lastIndex = 0;
@@ -101,6 +123,7 @@
       var g = SRC.exec(m[0]);
       if (!g || seen[g[1]]) continue;
       seen[g[1]] = 1;
+      if (GUIDE[keyOf(g[1])]) continue;   /* 한글판 설명 사진은 격자에서 뺌 */
       out.push(g[1]);
     }
     return out;
@@ -251,6 +274,7 @@
          상세정보 사진은 **스크롤할 때 늦게 불러오도록** 되어 있어서,
          지금 화면에 그려진 <img> 를 세면 아직 한 장도 없습니다.
          받아 온 글자에는 처음부터 다 들어 있으므로 거기서 찾습니다. */
+      markGuides();
       var here = pick(document.documentElement.innerHTML);
       if (!here.length) { mount.remove(); mount = null; return; }
       paint(here, null, null);

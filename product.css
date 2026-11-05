@@ -35,6 +35,9 @@ body.sl-pd .prod-owl-list .item img {
    글은 그대로 두어야 하므로 그림만 가립니다. */
 body.sl-pd.sl-pd-on #prod_detail_body > p:has(> img) { display: none !important; }
 body.sl-pd.sl-pd-on #prod_detail_body img[class*="fr-"] { display: none !important; }
+/* 한글판 설명 사진(product.js markGuides)은 글 안 제자리에 그대로, 잘리지 않게 */
+body.sl-pd.sl-pd-on #prod_detail_body > p.sl-guide-p { display: block !important; margin: 14px 0 22px !important; }
+body.sl-pd.sl-pd-on #prod_detail_body img.sl-guide { display: block !important; width: 100% !important; max-width: 860px !important; height: auto !important; margin: 0 auto !important; }
 
 .sp-box { margin: 22px 0 8px; font-family: 'Noto Sans KR', sans-serif; color: #243b53; }
 .sp-box * { box-sizing: border-box; }
