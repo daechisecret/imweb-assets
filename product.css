@@ -35,9 +35,6 @@ body.sl-pd .prod-owl-list .item img {
    글은 그대로 두어야 하므로 그림만 가립니다. */
 body.sl-pd.sl-pd-on #prod_detail_body > p:has(> img) { display: none !important; }
 body.sl-pd.sl-pd-on #prod_detail_body img[class*="fr-"] { display: none !important; }
-/* 한글판 설명 사진(product.js markGuides)은 글 안 제자리에 그대로, 잘리지 않게 */
-body.sl-pd.sl-pd-on #prod_detail_body > p.sl-guide-p { display: block !important; margin: 14px 0 22px !important; }
-body.sl-pd.sl-pd-on #prod_detail_body img.sl-guide { display: block !important; width: 100% !important; max-width: 860px !important; height: auto !important; margin: 0 auto !important; }
 
 .sp-box { margin: 22px 0 8px; font-family: 'Noto Sans KR', sans-serif; color: #243b53; }
 .sp-box * { box-sizing: border-box; }
@@ -64,6 +61,8 @@ body.sl-pd.sl-pd-on #prod_detail_body img.sl-guide { display: block !important; 
 .sp-grid img { width: 100%; aspect-ratio: 4/5; object-fit: cover; object-position: top;
   display: block; border: 1px solid #eef3f9; border-radius: 10px; background: #f4f8fd;
   cursor: zoom-in; transition: .16s; }
+/* 한글판 설명 사진: 칸(4:5)에 통째로 — 사진 바탕과 같은 연핑크로 빈 곳을 채움 */
+.sp-grid img.sp-fit { object-fit: contain; object-position: center; background: #FFF7FA; }
 .sp-grid img:hover { border-color: #f2b8cd; box-shadow: 0 8px 22px rgba(232, 90, 138, .13); }
 .sp-wait { padding: 44px 20px; text-align: center; color: #9db0c6;
   font-size: 13.5px; font-weight: 600; background: #fbfdff;
