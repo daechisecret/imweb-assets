@@ -675,7 +675,14 @@
           '<span class="sft-g">' + esc(g.grade) + '</span><span class="sft-n">' + esc(hit || g.pkg.sub) + '</span></a>';
       }).join('') + '</div>' +
       '<a class="sft-more" href="#sl-free">강별로 보기 · 담기 ↓</a>';
-    btns.parentNode.insertBefore(top, btns);
+    /* 단추 줄 앞 눈금(.sl-buy-mark — 단추를 그 뒤로 다시 옮김) 보다도 앞에 둡니다. 나중에 순서가 바뀌면 다시 맞춥니다 */
+    function place() {
+      var b = [].filter.call(document.querySelectorAll('#prod_goods_form .buy_btns'), function (e) { return e.offsetParent !== null; })[0] || btns;
+      var mark = b.previousElementSibling && b.previousElementSibling.classList.contains('sl-buy-mark') ? b.previousElementSibling : b;
+      if (mark.previousElementSibling !== top) mark.parentNode.insertBefore(top, mark);
+    }
+    place();
+    [300, 1000, 2500, 5000].forEach(function (ms) { setTimeout(place, ms); });
     top.querySelector('.sft-more').addEventListener('click', function (e) {
       var box = document.getElementById('sl-free');
       if (!box) return;
