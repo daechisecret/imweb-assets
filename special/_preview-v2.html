@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<base target="_top">
+<title>방학특강 자료실 통합 시안</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Playball&display=swap">
+<style>
+/* 레이아웃: 히어로(얼리버드) → 학년 고르기(고정) → 영역별 교재(패키지 · 강별 슬라이드 · 이용 가이드) → 학년 올인원 → 구성 고르기 → 교재 찾기(스마트 검색 · 커리큘럼 맵) */
+:root{
+  --bg:#FFF8FA; --panel:#FFFFFF; --ink:#2B2A33; --sub:#7A7180; --line:#F0E2E8; --soft:#FCEEF3; --wash:#FDF3F6;
+  --brand:#E4587E; --brand-ink:#C23D66; --pen:#FFF07A; --cta:#2B2A33; --cta-ink:#FFFFFF;
+  --voc:#D0668C; --gra:#4A80C4; --syn:#8670C8; --rd:#3F9E6D; --mid:#E4587E; --hi:#7E64C4;
+  --f:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif; --script:'Playball','Brush Script MT',cursive;
+  --shadow:0 10px 28px rgba(150,70,100,.10);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1D1A21;--panel:#27232C;--ink:#F4EEF3;--sub:#ADA3B3;--line:#3B3442;--soft:#35293A;--wash:#2B2430;--brand:#F07399;--brand-ink:#FF9BB8;--pen:#6E621F;--cta:#F4EEF3;--cta-ink:#1D1A21;--shadow:0 10px 28px rgba(0,0,0,.35);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1D1A21;--panel:#27232C;--ink:#F4EEF3;--sub:#ADA3B3;--line:#3B3442;--soft:#35293A;--wash:#2B2430;--brand:#F07399;--brand-ink:#FF9BB8;--pen:#6E621F;--cta:#F4EEF3;--cta-ink:#1D1A21;--shadow:0 10px 28px rgba(0,0,0,.35);color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.55;word-break:keep-all}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 120px}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.note{font-size:12.5px;color:var(--sub);background:var(--soft);border-radius:10px;padding:8px 12px;margin-bottom:16px}
+.note b{color:var(--brand-ink)}
+.mark{background:linear-gradient(transparent 56%,var(--pen) 56%)}
+/* 히어로 */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:center;background:linear-gradient(135deg,var(--soft),var(--wash) 60%,var(--panel));border-radius:28px;padding:30px 32px;position:relative;overflow:hidden}
+.hero .s{font-family:var(--script);color:var(--brand);font-size:38px;line-height:1}
+.hero h1{margin:6px 0 10px;font-size:34px;line-height:1.2;font-weight:900;letter-spacing:-.02em;text-wrap:balance}
+.hero ul{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:4px;color:var(--sub);font-size:14px}
+.hero li::before{content:"♥";color:var(--brand);margin-right:8px;font-size:11px}
+.eb{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.eb .tag{background:var(--brand);color:#fff;font-weight:900;border-radius:999px;padding:7px 14px;font-size:13.5px}
+.eb .t2{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:13px;font-weight:700}
+.eb .t2 b{color:var(--brand-ink)}
+.covers{position:relative;height:240px}
+.covers img{position:absolute;width:44%;max-width:170px;border-radius:10px;box-shadow:0 12px 26px rgba(80,30,60,.18)}
+.covers img:nth-child(1){left:2%;top:26px;transform:rotate(-7deg)}
+.covers img:nth-child(2){left:24%;top:6px;transform:rotate(-2deg)}
+.covers img:nth-child(3){left:46%;top:14px;transform:rotate(3deg)}
+.covers img:nth-child(4){left:66%;top:34px;transform:rotate(8deg)}
+/* 학년 바 */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:var(--bg);padding:14px 0 12px;margin-top:22px;border-bottom:1px solid var(--line)}
+.bar .row{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.lbl{font-size:12px;font-weight:900;color:var(--sub);letter-spacing:.04em;min-width:34px}
+.gg{display:flex;flex-wrap:wrap;gap:6px;padding:5px;border-radius:14px;background:var(--panel);border:1px solid var(--line)}
+.gg i{font-style:normal;font-size:11.5px;font-weight:900;color:#fff;background:var(--gc);border-radius:9px;padding:6px 9px;align-self:center}
+.gg.mid{--gc:var(--mid)} .gg.hi{--gc:var(--hi)}
+.g{border:0;background:transparent;border-radius:10px;padding:6px 12px;font-weight:700}
+.g[aria-pressed=true]{background:var(--gc);color:#fff}
+.areas{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.a{border:1.5px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 13px;font-size:13px;font-weight:700}
+.a[aria-pressed=true]{border-color:var(--c,var(--ink));color:var(--c,var(--ink));background:var(--soft)}
+/* 구역 */
+.sec{margin:40px 0 14px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sec .s{font-family:var(--script);color:var(--brand);font-size:26px;line-height:1}
+.sec h2{margin:0;font-size:23px;font-weight:900;letter-spacing:-.01em;text-wrap:balance}
+.sec p{margin:0;color:var(--sub);font-size:13.5px;flex-basis:100%}
+/* 교재 카드 */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);min-width:0}
+.card .cv{position:relative;background:var(--soft)}
+.card .cv img{width:100%;aspect-ratio:840/1188;object-fit:cover;display:block;max-width:100%}
+.card .guide{position:absolute;right:10px;bottom:10px;background:var(--panel);border:1px solid var(--line);border-radius:999px;font-size:11.5px;font-weight:700;padding:4px 10px;display:flex;gap:5px;align-items:center;box-shadow:var(--shadow)}
+.card .guide svg{width:13px;height:13px}
+.card .bd{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.chip{display:inline-block;font-size:11.5px;font-weight:900;color:#fff;border-radius:6px;padding:1px 8px;background:var(--c)}
+.card h3{margin:0;font-size:17px;font-weight:900;line-height:1.35}
+.meta{font-size:12.5px;color:var(--sub)}
+.price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:2px}
+.price .now{font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.price .was{color:var(--sub);text-decoration:line-through;font-size:12.5px;font-variant-numeric:tabular-nums}
+.price .off{font-size:12px;font-weight:900;color:var(--brand-ink)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:auto;padding-top:8px}
+.btn{border:0;border-radius:12px;padding:10px 8px;font-weight:900;font-size:13.5px;text-align:center;text-decoration:none;display:block}
+.btn.pri{background:var(--cta);color:var(--cta-ink)}
+.btn.sec2{background:var(--soft);color:var(--ink);border:1px solid var(--line)}
+.btn.sec2[aria-expanded=true]{border-color:var(--brand);color:var(--brand-ink)}
+.soon .cv img{filter:grayscale(.35) opacity(.75)}
+.soonlb{position:absolute;left:10px;top:10px;background:var(--ink);color:var(--bg);font-size:11.5px;font-weight:900;border-radius:6px;padding:3px 8px}
+/* 강별 슬라이드 */
+.lessons{grid-column:1/-1;background:var(--panel);border:1.5px solid var(--brand);border-radius:20px;padding:14px 0 12px;min-width:0}
+.lessons .hd{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:0 16px 10px;flex-wrap:wrap}
+.lessons .hd b{font-size:15px}
+.lessons .hd span{font-size:12.5px;color:var(--sub)}
+.track{display:flex;gap:10px;overflow-x:auto;padding:4px 16px 8px;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.ls{flex:0 0 168px;scroll-snap-align:start;background:var(--wash);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ls .lc{width:100%;aspect-ratio:840/1188;object-fit:cover;border-radius:8px;border:1px solid var(--line);display:block;max-width:100%}
+.ls .no{font-weight:900;color:var(--c);font-variant-numeric:tabular-nums;font-size:13px}
+.ls .t{font-weight:700;font-size:14px;line-height:1.4;min-height:2.8em}
+.ls .p{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.ls .act{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.ls .act button,.ls .act a{border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:6px 4px;font-size:12.5px;font-weight:700;text-align:center;text-decoration:none}
+.ls .act button[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:#fff}
+/* 올인원 */
+.allin{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:26px;background:var(--panel);border-radius:24px;padding:22px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.allin img{width:100%;border-radius:12px;display:block;max-width:100%}
+.allin h3{margin:2px 0 4px;font-size:24px;font-weight:900}
+.ibs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0 14px}
+.ib{border-radius:12px;padding:10px 12px;border:1px solid var(--line);background:var(--wash);min-width:0}
+.ib b{display:block;font-size:13.5px}
+.ib span{font-size:12px;color:var(--sub)}
+.ap .now{font-size:30px}
+.others{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.others button{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:700}
+/* 구성 고르기 */
+.pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.pk{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.pk .q{font-size:12.5px;font-weight:900;color:var(--brand-ink)}
+.pk h4{margin:0;font-size:17px;font-weight:900}
+.pk p{margin:0;color:var(--sub);font-size:13.5px}
+.pk button{margin-top:auto;align-self:flex-start;border:0;background:var(--soft);border-radius:10px;padding:8px 12px;font-weight:700;font-size:13px}
+/* 교재 찾기 */
+.tabs{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--line);border-radius:999px;overflow:hidden;background:var(--panel);max-width:640px;margin:0 auto 18px}
+.tabs button{border:0;background:transparent;padding:12px;font-weight:900}
+.tabs button[aria-selected=true]{background:var(--brand);color:#fff}
+.filters{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.fl h4{margin:0 0 8px;font-size:13.5px;font-weight:900}
+.fl .opts{display:flex;flex-wrap:wrap;gap:6px}
+.fl button{border:1.5px solid var(--line);background:var(--panel);border-radius:999px;padding:4px 11px;font-size:12.5px;font-weight:700}
+.fl button[aria-pressed=true]{border-color:var(--brand);color:var(--brand-ink);background:var(--soft)}
+.fl input{width:100%;border:1.5px solid var(--line);background:var(--panel);border-radius:12px;padding:9px 12px}
+.res{margin-top:18px}
+.res .hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.res .hd b{font-size:15px}
+.res .hd b em{font-style:normal;color:var(--brand-ink)}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.ri{display:flex;flex-direction:column;gap:5px;min-width:0;text-decoration:none}
+.ri img{width:100%;aspect-ratio:840/1188;object-fit:cover;border-radius:10px;border:1px solid var(--line);max-width:100%}
+.ri .n{font-size:13.5px;font-weight:700;line-height:1.35}
+.ri .tg{display:flex;gap:4px;flex-wrap:wrap}
+.ri .tg span{font-size:11px;font-weight:700;border-radius:6px;padding:1px 7px;background:var(--soft)}
+.ri .hit{font-size:12px;color:var(--sub)}
+.ri .hit mark{background:var(--pen);color:inherit}
+.mapx{overflow-x:auto;border:1px solid var(--line);border-radius:20px;background:var(--panel)}
+table.map{border-collapse:separate;border-spacing:0;min-width:900px;width:100%}
+.map th,.map td{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.map th.grp{color:#fff;font-size:13.5px;padding:9px;font-weight:900}
+.map th.grp.mid{background:var(--mid)} .map th.grp.hi{background:var(--hi)}
+.map th.gr{background:var(--wash);font-size:13px;padding:8px;font-weight:900}
+.map th.rh{background:var(--ink);color:var(--bg);font-size:13px;font-weight:900;padding:10px 8px;width:96px;position:sticky;left:0;z-index:1}
+.map td{padding:6px;vertical-align:top;background:var(--panel)}
+.map td.alt{background:var(--wash)}
+.mc{display:flex;gap:8px;align-items:center;border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:6px;text-align:left;width:100%}
+.mc img{width:30px;border-radius:4px;flex:none}
+.mc b{display:block;font-size:12px;line-height:1.3}
+.mc span{font-size:11px;color:var(--sub)}
+.mc.soon{opacity:.6}
+.mc:hover{border-color:var(--brand)}
+/* 담은 강 */
+.tray{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--cta);color:var(--cta-ink);border-radius:999px;padding:10px 12px 10px 18px;display:flex;gap:14px;align-items:center;box-shadow:0 12px 30px rgba(0,0,0,.25);z-index:8;max-width:calc(100% - 32px)}
+.tray b{font-variant-numeric:tabular-nums}
+.tray button{border:0;background:var(--brand);color:#fff;border-radius:999px;padding:7px 14px;font-weight:900;font-size:13px}
+.foot{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.fi{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.fi h4{margin:0 0 6px;font-size:15px;font-weight:900}
+.fi ul{margin:0;padding-left:18px;color:var(--sub);font-size:13.5px}
+.old{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:24px;padding:14px 16px;border-radius:14px;border:1px solid var(--line);color:var(--sub);font-size:13.5px}
+.old a{color:var(--brand-ink);font-weight:700;text-decoration:none}
+@media (max-width:760px){.hero{grid-template-columns:1fr;padding:22px 18px}.hero h1{font-size:27px}.covers{height:180px}.allin{grid-template-columns:1fr}.allin img{max-width:200px}}
+@media (prefers-reduced-motion:no-preference){.card,.mc{transition:transform .15s,border-color .15s}.card:hover{transform:translateY(-2px)}}
+
+/* 2차: 강조 */
+.ebx{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:10px;margin-top:6px;max-width:520px}
+.ebx>div{border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;justify-content:center}
+.ebx .eh{background:var(--brand);color:#fff}
+.ebx .eh .lb{font-size:11px;font-weight:900;letter-spacing:.14em;opacity:.85}
+.ebx .eh b{font-size:22px;font-weight:900;line-height:1.2}
+.ebx .eh .sm{font-size:12.5px;opacity:.9}
+.ebx .ed{background:var(--panel);border:2px solid var(--brand);align-items:center;text-align:center}
+.ebx .ed span{font-size:12.5px;font-weight:700;color:var(--sub)}
+.ebx .ed b{font-size:38px;font-weight:900;line-height:1;color:var(--brand-ink);font-variant-numeric:tabular-nums}
+.ebx .ed b i{font-style:normal;font-size:20px}
+.ebx .ed.hot{background:var(--cta);border-color:var(--cta)}
+.ebx .ed.hot span{color:var(--cta-ink);opacity:.8}
+.ebx .ed.hot b{color:var(--brand)}
+.bar{padding:18px 0 16px!important;box-shadow:0 10px 18px -16px rgba(120,60,90,.4)}
+.pick2{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.pick2 .step{font-size:11px;font-weight:900;color:var(--cta-ink);background:var(--cta);border-radius:6px;padding:3px 8px;letter-spacing:.06em}
+.pick2 b{font-size:17px;font-weight:900}
+#grades{display:flex;flex-wrap:wrap;gap:10px}
+.gg{padding:6px!important;border-radius:16px!important;border:2px solid var(--gc)!important;gap:6px!important}
+.gg i{font-size:13px!important;padding:9px 12px!important;border-radius:11px!important}
+.g{padding:10px 18px!important;font-size:16px!important;font-weight:900!important;border-radius:11px!important}
+.g:hover{background:var(--soft)}
+.g[aria-pressed=true]{background:var(--gc)!important;color:#fff!important;box-shadow:0 6px 14px -6px var(--gc)}
+.areas{gap:8px!important}
+.a{padding:10px 20px!important;font-size:15.5px!important;font-weight:900!important;border:2px solid var(--line)!important;border-radius:14px!important}
+.a[aria-pressed=true]{background:var(--c,var(--ink))!important;border-color:var(--c,var(--ink))!important;color:#fff!important}
+.card .off2{position:absolute;right:10px;top:10px;width:66px;height:66px;border-radius:50%;background:var(--brand);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 8px 16px -6px rgba(200,60,100,.6);transform:rotate(8deg);line-height:1}
+.card .off2 b{font-size:23px;font-weight:900}
+.card .off2 span{font-size:10px;font-weight:700;margin-top:3px}
+.gbtn{display:flex;align-items:center;gap:10px;width:100%;border:2px solid var(--brand);background:var(--wash);color:var(--brand-ink);border-radius:12px;padding:9px 12px;font-weight:900;font-size:14px;margin-top:8px;text-align:left}
+.gbtn svg{width:26px;height:26px;flex:none}
+.gbtn small{display:block;font-size:11.5px;font-weight:500;color:var(--sub)}
+.gbtn:hover{background:var(--brand);color:#fff}
+.gbtn:hover small{color:#fff}
+.soon .cv{overflow:hidden}
+.soon .cv img{filter:blur(3px) grayscale(.2) opacity(.75)!important;transform:scale(1.04)}
+.soonlb{left:50%!important;top:50%!important;transform:translate(-50%,-50%);font-size:14px!important;padding:8px 14px!important;border-radius:10px!important}
+.formula{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+.formula img{width:62px;border-radius:6px;border:1px solid var(--line);box-shadow:0 4px 10px rgba(80,30,60,.12);max-width:100%}
+.formula .op{font-size:24px;font-weight:900;color:var(--brand)}
+.formula .res{background:var(--cta);color:var(--cta-ink);border-radius:12px;padding:8px 12px;font-weight:900;font-size:14px;line-height:1.35}
+.formula .res em{font-style:normal;color:var(--brand)}
+.gmodal{position:fixed;inset:0;z-index:20;background:rgba(30,20,30,.55);display:flex;justify-content:center;padding:calc(20px + env(safe-area-inset-top,0px)) 16px 20px}
+.gmodal .box{background:var(--panel);border-radius:18px;max-width:680px;width:100%;display:flex;flex-direction:column;overflow:hidden}
+.gmodal .hd{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.gmodal .hd b{font-size:15px}
+.gmodal .hd button{border:0;background:var(--soft);border-radius:10px;padding:6px 12px;font-weight:900}
+.gmodal .sc2{overflow:auto;padding:14px;background:var(--soft)}
+.gmodal .sc2 img{width:100%;display:block;max-width:100%}
+.gmodal .ft{padding:10px 16px;font-size:12.5px;color:var(--sub);border-top:1px solid var(--line)}
+[hidden]{display:none!important}
+.bar.stuck .pick2{display:none}
+.bar.stuck{padding:10px 0 10px!important}
+.bar.stuck .areas{margin-top:8px!important}
+@media (max-width:640px){.ebx{grid-template-columns:1fr 1fr}.ebx .eh{grid-column:1/-1}}
+
+
+/* 4차: 시안 A 수채 파스텔 — 검정 없음, 글자는 짙은 자두색 */
+:root{--ink:#3E2C38;--sub:#6C5865;--cta:#E4587E;--cta-ink:#FFFFFF;--line:#F1D6E0;--panel:rgba(255,255,255,.86)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#FFF8FA;--panel:rgba(255,255,255,.86);--ink:#3E2C38;--sub:#6C5865;--line:#F1D6E0;--soft:#FCEEF3;--wash:#FDF3F6;--brand:#E4587E;--brand-ink:#C23D66;--cta:#E4587E;--cta-ink:#fff;color-scheme:light}}
+:root[data-theme="dark"]{--bg:#FFF8FA;--panel:rgba(255,255,255,.86);--ink:#3E2C38;--sub:#6C5865;--line:#F1D6E0;--soft:#FCEEF3;--wash:#FDF3F6;--brand:#E4587E;--brand-ink:#C23D66;--cta:#E4587E;--cta-ink:#fff;color-scheme:light}
+body{background:linear-gradient(160deg,#FCE6EE 0%,#FFF6F2 38%,#F3EEFB 100%) fixed!important}
+.hero{background:transparent!important;border-radius:0!important;padding:18px 0 8px!important}
+.covers img{border-radius:8px!important;box-shadow:0 14px 26px -12px rgba(150,60,100,.45)!important}
+.ebA{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.ebA div{background:rgba(255,255,255,.78);border:1px solid #F4C9D6;border-radius:14px;padding:10px 16px}
+.ebA small{display:block;font-size:12px;color:var(--sub);font-weight:700}
+.ebA b{font-size:30px;font-weight:900;color:var(--brand-ink);font-variant-numeric:tabular-nums}
+.ebA .d b{font-size:20px;color:var(--ink)}
+.bar{background:transparent!important;border-bottom:0!important;box-shadow:none!important;padding:10px 0!important}
+.selA{background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-radius:16px;padding:12px 16px;display:grid;gap:8px;box-shadow:0 8px 20px -14px rgba(150,60,100,.4)}
+.rowA{display:flex;align-items:center;gap:10px}
+.lbA{font-size:13px;font-weight:900;color:var(--brand-ink);width:40px;flex:none}
+#grades{display:flex;flex-wrap:wrap;gap:4px}
+.gg{display:contents!important}
+.gg i{display:none!important}
+.g,.a{border:0!important;background:transparent!important;font-weight:700!important;font-size:15px!important;color:var(--sub)!important;padding:8px 14px!important;border-radius:999px!important}
+.g[aria-pressed=true],.a[aria-pressed=true]{background:var(--brand)!important;color:#fff!important;box-shadow:0 6px 14px -8px var(--brand)!important}
+.areas{display:flex;flex-wrap:wrap;gap:4px;margin:0!important}
+.sec .s{color:var(--brand)}
+.card{background:rgba(255,255,255,.86)!important;border:0!important;border-radius:16px!important;box-shadow:0 10px 24px -18px rgba(150,60,100,.5)!important}
+.tagA{position:absolute;right:10px;top:10px;background:#fff;color:var(--brand-ink);font-weight:900;font-size:13px;padding:4px 10px;border-radius:999px;box-shadow:0 4px 10px -4px rgba(150,60,100,.4)}
+.gbtn{border:0!important;background:var(--blush,#FCEEF3)!important;color:var(--brand-ink)!important;border-radius:10px!important}
+.gbtn:hover{background:var(--brand)!important;color:#fff!important}
+.btn{border-radius:10px!important}
+.btn.pri{background:var(--brand)!important;color:#fff!important}
+.btn.sec2{background:#fff!important;color:var(--brand-ink)!important;border:1px solid #F4C9D6!important}
+.lessons{background:rgba(255,255,255,.86)!important;border:0!important;border-radius:16px!important}
+.ls{border-radius:12px!important;background:#fff!important}
+.allin,.pk,.fi,.filters,.mapx,.old{background:rgba(255,255,255,.86)!important;border:0!important;border-radius:16px!important;box-shadow:0 10px 24px -18px rgba(150,60,100,.45)!important}
+.formula{background:rgba(255,255,255,.7);border-radius:16px;padding:14px}
+.formula img{border-radius:6px}
+.formula .res{background:transparent!important;color:var(--ink)!important;padding:0!important}
+.formula .res em{color:var(--brand-ink)!important;font-size:18px}
+.map th.rh{background:#F8E1EA!important;color:var(--ink)!important}
+.soonlb{background:#fff!important;color:var(--brand-ink)!important;border-radius:999px!important}
+.tray{background:#fff!important;color:var(--ink)!important;border:1px solid #F4C9D6;border-radius:999px!important}
+.chip{border-radius:999px!important}
+.note{background:rgba(255,255,255,.7)!important}
+
+/* 5차: 카드는 시안 D 모양 + 빨간 플로팅 할인 상자 */
+.card{background:#fff!important;border:1px solid var(--line)!important;border-radius:8px!important;box-shadow:none!important;overflow:visible!important}
+.card .cv{border-radius:8px 8px 0 0;overflow:visible}
+.card .cv img{border-radius:8px 8px 0 0}
+.card .bd{padding:12px!important;gap:4px!important}
+.card .bd>span:first-child,.card .bd .meta{display:none}
+.card h3{font-size:15px!important}
+.card .price .now{font-size:18px!important}
+.card .price .off{display:none}
+.flt{position:absolute;right:-10px;top:14px;z-index:2;background:#E5384F;color:#fff;border-radius:8px;padding:7px 11px 6px;display:flex;flex-direction:column;align-items:center;line-height:1;box-shadow:0 10px 18px -6px rgba(229,56,79,.55);transform:rotate(4deg)}
+.flt b{font-size:24px;font-weight:900;letter-spacing:-.02em}
+.flt small{font-size:10.5px;font-weight:700;margin-top:3px}
+.flt:after{content:"";position:absolute;right:0;bottom:-6px;border-top:6px solid #A9273A;border-right:10px solid transparent}
+@media (prefers-reduced-motion:no-preference){.flt{animation:flt 2.6s ease-in-out infinite}@keyframes flt{0%,100%{transform:rotate(4deg) translateY(0)}50%{transform:rotate(4deg) translateY(-4px)}}}
+.gbtn{display:flex!important;align-items:center;gap:8px;border-radius:6px!important;padding:8px 10px!important;font-size:13.5px!important;margin:8px 0 6px!important}
+.gbtn svg{width:18px!important;height:18px!important}
+.btns .btn{border-radius:6px!important;padding:9px 8px!important}
+.btn.sec2{border:1px solid var(--brand)!important}
+.cards{gap:22px 16px!important}
+.soon .cv{overflow:hidden!important}
+.ebA .one{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding:12px 20px}
+.ebA .one b{font-size:22px;color:var(--ink)}
+.ebA .one b em{font-style:normal;color:var(--brand-ink);font-size:30px}
+.ebA .one small{font-size:14px;font-weight:700;color:var(--brand-ink)}
+.acv{position:relative;align-self:start}
+.acv .flt{top:-40px;right:-16px}
+.allin{overflow:visible!important}
+
+.bar{position:static!important}
+.gmodal{position:absolute!important;left:0!important;right:0!important;bottom:auto!important;height:auto!important;background:transparent!important;padding:0 16px!important;z-index:30!important}
+.gmodal .box{max-height:780px;box-shadow:0 20px 60px -10px rgba(80,30,60,.45)}
+.gmodal .sc2{max-height:660px}
+html,body{overflow:hidden}
+/* 진도표 엑셀 안내(커리큘럼 맵 아래) */
+.plan{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;align-items:start}
+.plan .pv,.plan .pp{background:rgba(255,255,255,.86);border-radius:16px;box-shadow:0 10px 24px -18px rgba(150,60,100,.45);padding:12px}
+.plan video{display:block;width:100%;aspect-ratio:16/9;border-radius:10px;background:#F6E9EE}
+.plan .cap{display:block;margin-top:8px;font-size:12.5px;color:var(--sub);text-align:center}
+.plan .cap .full{color:var(--brand-ink);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.plan .shot{position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.plan .shot img{display:block;width:100%;height:auto}
+.plan .box{position:absolute;border:2.5px solid var(--brand);border-radius:6px}
+.plan .box i{position:absolute;left:-11px;top:-11px;width:22px;height:22px;border-radius:50%;background:var(--brand);color:#fff;font-style:normal;font-weight:900;font-size:12.5px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(150,60,100,.35)}
+.plan ol{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px;counter-reset:st}
+.plan li{display:grid;grid-template-columns:22px 1fr;gap:8px;font-size:13.5px;line-height:1.5}
+.plan li::before{counter-increment:st;content:counter(st);width:22px;height:22px;border-radius:50%;background:var(--brand);color:#fff;font-weight:900;font-size:12.5px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.plan li b{color:var(--ink)}
+.plan li span{color:var(--sub)}
+@media (max-width:760px){.plan{grid-template-columns:1fr}}
+.plan .tip{margin-top:12px;background:var(--soft);border-radius:12px;padding:10px 14px;display:grid;gap:4px;font-size:13px;line-height:1.55;color:var(--sub)}
+.plan .tip b{color:var(--brand-ink);font-size:13.5px}
+</style>
+<!-- HWP-CSS-START --><style>
+.hwpsec{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.hwpsec .card .chip{background:#3E6FB5}
+.hwpsec .card h3{font-size:15.5px}
+.hwpsec .card.all{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr);align-items:center}
+.hwpsec .card.all .btns{margin-top:12px}
+.hwpsec .card.all .four{font-size:13px;color:var(--sub)}
+.hwpsec .chip{color:#fff!important;background:#3E6FB5!important}
+.hwpsec .card.all .bd{justify-content:center}
+.hwpsec .card .btns{grid-template-columns:1fr}
+.hwpsec .none{grid-column:1/-1;background:var(--panel);border:1px dashed var(--line);border-radius:16px;padding:18px;color:var(--sub);font-size:14px}
+.hwpnote{display:flex;flex-wrap:wrap;gap:6px 14px;margin:-4px 0 14px;font-size:13px;color:var(--sub)}
+.hwpnote b{color:var(--ink)}
+.card .hwpl{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-top:6px;padding:8px 10px;border-radius:10px;background:#EEF3FB;color:#2F5C9E;font-size:12.5px;font-weight:800;text-decoration:none}
+.card .hwpl b{font-variant-numeric:tabular-nums}
+.lessons .act.hw2{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.lessons .act.hw2 a{font-size:11.5px;padding:6px 2px;text-align:center}
+.lessons .act.hw2 a.hw{background:#EEF3FB!important;color:#2F5C9E!important;border-color:#C9D8EF!important}
+@media (max-width:640px){.hwpsec{grid-template-columns:repeat(2,minmax(0,1fr))}.hwpsec .card.all{grid-template-columns:1fr}}
+</style><!-- HWP-CSS-END -->
+
+
+
+
+
+
+
+<div class="wrap">
+
+  <section class="hero" aria-label="소개">
+    <div>
+      <div class="s">Vacation Special</div>
+      <h1>시크릿 방학특강<br>어휘 · 어법 · 구문 · 독해</h1>
+      <ul>
+        <li>중1부터 고3까지 학년별 4개 영역</li>
+        <li>필요한 강만 2,900원, 교재 한 권은 패키지로</li>
+        <li>학생용 · 정답 및 해설 · 교사용 PDF를 바로 다운로드</li>
+        <li><a href="#hwp" style="color:inherit">편집 가능한 교사용 한글(HWP) 파일도 따로 판매</a></li>
+      </ul>
+      <div class="ebA"><div class="one"><b>얼리버드 최대 <em>55%</em> 할인 혜택</b><small>~11월 30일 마감</small></div></div>
+    </div>
+    <div class="covers" id="heroCovers" aria-hidden="true"></div>
+  </section>
+
+  <div id="barTop" style="height:1px"></div>
+  <div class="bar">
+    <div class="selA">
+      <div class="rowA"><span class="lbA">학년</span><div id="grades" role="group" aria-label="학년"></div></div>
+      <div class="rowA"><span class="lbA">영역</span><div class="areas" id="areas" role="group" aria-label="영역"></div></div>
+    </div>
+  </div>
+
+  <div class="sec"><span class="s">Books</span><h2 id="ttlBooks"></h2><p>패키지 보기는 교재 한 권 전체(전 강 + 전강통합 PDF), 강별 보기는 필요한 강만.</p></div>
+  <div class="cards" id="cards"></div>
+
+  <div class="sec"><span class="s">All-in-one</span><h2 id="ttlAll"></h2><p>그 학년 어휘 · 어법 · 구문 · 독해 4권을 한 번에.</p></div>
+  <section class="allin" id="allin"></section>
+
+            <!-- HWP-SEC-START --><div class="sec" id="hwp"><span class="s">Editable</span><h2 id="ttlHwp"></h2><p>문제 순서 · 문구를 수업에 맞게 고칠 수 있는 교사용 한글 파일이에요.</p></div>
+  <div class="hwpnote"><span><b>hwpx</b> 한글 2014 이상</span><span><b>hwp</b> 위 파일이 안 열릴 때</span><span><b>글꼴 24종</b> 함께 드려요</span><span><b>진도표 · 추가 자료(Appendix)</b> 포함</span></div>
+  <section class="hwpsec" id="hwpSec"></section>
+<!-- HWP-SEC-END -->
+  <div class="sec"><span class="s">Pick</span><h2>우리 반에 맞는 구성 고르기</h2><p>커리큘럼 맵에서 학년 · 영역별 교재를 한눈에 보고, 스마트 검색으로 필요한 강을 찾으세요.</p></div>
+  <div class="tabs" role="tablist"><button type="button" role="tab" id="tMap" aria-selected="true">커리큘럼 맵</button><button type="button" role="tab" id="tSmart" aria-selected="false">스마트 검색</button></div>
+  <section id="pSmart" hidden>
+    <div class="filters">
+      <div class="fl"><h4>학년</h4><div class="opts" id="fGrade"></div></div>
+      <div class="fl"><h4>영역</h4><div class="opts" id="fArea"></div></div>
+      <div class="fl"><h4>독해 갈래</h4><div class="opts" id="fKind"></div></div>
+      <div class="fl"><h4>강 이름 · 문법 항목</h4><input id="fq" type="search" placeholder="예: 관계사, 분사구문, 빈칸" aria-label="강 이름으로 찾기"></div>
+    </div>
+    <div class="res"><div class="hd"><b id="rcount"></b><span class="meta">교재를 누르면 위 교재 카드로 이동</span></div><div class="rgrid" id="rgrid"></div></div>
+  </section>
+  <section id="pMap">
+    <div class="mapx"><table class="map" id="map"></table></div>
+  </section>
+
+  <div class="sec" id="jindo"><span class="s">Study Plan</span><h2>패키지 구매 시 드리는 진도표 엑셀</h2><p>교재 패키지 · 올인원을 구매하시면 진도표 엑셀 파일을 함께 드려요. 입력 칸만 바꾸면 회차별 날짜 · 수업 내용 · 숙제가 자동으로 채워져요.</p></div>
+  <div class="plan">
+    <div class="pv">
+      <video controls playsinline preload="none" poster="img/jindo-guide-poster.jpg"><source src="video/jindo-guide.mp4?v=2" type="video/mp4"></video>
+      <span class="cap">사용법 영상 1분 15초 · 소리를 켜고 보세요 · <a class="full" href="https://daechisecret.github.io/imweb-assets/special/video/jindo-guide.mp4?v=2" target="_blank" rel="noopener">전체 화면으로 보기 ↗</a></span>
+    </div>
+    <div class="pp">
+      <div class="shot"><img src="img/jindo-sheet.jpg?v=2" width="1495" height="1032" alt="방학특강 진도표 엑셀 화면 — 수업 설정 · 교재 선택 · 자동 계산 · 회차별 진도표" loading="lazy">
+        <span class="box" style="left:.8%;top:24.6%;width:40%;height:41.6%"><i>1</i></span>
+        <span class="box" style="left:44.2%;top:24.6%;width:22%;height:41.6%"><i>2</i></span>
+        <span class="box" style="left:69.6%;top:24.6%;width:29.2%;height:41.6%"><i>3</i></span>
+        <span class="box" style="left:.8%;top:69%;width:98%;height:30.6%"><i>4</i></span>
+      </div>
+      <ol>
+        <li><div><b>수업 설정</b> <span>학년 · 시작 날짜 · 총 회차 · 주 수업 횟수 · 수업 시간을 넣어요. 칸을 누르면 ▼ 목록에서 골라요.</span></div></li>
+        <li><div><b>교재 선택</b> <span>쓸 교재는 O, 안 쓸 교재는 X. 고른 교재를 번갈아 섞어 배분해요.</span></div></li>
+        <li><div><b>자동 계산</b> <span>필요한 시간 · 추천 회차를 보여 주고, 회당 시간이 넘치면 빨갛게 알려 줘요.</span></div></li>
+        <li><div><b>회차별 진도표</b> <span>날짜 · 수업 내용 · 숙제가 채워져요. 휴강일을 넣으면 다음 수업일로 넘어가요. 그대로 인쇄해서 쓰세요.</span></div></li>
+      </ol>
+      <div class="tip"><b>고쳐 쓰기 · 되돌리기</b><span>쓰기 전에 파일을 복사해서 사본으로 작업하세요. 원본을 남겨 두면 언제든 처음 상태로 돌아갈 수 있어요.</span><span>모든 칸은 직접 고쳐 쓸 수 있어요. 칸을 한 번 누르고 바로 입력하면 바뀌어요(여러 줄은 Alt + Enter).</span><span>처음 상태로 돌리려면 Ctrl + Z, 또는 받은 파일을 다시 열거나 카카오톡 플러스친구로 요청해 주세요.</span></div>
+    </div>
+  </div>
+
+  <div class="sec"><h2>자료 구성</h2></div>
+  <div class="foot">
+    <div class="fi"><h4>강별 자료</h4><ul><li>학생용</li><li>학생용 + 정답 및 해설</li><li>교사용</li></ul></div>
+    <div class="fi"><h4>교재 패키지</h4><ul><li>전 강 자료 + Appendix</li><li>[전강통합] 한 권 PDF</li><li>OMR · 진도표</li></ul></div>
+    <div class="fi"><h4>교사용 한글(HWP)</h4><ul><li>hwpx(한글 2014 이상) · hwp(위 파일이 안 열릴 때)</li><li>글꼴 24종 · 진도표 · 추가 자료(Appendix)</li></ul></div>
+    <div class="fi"><h4>교재 이용 가이드</h4><ul><li>교재마다 강 구성 · 실제 페이지 · 추가 자료를 정리했습니다</li><li>교재 카드의 「교재 이용 가이드 미리보기」에서 바로 볼 수 있습니다</li></ul></div>
+  </div>
+  <div class="old"><span>예전 시크릿 어법 12강 · 시크릿 VOCA 8종을 찾으세요?</span><a href="#old">리뉴얼 전 자료 보기 →</a></div>
+</div>
+
+
+<script>
+const D = {"books": [{"grade": "중3", "area": "독해", "kind": "유형편", "name": "시크릿독해 유형편 중3", "pk": {"id": 2257, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "주제·요지", "id": 2122, "price": 2900, "img": "img/3c3f2d6c6162.jpg"}, {"no": 2, "t": "제목", "id": 2123, "price": 2900, "img": "img/c82f964655d1.jpg"}, {"no": 3, "t": "주장", "id": 2124, "price": 2900, "img": "img/bf35720a9a2e.jpg"}, {"no": 4, "t": "심경·분위기", "id": 2125, "price": 2900, "img": "img/26f2bf3d956e.jpg"}, {"no": 5, "t": "내용 일치·도표·실용문", "id": 2126, "price": 2900, "img": "img/eaef23183db9.jpg"}, {"no": 6, "t": "함축 의미 맛보기", "id": 2127, "price": 2900, "img": "img/bda10f7aef97.jpg"}, {"no": 7, "t": "어휘 적절성", "id": 2128, "price": 2900, "img": "img/b0894b10c9e8.jpg"}, {"no": 8, "t": "빈칸 ① 낱말", "id": 2129, "price": 2900, "img": "img/5d9e389cc932.jpg"}, {"no": 9, "t": "빈칸 ② 구", "id": 2130, "price": 2900, "img": "img/1fe3ce06a484.jpg"}, {"no": 10, "t": "무관한 문장", "id": 2131, "price": 2900, "img": "img/1dcf4cf87365.jpg"}, {"no": 11, "t": "순서·삽입", "id": 2132, "price": 2900, "img": "img/d005565aa84c.jpg"}, {"no": 12, "t": "요약문", "id": 2133, "price": 2900, "img": "img/00b1a2a7069f.jpg"}], "img": "img/0ed6ed8de91b.jpg", "guide": "guides/g00.jpg?v=8405dd77", "gpages": 8}, {"grade": "중3", "area": "구문", "kind": "", "name": "시크릿구문 중3", "pk": {"id": 2256, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "명사 뒤 분사", "id": 1887, "price": 2900, "img": "img/d1574187af4c.jpg"}, {"no": 2, "t": "사역·지각동사", "id": 1888, "price": 2900, "img": "img/24756eba12cd.jpg"}, {"no": 3, "t": "관계대명사 what", "id": 1889, "price": 2900, "img": "img/63f3110abf2f.jpg"}, {"no": 4, "t": "관계부사", "id": 1890, "price": 2900, "img": "img/411ef620e7a4.jpg"}, {"no": 5, "t": "관계사의 계속적 용법", "id": 1891, "price": 2900, "img": "img/d86d071e0232.jpg"}, {"no": 6, "t": "간접의문문", "id": 1892, "price": 2900, "img": "img/61cfedb6571b.jpg"}, {"no": 7, "t": "가주어 it과 의문사+to부정사", "id": 1893, "price": 2900, "img": "img/b14651290a10.jpg"}, {"no": 8, "t": "too·enough·so that", "id": 1894, "price": 2900, "img": "img/b773fe9def55.jpg"}, {"no": 9, "t": "완료 시제", "id": 1895, "price": 2900, "img": "img/5f52ef063043.jpg"}, {"no": 10, "t": "분사구문", "id": 1896, "price": 2900, "img": "img/3fbc3681ffc8.jpg"}, {"no": 11, "t": "가정법 과거", "id": 1897, "price": 2900, "img": "img/887404cdf116.jpg"}, {"no": 12, "t": "강조·상관접속사", "id": 1898, "price": 2900, "img": "img/536c57b4fe0d.jpg"}], "img": "img/d9d867cfc960.jpg", "guide": "guides/g01.jpg?v=8405dd77", "gpages": 8}, {"grade": "중3", "area": "어법", "kind": "", "name": "어법 총정리 중3", "pk": {"id": 2255, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "완료 시제", "id": 2052, "price": 2900, "img": "img/c32bf8a48a68.jpg"}, {"no": 2, "t": "조동사와 수동태 심화", "id": 2053, "price": 2900, "img": "img/7a62090aa2c6.jpg"}, {"no": 3, "t": "관계대명사 what", "id": 2054, "price": 2900, "img": "img/a76375dc9766.jpg"}, {"no": 4, "t": "계속적 용법과 whose", "id": 2055, "price": 2900, "img": "img/032ac161249f.jpg"}, {"no": 5, "t": "관계부사", "id": 2056, "price": 2900, "img": "img/9ad40cfbb9e5.jpg"}, {"no": 6, "t": "분사 심화", "id": 2057, "price": 2900, "img": "img/4c93b4f8ffd0.jpg"}, {"no": 7, "t": "분사구문", "id": 2058, "price": 2900, "img": "img/d7f583b83216.jpg"}, {"no": 8, "t": "to부정사 심화", "id": 2059, "price": 2900, "img": "img/28bdf9dfdb2f.jpg"}, {"no": 9, "t": "명사절 접속사 if·whether", "id": 2060, "price": 2900, "img": "img/4f9e6062546b.jpg"}, {"no": 10, "t": "부사절 접속사 심화", "id": 2061, "price": 2900, "img": "img/794fc6c499fa.jpg"}, {"no": 11, "t": "가정법 과거", "id": 2062, "price": 2900, "img": "img/f48da2320490.jpg"}, {"no": 12, "t": "강조 구문과 비교 심화", "id": 2063, "price": 2900, "img": "img/36888ff8f1f5.jpg"}], "img": "img/7a65f5651d9a.jpg", "guide": "guides/g02.jpg?v=8405dd77", "gpages": 8}, {"grade": "중3", "area": "어휘", "kind": "", "name": "시크릿보카 중3 테마", "pk": {"id": 2254, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "나와 마음", "id": 1971, "price": 2900, "img": "img/37b17e65f89b.jpg"}, {"no": 2, "t": "가족과 친구", "id": 1972, "price": 2900, "img": "img/2c96f86da94e.jpg"}, {"no": 3, "t": "학교와 배움", "id": 1973, "price": 2900, "img": "img/8d3f0d9c60dc.jpg"}, {"no": 4, "t": "취미와 여가", "id": 1974, "price": 2900, "img": "img/a05bbc665d10.jpg"}, {"no": 5, "t": "음식과 건강", "id": 1975, "price": 2900, "img": "img/c8ce2fc4f95d.jpg"}, {"no": 6, "t": "동물과 자연", "id": 1976, "price": 2900, "img": "img/e115b07b625d.jpg"}, {"no": 7, "t": "환경과 지구", "id": 1977, "price": 2900, "img": "img/7ed698e7cf56.jpg"}, {"no": 8, "t": "과학과 기술", "id": 1978, "price": 2900, "img": "img/108d7c58d5a5.jpg"}, {"no": 9, "t": "여행과 문화", "id": 1979, "price": 2900, "img": "img/8048b5cc9162.jpg"}, {"no": 10, "t": "직업과 꿈", "id": 1980, "price": 2900, "img": "img/4963631755e6.jpg"}, {"no": 11, "t": "사회와 나눔", "id": 1981, "price": 2900, "img": "img/6a20313d9a28.jpg"}, {"no": 12, "t": "예술과 스포츠", "id": 1982, "price": 2900, "img": "img/ad7f19a16673.jpg"}], "img": "img/9bcaf284d6d5.jpg", "guide": "guides/g03.jpg?v=8405dd77", "gpages": 10}, {"grade": "중2", "area": "독해", "kind": "유형편", "name": "시크릿독해 유형편 중2", "pk": {"id": 2252, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "주제·요지", "id": 2110, "price": 2900, "img": "img/1a2a3848e6b5.jpg"}, {"no": 2, "t": "제목", "id": 2111, "price": 2900, "img": "img/9a6a97ff8861.jpg"}, {"no": 3, "t": "글의 목적", "id": 2112, "price": 2900, "img": "img/6d20fbce529b.jpg"}, {"no": 4, "t": "심경 변화", "id": 2113, "price": 2900, "img": "img/6c33dc8636af.jpg"}, {"no": 5, "t": "내용 일치·실용문", "id": 2114, "price": 2900, "img": "img/96ec771e6096.jpg"}, {"no": 6, "t": "도표 읽기", "id": 2115, "price": 2900, "img": "img/f265ddfe4e34.jpg"}, {"no": 7, "t": "지칭 추론", "id": 2116, "price": 2900, "img": "img/3987159bac02.jpg"}, {"no": 8, "t": "연결어", "id": 2117, "price": 2900, "img": "img/7205f01bdd61.jpg"}, {"no": 9, "t": "빈칸 낱말", "id": 2118, "price": 2900, "img": "img/459724962788.jpg"}, {"no": 10, "t": "무관한 문장", "id": 2119, "price": 2900, "img": "img/d77a8c209041.jpg"}, {"no": 11, "t": "글의 순서", "id": 2120, "price": 2900, "img": "img/bf1817b73fbf.jpg"}, {"no": 12, "t": "요약문 맛보기", "id": 2121, "price": 2900, "img": "img/a489bd6647b4.jpg"}], "img": "img/ca4e5b153233.jpg", "guide": "guides/g04.jpg?v=8405dd77", "gpages": 8}, {"grade": "중2", "area": "구문", "kind": "", "name": "시크릿구문 중2", "pk": {"id": 2251, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "긴 주어와 가주어 it", "id": 1875, "price": 2900, "img": "img/066681aead5e.jpg"}, {"no": 2, "t": "목적격보어(명사·형용사)", "id": 1876, "price": 2900, "img": "img/369e33e54077.jpg"}, {"no": 3, "t": "목적격보어(to부정사)", "id": 1877, "price": 2900, "img": "img/fcdce0e87d58.jpg"}, {"no": 4, "t": "to부정사의 형용사 역할", "id": 1878, "price": 2900, "img": "img/dba00bd0ff4e.jpg"}, {"no": 5, "t": "to부정사의 부사 역할", "id": 1879, "price": 2900, "img": "img/945471ad7441.jpg"}, {"no": 6, "t": "수동태", "id": 1880, "price": 2900, "img": "img/9ab39398e161.jpg"}, {"no": 7, "t": "현재완료", "id": 1881, "price": 2900, "img": "img/b8d2213b0a10.jpg"}, {"no": 8, "t": "명사절 that·if·whether", "id": 1882, "price": 2900, "img": "img/f84736d9f8e1.jpg"}, {"no": 9, "t": "주격 관계대명사", "id": 1883, "price": 2900, "img": "img/36b05f0d2988.jpg"}, {"no": 10, "t": "목적격·소유격 관계대명사", "id": 1884, "price": 2900, "img": "img/9e2c9c690bd9.jpg"}, {"no": 11, "t": "부사절 접속사", "id": 1885, "price": 2900, "img": "img/1dcc377827c6.jpg"}, {"no": 12, "t": "비교 구문", "id": 1886, "price": 2900, "img": "img/4418b373e95e.jpg"}], "img": "img/4b054d14f64a.jpg", "guide": "guides/g05.jpg?v=8405dd77", "gpages": 8}, {"grade": "중2", "area": "어법", "kind": "", "name": "어법 총정리 중2", "pk": {"id": 2250, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "현재완료", "id": 2043, "price": 2900, "img": "img/6593db0b39e7.jpg"}, {"no": 2, "t": "수동태", "id": 2044, "price": 2900, "img": "img/8c658e270d27.jpg"}, {"no": 3, "t": "명사를 꾸미는 말", "id": 2045, "price": 2900, "img": "img/d32499a1b6e6.jpg"}, {"no": 4, "t": "가주어 it과 의문사+to부정사", "id": 2046, "price": 2900, "img": "img/f7d10949bc18.jpg"}, {"no": 5, "t": "목적격보어(형용사·to부정사)", "id": 2047, "price": 2900, "img": "img/3e7ea65ce5d3.jpg"}, {"no": 6, "t": "사역동사와 지각동사", "id": 2048, "price": 2900, "img": "img/df11c5f47fc9.jpg"}, {"no": 7, "t": "관계대명사 ① 주격", "id": 2049, "price": 2900, "img": "img/b3085c11de97.jpg"}, {"no": 8, "t": "관계대명사 ② 목적격", "id": 2050, "price": 2900, "img": "img/0d0d6a1e8d7b.jpg"}, {"no": 9, "t": "부사절 접속사", "id": 2051, "price": 2900, "img": "img/2fa9e9a4a177.jpg"}, {"no": 10, "t": "간접의문문", "id": 2064, "price": 2900, "img": "img/e7ed675d1c96.jpg"}, {"no": 11, "t": "so ~ that과 상관접속사", "id": 2065, "price": 2900, "img": "img/2e65485a0d48.jpg"}, {"no": 12, "t": "비교 표현", "id": 2066, "price": 2900, "img": "img/456cc9662a20.jpg"}], "img": "img/8c9f20980568.jpg", "guide": "guides/g06.jpg?v=8405dd77", "gpages": 8}, {"grade": "중2", "area": "어휘", "kind": "", "name": "시크릿보카 중2 테마", "pk": {"id": 2249, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "나와 마음", "id": 1959, "price": 2900, "img": "img/2cf409042f7e.jpg"}, {"no": 2, "t": "가족과 친구", "id": 1960, "price": 2900, "img": "img/4fce0ac80f98.jpg"}, {"no": 3, "t": "학교와 배움", "id": 1961, "price": 2900, "img": "img/edd59a188511.jpg"}, {"no": 4, "t": "취미와 여가", "id": 1962, "price": 2900, "img": "img/0c6702669f46.jpg"}, {"no": 5, "t": "음식과 건강", "id": 1963, "price": 2900, "img": "img/7f5faacc34e6.jpg"}, {"no": 6, "t": "동물과 자연", "id": 1964, "price": 2900, "img": "img/bf958eda3dbb.jpg"}, {"no": 7, "t": "환경과 지구", "id": 1965, "price": 2900, "img": "img/2a444636dd4b.jpg"}, {"no": 8, "t": "과학과 기술", "id": 1966, "price": 2900, "img": "img/47a51878ed7a.jpg"}, {"no": 9, "t": "여행과 문화", "id": 1967, "price": 2900, "img": "img/9e3a5201df52.jpg"}, {"no": 10, "t": "직업과 꿈", "id": 1968, "price": 2900, "img": "img/ceb529fc3674.jpg"}, {"no": 11, "t": "사회와 나눔", "id": 1969, "price": 2900, "img": "img/14f7ee872c83.jpg"}, {"no": 12, "t": "예술과 스포츠", "id": 1970, "price": 2900, "img": "img/505e3b959346.jpg"}], "img": "img/a0788a7a7449.jpg", "guide": "guides/g07.jpg?v=8405dd77", "gpages": 10}, {"grade": "중1", "area": "독해", "kind": "유형편", "name": "시크릿독해 유형편 중1", "pk": {"id": 2247, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "글의 소재 찾기", "id": 2098, "price": 2900, "img": "img/269387985eed.jpg"}, {"no": 2, "t": "주제와 중심 문장", "id": 2099, "price": 2900, "img": "img/a45fc6255b7d.jpg"}, {"no": 3, "t": "뒷받침 문장과 예시", "id": 2100, "price": 2900, "img": "img/6e49631d1a68.jpg"}, {"no": 4, "t": "글의 목적", "id": 2101, "price": 2900, "img": "img/acc4bec115af.jpg"}, {"no": 5, "t": "인물의 마음", "id": 2102, "price": 2900, "img": "img/b95ea8dbc7ad.jpg"}, {"no": 6, "t": "세부 내용 확인", "id": 2103, "price": 2900, "img": "img/bf5433154f09.jpg"}, {"no": 7, "t": "지칭 대상 찾기", "id": 2104, "price": 2900, "img": "img/cae1e610d8aa.jpg"}, {"no": 8, "t": "시간 순서와 사건 흐름", "id": 2105, "price": 2900, "img": "img/2d2366efc81b.jpg"}, {"no": 9, "t": "원인과 결과", "id": 2106, "price": 2900, "img": "img/8063b7b83e8e.jpg"}, {"no": 10, "t": "비교와 대조", "id": 2107, "price": 2900, "img": "img/fc61094c10bf.jpg"}, {"no": 11, "t": "빈칸에 알맞은 낱말", "id": 2108, "price": 2900, "img": "img/dfe80f609ac7.jpg"}, {"no": 12, "t": "제목 붙이기", "id": 2109, "price": 2900, "img": "img/06ecbaec39a8.jpg"}], "img": "img/8c305211d60f.jpg", "guide": "guides/g08.jpg?v=8405dd77", "gpages": 8}, {"grade": "중1", "area": "어법", "kind": "", "name": "어법 총정리 중1", "pk": {"id": 2246, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "be동사와 일반동사", "id": 2031, "price": 2900, "img": "img/ef9e06db2824.jpg"}, {"no": 2, "t": "현재진행과 There is·are", "id": 2032, "price": 2900, "img": "img/5c6cc8d16d5a.jpg"}, {"no": 3, "t": "과거시제", "id": 2033, "price": 2900, "img": "img/979435b371a5.jpg"}, {"no": 4, "t": "조동사", "id": 2034, "price": 2900, "img": "img/11d7ede36cb8.jpg"}, {"no": 5, "t": "명령문·감탄문·의문사 의문문", "id": 2035, "price": 2900, "img": "img/ead6f2dffb55.jpg"}, {"no": 6, "t": "동명사", "id": 2036, "price": 2900, "img": "img/a8e281efe979.jpg"}, {"no": 7, "t": "to부정사 ① 명사적 용법", "id": 2037, "price": 2900, "img": "img/6b753b04ee88.jpg"}, {"no": 8, "t": "to부정사 ② 부사적 용법", "id": 2038, "price": 2900, "img": "img/ca3385a24909.jpg"}, {"no": 9, "t": "감각동사와 수여동사", "id": 2039, "price": 2900, "img": "img/bc068f2282c9.jpg"}, {"no": 10, "t": "비교급과 최상급", "id": 2040, "price": 2900, "img": "img/db65e385fc5b.jpg"}, {"no": 11, "t": "when·because·that", "id": 2041, "price": 2900, "img": "img/4caea2a118aa.jpg"}, {"no": 12, "t": "대명사와 형용사 자리", "id": 2042, "price": 2900, "img": "img/77472ab2c00c.jpg"}], "img": "img/315707ef5061.jpg", "guide": "guides/g09.jpg?v=8405dd77", "gpages": 8}, {"grade": "중1", "area": "어휘", "kind": "", "name": "시크릿보카 중1 테마", "pk": {"id": 2245, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "나와 마음", "id": 1947, "price": 2900, "img": "img/1827a64b653f.jpg"}, {"no": 2, "t": "가족과 친구", "id": 1948, "price": 2900, "img": "img/70d124c80e11.jpg"}, {"no": 3, "t": "학교와 배움", "id": 1949, "price": 2900, "img": "img/fcdec7a49d6d.jpg"}, {"no": 4, "t": "취미와 여가", "id": 1950, "price": 2900, "img": "img/2010d61cedbc.jpg"}, {"no": 5, "t": "음식과 건강", "id": 1951, "price": 2900, "img": "img/1c9447ceaadf.jpg"}, {"no": 6, "t": "동물과 자연", "id": 1952, "price": 2900, "img": "img/1274eac0850d.jpg"}, {"no": 7, "t": "환경과 지구", "id": 1953, "price": 2900, "img": "img/93737f8fa8e5.jpg"}, {"no": 8, "t": "과학과 기술", "id": 1954, "price": 2900, "img": "img/76ffd5d6fa30.jpg"}, {"no": 9, "t": "여행과 문화", "id": 1955, "price": 2900, "img": "img/71d505dd3500.jpg"}, {"no": 10, "t": "직업과 꿈", "id": 1956, "price": 2900, "img": "img/73872c6ab681.jpg"}, {"no": 11, "t": "사회와 나눔", "id": 1957, "price": 2900, "img": "img/47e81437a290.jpg"}, {"no": 12, "t": "예술과 스포츠", "id": 1958, "price": 2900, "img": "img/024779211361.jpg"}], "img": "img/6a4db143b82a.jpg", "guide": "guides/g10.jpg?v=8405dd77", "gpages": 10}, {"grade": "중1", "area": "구문", "kind": "", "name": "시크릿구문 중1", "pk": {"id": 2244, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "주어와 동사 찾기", "id": 1863, "price": 2900, "img": "img/5e437cbc7fef.jpg"}, {"no": 2, "t": "be동사와 주격보어", "id": 1864, "price": 2900, "img": "img/d2d0719b36bb.jpg"}, {"no": 3, "t": "목적어 찾기", "id": 1865, "price": 2900, "img": "img/433e0c52f67a.jpg"}, {"no": 4, "t": "동사의 시제", "id": 1866, "price": 2900, "img": "img/36d7ee1ce939.jpg"}, {"no": 5, "t": "조동사", "id": 1867, "price": 2900, "img": "img/716290e5fa3e.jpg"}, {"no": 6, "t": "감각동사", "id": 1868, "price": 2900, "img": "img/4ce9c1b20ad7.jpg"}, {"no": 7, "t": "4형식(두 개의 목적어)", "id": 1869, "price": 2900, "img": "img/7b564868bcd4.jpg"}, {"no": 8, "t": "꾸밈말 구별하기", "id": 1870, "price": 2900, "img": "img/4f36c9de54bc.jpg"}, {"no": 9, "t": "의문문·명령문", "id": 1871, "price": 2900, "img": "img/5505a5ada71a.jpg"}, {"no": 10, "t": "to부정사", "id": 1872, "price": 2900, "img": "img/48799708cfe6.jpg"}, {"no": 11, "t": "동명사", "id": 1873, "price": 2900, "img": "img/34253d4287f1.jpg"}, {"no": 12, "t": "접속사", "id": 1874, "price": 2900, "img": "img/e09c6f9dedee.jpg"}], "img": "img/94a15e28a1cc.jpg", "guide": "guides/g11.jpg?v=8405dd77", "gpages": 8}, {"grade": "예비고1", "area": "독해", "kind": "유형편", "name": "시크릿독해 유형편 예비고1", "pk": {"id": 2242, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "글의 구조", "id": 2206, "price": 2900, "img": "img/686d4ac4c67f.jpg"}, {"no": 2, "t": "목적·심경·주장·요지", "id": 2207, "price": 2900, "img": "img/89970c4b9815.jpg"}, {"no": 3, "t": "주제·제목", "id": 2208, "price": 2900, "img": "img/0a0a8ed59d7e.jpg"}, {"no": 4, "t": "함축 맛보기", "id": 2209, "price": 2900, "img": "img/1de7c52eab13.jpg"}, {"no": 5, "t": "도표·실용문·무관한 문장", "id": 2210, "price": 2900, "img": "img/2c8579ba7cfe.jpg"}, {"no": 6, "t": "어휘 적절성", "id": 2211, "price": 2900, "img": "img/9e036af6f55a.jpg"}, {"no": 7, "t": "연결어와 흐름", "id": 2212, "price": 2900, "img": "img/5330d15a4ace.jpg"}, {"no": 8, "t": "빈칸 맛보기 ① 낱말", "id": 2213, "price": 2900, "img": "img/595bc5269c8d.jpg"}, {"no": 9, "t": "빈칸 맛보기 ② 구", "id": 2214, "price": 2900, "img": "img/eac117f18f37.jpg"}, {"no": 10, "t": "순서·삽입", "id": 2215, "price": 2900, "img": "img/825d45fafd9e.jpg"}, {"no": 11, "t": "요약문", "id": 2216, "price": 2900, "img": "img/bbd5cc91bc7a.jpg"}, {"no": 12, "t": "장문", "id": 2217, "price": 2900, "img": "img/a37a8f8c451e.jpg"}], "img": "img/23c0c0f1670f.jpg", "guide": "guides/g12.jpg?v=8405dd77", "gpages": 8}, {"grade": "예비고1", "area": "구문", "kind": "", "name": "시크릿구문 예비고1", "pk": {"id": 2259, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "문장의 뼈대", "id": 1851, "price": 2900, "img": "img/5d9061ebede0.jpg"}, {"no": 2, "t": "긴 주어", "id": 1852, "price": 2900, "img": "img/cd90f32a3c2b.jpg"}, {"no": 3, "t": "목적어", "id": 1853, "price": 2900, "img": "img/e6d28bfdd92f.jpg"}, {"no": 4, "t": "주격보어·목적격보어", "id": 1854, "price": 2900, "img": "img/20b669733142.jpg"}, {"no": 5, "t": "시제·조동사·수동태", "id": 1855, "price": 2900, "img": "img/5da44c25b7b6.jpg"}, {"no": 6, "t": "명사 뒤 수식(구)", "id": 1856, "price": 2900, "img": "img/bda1d6ef1b50.jpg"}, {"no": 7, "t": "명사 뒤 수식(절)", "id": 1857, "price": 2900, "img": "img/7089e903ed99.jpg"}, {"no": 8, "t": "to부정사와 부사절", "id": 1858, "price": 2900, "img": "img/0c03e9d60699.jpg"}, {"no": 9, "t": "분사구문", "id": 1859, "price": 2900, "img": "img/62dad693c1af.jpg"}, {"no": 10, "t": "병렬과 상관접속사", "id": 1860, "price": 2900, "img": "img/ee8ad70872d5.jpg"}, {"no": 11, "t": "비교와 가정법", "id": 1861, "price": 2900, "img": "img/42ffe19d5001.jpg"}, {"no": 12, "t": "특수구문", "id": 1862, "price": 2900, "img": "img/e401218c2426.jpg"}], "img": "img/f3a647190520.jpg", "guide": "guides/g13.jpg?v=8405dd77", "gpages": 8}, {"grade": "예비고1", "area": "어법", "kind": "", "name": "시크릿어법 예비고1", "pk": {"id": 2241, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "정동사 vs 준동사", "id": 2019, "price": 2900, "img": "img/0097807ce768.jpg"}, {"no": 2, "t": "긴 주어의 수일치", "id": 2020, "price": 2900, "img": "img/fda332e3edd5.jpg"}, {"no": 3, "t": "형용사 vs 부사", "id": 2021, "price": 2900, "img": "img/6c13ac89f9d2.jpg"}, {"no": 4, "t": "to부정사 vs 동명사", "id": 2022, "price": 2900, "img": "img/193dab2743f6.jpg"}, {"no": 5, "t": "현재분사 vs 과거분사", "id": 2023, "price": 2900, "img": "img/8e5f0538f21b.jpg"}, {"no": 6, "t": "분사구문과 with 부대상황", "id": 2024, "price": 2900, "img": "img/6fab289018fd.jpg"}, {"no": 7, "t": "능동태 vs 수동태", "id": 2025, "price": 2900, "img": "img/8dcfbcffa7f4.jpg"}, {"no": 8, "t": "관계대명사", "id": 2026, "price": 2900, "img": "img/cedea9fd4478.jpg"}, {"no": 9, "t": "관계부사 vs 관계대명사", "id": 2027, "price": 2900, "img": "img/2ee1b0c67ae4.jpg"}, {"no": 10, "t": "that·what·접속사·전치사", "id": 2028, "price": 2900, "img": "img/48eaa0e7b7d6.jpg"}, {"no": 11, "t": "병렬구조·대명사·대동사", "id": 2029, "price": 2900, "img": "img/a907d6d0e3d6.jpg"}, {"no": 12, "t": "실전 어법 모의고사", "id": 2030, "price": 2900, "img": "img/64d7469aca53.jpg"}], "img": "img/9e71f20ec234.jpg", "guide": "guides/g14.jpg?v=8405dd77", "gpages": 7}, {"grade": "예비고1", "area": "어휘", "kind": "", "name": "시크릿보카 예비고1", "pk": {"id": 2240, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "심리·감정", "id": 1935, "price": 2900, "img": "img/4257661adb12.jpg"}, {"no": 2, "t": "인간관계·소통", "id": 1936, "price": 2900, "img": "img/c7794e216836.jpg"}, {"no": 3, "t": "교육·학습", "id": 1937, "price": 2900, "img": "img/8feaae0eeb0e.jpg"}, {"no": 4, "t": "사회·제도", "id": 1938, "price": 2900, "img": "img/bf3d89759127.jpg"}, {"no": 5, "t": "경제·소비", "id": 1939, "price": 2900, "img": "img/de455a83df2f.jpg"}, {"no": 6, "t": "경영·조직", "id": 1940, "price": 2900, "img": "img/8df60dec89ed.jpg"}, {"no": 7, "t": "생명과학·진화", "id": 1941, "price": 2900, "img": "img/8e881fe68d33.jpg"}, {"no": 8, "t": "물리·지구·우주", "id": 1942, "price": 2900, "img": "img/1852e796c53e.jpg"}, {"no": 9, "t": "기술·AI·미디어", "id": 1943, "price": 2900, "img": "img/eea1c336655f.jpg"}, {"no": 10, "t": "환경·건강", "id": 1944, "price": 2900, "img": "img/55ed5c875945.jpg"}, {"no": 11, "t": "예술·문학·언어", "id": 1945, "price": 2900, "img": "img/b34200a2ef6b.jpg"}, {"no": 12, "t": "철학·윤리·역사", "id": 1946, "price": 2900, "img": "img/7d622d7ccae4.jpg"}], "img": "img/14428efd941e.jpg", "guide": "guides/g15.jpg?v=8405dd77", "gpages": 10}, {"grade": "고3", "area": "독해", "kind": "상위오답률편", "name": "시크릿독해 상위오답률편 고3", "pk": {"id": 2238, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "빈칸 ① 낱말·짧은 구", "id": 2194, "price": 2900, "img": "img/3ceb97f350a4.jpg"}, {"no": 2, "t": "빈칸 ② 구", "id": 2195, "price": 2900, "img": "img/7cef30485ad1.jpg"}, {"no": 3, "t": "빈칸 ③ 긴 구·절", "id": 2196, "price": 2900, "img": "img/08ae8ef32686.jpg"}, {"no": 4, "t": "빈칸 ④ 최고 오답률", "id": 2197, "price": 2900, "img": "img/444d42629f16.jpg"}, {"no": 5, "t": "삽입 ① 지시어 함정", "id": 2198, "price": 2900, "img": "img/ee027a36b4d8.jpg"}, {"no": 6, "t": "삽입 ② 연결어 함정", "id": 2199, "price": 2900, "img": "img/34c5ffb8f783.jpg"}, {"no": 7, "t": "삽입 ③ 흐름 함정", "id": 2200, "price": 2900, "img": "img/9f7833be7313.jpg"}, {"no": 8, "t": "순서 ① 첫 단락 고르기", "id": 2201, "price": 2900, "img": "img/35e48aaf78e3.jpg"}, {"no": 9, "t": "순서 ② 뒤 두 단락", "id": 2202, "price": 2900, "img": "img/cc9ea76cb2b9.jpg"}, {"no": 10, "t": "요약문", "id": 2203, "price": 2900, "img": "img/965494ab53f1.jpg"}, {"no": 11, "t": "함축·무관한 문장", "id": 2204, "price": 2900, "img": "img/84ff6b896aad.jpg"}, {"no": 12, "t": "통합문제풀이", "id": 2205, "price": 2900, "img": "img/9d7bf7b46d68.jpg"}], "img": "img/4c4f31c55ed6.jpg", "guide": "guides/g16.jpg?v=8405dd77", "gpages": 9}, {"grade": "고3", "area": "독해", "kind": "테마편", "name": "시크릿독해 테마편 고3", "pk": {"id": 2237, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "심리·감정", "id": 2158, "price": 2900, "img": "img/31e21ecab42a.jpg"}, {"no": 2, "t": "인간관계·소통", "id": 2159, "price": 2900, "img": "img/e8b0df557af2.jpg"}, {"no": 3, "t": "교육·학습", "id": 2160, "price": 2900, "img": "img/ca307ec7ee5d.jpg"}, {"no": 4, "t": "사회·제도", "id": 2161, "price": 2900, "img": "img/4b17cc2b2d17.jpg"}, {"no": 5, "t": "경제·소비", "id": 2162, "price": 2900, "img": "img/5be2574a588d.jpg"}, {"no": 6, "t": "경영·조직", "id": 2163, "price": 2900, "img": "img/bd21480a28b6.jpg"}, {"no": 7, "t": "생명과학·진화", "id": 2164, "price": 2900, "img": "img/d5ba6692de88.jpg"}, {"no": 8, "t": "물리·지구·우주", "id": 2165, "price": 2900, "img": "img/b8d7e91e0f46.jpg"}, {"no": 9, "t": "기술·AI·미디어", "id": 2166, "price": 2900, "img": "img/ad5e4a46b582.jpg"}, {"no": 10, "t": "환경·건강", "id": 2167, "price": 2900, "img": "img/9b771928ba55.jpg"}, {"no": 11, "t": "예술·문학·언어", "id": 2168, "price": 2900, "img": "img/f138dc20a88f.jpg"}, {"no": 12, "t": "철학·윤리·역사", "id": 2169, "price": 2900, "img": "img/399a222b8f4c.jpg"}], "img": "img/2f34db30e103.jpg", "guide": "guides/g17.jpg?v=8405dd77", "gpages": 9}, {"grade": "고3", "area": "독해", "kind": "유형편", "name": "시크릿독해 유형편 고3", "pk": {"id": 2236, "price": 15900, "list": 31900}, "lessons": [{"no": 1, "t": "목적·심경·주장·요지", "id": 2087, "price": 2900, "img": "img/b11ed7931f44.jpg"}, {"no": 2, "t": "주제·제목", "id": 2088, "price": 2900, "img": "img/a7cdea824a9b.jpg"}, {"no": 3, "t": "함축 의미", "id": 2089, "price": 2900, "img": "img/21933d260a60.jpg"}, {"no": 4, "t": "도표·실용문·무관한 문장", "id": 2090, "price": 2900, "img": "img/56be1e8053de.jpg"}, {"no": 5, "t": "어휘 적절성", "id": 2091, "price": 2900, "img": "img/0e7cd71b8c62.jpg"}, {"no": 6, "t": "빈칸 ① 개념어", "id": 2092, "price": 2900, "img": "img/4cd72ba508fe.jpg"}, {"no": 7, "t": "빈칸 ② 구", "id": 2093, "price": 2900, "img": "img/17fa0680aa04.jpg"}, {"no": 8, "t": "빈칸 ③ 절·부정 빈칸", "id": 2094, "price": 2900, "img": "img/e770f0ea6b1a.jpg"}, {"no": 9, "t": "순서·삽입", "id": 2095, "price": 2900, "img": "img/7133e5791073.jpg"}, {"no": 10, "t": "요약문", "id": 2096, "price": 2900, "img": "img/958f4fae3733.jpg"}, {"no": 11, "t": "장문", "id": 2097, "price": 2900, "img": "img/d6a685f862c0.jpg"}], "img": "img/1f4737e68d19.jpg", "guide": "guides/g18.jpg?v=8405dd77", "gpages": 8}, {"grade": "고3", "area": "구문", "kind": "", "name": "시크릿구문 고3", "pk": {"id": 2235, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "문장의 뼈대", "id": 1839, "price": 2900, "img": "img/4cbd391c4e7b.jpg"}, {"no": 2, "t": "긴 주어와 진짜 동사", "id": 1840, "price": 2900, "img": "img/931ff607fdba.jpg"}, {"no": 3, "t": "명사 뒤 수식어", "id": 1841, "price": 2900, "img": "img/fb8002ec130b.jpg"}, {"no": 4, "t": "관계사절과 삽입절", "id": 1842, "price": 2900, "img": "img/54c5b3dbe9dc.jpg"}, {"no": 5, "t": "도치 구문", "id": 1843, "price": 2900, "img": "img/8049724bc4cc.jpg"}, {"no": 6, "t": "생략과 대용", "id": 1844, "price": 2900, "img": "img/7d488975172e.jpg"}, {"no": 7, "t": "병렬 구조", "id": 1845, "price": 2900, "img": "img/7e60d017f706.jpg"}, {"no": 8, "t": "비교 구문", "id": 1846, "price": 2900, "img": "img/96fc4213a4d5.jpg"}, {"no": 9, "t": "부정 표현", "id": 1847, "price": 2900, "img": "img/24899a0c398c.jpg"}, {"no": 10, "t": "짝을 이루는 구문", "id": 1848, "price": 2900, "img": "img/840b89130e70.jpg"}, {"no": 11, "t": "논리를 알려 주는 구문", "id": 1849, "price": 2900, "img": "img/838054276b0a.jpg"}, {"no": 12, "t": "긴 기출 문장 종합", "id": 1850, "price": 2900, "img": "img/32bac2f1e3f1.jpg"}], "img": "img/06af41e29efa.jpg", "guide": "guides/g19.jpg?v=8405dd77", "gpages": 8}, {"grade": "고3", "area": "어법", "kind": "", "name": "시크릿어법 고3", "pk": {"id": 2234, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "문장의 형식", "id": 2007, "price": 2900, "img": "img/7a68979b64d5.jpg"}, {"no": 2, "t": "to부정사·동명사", "id": 2008, "price": 2900, "img": "img/6f03c2dbff40.jpg"}, {"no": 3, "t": "분사구", "id": 2009, "price": 2900, "img": "img/d509a887db54.jpg"}, {"no": 4, "t": "분사구문", "id": 2010, "price": 2900, "img": "img/0d8bbedb4a97.jpg"}, {"no": 5, "t": "명사절 접속사", "id": 2011, "price": 2900, "img": "img/5a0860443c54.jpg"}, {"no": 6, "t": "관계사", "id": 2012, "price": 2900, "img": "img/385c97502123.jpg"}, {"no": 7, "t": "수동태", "id": 2013, "price": 2900, "img": "img/4a87803268fe.jpg"}, {"no": 8, "t": "수일치", "id": 2014, "price": 2900, "img": "img/81098e0b32e8.jpg"}, {"no": 9, "t": "형용사·부사·대명사", "id": 2015, "price": 2900, "img": "img/0334c6a75912.jpg"}, {"no": 10, "t": "전치사·접속사", "id": 2016, "price": 2900, "img": "img/800cb2d24385.jpg"}, {"no": 11, "t": "조동사·가정법", "id": 2017, "price": 2900, "img": "img/ef1c0b9285d3.jpg"}, {"no": 12, "t": "특수구문", "id": 2018, "price": 2900, "img": "img/f68d7e68cd5f.jpg"}], "img": "img/6c74afc0cc12.jpg", "guide": "guides/g20.jpg?v=8405dd77", "gpages": 9}, {"grade": "고3", "area": "어휘", "kind": "", "name": "시크릿보카 고3", "pk": {"id": 2233, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "심리·감정", "id": 1923, "price": 2900, "img": "img/7c9176f50cb4.jpg"}, {"no": 2, "t": "인간관계·소통", "id": 1924, "price": 2900, "img": "img/754120525875.jpg"}, {"no": 3, "t": "교육·학습", "id": 1925, "price": 2900, "img": "img/e21f2a4b80ea.jpg"}, {"no": 4, "t": "사회·제도", "id": 1926, "price": 2900, "img": "img/e3a72e922011.jpg"}, {"no": 5, "t": "경제·소비", "id": 1927, "price": 2900, "img": "img/f19b76061728.jpg"}, {"no": 6, "t": "경영·조직", "id": 1928, "price": 2900, "img": "img/da37ec45b540.jpg"}, {"no": 7, "t": "생명과학·진화", "id": 1929, "price": 2900, "img": "img/7d790602a7c4.jpg"}, {"no": 8, "t": "물리·지구·우주", "id": 1930, "price": 2900, "img": "img/c1f98601fd3d.jpg"}, {"no": 9, "t": "기술·AI·미디어", "id": 1931, "price": 2900, "img": "img/956fb1892242.jpg"}, {"no": 10, "t": "환경·건강", "id": 1932, "price": 2900, "img": "img/2503898cda14.jpg"}, {"no": 11, "t": "예술·문학·언어", "id": 1933, "price": 2900, "img": "img/ec3b353bc218.jpg"}, {"no": 12, "t": "철학·윤리·역사", "id": 1934, "price": 2900, "img": "img/2e6c4f70d317.jpg"}], "img": "img/0364879dd984.jpg", "guide": "guides/g21.jpg?v=8405dd77", "gpages": 10}, {"grade": "고2", "area": "독해", "kind": "상위오답률편", "name": "시크릿독해 상위오답률편 고2", "pk": {"id": 2230, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "빈칸 ① 낱말·짧은 구", "id": 2183, "price": 2900, "img": "img/c8da1f339adf.jpg"}, {"no": 2, "t": "빈칸 ② 구", "id": 2184, "price": 2900, "img": "img/a219ca074c9c.jpg"}, {"no": 3, "t": "빈칸 ③ 긴 구·절", "id": 2185, "price": 2900, "img": "img/5ee036718556.jpg"}, {"no": 4, "t": "빈칸 ④ 최고 오답률", "id": 2186, "price": 2900, "img": "img/7f9fa725e619.jpg"}, {"no": 5, "t": "삽입 ① 지시어 함정", "id": 2187, "price": 2900, "img": "img/c306b9a29b02.jpg"}, {"no": 6, "t": "삽입 ② 연결어 함정", "id": 2188, "price": 2900, "img": "img/8f794444f066.jpg"}, {"no": 7, "t": "삽입 ③ 흐름 함정", "id": 2189, "price": 2900, "img": "img/8d5831e21a37.jpg"}, {"no": 8, "t": "순서 ① 첫 단락 고르기", "id": 2190, "price": 2900, "img": "img/fb1781e5ed26.jpg"}, {"no": 9, "t": "순서 ② 뒤 두 단락", "id": 2191, "price": 2900, "img": "img/2bfb48c3328f.jpg"}, {"no": 10, "t": "요약문", "id": 2192, "price": 2900, "img": "img/441a6cfb2b4e.jpg"}, {"no": 11, "t": "함축·무관한 문장", "id": 2193, "price": 2900, "img": "img/6082c63b0e2b.jpg"}, {"no": 12, "t": "통합문제풀이", "id": 2182, "price": 2900, "img": "img/7dab1bd6f17d.jpg"}], "img": "img/a0cccc1a0126.jpg", "guide": "guides/g22.jpg?v=8405dd77", "gpages": 9}, {"grade": "고2", "area": "독해", "kind": "테마편", "name": "시크릿독해 테마편 고2", "pk": {"id": 2229, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "심리·감정", "id": 2146, "price": 2900, "img": "img/0f8664cfc4c1.jpg"}, {"no": 2, "t": "인간관계·소통", "id": 2147, "price": 2900, "img": "img/94c75ed13e65.jpg"}, {"no": 3, "t": "교육·학습", "id": 2148, "price": 2900, "img": "img/7c19fecf7378.jpg"}, {"no": 4, "t": "사회·제도", "id": 2149, "price": 2900, "img": "img/319473ee55f7.jpg"}, {"no": 5, "t": "경제·소비", "id": 2150, "price": 2900, "img": "img/c9801c2bc3e8.jpg"}, {"no": 6, "t": "경영·조직", "id": 2151, "price": 2900, "img": "img/8e728646e7fb.jpg"}, {"no": 7, "t": "생명과학·진화", "id": 2152, "price": 2900, "img": "img/4ddc407c4caf.jpg"}, {"no": 8, "t": "물리·지구·우주", "id": 2153, "price": 2900, "img": "img/fb846ceedb74.jpg"}, {"no": 9, "t": "기술·AI·미디어", "id": 2154, "price": 2900, "img": "img/94904b13264e.jpg"}, {"no": 10, "t": "환경·건강", "id": 2155, "price": 2900, "img": "img/ddb5db793c38.jpg"}, {"no": 11, "t": "예술·문학·언어", "id": 2156, "price": 2900, "img": "img/cb169739dff0.jpg"}, {"no": 12, "t": "철학·윤리·역사", "id": 2157, "price": 2900, "img": "img/6bc4a427eee2.jpg"}], "img": "img/16c1b0ea63b2.jpg", "guide": "guides/g23.jpg?v=8405dd77", "gpages": 9}, {"grade": "고2", "area": "독해", "kind": "유형편", "name": "시크릿독해 유형편 고2", "pk": {"id": 2228, "price": 14500, "list": 29000}, "lessons": [{"no": 1, "t": "목적·심경·주장·요지", "id": 2077, "price": 2900, "img": "img/e19a7ed67d6a.jpg"}, {"no": 2, "t": "주제·제목", "id": 2078, "price": 2900, "img": "img/507c343f0c0f.jpg"}, {"no": 3, "t": "함축 의미", "id": 2079, "price": 2900, "img": "img/3f01782878ee.jpg"}, {"no": 4, "t": "도표·실용문·무관한 문장", "id": 2080, "price": 2900, "img": "img/1fbe27a6a393.jpg"}, {"no": 5, "t": "어휘 적절성", "id": 2081, "price": 2900, "img": "img/800a28460010.jpg"}, {"no": 6, "t": "빈칸 ① 낱말·짧은 구", "id": 2082, "price": 2900, "img": "img/d57ea1ecbc91.jpg"}, {"no": 7, "t": "빈칸 ② 긴 구·절", "id": 2083, "price": 2900, "img": "img/7d462ed567dd.jpg"}, {"no": 8, "t": "순서·삽입", "id": 2084, "price": 2900, "img": "img/530f842f4117.jpg"}, {"no": 9, "t": "요약문", "id": 2085, "price": 2900, "img": "img/36624662798f.jpg"}, {"no": 10, "t": "장문", "id": 2086, "price": 2900, "img": "img/18bd24e54d42.jpg"}], "img": "img/57615d4754d7.jpg", "guide": "guides/g24.jpg?v=8405dd77", "gpages": 8}, {"grade": "고2", "area": "구문", "kind": "", "name": "시크릿구문 고2", "pk": {"id": 2227, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "주어와 수식어 구별", "id": 1827, "price": 2900, "img": "img/a6330b114c61.jpg"}, {"no": 2, "t": "진짜 동사 찾기", "id": 1828, "price": 2900, "img": "img/085c172487e3.jpg"}, {"no": 3, "t": "동사 뒤 문장 성분", "id": 1829, "price": 2900, "img": "img/2a2ef47e324e.jpg"}, {"no": 4, "t": "준동사구", "id": 1830, "price": 2900, "img": "img/ad97c7d412eb.jpg"}, {"no": 5, "t": "that의 쓰임", "id": 1831, "price": 2900, "img": "img/8ef890cbe431.jpg"}, {"no": 6, "t": "가주어와 가목적어", "id": 1832, "price": 2900, "img": "img/9dbb104e6f0c.jpg"}, {"no": 7, "t": "관계사절의 범위", "id": 1833, "price": 2900, "img": "img/651ba892f069.jpg"}, {"no": 8, "t": "부사구·부사절", "id": 1834, "price": 2900, "img": "img/b0d2cb3056c2.jpg"}, {"no": 9, "t": "분사구문", "id": 1835, "price": 2900, "img": "img/d885c5acf1c8.jpg"}, {"no": 10, "t": "if 없는 가정법", "id": 1836, "price": 2900, "img": "img/3b973f2077f9.jpg"}, {"no": 11, "t": "비교 구문", "id": 1837, "price": 2900, "img": "img/bd547bcc591a.jpg"}, {"no": 12, "t": "병렬구조와 대명사", "id": 1838, "price": 2900, "img": "img/faa51332f32b.jpg"}], "img": "img/5e0b1e1828c7.jpg", "guide": "guides/g25.jpg?v=8405dd77", "gpages": 8}, {"grade": "고2", "area": "어법", "kind": "", "name": "시크릿어법 고2", "pk": {"id": 2226, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "문장의 형식", "id": 1995, "price": 2900, "img": "img/d2c3d923d6a5.jpg"}, {"no": 2, "t": "to부정사·동명사", "id": 1996, "price": 2900, "img": "img/c4f63186debc.jpg"}, {"no": 3, "t": "분사구", "id": 1997, "price": 2900, "img": "img/13f871b047ea.jpg"}, {"no": 4, "t": "분사구문", "id": 1998, "price": 2900, "img": "img/c7a833781dc5.jpg"}, {"no": 5, "t": "명사절 접속사", "id": 1999, "price": 2900, "img": "img/3f8a2b5cb8b9.jpg"}, {"no": 6, "t": "관계사", "id": 2000, "price": 2900, "img": "img/e619c3244f1b.jpg"}, {"no": 7, "t": "수동태", "id": 2001, "price": 2900, "img": "img/53538dd0b063.jpg"}, {"no": 8, "t": "수일치", "id": 2002, "price": 2900, "img": "img/1b7ba0c14709.jpg"}, {"no": 9, "t": "형용사·부사·대명사", "id": 2003, "price": 2900, "img": "img/8c0cd7d2f912.jpg"}, {"no": 10, "t": "전치사·접속사", "id": 2004, "price": 2900, "img": "img/0ca8f6090817.jpg"}, {"no": 11, "t": "조동사·가정법", "id": 2005, "price": 2900, "img": "img/2ce73ceb431e.jpg"}, {"no": 12, "t": "특수구문", "id": 2006, "price": 2900, "img": "img/7dedd84f59fe.jpg"}], "img": "img/c02e43923a14.jpg", "guide": "guides/g26.jpg?v=8405dd77", "gpages": 9}, {"grade": "고2", "area": "어휘", "kind": "", "name": "시크릿보카 고2", "pk": {"id": 2225, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "심리·감정", "id": 1911, "price": 2900, "img": "img/1480ccc80a01.jpg"}, {"no": 2, "t": "인간관계·소통", "id": 1912, "price": 2900, "img": "img/724158fb92dd.jpg"}, {"no": 3, "t": "교육·학습", "id": 1913, "price": 2900, "img": "img/d431ac0c50f7.jpg"}, {"no": 4, "t": "사회·제도", "id": 1914, "price": 2900, "img": "img/05f7ebe0319a.jpg"}, {"no": 5, "t": "경제·소비", "id": 1915, "price": 2900, "img": "img/38c8a829c90d.jpg"}, {"no": 6, "t": "경영·조직", "id": 1916, "price": 2900, "img": "img/7a7672caf2dc.jpg"}, {"no": 7, "t": "생명과학·진화", "id": 1917, "price": 2900, "img": "img/857758c63a80.jpg"}, {"no": 8, "t": "물리·지구·우주", "id": 1918, "price": 2900, "img": "img/e8a6b7fdecf4.jpg"}, {"no": 9, "t": "기술·AI·미디어", "id": 1919, "price": 2900, "img": "img/d3dd9a4df062.jpg"}, {"no": 10, "t": "환경·건강", "id": 1920, "price": 2900, "img": "img/7acdccd10eb7.jpg"}, {"no": 11, "t": "예술·문학·언어", "id": 1921, "price": 2900, "img": "img/05bded8b72c0.jpg"}, {"no": 12, "t": "철학·윤리·역사", "id": 1922, "price": 2900, "img": "img/a2c35caa3e48.jpg"}], "img": "img/af5cefe3d149.jpg", "guide": "guides/g27.jpg?v=8405dd77", "gpages": 10}, {"grade": "고1", "area": "독해", "kind": "상위오답률편", "name": "시크릿독해 상위오답률편 고1", "pk": {"id": 2224, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "빈칸 ① 낱말·짧은 구", "id": 2170, "price": 2900, "img": "img/332a3e26976e.jpg"}, {"no": 2, "t": "빈칸 ② 구", "id": 2171, "price": 2900, "img": "img/f075e5fe32dc.jpg"}, {"no": 3, "t": "빈칸 ③ 긴 구·절", "id": 2172, "price": 2900, "img": "img/5c62cc224108.jpg"}, {"no": 4, "t": "빈칸 ④ 최고 오답률", "id": 2173, "price": 2900, "img": "img/a25f11185fa0.jpg"}, {"no": 5, "t": "삽입 ① 지시어 함정", "id": 2174, "price": 2900, "img": "img/bfcabae29ec5.jpg"}, {"no": 6, "t": "삽입 ② 연결어 함정", "id": 2175, "price": 2900, "img": "img/8fac04f5fcf6.jpg"}, {"no": 7, "t": "삽입 ③ 흐름 함정", "id": 2176, "price": 2900, "img": "img/59ce18ef16e7.jpg"}, {"no": 8, "t": "순서 ① 첫 단락 고르기", "id": 2177, "price": 2900, "img": "img/38f133198ff2.jpg"}, {"no": 9, "t": "순서 ② 뒤 두 단락", "id": 2178, "price": 2900, "img": "img/9d54e1d934bd.jpg"}, {"no": 10, "t": "요약문", "id": 2179, "price": 2900, "img": "img/a07d5cdfb3d2.jpg"}, {"no": 11, "t": "함축·무관한 문장", "id": 2180, "price": 2900, "img": "img/44e5955539c7.jpg"}, {"no": 12, "t": "섞어 풀기", "id": 2181, "price": 2900, "img": "img/ab5b51fdc851.jpg"}], "img": "img/9ff2faf1d91b.jpg", "guide": "guides/g28.jpg?v=8405dd77", "gpages": 9}, {"grade": "고1", "area": "독해", "kind": "테마편", "name": "시크릿독해 테마편 고1", "pk": {"id": 2223, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "심리·감정", "id": 2134, "price": 2900, "img": "img/00a25beceb1c.jpg"}, {"no": 2, "t": "인간관계·소통", "id": 2135, "price": 2900, "img": "img/e28860f577f5.jpg"}, {"no": 3, "t": "교육·학습", "id": 2136, "price": 2900, "img": "img/a7c6bbcb87e4.jpg"}, {"no": 4, "t": "사회·제도", "id": 2137, "price": 2900, "img": "img/e71937b19d16.jpg"}, {"no": 5, "t": "경제·소비", "id": 2138, "price": 2900, "img": "img/0d3c77e4de36.jpg"}, {"no": 6, "t": "경영·조직", "id": 2139, "price": 2900, "img": "img/8c1f3296fab4.jpg"}, {"no": 7, "t": "생명과학·진화", "id": 2140, "price": 2900, "img": "img/775a9d937e05.jpg"}, {"no": 8, "t": "물리·지구·우주", "id": 2141, "price": 2900, "img": "img/ced576781309.jpg"}, {"no": 9, "t": "기술·AI·미디어", "id": 2142, "price": 2900, "img": "img/fd7187864d0c.jpg"}, {"no": 10, "t": "환경·건강", "id": 2143, "price": 2900, "img": "img/9a25db196c85.jpg"}, {"no": 11, "t": "예술·문학·언어", "id": 2144, "price": 2900, "img": "img/fc314587af71.jpg"}, {"no": 12, "t": "철학·윤리·역사", "id": 2145, "price": 2900, "img": "img/5602e6c0a706.jpg"}], "img": "img/846ab2f114b1.jpg", "guide": "guides/g29.jpg?v=8405dd77", "gpages": 9}, {"grade": "고1", "area": "독해", "kind": "유형편", "name": "시크릿독해 유형편 고1", "pk": {"id": 2222, "price": 14500, "list": 29000}, "lessons": [{"no": 1, "t": "목적·심경·주장·요지", "id": 2067, "price": 2900, "img": "img/02d112d60147.jpg"}, {"no": 2, "t": "주제·제목", "id": 2068, "price": 2900, "img": "img/1d8be647b287.jpg"}, {"no": 3, "t": "함축 의미", "id": 2069, "price": 2900, "img": "img/be1131b60127.jpg"}, {"no": 4, "t": "도표·실용문·무관한 문장", "id": 2070, "price": 2900, "img": "img/7ce01551049e.jpg"}, {"no": 5, "t": "어휘 적절성", "id": 2071, "price": 2900, "img": "img/fa25bb795879.jpg"}, {"no": 6, "t": "빈칸 ① 낱말·짧은 구", "id": 2072, "price": 2900, "img": "img/f918e49b73e5.jpg"}, {"no": 7, "t": "빈칸 ② 긴 구·절", "id": 2073, "price": 2900, "img": "img/08475571c43c.jpg"}, {"no": 8, "t": "순서·삽입", "id": 2074, "price": 2900, "img": "img/e119d545526c.jpg"}, {"no": 9, "t": "요약문", "id": 2075, "price": 2900, "img": "img/0709367f9a81.jpg"}, {"no": 10, "t": "장문", "id": 2076, "price": 2900, "img": "img/41d6b89790e2.jpg"}], "img": "img/e522126eb9bd.jpg", "guide": "guides/g30.jpg?v=8405dd77", "gpages": 8}, {"grade": "고1", "area": "구문", "kind": "", "name": "시크릿구문 고1", "pk": {"id": 2221, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "주어 찾기", "id": 1815, "price": 2900, "img": "img/a64694c46904.jpg"}, {"no": 2, "t": "동사가 정하는 문장구조", "id": 1816, "price": 2900, "img": "img/7c6a95bd176a.jpg"}, {"no": 3, "t": "목적어와 가목적어 it", "id": 1817, "price": 2900, "img": "img/2eabfc5751a3.jpg"}, {"no": 4, "t": "주격보어·목적격보어", "id": 1818, "price": 2900, "img": "img/37e56475a906.jpg"}, {"no": 5, "t": "수식어 구별하기", "id": 1819, "price": 2900, "img": "img/0d3f9d99fa62.jpg"}, {"no": 6, "t": "관계사절의 범위", "id": 1820, "price": 2900, "img": "img/89c66f3be86d.jpg"}, {"no": 7, "t": "what·복합관계사·명사절 구별", "id": 1821, "price": 2900, "img": "img/45f0aba6d51e.jpg"}, {"no": 8, "t": "분사구문", "id": 1822, "price": 2900, "img": "img/550a43d75ded.jpg"}, {"no": 9, "t": "절이 여러 개인 경우", "id": 1823, "price": 2900, "img": "img/902fcd7bc2cc.jpg"}, {"no": 10, "t": "가정법", "id": 1824, "price": 2900, "img": "img/3eea220ff499.jpg"}, {"no": 11, "t": "비교 구문의 형태", "id": 1825, "price": 2900, "img": "img/068f97672c73.jpg"}, {"no": 12, "t": "특수구문", "id": 1826, "price": 2900, "img": "img/23a6880445c5.jpg"}], "img": "img/e8bf75d24624.jpg", "guide": "guides/g31.jpg?v=8405dd77", "gpages": 8}, {"grade": "고1", "area": "어법", "kind": "", "name": "시크릿어법 고1", "pk": {"id": 2220, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "문장의 형식", "id": 1983, "price": 2900, "img": "img/6f6cf225ea1d.jpg"}, {"no": 2, "t": "to부정사·동명사", "id": 1984, "price": 2900, "img": "img/0cc277e1f3b5.jpg"}, {"no": 3, "t": "분사구", "id": 1985, "price": 2900, "img": "img/ccb7f4d4f397.jpg"}, {"no": 4, "t": "분사구문", "id": 1986, "price": 2900, "img": "img/a4d556dd636f.jpg"}, {"no": 5, "t": "명사절 접속사", "id": 1987, "price": 2900, "img": "img/0f297c3f91bd.jpg"}, {"no": 6, "t": "관계사", "id": 1988, "price": 2900, "img": "img/e6d2414b436a.jpg"}, {"no": 7, "t": "수동태", "id": 1989, "price": 2900, "img": "img/0c19eaff677f.jpg"}, {"no": 8, "t": "수일치", "id": 1990, "price": 2900, "img": "img/319a2c339fb5.jpg"}, {"no": 9, "t": "형용사·부사·대명사", "id": 1991, "price": 2900, "img": "img/c058d091e359.jpg"}, {"no": 10, "t": "전치사·접속사", "id": 1992, "price": 2900, "img": "img/f39447b2b377.jpg"}, {"no": 11, "t": "조동사·가정법", "id": 1993, "price": 2900, "img": "img/d1f93e6291fc.jpg"}, {"no": 12, "t": "특수구문", "id": 1994, "price": 2900, "img": "img/f40cb4d559ac.jpg"}], "img": "img/62f74e917067.jpg", "guide": "guides/g32.jpg?v=8405dd77", "gpages": 9}, {"grade": "고1", "area": "어휘", "kind": "", "name": "시크릿보카 고1", "pk": {"id": 2219, "price": 17400, "list": 34800}, "lessons": [{"no": 1, "t": "심리·감정", "id": 1899, "price": 2900, "img": "img/a13c2daffe66.jpg"}, {"no": 2, "t": "인간관계·소통", "id": 1900, "price": 2900, "img": "img/9b19eacbea66.jpg"}, {"no": 3, "t": "교육·학습", "id": 1901, "price": 2900, "img": "img/37daaa114fb6.jpg"}, {"no": 4, "t": "사회·제도", "id": 1902, "price": 2900, "img": "img/80183e393790.jpg"}, {"no": 5, "t": "경제·소비", "id": 1903, "price": 2900, "img": "img/8c344639d9bd.jpg"}, {"no": 6, "t": "경영·조직", "id": 1904, "price": 2900, "img": "img/d446d79fc8e8.jpg"}, {"no": 7, "t": "생명과학·진화", "id": 1905, "price": 2900, "img": "img/b408322e5c9d.jpg"}, {"no": 8, "t": "물리·지구·우주", "id": 1906, "price": 2900, "img": "img/f1258110c87f.jpg"}, {"no": 9, "t": "기술·AI·미디어", "id": 1907, "price": 2900, "img": "img/638a7426c931.jpg"}, {"no": 10, "t": "환경·건강", "id": 1908, "price": 2900, "img": "img/126ca191c8ce.jpg"}, {"no": 11, "t": "예술·문학·언어", "id": 1909, "price": 2900, "img": "img/303f665cef98.jpg"}, {"no": 12, "t": "철학·윤리·역사", "id": 1910, "price": 2900, "img": "img/5b0bc0131ffc.jpg"}], "img": "img/67bb90dcf451.jpg", "guide": "guides/g33.jpg?v=8405dd77", "gpages": 10}, {"grade": "고1", "area": "독해", "kind": "실전", "name": "시크릿독해 실전 고1", "pk": {"id": 2313, "price": 21700, "list": 43500}, "lessons": [{"no": 1, "t": "실전 모의고사", "id": 2268, "price": 2900, "img": "img/73298b0d6556.jpg"}, {"no": 2, "t": "실전 모의고사", "id": 2269, "price": 2900, "img": "img/aa19a848b0c9.jpg"}, {"no": 3, "t": "실전 모의고사", "id": 2270, "price": 2900, "img": "img/4604654c2c52.jpg"}, {"no": 4, "t": "실전 모의고사", "id": 2271, "price": 2900, "img": "img/b77a844424e7.jpg"}, {"no": 5, "t": "실전 모의고사", "id": 2272, "price": 2900, "img": "img/8b99262f5105.jpg"}, {"no": 6, "t": "실전 모의고사", "id": 2273, "price": 2900, "img": "img/a820656126f4.jpg"}, {"no": 7, "t": "실전 모의고사", "id": 2274, "price": 2900, "img": "img/ffb965e0516b.jpg"}, {"no": 8, "t": "실전 모의고사", "id": 2275, "price": 2900, "img": "img/be23570ad7b3.jpg"}, {"no": 9, "t": "실전 모의고사", "id": 2276, "price": 2900, "img": "img/6a346dc97210.jpg"}, {"no": 10, "t": "실전 모의고사", "id": 2277, "price": 2900, "img": "img/fb166addbc94.jpg"}, {"no": 11, "t": "실전 모의고사", "id": 2278, "price": 2900, "img": "img/5e2b6465937e.jpg"}, {"no": 12, "t": "실전 모의고사", "id": 2279, "price": 2900, "img": "img/5682313adf4f.jpg"}, {"no": 13, "t": "실전 모의고사", "id": 2280, "price": 2900, "img": "img/62f8577c0e26.jpg"}, {"no": 14, "t": "실전 모의고사", "id": 2281, "price": 2900, "img": "img/a6c4199b81cf.jpg"}, {"no": 15, "t": "실전 모의고사", "id": 2282, "price": 2900, "img": "img/09ab09b81cfa.jpg"}], "unit": "회", "img": "img/3268dd5925b2.jpg"}, {"grade": "고2", "area": "독해", "kind": "실전", "name": "시크릿독해 실전 고2", "pk": {"id": 2314, "price": 21700, "list": 43500}, "lessons": [{"no": 1, "t": "실전 모의고사", "id": 2283, "price": 2900, "img": "img/296f1fb1b878.jpg"}, {"no": 2, "t": "실전 모의고사", "id": 2284, "price": 2900, "img": "img/c9313a7bdaf4.jpg"}, {"no": 3, "t": "실전 모의고사", "id": 2285, "price": 2900, "img": "img/980f365c06a7.jpg"}, {"no": 4, "t": "실전 모의고사", "id": 2286, "price": 2900, "img": "img/0c43593eea8b.jpg"}, {"no": 5, "t": "실전 모의고사", "id": 2287, "price": 2900, "img": "img/8b0717236261.jpg"}, {"no": 6, "t": "실전 모의고사", "id": 2288, "price": 2900, "img": "img/01c4de362ae1.jpg"}, {"no": 7, "t": "실전 모의고사", "id": 2289, "price": 2900, "img": "img/5c309b0bdd35.jpg"}, {"no": 8, "t": "실전 모의고사", "id": 2290, "price": 2900, "img": "img/188a24ba1def.jpg"}, {"no": 9, "t": "실전 모의고사", "id": 2291, "price": 2900, "img": "img/b52e97ce0526.jpg"}, {"no": 10, "t": "실전 모의고사", "id": 2292, "price": 2900, "img": "img/baa46eaf8354.jpg"}, {"no": 11, "t": "실전 모의고사", "id": 2293, "price": 2900, "img": "img/1664ee35c53a.jpg"}, {"no": 12, "t": "실전 모의고사", "id": 2294, "price": 2900, "img": "img/e5d75ac645cf.jpg"}, {"no": 13, "t": "실전 모의고사", "id": 2295, "price": 2900, "img": "img/5afedd75d900.jpg"}, {"no": 14, "t": "실전 모의고사", "id": 2296, "price": 2900, "img": "img/6db15b2a77f8.jpg"}, {"no": 15, "t": "실전 모의고사", "id": 2297, "price": 2900, "img": "img/cfd9745980ac.jpg"}], "unit": "회", "img": "img/f3a909b1faa5.jpg"}, {"grade": "고3", "area": "독해", "kind": "실전", "name": "시크릿독해 실전 고3", "pk": {"id": 2315, "price": 21700, "list": 43500}, "lessons": [{"no": 1, "t": "실전 모의고사", "id": 2298, "price": 2900, "img": "img/3d3269177d55.jpg"}, {"no": 2, "t": "실전 모의고사", "id": 2299, "price": 2900, "img": "img/a1fea7b5f87e.jpg"}, {"no": 3, "t": "실전 모의고사", "id": 2300, "price": 2900, "img": "img/59a962b2a12b.jpg"}, {"no": 4, "t": "실전 모의고사", "id": 2301, "price": 2900, "img": "img/d28671d8709b.jpg"}, {"no": 5, "t": "실전 모의고사", "id": 2302, "price": 2900, "img": "img/5a1391820cc6.jpg"}, {"no": 6, "t": "실전 모의고사", "id": 2303, "price": 2900, "img": "img/2270ae4cbbab.jpg"}, {"no": 7, "t": "실전 모의고사", "id": 2304, "price": 2900, "img": "img/307e28f7c143.jpg"}, {"no": 8, "t": "실전 모의고사", "id": 2305, "price": 2900, "img": "img/13257034dc31.jpg"}, {"no": 9, "t": "실전 모의고사", "id": 2306, "price": 2900, "img": "img/954e267b14b9.jpg"}, {"no": 10, "t": "실전 모의고사", "id": 2307, "price": 2900, "img": "img/0dcc2c543a54.jpg"}, {"no": 11, "t": "실전 모의고사", "id": 2308, "price": 2900, "img": "img/837a42b0b267.jpg"}, {"no": 12, "t": "실전 모의고사", "id": 2309, "price": 2900, "img": "img/77bbd915047c.jpg"}, {"no": 13, "t": "실전 모의고사", "id": 2310, "price": 2900, "img": "img/2dcfde0c23ad.jpg"}, {"no": 14, "t": "실전 모의고사", "id": 2311, "price": 2900, "img": "img/765bea274b75.jpg"}, {"no": 15, "t": "실전 모의고사", "id": 2312, "price": 2900, "img": "img/ad9d267931f0.jpg"}], "unit": "회", "img": "img/66ecfb041e7d.jpg"}], "allin": {"중3": {"id": 2258, "price": 62600, "list": 139200, "img": "img/331088e52424.jpg"}, "중2": {"id": 2253, "price": 62600, "list": 139200, "img": "img/9c3482519b87.jpg"}, "중1": {"id": 2248, "price": 62600, "list": 139200, "img": "img/baa4d1d6819e.jpg"}, "예비고1": {"id": 2243, "price": 62600, "list": 139200, "img": "img/1be83e42f2d8.jpg"}, "고3": {"id": 2239, "price": 61200, "list": 136300, "img": "img/03f2fd46c8bd.jpg"}, "고1": {"id": 2232, "price": 60000, "list": 133400, "img": "img/879e7c437006.jpg"}, "고2": {"id": 2231, "price": 60000, "list": 133400, "img": "img/c4cb6785759c.jpg"}}};
+const SHOP = id => 'https://www.daechisecret.com/special-lecture/?idx=' + id;
+const GRADES = [['중등','mid',['중1','중2','중3']],['고등','hi',['예비고1','고1','고2','고3']]];
+const AREAS = [['어휘','var(--voc)'],['어법','var(--gra)'],['구문','var(--syn)'],['독해','var(--rd)']];
+const AC = Object.fromEntries(AREAS);
+const ORDER = {'어휘':0,'어법':1,'구문':2,'독해':3};
+const KORD = {'':0,'유형편':1,'테마편':2,'상위오답률편':3,'실전':4,'교과서별':5};
+const won = n => n.toLocaleString('ko-KR');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let st = {grade:'고1', area:'전체', open:null};
+/* 주소로 학년 받기(?g=고2 또는 #g=고2) — 메뉴 학년 링크용(2026-11-06) */
+(function(){ try { var q = new URLSearchParams(location.search).get('g') || decodeURIComponent((location.hash.match(/^#g=([^&]+)/)||[])[1]||'');
+  if (q && GRADES.some(function(g){ return g[2].indexOf(q) >= 0; })) st.grade = q; } catch(e) {} })();
+
+const cart = new Map();
+const books = D.books.slice().sort((a,b)=>ORDER[a.area]-ORDER[b.area]||KORD[a.kind]-KORD[b.kind]||a.name.localeCompare(b.name,'ko'));
+const nOf = b => b.lessons.length || b.n || 0;
+const unitOf = b => b.unit || '강';
+const unitW = b => unitOf(b) === '회' ? '회차' : unitOf(b);
+const listOf = b => b.pk && (b.pk.list || b.pk.price*2);
+
+// 히어로 표지
+document.getElementById('heroCovers').innerHTML = AREAS.map(([a])=>books.find(b=>b.grade==='고1'&&b.area===a&&b.img)).filter(Boolean).map(b=>`<img src="${b.img}" alt="">`).join('');
+
+function grades(){
+  document.getElementById('grades').innerHTML = GRADES.map(([nm,cl,gs])=>`<div class="gg ${cl}"><i>${nm}</i>${gs.map(g=>`<button type="button" class="g" aria-pressed="${g===st.grade}" data-g="${g}">${g}</button>`).join('')}</div>`).join('');
+  document.getElementById('areas').innerHTML = [['전체','var(--ink)'],...AREAS].map(([a,c])=>`<button type="button" class="a" style="--c:${c}" aria-pressed="${a===st.area}" data-a="${a}">${a}</button>`).join('');
+}
+function card(b){
+  const c = AC[b.area], id = 'bk'+books.indexOf(b);
+  const sub = b.kind && b.kind!=='교과서별' ? b.kind : '';
+  if (b.soon) return `<article class="card soon" id="${id}" style="--c:${c}"><div class="cv">${b.img?`<img src="${b.img}" alt="${esc(b.name)} 표지">`:'<div style="aspect-ratio:840/1188"></div>'}<span class="soonlb">업로드 예정</span></div><div class="bd"><span><span class="chip">${b.area}${sub?' · '+sub:''}</span></span><h3>${esc(b.name)}</h3><div class="meta">${nOf(b)}${unitOf(b)}</div><div class="btns"><span class="btn sec2" style="grid-column:1/-1">곧 열려요</span></div></div></article>`;
+  return `<article class="card" id="${id}" style="--c:${c}">
+    <div class="cv"><img src="${b.img}" alt="${esc(b.name)} 표지"><span class="flt"><b>50%</b><small>패키지 할인</small></span></div>
+    <div class="bd"><span><span class="chip">${b.area}${sub?' · '+sub:''}</span></span><h3>${esc(b.name)}</h3><div class="meta">${nOf(b)}${unitOf(b)} · ${unitW(b)}별 2,900원</div>
+      <div class="price"><span class="now">${won(b.pk.price)}원</span><span class="was">${won(listOf(b))}원</span></div>
+      ${b.guide?`<button type="button" class="gbtn" data-guide="${books.indexOf(b)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2.5h8.5L19 7v14.5H6z"/><path d="M14.5 2.5V7H19"/><path d="M9 12h7M9 15.5h7M9 9h3"/></svg><span>교재 이용 가이드 미리보기</span></button>`:''}
+      <div class="btns"><a class="btn pri" href="${SHOP(b.pk.id)}" target="_top">패키지 보기</a><button type="button" class="btn sec2" aria-expanded="${st.open===id}" data-open="${id}">${unitW(b)}별 보기 ${st.open===id?'▴':'▾'}</button></div>
+    </div></article>`;
+}
+function lessonsPanel(b){
+  const c = AC[b.area];
+  return `<div class="lessons" style="--c:${c}"><div class="hd"><b>${esc(b.name)} · ${unitW(b)}별</b><span>옆으로 넘겨 보기 · ${unitOf(b)}마다 2,900원</span></div><div class="track">${b.lessons.map(l=>`<div class="ls">${l.img?`<img class="lc" src="${l.img}" alt="${String(l.no).padStart(2,'0')}${unitOf(b)} 표지">`:''}<span class="no">${String(l.no).padStart(2,'0')}${unitOf(b)}</span><span class="t">${esc(l.t)}</span><span class="p">${won(l.price)}원</span><div class="act" style="grid-template-columns:1fr"><a href="${SHOP(l.id)}" target="_top">${unitW(b)} 상품 보기 →</a></div></div>`).join('')}</div></div>`;
+}
+function renderCards(){
+  const list = books.filter(b=>b.grade===st.grade&&(st.area==='전체'||b.area===st.area));
+  document.getElementById('ttlBooks').textContent = `${st.grade} 교재 ${list.length}권`;
+  const box = document.getElementById('cards');
+  box.innerHTML = list.map(card).join('');
+  if (st.open) {
+    const el = document.getElementById(st.open); const b = books[+st.open.slice(2)];
+    if (el && b && !b.soon) {
+      const cards = [...box.children]; const top = el.offsetTop; let last = el;
+      for (const c of cards) if (c.offsetTop === top) last = c;
+      last.insertAdjacentHTML('afterend', lessonsPanel(b));
+    }
+  }
+}
+function renderAllin(){
+  const a = D.allin[st.grade]; const el = document.getElementById('allin');
+  document.getElementById('ttlAll').textContent = `${st.grade} 올인원`;
+  if (!a) { el.innerHTML = '<p class="meta">이 학년 올인원은 준비 중이에요.</p>'; return; }
+  const four = AREAS.map(([ar])=>books.find(b=>b.grade===st.grade&&b.area===ar&&!b.soon&&(ar!=='독해'||b.kind==='유형편'))).filter(Boolean);
+  el.innerHTML = `<div class="acv"><img src="${a.img}" alt="${st.grade} 올인원 표지"><span class="flt"><b>55%</b><small>패키지 할인</small></span></div><div><span class="chip" style="--c:var(--brand)">학년 올인원</span><h3>${st.grade} 어휘 · 어법 · 구문 · 독해</h3><div class="formula">${four.map(b=>`<img src="${b.img}" alt="${esc(b.name)}">`).join('<span class="op">+</span>')}<span class="op">=</span><span class="res">${st.grade} 올인원 패키지<br><em>55% 할인 적용</em></span></div><div class="ibs">${four.map(b=>`<div class="ib"><b>${esc(b.name)}</b><span>${nOf(b)}강 · ${b.area}</span></div>`).join('')}</div><div class="price ap"><span class="now">${won(a.price)}원</span><span class="was">${won(a.list||0)}원</span><span class="off">올인원 55%</span></div><div class="btns" style="max-width:360px"><a class="btn pri" href="${SHOP(a.id)}" target="_top">올인원 보기</a><button type="button" class="btn sec2" data-go="cards">교재별로 보기</button></div><div class="others">${Object.keys(D.allin).sort((x,y)=>GRADES.flatMap(g=>g[2]).indexOf(x)-GRADES.flatMap(g=>g[2]).indexOf(y)).filter(g=>g!==st.grade).map(g=>`<button type="button" data-g="${g}">${g} 올인원</button>`).join('')}</div></div>`;
+}
+// 스마트 검색
+const F = {grade:new Set(), area:new Set(), kind:new Set(), q:''};
+function chips(id, opts, key){ document.getElementById(id).innerHTML = opts.map(o=>`<button type="button" aria-pressed="${F[key].has(o)}" data-f="${key}" data-v="${o}">${o}</button>`).join(''); }
+function renderSmart(){
+  chips('fGrade', GRADES.flatMap(g=>g[2]), 'grade'); chips('fArea', AREAS.map(a=>a[0]), 'area'); chips('fKind', ['유형편','테마편','상위오답률편','실전'], 'kind');
+  const q = F.q.trim();
+  const res = books.filter(b=>(!F.grade.size||F.grade.has(b.grade))&&(!F.area.size||F.area.has(b.area))&&(!F.kind.size||F.kind.has(b.kind))).map(b=>({b, hits:q?b.lessons.filter(l=>l.t.includes(q)):[]})).filter(r=>!q||r.hits.length||r.b.name.includes(q));
+  document.getElementById('rcount').innerHTML = `검색 결과 <em>${res.length}</em>권`;
+  document.getElementById('rgrid').innerHTML = res.map(({b,hits})=>`<a class="ri" href="#" data-jump="${books.indexOf(b)}">${b.img?`<img src="${b.img}" alt="">`:'<div style="aspect-ratio:840/1188;border-radius:10px;background:var(--soft)"></div>'}<span class="n">${esc(b.name)}</span><span class="tg"><span>${b.grade}</span><span style="color:${AC[b.area]}">${b.area}</span>${b.soon?'<span>업로드 예정</span>':''}</span>${hits.length?`<span class="hit">${hits.slice(0,2).map(l=>`${String(l.no).padStart(2,'0')}${unitOf(b)} ${esc(l.t).replace(esc(q),'<mark>'+esc(q)+'</mark>')}`).join('<br>')}</span>`:''}</a>`).join('') || '<p class="meta">맞는 교재가 없어요. 조건을 하나 빼 보세요.</p>';
+}
+// 커리큘럼 맵
+function renderMap(){
+  const cols = GRADES.flatMap(([n,cl,gs])=>gs.map(g=>({g,cl})));
+  const rows = [['어휘','',''],['어법','',''],['구문','',''],['독해','유형편','독해 유형편'],['독해','테마편','독해 테마편'],['독해','상위오답률편','상위오답률편'],['독해','실전','실전 모의고사']];
+  let h = '<thead><tr><th class="rh" style="background:transparent;border-right:1px solid var(--line)"></th>' + GRADES.map(([n,cl,gs])=>`<th class="grp ${cl}" colspan="${gs.length}">${n}</th>`).join('') + '</tr><tr><th class="rh" style="background:transparent"></th>' + cols.map(c=>`<th class="gr">${c.g}</th>`).join('') + '</tr></thead><tbody>';
+  for (const [ar,kind,label] of rows) {
+    h += `<tr><th class="rh">${label||ar}</th>` + cols.map((c,i)=>{
+      const bs = books.filter(b=>b.grade===c.g&&b.area===ar&&(kind?b.kind===kind:(b.kind===''||(ar!=='독해'&&b.kind===''))));
+            return `<td class="${i%2?'alt':''}">${bs.map(b=>`<button type="button" class="mc${b.soon?' soon':''}" data-jump="${books.indexOf(b)}">${b.img?`<img src="${b.img}" alt="">`:''}<div><b>${esc(b.name)}</b><span>${nOf(b)}${unitOf(b)}${b.soon?' · 업로드 예정':''}</span></div></button>`).join('')}</td>`;
+    }).join('') + '</tr>';
+  }
+  document.getElementById('map').innerHTML = h + '</tbody>';
+}
+function renderTray(){ return; const t=document.getElementById('tray'); let p=0; for (const v of cart.values()) p+=v; t.hidden=!cart.size; document.getElementById('trayN').textContent=cart.size; document.getElementById('trayP').textContent=won(p); }
+function all(){ grades(); renderCards(); renderAllin(); try{localStorage.setItem('sl-state',JSON.stringify({grade:st.grade}))}catch(e){} }
+document.addEventListener('click', e=>{
+  const t = e.target.closest('button,a'); if (!t) return;
+  if (t.dataset.g) { st.grade=t.dataset.g; st.open=null; all(); if (t.closest('.others')) document.getElementById('allin').scrollIntoView({block:'center'}); return; }
+  if (t.dataset.a) { st.area=t.dataset.a; st.open=null; all(); return; }
+  if (t.dataset.open) { st.open = st.open===t.dataset.open?null:t.dataset.open; renderCards(); return; }
+  if (t.dataset.cart) { const id=+t.dataset.cart; cart.has(id)?cart.delete(id):cart.set(id,+t.dataset.price); renderCards(); renderTray(); return; }
+  if (t.id==='trayClear') { cart.clear(); renderCards(); renderTray(); return; }
+  if (t.dataset.guide) { const b=books[+t.dataset.guide]; const m=document.createElement('div'); m.className='gmodal'; m.innerHTML=`<div class="box" role="dialog" aria-label="이용 가이드"><div class="hd"><b>${esc(b.name)} · 교재 이용 가이드</b><button type="button" data-close="1">닫기</button></div><div class="sc2"><img src="${b.guide}" alt="${esc(b.name)} 이용 가이드 ${b.gpages}쪽"></div><div class="ft">스크롤하면 이용 가이드 전 쪽을 볼 수 있습니다.</div></div>`; m.style.top = Math.max(0, (t.getBoundingClientRect().top + scrollY) - 120) + 'px'; var abs = new URL(b.guide, location.href).href; var shown = false; var onAck = function (ev) { if (ev.data && ev.data.sl === 'special-guide-ok') shown = true; }; window.addEventListener('message', onAck); try { parent.postMessage({sl:'special-guide', src: abs, title: b.name + ' · 교재 이용 가이드'}, '*'); } catch (er) {} setTimeout(function () { window.removeEventListener('message', onAck); if (!shown) { document.body.appendChild(m); fit(); } }, 350); return; }
+  if (t.dataset.close) { t.closest('.gmodal').remove(); fit(); return; }
+  if (t.dataset.go) { document.getElementById(t.dataset.go).scrollIntoView({behavior:'smooth',block:'start'}); return; }
+  if (t.dataset.f) { const s=F[t.dataset.f]; s.has(t.dataset.v)?s.delete(t.dataset.v):s.add(t.dataset.v); renderSmart(); return; }
+  if (t.dataset.jump) { e.preventDefault(); const b=books[+t.dataset.jump]; st.grade=b.grade; st.area='전체'; st.open=b.soon?null:'bk'+t.dataset.jump; all(); const el=document.getElementById('bk'+t.dataset.jump); el&&el.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  if (t.id==='tSmart'||t.id==='tMap') { const m=t.id==='tMap'; document.getElementById('tSmart').setAttribute('aria-selected',!m); document.getElementById('tMap').setAttribute('aria-selected',m); document.getElementById('pSmart').hidden=m; document.getElementById('pMap').hidden=!m; return; }
+});
+document.getElementById('fq').addEventListener('input', e=>{ F.q=e.target.value; renderSmart(); });
+window.addEventListener('resize', ()=>{ if (st.open) renderCards(); });
+all(); renderSmart(); renderMap();
+function fit(){ var w = document.querySelector('.wrap'); var h = w ? Math.ceil(w.getBoundingClientRect().bottom + scrollY + 10) : document.body.scrollHeight; var m = document.querySelector('.gmodal'); if (m) h = Math.max(h, Math.ceil(m.getBoundingClientRect().bottom + scrollY + 20)); try { parent.postMessage({sl:'special-h', h: h}, '*'); } catch(e) {} }
+try { new ResizeObserver(fit).observe(document.body); } catch(e) {} window.addEventListener('load', fit); setInterval(fit, 1500);
+try { new IntersectionObserver(([e])=>document.querySelector('.bar').classList.toggle('stuck', !e.isIntersecting)).observe(document.getElementById('barTop')); } catch(e) {}
+</script>
+<script>
+/* 앵커 링크 #jindo — 아임웹 페이지(special-lecture#jindo)가 iframe 주소 끝에 #jindo 를 넘기면 진도표 자리 높이를 알려 그 자리로 스크롤(2026-11-05) */
+(function(){ if (location.hash !== '#jindo') return;
+  function go(){ var el = document.getElementById('jindo'); if (!el) return; var y = Math.round(el.getBoundingClientRect().top + scrollY);
+    if (parent !== window) { try { parent.postMessage({sl:'special-scroll', y: y}, '*'); } catch(e) {} } else el.scrollIntoView(); }
+  window.addEventListener('load', function(){ setTimeout(go, 300); setTimeout(go, 1500); }); })();
+</script>
+<!-- HWP-JS-START --><script>
+/* 교사용 한글(HWP) 패키지 — hk_landing.py 가 만든 덩어리(사장님 2026-11-05). 학년을 바꾸면 같이 바뀜. */
+const HWP = {"시크릿보카 고1": {"id": "2326", "price": 25800, "list": 51600, "img": "img/hwp-ff2a50da509d.jpg"}, "시크릿보카 고2": {"id": "2334", "price": 25800, "list": 51600, "img": "img/hwp-e05feca3703f.jpg"}, "시크릿보카 고3": {"id": "2342", "price": 25800, "list": 51600, "img": "img/hwp-3f033281adf0.jpg"}, "시크릿보카 예비고1": {"id": "2350", "price": 25800, "list": 51600, "img": "img/hwp-376699973767.jpg"}, "시크릿어법 고1": {"id": "2327", "price": 25800, "list": 51600, "img": "img/hwp-4a059805c3c2.jpg"}, "시크릿어법 고2": {"id": "2335", "price": 25800, "list": 51600, "img": "img/hwp-69006004f5b9.jpg"}, "시크릿어법 고3": {"id": "2343", "price": 25800, "list": 51600, "img": "img/hwp-80ebd52a4dca.jpg"}, "시크릿어법 예비고1": {"id": "2351", "price": 25800, "list": 51600, "img": "img/hwp-ff8c5a40cb0e.jpg"}, "시크릿구문 고1": {"id": "2328", "price": 25800, "list": 51600, "img": "img/hwp-e8560d3f27e6.jpg"}, "시크릿구문 고2": {"id": "2336", "price": 25800, "list": 51600, "img": "img/hwp-ce9ffd1e1581.jpg"}, "시크릿구문 고3": {"id": "2344", "price": 25800, "list": 51600, "img": "img/hwp-ff85b9446537.jpg"}, "시크릿구문 예비고1": {"id": "2352", "price": 25800, "list": 51600, "img": "img/hwp-e6f54aed6f35.jpg"}, "시크릿구문 중1": {"id": "2357", "price": 25800, "list": 51600, "img": "img/hwp-99c03ed3aa36.jpg"}, "시크릿구문 중2": {"id": "2362", "price": 25800, "list": 51600, "img": "img/hwp-18dc475dbc45.jpg"}, "시크릿구문 중3": {"id": "2367", "price": 25800, "list": 51600, "img": "img/hwp-70e837c21f4a.jpg"}, "시크릿독해 유형편 고1": {"id": "2329", "price": 21500, "list": 43000, "img": "img/hwp-a32594abbe88.jpg"}, "시크릿독해 유형편 고2": {"id": "2337", "price": 21500, "list": 43000, "img": "img/hwp-0ab05da3c89d.jpg"}, "시크릿독해 유형편 고3": {"id": "2345", "price": 23600, "list": 47300, "img": "img/hwp-8e49d3ec9793.jpg"}, "시크릿독해 유형편 예비고1": {"id": "2353", "price": 25800, "list": 51600, "img": "img/hwp-3851aea1f1a6.jpg"}, "시크릿독해 유형편 중1": {"id": "2358", "price": 25800, "list": 51600, "img": "img/hwp-8fc5637bcd81.jpg"}, "시크릿독해 유형편 중2": {"id": "2363", "price": 25800, "list": 51600, "img": "img/hwp-0fc8582ebb1f.jpg"}, "시크릿독해 유형편 중3": {"id": "2368", "price": 25800, "list": 51600, "img": "img/hwp-3cdfe386798b.jpg"}, "시크릿독해 테마편 고1": {"id": "2330", "price": 25800, "list": 51600, "img": "img/hwp-f45c4b2b690f.jpg"}, "시크릿독해 테마편 고2": {"id": "2338", "price": 25800, "list": 51600, "img": "img/hwp-017758191398.jpg"}, "시크릿독해 테마편 고3": {"id": "2346", "price": 25800, "list": 51600, "img": "img/hwp-a7c18bf1b578.jpg"}, "시크릿독해 상위오답률편 고1": {"id": "2331", "price": 25800, "list": 51600, "img": "img/hwp-a2bc85a2198a.jpg"}, "시크릿독해 상위오답률편 고2": {"id": "2339", "price": 25800, "list": 51600, "img": "img/hwp-8808c74334f6.jpg"}, "시크릿독해 상위오답률편 고3": {"id": "2347", "price": 25800, "list": 51600, "img": "img/hwp-f87a12f0cf1c.jpg"}, "시크릿독해 실전 고1": {"id": "2332", "price": 32200, "list": 64500, "img": "img/hwp-68d743ede90b.jpg"}, "시크릿독해 실전 고2": {"id": "2340", "price": 32200, "list": 64500, "img": "img/hwp-302431637cda.jpg"}, "시크릿독해 실전 고3": {"id": "2348", "price": 32200, "list": 64500, "img": "img/hwp-a1310d24ffbf.jpg"}, "어법 총정리 중1": {"id": "2356", "price": 25800, "list": 51600, "img": "img/hwp-4ab3df6e085c.jpg"}, "어법 총정리 중2": {"id": "2361", "price": 25800, "list": 51600, "img": "img/hwp-b50b23c6e4d7.jpg"}, "어법 총정리 중3": {"id": "2366", "price": 25800, "list": 51600, "img": "img/hwp-6d4b6282ec9d.jpg"}, "시크릿보카 중1 테마": {"id": "2355", "price": 25800, "list": 51600, "img": "img/hwp-8083ada4def1.jpg"}, "시크릿보카 중2 테마": {"id": "2360", "price": 25800, "list": 51600, "img": "img/hwp-718ee837350b.jpg"}, "시크릿보카 중3 테마": {"id": "2365", "price": 25800, "list": 51600, "img": "img/hwp-23d057cce3f1.jpg"}}, HWPALL = {"고1": {"id": "2333", "price": 89000, "list": 197800, "img": "img/hwp-9852792b69ae.jpg"}, "고2": {"id": "2341", "price": 89000, "list": 197800, "img": "img/hwp-fffcfc8970de.jpg"}, "고3": {"id": "2349", "price": 90900, "list": 202100, "img": "img/hwp-9d2172ed1d5c.jpg"}, "예비고1": {"id": "2354", "price": 92800, "list": 206400, "img": "img/hwp-f418dba85fdb.jpg"}, "중1": {"id": "2359", "price": 92800, "list": 206400, "img": "img/hwp-7420ca1e2483.jpg"}, "중2": {"id": "2364", "price": 92800, "list": 206400, "img": "img/hwp-8f21a8ea3e87.jpg"}, "중3": {"id": "2369", "price": 92800, "list": 206400, "img": "img/hwp-2a9ac777885f.jpg"}}, HWPL = {"시크릿보카 고1":{"1":[2370,4300],"2":[2371,4300],"3":[2372,4300],"4":[2373,4300],"5":[2374,4300],"6":[2375,4300],"7":[2376,4300],"8":[2377,4300],"9":[2378,4300],"10":[2379,4300],"11":[2380,4300],"12":[2381,4300]},"시크릿보카 고2":{"1":[2455,4300],"2":[2487,4300],"3":[2499,4300],"4":[2478,4300],"5":[2458,4300],"6":[2486,4300],"7":[2507,4300],"8":[2494,4300],"9":[2508,4300],"10":[2460,4300],"11":[2506,4300],"12":[2470,4300]},"시크릿보카 고3":{"1":[2541,4300],"2":[2542,4300],"3":[2626,4300],"4":[2543,4300],"5":[2544,4300],"6":[2545,4300],"7":[2546,4300],"8":[2547,4300],"9":[2548,4300],"10":[2549,4300],"11":[2550,4300],"12":[2551,4300]},"시크릿보카 예비고1":{"1":[2627,4300],"2":[2628,4300],"3":[2629,4300],"4":[2630,4300],"5":[2631,4300],"6":[2632,4300],"7":[2633,4300],"8":[2634,4300],"9":[2635,4300],"10":[2636,4300],"11":[2637,4300],"12":[2638,4300]},"시크릿어법 고1":{"1":[2382,4300],"2":[2383,4300],"3":[2384,4300],"4":[2385,4300],"5":[2386,4300],"6":[2387,4300],"7":[2388,4300],"8":[2389,4300],"9":[2390,4300],"10":[2391,4300],"11":[2392,4300],"12":[2393,4300]},"시크릿어법 고2":{"1":[2462,4300],"2":[2479,4300],"3":[2489,4300],"4":[2490,4300],"5":[2466,4300],"6":[2468,4300],"7":[2465,4300],"8":[2491,4300],"9":[2503,4300],"10":[2471,4300],"11":[2480,4300],"12":[2477,4300]},"시크릿어법 고3":{"1":[2552,4300],"2":[2553,4300],"3":[2554,4300],"4":[2555,4300],"5":[2556,4300],"6":[2557,4300],"7":[2558,4300],"8":[2559,4300],"9":[2560,4300],"10":[2561,4300],"11":[2562,4300],"12":[2563,4300]},"시크릿어법 예비고1":{"1":[2639,4300],"2":[2640,4300],"3":[2641,4300],"4":[2642,4300],"5":[2643,4300],"6":[2644,4300],"7":[2645,4300],"8":[2646,4300],"9":[2647,4300],"10":[2648,4300],"11":[2649,4300],"12":[2650,4300]},"시크릿구문 고1":{"1":[2394,4300],"2":[2395,4300],"3":[2396,4300],"4":[2397,4300],"5":[2398,4300],"6":[2399,4300],"7":[2404,4300],"8":[2405,4300],"9":[2400,4300],"10":[2401,4300],"11":[2402,4300],"12":[2403,4300]},"시크릿구문 고2":{"1":[2497,4300],"2":[2509,4300],"3":[2461,4300],"4":[2492,4300],"5":[2474,4300],"6":[2467,4300],"7":[2493,4300],"8":[2484,4300],"9":[2473,4300],"10":[2469,4300],"11":[2476,4300],"12":[2496,4300]},"시크릿구문 고3":{"1":[2564,4300],"2":[2565,4300],"3":[2566,4300],"4":[2567,4300],"5":[2568,4300],"6":[2569,4300],"7":[2570,4300],"8":[2571,4300],"9":[2572,4300],"10":[2573,4300],"11":[2574,4300],"12":[2575,4300]},"시크릿구문 예비고1":{"1":[2651,4300],"2":[2652,4300],"3":[2653,4300],"4":[2654,4300],"5":[2655,4300],"6":[2656,4300],"7":[2657,4300],"8":[2658,4300],"9":[2659,4300],"10":[2660,4300],"11":[2661,4300],"12":[2662,4300]},"시크릿구문 중1":{"1":[2699,4300],"2":[2700,4300],"3":[2701,4300],"4":[2702,4300],"5":[2703,4300],"6":[2704,4300],"7":[2705,4300],"8":[2706,4300],"9":[2707,4300],"10":[2708,4300],"11":[2709,4300],"12":[2710,4300]},"시크릿구문 중2":{"1":[2747,4300],"2":[2748,4300],"3":[2749,4300],"4":[2750,4300],"5":[2751,4300],"6":[2752,4300],"7":[2753,4300],"8":[2754,4300],"9":[2755,4300],"10":[2756,4300],"11":[2757,4300],"12":[2758,4300]},"시크릿구문 중3":{"1":[2795,4300],"2":[2796,4300],"3":[2797,4300],"4":[2798,4300],"5":[2799,4300],"6":[2800,4300],"7":[2801,4300],"8":[2802,4300],"9":[2803,4300],"10":[2804,4300],"11":[2805,4300],"12":[2806,4300]},"시크릿독해 유형편 고1":{"1":[2406,4300],"2":[2407,4300],"3":[2408,4300],"4":[2409,4300],"5":[2410,4300],"6":[2411,4300],"7":[2412,4300],"8":[2413,4300],"9":[2414,4300],"10":[2415,4300]},"시크릿독해 유형편 고2":{"1":[2463,4300],"2":[2481,4300],"3":[2540,4300],"4":[2472,4300],"5":[2485,4300],"6":[2483,4300],"7":[2510,4300],"8":[2504,4300],"9":[2482,4300],"10":[2488,4300]},"시크릿독해 유형편 고3":{"1":[2576,4300],"2":[2577,4300],"3":[2578,4300],"4":[2579,4300],"5":[2580,4300],"6":[2581,4300],"7":[2582,4300],"8":[2583,4300],"9":[2584,4300],"10":[2585,4300],"11":[2586,4300]},"시크릿독해 유형편 예비고1":{"1":[2663,4300],"2":[2664,4300],"3":[2665,4300],"4":[2666,4300],"5":[2667,4300],"6":[2668,4300],"7":[2669,4300],"8":[2670,4300],"9":[2671,4300],"10":[2672,4300],"11":[2673,4300],"12":[2674,4300]},"시크릿독해 유형편 중1":{"1":[2711,4300],"2":[2712,4300],"3":[2713,4300],"4":[2714,4300],"5":[2715,4300],"6":[2716,4300],"7":[2717,4300],"8":[2718,4300],"9":[2719,4300],"10":[2720,4300],"11":[2721,4300],"12":[2722,4300]},"시크릿독해 유형편 중2":{"1":[2759,4300],"2":[2760,4300],"3":[2761,4300],"4":[2762,4300],"5":[2763,4300],"6":[2764,4300],"7":[2765,4300],"8":[2766,4300],"9":[2767,4300],"10":[2768,4300],"11":[2769,4300],"12":[2770,4300]},"시크릿독해 유형편 중3":{"1":[2807,4300],"2":[2808,4300],"3":[2809,4300],"4":[2810,4300],"5":[2811,4300],"6":[2812,4300],"7":[2813,4300],"8":[2814,4300],"9":[2815,4300],"10":[2816,4300],"11":[2817,4300],"12":[2818,4300]},"시크릿독해 테마편 고1":{"1":[2416,4300],"2":[2417,4300],"3":[2418,4300],"4":[2419,4300],"5":[2420,4300],"6":[2421,4300],"7":[2422,4300],"8":[2423,4300],"9":[2424,4300],"10":[2425,4300],"11":[2426,4300],"12":[2427,4300]},"시크릿독해 테마편 고2":{"1":[2457,4300],"2":[2456,4300],"3":[2475,4300],"4":[2464,4300],"5":[2459,4300],"6":[2498,4300],"7":[2500,4300],"8":[2505,4300],"9":[2495,4300],"10":[2502,4300],"11":[2511,4300],"12":[2512,4300]},"시크릿독해 테마편 고3":{"1":[2587,4300],"2":[2588,4300],"3":[2589,4300],"4":[2590,4300],"5":[2591,4300],"6":[2592,4300],"7":[2593,4300],"8":[2594,4300],"9":[2595,4300],"10":[2596,4300],"11":[2597,4300],"12":[2598,4300]},"시크릿독해 상위오답률편 고1":{"1":[2428,4300],"2":[2429,4300],"3":[2430,4300],"4":[2431,4300],"5":[2432,4300],"6":[2433,4300],"7":[2434,4300],"8":[2435,4300],"9":[2436,4300],"10":[2437,4300],"11":[2438,4300],"12":[2439,4300]},"시크릿독해 상위오답률편 고2":{"1":[2513,4300],"2":[2514,4300],"3":[2515,4300],"4":[2516,4300],"5":[2517,4300],"6":[2518,4300],"7":[2519,4300],"8":[2520,4300],"9":[2521,4300],"10":[2522,4300],"11":[2523,4300],"12":[2524,4300]},"시크릿독해 상위오답률편 고3":{"1":[2599,4300],"2":[2600,4300],"3":[2601,4300],"4":[2602,4300],"5":[2603,4300],"6":[2604,4300],"7":[2605,4300],"8":[2606,4300],"9":[2607,4300],"10":[2608,4300],"11":[2609,4300],"12":[2610,4300]},"시크릿독해 실전 고1":{"1":[2440,4300],"2":[2441,4300],"3":[2442,4300],"4":[2443,4300],"5":[2444,4300],"6":[2445,4300],"7":[2446,4300],"8":[2447,4300],"9":[2448,4300],"10":[2449,4300],"11":[2450,4300],"12":[2451,4300],"13":[2452,4300],"14":[2453,4300],"15":[2454,4300]},"시크릿독해 실전 고2":{"1":[2525,4300],"2":[2526,4300],"3":[2527,4300],"4":[2528,4300],"5":[2529,4300],"6":[2530,4300],"7":[2531,4300],"8":[2532,4300],"9":[2533,4300],"10":[2534,4300],"11":[2535,4300],"12":[2536,4300],"13":[2537,4300],"14":[2538,4300],"15":[2539,4300]},"시크릿독해 실전 고3":{"1":[2611,4300],"2":[2612,4300],"3":[2613,4300],"4":[2614,4300],"5":[2615,4300],"6":[2616,4300],"7":[2617,4300],"8":[2618,4300],"9":[2619,4300],"10":[2620,4300],"11":[2621,4300],"12":[2622,4300],"13":[2623,4300],"14":[2624,4300],"15":[2625,4300]},"어법 총정리 중1":{"1":[2687,4300],"2":[2688,4300],"3":[2689,4300],"4":[2690,4300],"5":[2691,4300],"6":[2692,4300],"7":[2693,4300],"8":[2694,4300],"9":[2695,4300],"10":[2696,4300],"11":[2697,4300],"12":[2698,4300]},"어법 총정리 중2":{"1":[2735,4300],"2":[2736,4300],"3":[2737,4300],"4":[2738,4300],"5":[2739,4300],"6":[2740,4300],"7":[2741,4300],"8":[2742,4300],"9":[2743,4300],"10":[2744,4300],"11":[2745,4300],"12":[2746,4300]},"어법 총정리 중3":{"1":[2783,4300],"2":[2784,4300],"3":[2785,4300],"4":[2786,4300],"5":[2787,4300],"6":[2788,4300],"7":[2789,4300],"8":[2790,4300],"9":[2791,4300],"10":[2792,4300],"11":[2793,4300],"12":[2794,4300]},"시크릿보카 중1 테마":{"1":[2675,4300],"2":[2676,4300],"3":[2677,4300],"4":[2678,4300],"5":[2679,4300],"6":[2680,4300],"7":[2681,4300],"8":[2682,4300],"9":[2683,4300],"10":[2684,4300],"11":[2685,4300],"12":[2686,4300]},"시크릿보카 중2 테마":{"1":[2723,4300],"2":[2724,4300],"3":[2725,4300],"4":[2726,4300],"5":[2727,4300],"6":[2728,4300],"7":[2729,4300],"8":[2730,4300],"9":[2731,4300],"10":[2732,4300],"11":[2733,4300],"12":[2734,4300]},"시크릿보카 중3 테마":{"1":[2771,4300],"2":[2772,4300],"3":[2773,4300],"4":[2774,4300],"5":[2775,4300],"6":[2776,4300],"7":[2777,4300],"8":[2778,4300],"9":[2779,4300],"10":[2780,4300],"11":[2781,4300],"12":[2782,4300]}};
+/* 강별 칸: PDF · 한글 두 버튼(2026-11-06) */
+(function(){ const _lp = lessonsPanel;
+  lessonsPanel = function(b){ const m = HWPL[b.name], h = _lp(b); if (!m) return h; let i = 0;
+    return h.replace(/<div class="act" style="grid-template-columns:1fr"><a href="([^"]+)" target="_top">[^<]*<\/a><\/div>/g, (all, href) => { const l = b.lessons[i++], x = l && m[l.no];
+      if (!x) return all; return `<div class="act hw2"><a href="${href}" target="_top">PDF ${won(l.price)}원</a><a class="hw" href="${SHOP(x[0])}" target="_top">한글 ${won(x[1])}원</a></div>`; }); }; })();
+function renderHwp(){
+  const g = st.grade, box = document.getElementById('hwpSec'); if (!box) return;
+  document.getElementById('ttlHwp').textContent = `${g} 교사용 한글(HWP) 파일`;
+  const list = books.filter(b=>b.grade===g && HWP[b.name]);
+  const a = HWPALL[g];
+  let h = '';
+  if (a) h += `<article class="card all" style="--c:#3E6FB5"><div class="cv"><img src="${a.img}" alt="${g} 올인원 교사용 한글 파일 표지"><span class="flt"><b>55%</b><small>패키지 할인</small></span></div><div class="bd"><span><span class="chip">학년 올인원 · 한글(HWP)</span></span><h3>${g} 어휘 · 어법 · 구문 · 독해 4권 한글 파일</h3><div class="four">${books.filter(b=>b.grade===g&&HWP[b.name]&&(b.area!=='독해'||b.kind==='유형편')).map(b=>esc(b.name)).join(' · ')} · 진도표</div><div class="price"><span class="now">${won(a.price)}원</span><span class="was">${won(a.list)}원</span><span class="off">올인원 55%</span></div><div class="btns" style="max-width:320px"><a class="btn pri" href="${SHOP(a.id)}" target="_top">한글 올인원 보기</a></div></div></article>`;
+  h += list.map(b=>{const x=HWP[b.name]; const sub=b.kind&&b.kind!=='교과서별'?' · '+b.kind:''; return `<article class="card" style="--c:#3E6FB5"><div class="cv"><img src="${x.img}" alt="${esc(b.name)} 교사용 한글 파일 표지" loading="lazy"><span class="flt"><b>50%</b><small>패키지 할인</small></span></div><div class="bd"><span><span class="chip">${b.area}${sub} · 한글</span></span><h3>${esc(b.name)}</h3><div class="price"><span class="now">${won(x.price)}원</span><span class="was">${won(x.list)}원</span></div><div class="btns"><a class="btn pri" href="${SHOP(x.id)}" target="_top">한글 패키지 보기</a></div></div></article>`;}).join('');
+  if (!h) h = `<div class="none">${g} 교사용 한글 파일은 곧 열려요. 다른 학년 한글 파일을 먼저 확인해 주세요.</div>`;
+  box.innerHTML = h;
+}
+function hwpLinks(){
+  document.querySelectorAll('#cards article.card[id^="bk"]').forEach(el=>{
+    const b = books[+el.id.slice(2)], x = b && HWP[b.name];
+    if (!x || el.querySelector('.hwpl')) return;
+    el.querySelector('.bd').insertAdjacentHTML('beforeend', `<a class="hwpl" href="${SHOP(x.id)}" target="_top"><span>교사용 한글(HWP) 파일</span><b>${won(x.price)}원 →</b></a>`);
+  });
+}
+(function(){ const _rc = renderCards, _all = all;
+  renderCards = function(){ _rc(); hwpLinks(); };
+  all = function(){ _all(); hwpLinks(); renderHwp(); };
+  hwpLinks(); renderHwp(); })();
+</script><!-- HWP-JS-END -->
+
+<!-- V2-START 시안: 구매 정보 한눈에(2026-11-06) -->
+<style>
+.howbuy{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 6px}
+.howbuy .hb{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px 16px;display:grid;gap:6px;box-shadow:0 6px 18px -12px rgba(160,60,100,.35)}
+.howbuy .hb .k{display:flex;align-items:center;gap:8px;font-weight:900;font-size:15.5px}
+.howbuy .hb .k em{font-style:normal;background:var(--brand);color:#fff;border-radius:999px;padding:2px 9px;font-size:12px}
+.howbuy .hb .k em.lt{background:var(--soft);color:var(--brand-ink)}
+.howbuy .hb p{margin:0;font-size:12.5px;color:var(--sub)}
+.howbuy .hb .pp{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px;margin-top:2px}
+.howbuy .hb .pp span{color:var(--sub)} .howbuy .hb .pp b{font-variant-numeric:tabular-nums}
+.howbuy .hb .pp b.h{color:#2F5C9E}
+.cards{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+.card.v2{display:grid!important;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:14px!important;align-items:start}
+.card.v2 .cv{border-radius:12px;overflow:hidden;position:relative;margin:0!important}
+.card.v2 .cv img{width:100%;display:block}
+.card.v2 .cv .flt{transform:scale(.72);transform-origin:top right;top:4px!important;right:4px!important}
+.card.v2 .bd{padding:0!important;display:grid;gap:8px}
+.card.v2 h3{margin:2px 0 0;font-size:17px}
+.card.v2 .meta{font-size:12.5px;color:var(--sub)}
+.buy{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.buy th,.buy td{padding:8px 9px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
+.buy tr:last-child th,.buy tr:last-child td{border-bottom:0}
+.buy thead th{background:var(--wash);font-size:12px;color:var(--sub);font-weight:800}
+.buy thead th.h{color:#2F5C9E;background:#EEF3FB}
+.buy tbody th{font-weight:800;white-space:nowrap;font-size:12.5px}
+.buy tbody th small{display:block;color:var(--brand-ink);font-size:11px;font-weight:800}
+.buy a.pb{display:flex;flex-direction:column;text-decoration:none;color:var(--ink);font-weight:900;font-variant-numeric:tabular-nums;font-size:14.5px;line-height:1.25}
+.buy a.pb s{color:var(--sub);font-weight:500;font-size:11px}
+.buy a.pb i{font-style:normal;font-size:11px;color:var(--brand-ink);font-weight:800}
+.buy td.h a.pb{color:#2F5C9E} .buy td.h a.pb i{color:#2F5C9E}
+.buy td.u{font-size:12.5px;color:var(--sub)} .buy td.u b{color:var(--ink);font-size:13.5px}
+.buy td.u.h b{color:#2F5C9E}
+.card.v2 .row2{display:flex;gap:6px;flex-wrap:wrap}
+.card.v2 .row2 button{flex:1;border:1.5px solid var(--brand);background:var(--panel);color:var(--brand-ink);border-radius:10px;padding:8px 10px;font:800 13px var(--f);cursor:pointer}
+.card.v2 .row2 button.gd{flex:0 0 auto;border-color:var(--line);color:var(--sub);font-weight:700}
+.lessons.v2{padding:14px!important}
+.lessons.v2 .hd{padding:0 2px 10px!important}
+.lessons.v2 .lgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 14px}
+.lessons.v2 .lr{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;gap:6px;align-items:center;padding:7px 4px;border-bottom:1px dashed var(--line);font-size:13px}
+.lessons.v2 .lr .n{font-weight:900;color:var(--c)}
+.lessons.v2 .lr .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lessons.v2 .lr a{font-size:12px;font-weight:800;text-decoration:none;border-radius:8px;padding:5px 8px;white-space:nowrap;background:var(--soft);color:var(--brand-ink)}
+.lessons.v2 .lr a.h{background:#EEF3FB;color:#2F5C9E}
+.allin.v2{display:grid!important;grid-template-columns:200px minmax(0,1fr)!important;gap:20px}
+.allin.v2 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.allin.v2 .two a{display:grid;gap:2px;border-radius:14px;padding:12px 14px;text-decoration:none;background:var(--soft);color:var(--ink)}
+.allin.v2 .two a.h{background:#EEF3FB}
+.allin.v2 .two a span{font-size:12px;color:var(--sub);font-weight:700}
+.allin.v2 .two a b{font-size:19px;font-variant-numeric:tabular-nums}
+.allin.v2 .two a s{font-size:12px;color:var(--sub)}
+.allin.v2 .two a.h b{color:#2F5C9E}
+#hwp,#hwpSec,.hwpnote{display:none!important}
+@media (max-width:640px){
+  .hero{padding:18px 16px!important;grid-template-columns:1fr!important;gap:10px!important}
+  .hero .covers{display:none!important}
+  .hero h1{font-size:22px!important}
+  .bar{padding:8px 0!important}
+  #grades{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;gap:4px!important}
+  #grades .gg i{display:none}
+  #grades .gg{display:flex;gap:4px;flex:0 0 auto}
+  #areas{flex-wrap:nowrap!important;overflow-x:auto}
+  .howbuy{grid-template-columns:1fr;gap:8px}
+  .howbuy .hb{grid-template-columns:auto 1fr;align-items:center;padding:10px 12px;gap:2px 12px}
+  .howbuy .hb p{display:none}
+  .cards{grid-template-columns:1fr!important;gap:10px!important}
+  .card.v2{grid-template-columns:84px minmax(0,1fr);gap:10px;padding:10px!important;grid-template-areas:"cv hd" "buy buy" "row row"}
+  .card.v2 .bd{display:contents}
+  .card.v2 .cv{grid-area:cv} .card.v2 .hd2{grid-area:hd;align-self:center} .card.v2 .buy{grid-area:buy} .card.v2 .row2{grid-area:row}
+  .card.v2 .cv .flt{display:none}
+  .card.v2 h3{font-size:15.5px}
+  .lessons.v2 .lgrid{grid-template-columns:1fr}
+  .lessons.v2 .lr{grid-template-columns:38px minmax(0,1fr) auto auto}
+  .allin.v2{grid-template-columns:90px minmax(0,1fr)!important;gap:12px}
+  .allin.v2 .formula,.allin.v2 .ibs{display:none!important}
+  .allin.v2 .two{grid-template-columns:1fr}
+}
+</style>
+<script>
+(function(){
+  const HW = name => HWP[name];
+  const listOfH = x => x.list || x.price*2;
+  // 1) 구매 방법 한눈에
+  const sec = document.getElementById('ttlBooks').closest('.sec');
+  sec.insertAdjacentHTML('beforebegin', '<div class="howbuy" id="howbuy"></div>');
+  function renderHow(){
+    const g = st.grade, a = D.allin[g], ha = HWPALL[g];
+    const bs = books.filter(b=>b.grade===g&&!b.soon&&b.pk);
+    const minP = Math.min(...bs.map(b=>b.pk.price)), minH = Math.min(...bs.filter(b=>HW(b.name)).map(b=>HW(b.name).price));
+    document.getElementById('howbuy').innerHTML =
+      `<div class="hb"><div class="k">올인원 <em>55%</em></div><p>${g} 4권(어휘 · 어법 · 구문 · 독해) 전 강</p><div class="pp"><span>PDF</span><b>${a?won(a.price)+'원':'-'}</b><span>한글</span><b class="h">${ha?won(ha.price)+'원':'-'}</b></div></div>`+
+      `<div class="hb"><div class="k">교재 패키지 <em>50%</em></div><p>교재 한 권 전 강 + 진도표</p><div class="pp"><span>PDF</span><b>${won(minP)}원~</b><span>한글</span><b class="h">${isFinite(minH)?won(minH)+'원~':'-'}</b></div></div>`+
+      `<div class="hb"><div class="k">강별 <em class="lt">필요한 강만</em></div><p>한 강씩 골라서</p><div class="pp"><span>PDF</span><b>강마다 2,900원</b><span>한글</span><b class="h">강마다 4,300원</b></div></div>`;
+  }
+  // 2) 교재 카드 = 표지 + 구매표
+  card = function(b){
+    const c = AC[b.area], id = 'bk'+books.indexOf(b), sub = b.kind && b.kind!=='교과서별' ? b.kind : '', h = HW(b.name);
+    if (b.soon) return `<article class="card v2 soon" id="${id}" style="--c:${c}"><div class="cv">${b.img?`<img src="${b.img}" alt="">`:''}</div><div class="bd"><div class="hd2"><span class="chip">${b.area}${sub?' · '+sub:''}</span><h3>${esc(b.name)}</h3><div class="meta">곧 열려요</div></div></div></article>`;
+    return `<article class="card v2" id="${id}" style="--c:${c}">
+      <div class="cv"><img src="${b.img}" alt="${esc(b.name)} 표지"><span class="flt"><b>50%</b><small>패키지 할인</small></span></div>
+      <div class="bd"><div class="hd2"><span class="chip">${b.area}${sub?' · '+sub:''}</span><h3>${esc(b.name)}</h3><div class="meta">${nOf(b)}${unitOf(b)} · 진도표 포함</div></div>
+        <table class="buy"><thead><tr><th></th><th>PDF</th><th class="h">교사용 한글</th></tr></thead><tbody>
+          <tr><th>전범위 패키지<small>50% 할인</small></th><td><a class="pb" href="${SHOP(b.pk.id)}" target="_top">${won(b.pk.price)}원<s>${won(listOf(b))}원</s></a></td><td class="h">${h?`<a class="pb" href="${SHOP(h.id)}" target="_top">${won(h.price)}원<s>${won(listOfH(h))}원</s></a>`:'-'}</td></tr>
+          <tr><th>${unitW(b)}별</th><td class="u">${unitOf(b)}마다 <b>2,900원</b></td><td class="u h">${h?`${unitOf(b)}마다 <b>4,300원</b>`:'-'}</td></tr>
+        </tbody></table>
+        <div class="row2"><button type="button" aria-expanded="${st.open===id}" data-open="${id}">${unitW(b)}별 골라 사기 ${st.open===id?'▴':'▾'}</button>${b.guide?`<button type="button" class="gd" data-guide="${books.indexOf(b)}">이용 가이드</button>`:''}</div>
+      </div></article>`;
+  };
+  // 3) 강별 = 한 줄에 PDF · 한글 버튼
+  lessonsPanel = function(b){
+    const c = AC[b.area], m = HWPL[b.name] || {};
+    return `<div class="lessons v2" style="--c:${c}"><div class="hd"><b>${esc(b.name)} · ${unitW(b)}별</b><span>PDF ${unitOf(b)}마다 2,900원 · 한글 ${unitOf(b)}마다 4,300원</span></div><div class="lgrid">${b.lessons.map(l=>{const x=m[l.no];return `<div class="lr"><span class="n">${String(l.no).padStart(2,'0')}${unitOf(b)}</span><span class="t">${esc(l.t)}</span><a href="${SHOP(l.id)}" target="_top">PDF</a>${x?`<a class="h" href="${SHOP(x[0])}" target="_top">한글</a>`:'<span></span>'}</div>`;}).join('')}</div></div>`;
+  };
+  // 4) 올인원 = PDF · 한글 나란히
+  const _ra = renderAllin;
+  renderAllin = function(){ _ra(); const a = D.allin[st.grade], ha = HWPALL[st.grade], el = document.getElementById('allin'); if (!a) return;
+    el.classList.add('v2'); const btns = el.querySelector('.price.ap'); const bb = el.querySelector('.btns');
+    if (btns) btns.remove(); if (bb) bb.outerHTML = `<div class="two"><a href="${SHOP(a.id)}" target="_top"><span>PDF 올인원</span><b>${won(a.price)}원</b><s>${won(a.list||0)}원</s></a>${ha?`<a class="h" href="${SHOP(ha.id)}" target="_top"><span>교사용 한글 올인원</span><b>${won(ha.price)}원</b><s>${won(ha.list)}원</s></a>`:''}</div>`; };
+  hwpLinks = function(){}; renderHwp = function(){};
+  const _all2 = all; all = function(){ _all2(); renderHow(); };
+  all();
+})();
+</script>
+<!-- V2-END -->
+<!-- V2-THEMES -->
+<style>
+/* A. 토스형 — 테두리 없음, 회색 바탕, 큰 숫자, 둥근 정도 낮게 */
+body.v-a{--bg:#F2F4F6;--panel:#FFFFFF;--line:#EEF0F3;--ink:#191F28;--sub:#8B95A1;--wash:#F9FAFB;--soft:#FFF0F4}
+body.v-a .hero{border-radius:0!important;background:#fff!important}
+body.v-a .bar{background:#F2F4F6!important;border:0!important}
+body.v-a .g,body.v-a .a{border-radius:8px!important}
+body.v-a .howbuy .hb{border:0;border-radius:14px;box-shadow:none}
+body.v-a .howbuy .hb .k em{border-radius:6px}
+body.v-a .card.v2{border:0!important;border-radius:14px!important;box-shadow:none!important;background:#fff}
+body.v-a .card.v2 .cv{border-radius:8px}
+body.v-a .buy{border:0;border-radius:0}
+body.v-a .buy thead th{background:none;padding-top:0}
+body.v-a .buy thead th.h{background:none}
+body.v-a .buy th,body.v-a .buy td{border-bottom:1px solid #F2F4F6}
+body.v-a .buy a.pb{font-size:17px;letter-spacing:-.3px}
+body.v-a .chip{border-radius:6px!important}
+body.v-a .card.v2 .row2 button{border:0;background:#F2F4F6;color:#4E5968;border-radius:8px;padding:11px}
+body.v-a .card.v2 .row2 button:not(.gd){background:var(--brand);color:#fff}
+body.v-a .lessons.v2{border:0!important;border-radius:14px!important}
+body.v-a .lessons.v2 .lr{border-bottom:1px solid #F2F4F6}
+body.v-a .lessons.v2 .lr a{border-radius:6px}
+body.v-a .allin{border:0!important;border-radius:14px!important;box-shadow:none!important}
+body.v-a .allin.v2 .two a{border-radius:10px}
+/* B. 직각 표형 — 모서리 0, 얇은 선 */
+body.v-b *:not(.flt):not(.flt *){border-radius:0!important}
+body.v-b{--line:#E3D9DE}
+body.v-b .hero{border:1px solid var(--line)}
+body.v-b .howbuy{gap:0;border:1px solid var(--ink)}
+body.v-b .howbuy .hb{border:0;border-right:1px solid var(--line);box-shadow:none}
+body.v-b .howbuy .hb:last-child{border-right:0}
+body.v-b .howbuy .hb .k{border-bottom:2px solid var(--ink);padding-bottom:6px}
+body.v-b .cards{gap:0!important;border-top:2px solid var(--ink)}
+body.v-b .card.v2{border:0!important;border-bottom:1px solid var(--line)!important;box-shadow:none!important;background:transparent!important}
+body.v-b .cards .card.v2:nth-child(odd){border-right:1px solid var(--line)!important}
+body.v-b .buy{border:1px solid var(--ink)}
+body.v-b .buy thead th{background:var(--ink);color:#fff}
+body.v-b .buy thead th.h{background:#2F5C9E;color:#fff}
+body.v-b .card.v2 .row2 button{border:1px solid var(--ink);color:var(--ink)}
+body.v-b .lessons.v2{border:1px solid var(--ink)!important;border-top:3px solid var(--c)!important}
+body.v-b .lessons.v2 .lr a{border:1px solid currentColor;background:transparent}
+body.v-b .allin{border:1px solid var(--ink)!important;box-shadow:none!important}
+/* C. 직각 리스트형 — 박스 없이 줄로, PC 도 한 줄에 한 권 */
+body.v-c *:not(.flt):not(.flt *){border-radius:0!important}
+body.v-c .howbuy .hb{border:0;border-top:3px solid var(--brand);box-shadow:none;background:transparent}
+body.v-c .howbuy .hb:nth-child(2){border-top-color:#9C7BD8} body.v-c .howbuy .hb:nth-child(3){border-top-color:var(--sub)}
+body.v-c .cards{grid-template-columns:1fr!important;gap:0!important;border-top:1px solid var(--ink)}
+body.v-c .card.v2{border:0!important;border-bottom:1px solid var(--line)!important;box-shadow:none!important;background:transparent!important;grid-template-columns:96px minmax(0,1fr) minmax(0,1.5fr) 150px;grid-template-areas:"cv hd buy row";align-items:center;padding:14px 4px!important}
+body.v-c .card.v2 .bd{display:contents}
+body.v-c .card.v2 .cv{grid-area:cv} body.v-c .card.v2 .hd2{grid-area:hd} body.v-c .card.v2 .buy{grid-area:buy} body.v-c .card.v2 .row2{grid-area:row;flex-direction:column}
+body.v-c .card.v2 .cv .flt{display:none}
+body.v-c .buy{border:0;border-left:1px solid var(--line)}
+body.v-c .buy thead th{background:none}
+body.v-c .buy thead th.h{background:none}
+body.v-c .card.v2 .row2 button{border:0;background:var(--ink);color:#fff;padding:10px}
+body.v-c .card.v2 .row2 button.gd{background:transparent;color:var(--sub);border:1px solid var(--line)}
+body.v-c .lessons.v2{border:0!important;border-left:3px solid var(--c)!important;background:var(--wash)!important}
+body.v-c .allin{border:0!important;border-top:1px solid var(--ink)!important;border-bottom:1px solid var(--ink)!important;box-shadow:none!important;background:transparent!important}
+@media (max-width:640px){
+  body.v-c .card.v2{grid-template-columns:72px minmax(0,1fr);grid-template-areas:"cv hd" "buy buy" "row row";padding:12px 0!important}
+  body.v-c .buy{border-left:0;border-top:1px solid var(--line)}
+  body.v-c .card.v2 .row2{flex-direction:row}
+}
+</style>
+<script>(function(){ var v = (new URLSearchParams(location.search).get('v')||'a'); document.body.classList.add('v-'+v); })();</script>
+
+</html>
