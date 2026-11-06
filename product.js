@@ -951,8 +951,14 @@
        넓은 화면에서도 같습니다 — 값 아래가 원래 이 줄의 자리인데(themes/theme-d.css ③),
        아임웹이 상세 설명 아래로 내려 두어 **값 아래가 빈 칸으로 남아 있었습니다.** */
     var price = document.querySelector('#prod_goods_form .pay_detail');
-    if (!price || row.previousElementSibling === price) return;
-    price.parentNode.insertBefore(row, price.nextSibling);
+    if (!price) return;
+    /* 무료 정리표 「이어서 공부할 자료」 줄(#sl-free-top)이 있으면 값 → 그 줄 → 눈금 → 단추 순서 (11-06) */
+    var top = document.getElementById('sl-free-top');
+    if (top && top.previousElementSibling !== price) price.parentNode.insertBefore(top, price.nextSibling);
+    var after = top || price;
+    var prev = row.previousElementSibling;
+    if (prev === after || (prev && prev.classList.contains('sl-buy-mark') && prev.previousElementSibling === after)) return;
+    after.parentNode.insertBefore(row, after.nextSibling);
     /* ── 눈금도 같이 데려옵니다 ──
        상세 페이지 꾸미기(themes/theme-d.js)는 단추 줄 **바로 앞에 눈금(.sl-buy-mark)** 을
        하나 세워 두고, 그 눈금이 화면 위로 지나가면 아래 막대를 띄웁니다.
