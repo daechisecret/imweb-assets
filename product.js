@@ -665,14 +665,16 @@
         var it = d.items[me], S = it && d.series[it.series];
         if (!S) return;
         var f = it.focus || {};
+        /* 무료 정리표마다 이어지는 학년만 (11-06 — 중등까지 늘어 카드가 너무 많아짐) */
+        var GS = it.grades ? S.grades.filter(function (g) { return it.grades.indexOf(g.grade) >= 0; }) : S.grades;
         var box = document.createElement('div');
         box.id = 'sl-free';
         box.className = 'sr-box sf-box';
         var h = '<div class="sr-h"><div class="sr-eyebrow">' + esc(S.name) + ' · ' + esc(it.topic) + '</div>' +
           '<h3 class="sr-t">이 정리표, <em>' + esc(S.name) + '</em>으로 이어서 공부하세요</h3>' +
           '<p class="sr-s">' + esc(S.line) + '</p></div>' +
-          '<div class="sf-pks">' + S.grades.map(function (g) { return freeCard(S, g, f[g.grade] || []); }).join('') + '</div>' +
-          S.grades.map(function (g) { return freeLessons(S, g, f[g.grade] || []); }).join('');
+          '<div class="sf-pks">' + GS.map(function (g) { return freeCard(S, g, f[g.grade] || []); }).join('') + '</div>' +
+          GS.map(function (g) { return freeLessons(S, g, f[g.grade] || []); }).join('');
         box.innerHTML = h;
         var a = relAnchor();
         a.parentNode.insertBefore(box, a);
