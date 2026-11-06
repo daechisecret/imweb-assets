@@ -653,6 +653,37 @@
       '</div></div>';
   }
 
+  /* ── ⑤-1-2 무료 정리표: 구매 단추 **바로 위**에 작은 「이어서 공부할 자료」 줄 — (2026-11-06 사장님)
+     아래 큰 상자는 받고 나가면 아무도 안 봅니다 → 받기 전에 한 번은 보이도록 단추 위에 학년별 패키지 카드를 가로로.
+     「강별로 보기」는 아래 큰 상자(#sl-free)로 내려갑니다. 강별 상품용 안내 두 줄(「여러 강을 담아…」 · 「담아 두시고…」)은
+     무료 페이지에선 맞지 않아 body.sl-free-page 로 숨깁니다(product.css). */
+  function freeTop(S, GS, f) {
+    if (document.getElementById('sl-free-top')) return;
+    var btns = [].filter.call(document.querySelectorAll('#prod_goods_form .buy_btns'), function (e) { return e.offsetParent !== null; })[0]
+      || document.querySelector('#prod_goods_form .buy_btns');
+    if (!btns) return;
+    document.body.classList.add('sl-free-page');
+    var top = document.createElement('div');
+    top.id = 'sl-free-top';
+    top.innerHTML = '<div class="sft-h"><b>받기 전에 확인하세요</b><span>이 정리표 주제를 <em>' + esc(S.name) + '</em>에서 이어서 공부할 수 있어요</span></div>' +
+      '<div class="sft-row">' + GS.map(function (g) {
+        var hit = (f[g.grade] || []).map(function (n) {
+          var l = g.lessons.filter(function (x) { return x.no === n; })[0];
+          return l ? freeNo(l.no) + ' ' + l.title : '';
+        }).filter(Boolean)[0];
+        return '<a class="sft-c" href="' + esc(freeHref(g.pkg.href)) + '"><img src="' + esc(BASE + g.pkg.cover) + '" alt="' + esc(g.pkg.name) + ' 표지" loading="lazy">' +
+          '<span class="sft-g">' + esc(g.grade) + '</span><span class="sft-n">' + esc(hit || g.pkg.sub) + '</span></a>';
+      }).join('') + '</div>' +
+      '<a class="sft-more" href="#sl-free">강별로 보기 · 담기 ↓</a>';
+    btns.parentNode.insertBefore(top, btns);
+    top.querySelector('.sft-more').addEventListener('click', function (e) {
+      var box = document.getElementById('sl-free');
+      if (!box) return;
+      e.preventDefault();
+      box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
   var FREE_DONE = false;
   function freeRel() {
     if (FREE_DONE) return;
@@ -680,6 +711,7 @@
         a.parentNode.insertBefore(box, a);
         placeRel();
         box.querySelectorAll('.sf-pane').forEach(function (p) { relArrows(p); });
+        freeTop(S, GS, f);
         function open(gr) {
           box.querySelectorAll('.sf-pk').forEach(function (x) { x.classList.toggle('on', x.dataset.g === gr); });
           box.querySelectorAll('.sf-pane').forEach(function (p) { p.hidden = p.dataset.g !== gr; });
