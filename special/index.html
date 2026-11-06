@@ -419,6 +419,102 @@ html,body{overflow:hidden}
     </div>
   </div>
 
+<!-- FAQ-SEC-START (시안 2026-11-06) — 진도표 영상 아래 · 「자료 구성」 위 -->
+<style>
+.faqtabs{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
+.faqtabs button{font:inherit;font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.faqtabs button[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:#fff}
+.faqtabs button span{font-weight:500;opacity:.7;margin-left:3px}
+.faqv{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);background:#fff;border:1px solid var(--line)}
+.faqv .pl{padding:14px;border-right:1px solid var(--line)}
+.faqv video{display:block;width:100%;aspect-ratio:16/9;background:#F6E9EE}
+.faqv .now{margin-top:10px;font-weight:900;font-size:16px;line-height:1.45}
+.faqv .now small{display:block;font-weight:500;color:var(--sub);font-size:12.5px;margin-top:2px}
+.faqv ol{list-style:none;margin:0;padding:0;max-height:430px;overflow:auto}
+.faqv li{display:grid;grid-template-columns:104px 1fr;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+.faqv li .th{aspect-ratio:16/9;background:#F8E1EA center/cover;position:relative}
+.faqv li .th::after{content:"▶";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:14px;text-shadow:0 1px 4px rgba(0,0,0,.45)}
+.faqv li .th i{position:absolute;right:3px;bottom:3px;font-style:normal;font-size:10.5px;color:#fff;background:rgba(0,0,0,.6);padding:0 4px}
+.faqv li b{display:block;font-size:13.5px;line-height:1.4}
+.faqv li span{font-size:11.5px;color:var(--sub)}
+.faqv li.on{background:#FFF4F8}
+.faqv li.on b{color:var(--brand-ink)}
+.faql{background:#fff;border:1px solid var(--line);margin-top:16px}
+.faql h3{margin:0;padding:12px 18px;font-size:13px;font-weight:900;color:var(--brand-ink);background:#FDF3F6;border-bottom:1px solid var(--line)}
+.faql details{border-bottom:1px solid var(--line)}
+.faql summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;gap:10px;align-items:center;font-weight:700;font-size:14.5px}
+.faql summary::-webkit-details-marker{display:none}
+.faql summary .q{color:var(--brand);font-weight:900}
+.faql summary .t{flex:1}
+.faql summary .vb{flex:none;font-size:11.5px;font-weight:900;color:var(--brand-ink);background:#FCEEF3;border-radius:999px;padding:3px 10px;border:0;font-family:inherit;cursor:pointer}
+.faql summary::after{content:"+";flex:none;width:18px;text-align:center;color:var(--sub);font-size:18px}
+.faql details[open] summary::after{content:"−"}
+.faql .a{padding:0 18px 16px 44px;color:#3E2C38;font-size:14px;line-height:1.75}
+.faql .a mark{background:linear-gradient(transparent 58%,#FFF2A6 58%);color:inherit}
+.faqmore{margin-top:10px;font-size:13px;color:var(--sub);text-align:center}
+@media (max-width:760px){.faqv{grid-template-columns:1fr}.faqv .pl{border-right:0;border-bottom:1px solid var(--line)}.faqv ol{max-height:none}.faql .a{padding-left:18px}}
+</style>
+<div class="sec" id="faq"><span class="s">FAQ</span><h2>자주 묻는 질문</h2><p>헷갈리기 쉬운 것들은 실제 자료 화면으로 짧게 보여 드려요. 분류를 고르면 영상과 질문이 함께 바뀌어요.</p></div>
+<div class="faqtabs" id="faqTabs" role="group" aria-label="질문 분류"></div>
+<div class="faqv">
+  <div class="pl"><video id="faqVideo" controls playsinline preload="none"></video><div class="now" id="faqNow"></div></div>
+  <ol id="faqList"></ol>
+</div>
+<div class="faql" id="faqQ"></div>
+<p class="faqmore">더 궁금한 점은 카카오톡 채널 「대치동시크릿」으로 물어봐 주세요.</p>
+<script>
+(() => {
+  const CATS = ['자료 고르기', '구매 · 다운로드', '파일 · 한글(HWP)', '수업 · 자습'];
+  const V = [
+    ['02', '자료 고르기', '한 강은 어떤 순서로 되어 있나요?'], ['03', '자료 고르기', '강별 · 교재 패키지 · 학년 올인원은 무엇이 다른가요?'],
+    ['04', '자료 고르기', '고1 · 고2 · 고3은 무엇이 다른가요?'], ['05', '자료 고르기', '시크릿독해 유형편 · 테마편 · 상위오답률편은 어떻게 다른가요?'],
+    ['06', '자료 고르기', '예비고1은 어떤 자료로 시작하면 좋을까요?'], ['07', '구매 · 다운로드', '산 자료는 어디서 받나요?'],
+    ['09', '구매 · 다운로드', '받은 폴더 안에는 무엇이 어디 있나요?'], ['18', '구매 · 다운로드', '강별로 먼저 사 보고, 나중에 패키지를 사도 되나요?'],
+    ['19', '구매 · 다운로드', 'PDF를 샀는데 교사용 한글(HWP) 파일이 필요해졌어요'], ['00', '파일 · 한글(HWP)', '교사용 PDF와 교사용 한글 파일은 무엇이 다른가요?'],
+    ['11', '파일 · 한글(HWP)', '한글 파일에서 글자가 깨져 보여요'], ['12', '파일 · 한글(HWP)', 'hwp와 hwpx, 어느 파일을 열어야 하나요?'],
+    ['16', '수업 · 자습', '혼자 공부하는 학생은 어떤 순서로 쓰면 좋을까요?'], ['17', '수업 · 자습', '태블릿(아이패드)으로 필기하면서 쓸 수 있나요?'],
+  ];
+  const DUR = { '00': '1:13', '02': '1:12', '03': '0:47', '04': '0:35', '05': '0:55', '06': '0:44', '07': '0:36', '09': '0:46', '11': '0:45', '12': '0:35', '16': '0:45', '17': '0:33', '18': '0:31', '19': '0:29' };
+  const Q = [
+    ['자료 고르기', '한 강은 어떤 순서로 되어 있나요?', '시크릿어법은 개념 → 기본 연습(Practice) → 기출 문장 훈련(Training) → 지문 문제(Passage) → 실전 어법 모의고사(Exam) → 암기노트 순서예요. 다른 교재도 <mark>개념 → 기출 문장 연습 → 실전 지문 → 암기노트</mark> 흐름이에요.', '02'],
+    ['자료 고르기', '강별 · 교재 패키지 · 학년 올인원은 무엇이 다른가요?', '강별은 필요한 강 하나(PDF 4개), 교재 패키지는 한 권 전체(전강통합 PDF · 부록 · 진도표 포함), 학년 올인원은 그 학년 어휘 · 어법 · 구문 · 독해(유형편) <mark>4권을 한 번에</mark> 받는 상품이에요.', '03'],
+    ['자료 고르기', '고1 · 고2 · 고3은 강 구성이 같은데, 내용은 무엇이 다른가요?', '강 이름과 순서는 같고, <mark>안에 들어가는 기출 문장과 문제</mark>가 학년마다 달라요. 고1은 고1 모의고사, 고2는 고2 모의고사, 고3은 수능 · 고3 모의고사 문장이에요.', '04'],
+    ['자료 고르기', '시크릿독해 유형편 · 테마편 · 상위오답률편은 어떻게 다른가요?', '유형편은 <mark>문제 유형별</mark> 해결 전략, 테마편은 <mark>주제별</mark> 배경지식과 여러 유형 지문, 상위오답률편은 <mark>실제 오답률이 높았던</mark> 문제를 모았어요.', '05'],
+    ['자료 고르기', '예비고1은 어떤 자료로 시작하면 좋을까요?', '예비고1 자료는 중학 실력 복습 → 고등 실력 업그레이드로 넘어가는 구성이에요. 중학 문법이 아직 흔들리면 예비고1부터, 고1 모의고사 문장이 어느 정도 읽히면 고1부터 시작하시길 권해요.', '06'],
+    ['구매 · 다운로드', '산 자료는 어디서 받나요?', '로그인 → <mark>마이페이지 → 📦 주문 조회</mark> → 받을 자료의 「다운로드」를 누르세요. 여러 자료는 「📥 여러 자료 한번에 받기」로 한꺼번에 받을 수 있어요.', '07'],
+    ['구매 · 다운로드', '받은 폴더 안에는 무엇이 들어 있나요?', '강별 폴더(학생용 · 학생용+해설 · 교사용 · 통합 PDF), 한 권으로 합친 <mark>[전강통합] PDF</mark>, 개념별 정리표 모음인 <mark>Appendix</mark>, <mark>방학특강 진도표</mark>가 들어 있어요.', '09'],
+    ['구매 · 다운로드', '강별로 먼저 사 보고, 나중에 패키지를 사도 되나요?', '네. 패키지를 산 뒤 카카오톡 채널 「대치동시크릿」으로 연락 주시면 <mark>먼저 산 강별 구매 내역을 환불</mark>해 드려요. 결제하신 수단으로 영업일 2~3일 안에 환불돼요. 문의하실 때 <b>가입 아이디와 구매한 자료 이름</b>을 함께 알려 주세요.', '18'],
+    ['구매 · 다운로드', 'PDF를 샀는데 교사용 한글(HWP) 파일이 필요해졌어요.', '교사용 한글 파일을 산 뒤 카카오톡 채널 「대치동시크릿」으로 연락 주시면 <mark>먼저 산 PDF 버전을 환불</mark>해 드려요. 환불 대신 적립금으로 차액을 받는 방법도 있어요. 문의하실 때 <b>가입 아이디와 구매한 자료 이름</b>을 함께 알려 주세요.', '19'],
+    ['파일 · 한글(HWP)', '교사용 PDF와 교사용 한글(HWP) 파일은 무엇이 다른가요?', 'PDF 패키지의 <b>교사용</b>은 학생용과 같은 지면에 <mark>문제마다 정답이 표시</mark>된 수업용 PDF예요. <b>교사용 한글 파일</b>은 학생용 · 해설 · 교사용 · 통합본을 모두 <mark>고쳐 쓸 수 있는 한글 문서</mark>로 만든 파일이에요.', '00'],
+    ['파일 · 한글(HWP)', '한글 파일에서 글자가 깨져 보여요.', '자료에 쓰인 글꼴이 컴퓨터에 없어서 그래요. 교사용 한글 압축의 <mark>3. 폰트</mark> 폴더 글꼴을 모두 선택해 <b>Win + R → fonts</b>로 연 글꼴 폴더에 끌어다 놓고, 한글을 껐다가 다시 열어 주세요.', '11'],
+    ['파일 · 한글(HWP)', 'hwp와 hwpx, 어느 파일을 열어야 하나요?', '먼저 <mark>1. 한글 (2014 이상)</mark> 폴더의 hwpx 파일을 여세요. 안 열리면 <mark>2. 한글 2014</mark> 폴더의 hwp 파일을 여시면 돼요. 내용은 같아요.', '12'],
+    ['수업 · 자습', '혼자 공부하는 학생은 어떻게 쓰나요?', '<mark>학생용+해설 PDF</mark>로 하루 한 강씩, 단계가 끝날 때마다 뒤쪽 해설로 채점하세요. 실전 모의고사는 40분 시간을 재고 풀어요.', '16'],
+    ['수업 · 자습', '태블릿(아이패드)으로 필기하면서 쓸 수 있나요?', '네. 모두 PDF라 태블릿 필기 앱에서 바로 열어 쓰실 수 있어요.', '17'],
+  ];
+  const $ = (id) => document.getElementById(id), esc = (s) => s.replace(/</g, '&lt;');
+  let cat = '전체', cur = null;
+  const play = (id, auto) => {
+    const v = V.find((x) => x[0] === id); cur = id;
+    const el = $('faqVideo'); el.poster = `img/faq-${id}.jpg`; el.src = `video/faq-${id}.mp4`; if (auto) el.play().catch(() => {});
+    $('faqNow').innerHTML = `${esc(v[2])}<small>${DUR[id]} · 소리를 켜고 보세요</small>`;
+    [...$('faqList').children].forEach((li) => li.classList.toggle('on', li.dataset.id === id));
+  };
+  const render = () => {
+    const vs = V.filter((v) => cat === '전체' || v[1] === cat), qs = Q.filter((q) => cat === '전체' || q[0] === cat);
+    $('faqTabs').innerHTML = ['전체', ...CATS].map((c) => `<button type="button" aria-pressed="${c === cat}">${c}<span>${c === '전체' ? Q.length : Q.filter((q) => q[0] === c).length}</span></button>`).join('');
+    [...$('faqTabs').children].forEach((b, i) => (b.onclick = () => { cat = ['전체', ...CATS][i]; render(); }));
+    $('faqList').innerHTML = vs.map((v) => `<li data-id="${v[0]}"><div class="th" style="background-image:url(img/faq-${v[0]}.jpg)"><i>${DUR[v[0]]}</i></div><div><b>${esc(v[2])}</b><span>${v[1]}</span></div></li>`).join('');
+    [...$('faqList').children].forEach((li) => (li.onclick = () => play(li.dataset.id, true)));
+    const groups = (cat === '전체' ? CATS : [cat]).map((c) => [c, qs.filter((q) => q[0] === c)]).filter(([, a]) => a.length);
+    $('faqQ').innerHTML = groups.map(([c, a]) => `<h3>${c}</h3>` + a.map((q) => `<details><summary><span class="q">Q</span><span class="t">${esc(q[1])}</span>${q[3] ? `<button type="button" class="vb" data-v="${q[3]}">▶ 영상</button>` : ''}</summary><div class="a">${q[2]}</div></details>`).join('')).join('');
+    $('faqQ').querySelectorAll('.vb').forEach((b) => (b.onclick = (e) => { e.preventDefault(); play(b.dataset.v, true); $('faq').scrollIntoView({ behavior: 'smooth' }); }));
+    if (vs.length && !vs.some((v) => v[0] === cur)) play(vs[0][0], false); else if (cur) play(cur, false);
+  };
+  render();
+})();
+</script>
+<!-- FAQ-SEC-END -->
+
   <div class="sec"><h2>자료 구성</h2></div>
   <div class="foot">
     <div class="fi"><h4>강별 자료</h4><ul><li>학생용</li><li>학생용 + 정답 및 해설</li><li>교사용</li></ul></div>
