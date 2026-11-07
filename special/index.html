@@ -727,6 +727,25 @@ function hwpLinks(){
 .allin.v2 .two a b{font-size:19px;font-variant-numeric:tabular-nums}
 .allin.v2 .two a s{font-size:12px;color:var(--sub)}
 .allin.v2 .two a.h b{color:#2F5C9E}
+/* 11-07 사장님: 패키지가 더 눈에 띄게 — 구매 버튼 크게(PDF 분홍 · 한글 파랑), 강별 골라 사기는 그 아래 옅게, 이용 가이드는 교재명 옆 */
+.card.v2 .nm{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card.v2 .nm h3{margin:0}
+.card.v2 .nm .gd{border:1px solid var(--line);background:var(--panel);color:var(--sub);border-radius:6px;padding:3px 9px;font:700 12px var(--f);cursor:pointer;white-space:nowrap}
+.card.v2 .row2{display:grid!important;grid-template-columns:1fr 1fr;gap:6px}
+.card.v2 .row2 a.bp{display:flex;align-items:center;justify-content:center;text-decoration:none;background:var(--brand);color:#fff;border-radius:8px;padding:13px 8px;font:900 15px var(--f);letter-spacing:-.2px}
+.card.v2 .row2 a.bp.h{background:#2F5C9E}
+.card.v2 .row2 a.bp:only-of-type{grid-column:1/-1}
+.card.v2 .row2 button.lb{grid-column:1/-1;border:0!important;background:#F2F4F6!important;color:#4E5968!important;border-radius:8px;padding:9px 10px!important;font:700 13px var(--f);cursor:pointer}
+.allin.v2 .two .pc{display:grid;gap:2px;border-radius:10px;padding:12px 14px;background:var(--soft);color:var(--ink)}
+.allin.v2 .two .pc.h{background:#EEF3FB}
+.allin.v2 .two .pc span{font-size:12px;color:var(--sub);font-weight:700}
+.allin.v2 .two .pc b{font-size:19px;font-variant-numeric:tabular-nums}
+.allin.v2 .two .pc.h b{color:#2F5C9E}
+.allin.v2 .two .pc s{font-size:12px;color:var(--sub)}
+.allin.v2 .two .pc a.bp{display:flex;align-items:center;justify-content:center;margin-top:10px;text-decoration:none;background:var(--brand);color:#fff;border-radius:8px;padding:13px 8px;font:900 15px var(--f)}
+.allin.v2 .two .pc a.bp.h{background:#2F5C9E}
+.allin .others{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.allin .others .oq{font-size:13px;font-weight:800;color:var(--sub);margin-right:4px}
 #hwp,#hwpSec,.hwpnote{display:none!important}
 @media (max-width:640px){
   .hero{padding:18px 16px!important;grid-template-columns:1fr!important;gap:10px!important}
@@ -778,12 +797,12 @@ document.addEventListener('DOMContentLoaded', function(){
     if (b.soon) return `<article class="card v2 soon" id="${id}" style="--c:${c}"><div class="cv">${b.img?`<img src="${b.img}" alt="">`:''}</div><div class="bd"><div class="hd2"><span class="chip">${b.area}${sub?' · '+sub:''}</span><h3>${esc(b.name)}</h3><div class="meta">곧 열려요</div></div></div></article>`;
     return `<article class="card v2" id="${id}" style="--c:${c}">
       <div class="cv"><img src="${b.img}" alt="${esc(b.name)} 표지"><span class="flt"><b>50%</b><small>패키지 할인</small></span></div>
-      <div class="bd"><div class="hd2"><span class="chip">${b.area}${sub?' · '+sub:''}</span><h3>${esc(b.name)}</h3><div class="meta">${nOf(b)}${unitOf(b)} · 진도표 포함</div></div>
+      <div class="bd"><div class="hd2"><span class="chip">${b.area}${sub?' · '+sub:''}</span><div class="nm"><h3>${esc(b.name)}</h3>${b.guide?`<button type="button" class="gd" data-guide="${books.indexOf(b)}">이용 가이드</button>`:''}</div><div class="meta">${nOf(b)}${unitOf(b)} · 진도표 포함</div></div>
         <table class="buy"><thead><tr><th></th><th>PDF</th><th class="h">교사용 한글</th></tr></thead><tbody>
           <tr><th>전범위 패키지<small>50% 할인</small></th><td><a class="pb" href="${SHOP(b.pk.id)}" target="_top">${won(b.pk.price)}원<s>${won(listOf(b))}원</s></a></td><td class="h">${h?`<a class="pb" href="${SHOP(h.id)}" target="_top">${won(h.price)}원<s>${won(listOfH(h))}원</s></a>`:'-'}</td></tr>
           <tr><th>${unitW(b)}별</th><td class="u">${unitOf(b)}마다 <b>2,900원</b></td><td class="u h">${h?`${unitOf(b)}마다 <b>4,300원</b>`:'-'}</td></tr>
         </tbody></table>
-        <div class="row2"><button type="button" aria-expanded="${st.open===id}" data-open="${id}">${unitW(b)}별 골라 사기 ${st.open===id?'▴':'▾'}</button>${b.guide?`<button type="button" class="gd" data-guide="${books.indexOf(b)}">이용 가이드</button>`:''}</div>
+        <div class="row2"><a class="bp" href="${SHOP(b.pk.id)}" target="_top">PDF 패키지 구매하기</a>${h?`<a class="bp h" href="${SHOP(h.id)}" target="_top">한글 패키지 구매하기</a>`:''}<button type="button" class="lb" aria-expanded="${st.open===id}" data-open="${id}">${unitW(b)}별 골라 사기 ${st.open===id?'▴':'▾'}</button></div>
       </div></article>`;
   };
   // 3) 강별 = 한 줄에 PDF · 한글 버튼
@@ -795,7 +814,8 @@ document.addEventListener('DOMContentLoaded', function(){
   const _ra = renderAllin;
   renderAllin = function(){ _ra(); const a = D.allin[st.grade], ha = HWPALL[st.grade], el = document.getElementById('allin'); if (!a) return;
     el.classList.add('v2'); const btns = el.querySelector('.price.ap'); const bb = el.querySelector('.btns');
-    if (btns) btns.remove(); if (bb) bb.outerHTML = `<div class="two"><a href="${SHOP(a.id)}" target="_top"><span>PDF 올인원</span><b>${won(a.price)}원</b><s>${won(a.list||0)}원</s></a>${ha?`<a class="h" href="${SHOP(ha.id)}" target="_top"><span>교사용 한글 올인원</span><b>${won(ha.price)}원</b><s>${won(ha.list)}원</s></a>`:''}</div>`; };
+    if (btns) btns.remove(); if (bb) bb.outerHTML = `<div class="two"><div class="pc"><span>PDF 올인원</span><b>${won(a.price)}원</b><s>${won(a.list||0)}원</s><a class="bp" href="${SHOP(a.id)}" target="_top">PDF 올인원 구매하기</a></div>${ha?`<div class="pc h"><span>교사용 한글 올인원</span><b>${won(ha.price)}원</b><s>${won(ha.list)}원</s><a class="bp h" href="${SHOP(ha.id)}" target="_top">한글 올인원 구매하기</a></div>`:''}</div>`;
+    const ot = el.querySelector('.others'); if (ot && !ot.querySelector('.oq')) ot.insertAdjacentHTML('afterbegin', '<span class="oq">다른 학년도 보려면?</span>'); };
   hwpLinks = function(){}; renderHwp = function(){};
   const _all2 = all; all = function(){ _all2(); renderHow(); };
   all();
