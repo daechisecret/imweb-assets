@@ -1244,16 +1244,36 @@
      감시는 걷어내고, 아래 몇 번의 시도만 남깁니다. */
 })();
 
-/* ── 칼럼 글(회원용 시크릿자료) — 2026-10-30 ──
+/* ── 칼럼 글(시크릿 자료실) — 2026-10-30, 구조화 데이터 넓힘 2026-11-07 ──
    본문이 <div class="dcs-col"> 로 감싸여 있으면(make_post.py 가 만든 글)
    ① 칼럼 꾸미기(column/column.css)를 불러오고
-   ② 검색엔진용 구조화 데이터(Article + 본문 「자주 묻는 질문」의 FAQPage)를 붙입니다.
+   ② 검색엔진용 구조화 데이터를 붙입니다 — BlogPosting(제목 · 설명 · 그림 · 올린 날 · 고친 날 · 대치동시크릿)
+      + BreadcrumbList(홈 › 시크릿 자료실 › 글) + 본문 「자주 묻는 질문」의 FAQPage.
+      올린 날은 column/published.json(tools/build_sitemap.py 가 아임웹 RSS 에서 채움),
+      고친 날은 column/index.json 의 updated 에서 읽습니다. 못 받아도 나머지는 붙입니다.
+   ③ 아임웹이 alt 없이 넣는 글쓴이 그림(.avatar-image)에 alt 를 채웁니다.
    아임웹 편집기는 <style>·<script> 를 지우므로 글 안에 넣을 수 없어 여기서 붙입니다.
    게시판 경로와 상관없이 .dcs-col 이 있는 화면에서만 움직입니다. */
 (function () {
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
+  var SITE = 'https://www.daechisecret.com';
   var done = false;
   function txt(e) { return (e && e.textContent || '').replace(/\s+/g, ' ').trim(); }
+  function abs(u) { try { return new URL(u, location.href).href; } catch (e) { return u; } }
+  function cut(s, n) {
+    /* 아임웹 설명(meta description)은 본문 전체가 들어가므로 첫 문장들만 */
+    s = (s || '').replace(/\s+/g, ' ').trim();
+    if (s.length <= n) return s;
+    var t = s.slice(0, n), i = Math.max(t.lastIndexOf('요. '), t.lastIndexOf('다. '), t.lastIndexOf('. '));
+    return i > 40 ? t.slice(0, i + 2).trim() : t.trim() + '…';
+  }
+  function kdate(s) {
+    var m = /(\d{4})\D+(\d{1,2})\D+(\d{1,2})/.exec(s || '');
+    return m ? m[1] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[3]).slice(-2) : undefined;
+  }
+  function getJSON(u) {
+    return fetch(u, { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+  }
   function run() {
     if (done) return;
     var col = document.querySelector('.dcs-col');
@@ -1262,22 +1282,43 @@
     var l = document.createElement('link');
     l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=4';
     document.head.appendChild(l);
+    [].forEach.call(document.querySelectorAll('img.avatar-image:not([alt]), img.avatar-image[alt=""]'), function (im) { im.alt = '대치동시크릿 프로필'; });
+    var idx = (/[?&]idx=(\d+)/.exec(location.search) || [])[1];
+    var url = idx ? SITE + '/secret-library/?bmode=view&idx=' + idx : abs(location.href);
     var title = (document.querySelector('meta[property="og:title"]') || {}).content || document.title;
-    var desc = (document.querySelector('meta[name="description"]') || {}).content || '';
-    var img = col.querySelector('.fig img, img');
-    var data = [{
-      '@context': 'https://schema.org', '@type': 'Article',
-      headline: title.replace(/\s*[|:-]\s*회원용 시크릿자료.*$/, ''), description: desc,
-      image: img ? img.src : undefined,
-      author: { '@type': 'Organization', name: '대치동시크릿', url: 'https://www.daechisecret.com/' },
-      publisher: { '@type': 'Organization', name: '대치동시크릿', url: 'https://www.daechisecret.com/' },
-      dateModified: col.getAttribute('data-updated') || undefined,
-      mainEntityOfPage: location.origin + location.pathname + location.search
-    }];
+    var headline = title.replace(/\s*[|:-]\s*(회원용 시크릿자료|시크릿 자료실).*$/, '').trim();
+    var desc = cut((document.querySelector('meta[name="description"]') || {}).content || txt(col.querySelector('.answer p, p')), 160);
+    var imgs = [];
+    var og = (document.querySelector('meta[property="og:image"]') || {}).content;
+    if (og) imgs.push(abs(og));
+    [].forEach.call(col.querySelectorAll('img'), function (im) {
+      var u = abs(im.getAttribute('src') || '');
+      if (/\.(jpe?g|png|webp)(\?|$)/i.test(u) && imgs.indexOf(u) < 0 && imgs.length < 4) imgs.push(u);
+    });
+    var org = {
+      '@type': 'Organization', name: '대치동시크릿', url: SITE + '/',
+      logo: { '@type': 'ImageObject', url: BASE + 'column/logo-heart.svg' }
+    };
+    var post = {
+      '@context': 'https://schema.org', '@type': 'BlogPosting',
+      headline: headline.slice(0, 110), description: desc, image: imgs.length ? imgs : undefined,
+      inLanguage: 'ko-KR', author: org, publisher: org,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url }, url: url
+    };
+    var crumbs = {
+      '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: '대치동시크릿', item: SITE + '/' },
+        { '@type': 'ListItem', position: 2, name: '시크릿 자료실', item: SITE + '/secret-library' },
+        { '@type': 'ListItem', position: 3, name: headline, item: url }
+      ]
+    };
+    var data = [post, crumbs];
     /* 아임웹은 저장할 때 details·summary 를 지웁니다 → 질문과 답은 펼친 .qa(.q · .a) */
     var qs = [].slice.call(col.querySelectorAll('.faq .qa')).map(function (d) {
       var q = txt(d.querySelector('.q')).replace(/^Q\d+\.\s*/, '');
-      return q && { '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: txt(d.querySelector('.a')) } };
+      var a = txt(d.querySelector('.a'));
+      return q && a && { '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } };
     }).filter(Boolean);
     if (qs.length) data.push({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: qs });
     /* 기출 「정답 보기」 — 눌러야 정답이 보입니다 */
@@ -1285,10 +1326,25 @@
       var b = e.target.closest('.ans-b');
       if (b) b.parentNode.classList.toggle('open');
     });
-    data.forEach(function (d) {
-      var s = document.createElement('script');
-      s.type = 'application/ld+json'; s.text = JSON.stringify(d);
-      document.head.appendChild(s);
+    function put() {
+      data.forEach(function (d) {
+        var s = document.createElement('script');
+        s.type = 'application/ld+json'; s.className = 'dcs-ld'; s.text = JSON.stringify(d);
+        document.head.appendChild(s);
+      });
+    }
+    if (!idx || !window.fetch) return put();
+    var timer = setTimeout(put, 2500);   /* 표를 늦게 받으면 날짜 없이라도 */
+    Promise.all([getJSON(BASE + 'column/published.json'), getJSON(BASE + 'column/index.json')]).then(function (r) {
+      if (!timer) return;
+      clearTimeout(timer); timer = null;
+      var pub = r[0] && r[0][idx];
+      var ent = r[1] && (r[1].posts || []).filter(function (p) { return String(p.post) === idx; })[0];
+      if (pub) post.datePublished = pub;
+      var mod = ent && kdate(ent.updated);
+      if (mod) post.dateModified = (pub && mod < pub.slice(0, 10)) ? pub : mod;
+      else if (pub) post.dateModified = pub;
+      put();
     });
   }
   run();
@@ -1297,7 +1353,7 @@
   setTimeout(run, 1500);
 })();
 
-/* ── 회원용 시크릿자료(/secret-library) 게시판 모양 — 시안 A 깔끔형 (2026-10-30 사장님) ──
+/* ── 시크릿 자료실(/secret-library, 옛 이름 회원용 시크릿자료) 게시판 모양 — 시안 A 깔끔형 (2026-10-30 사장님) ──
    목록 화면: 아임웹 줄 목록은 감추고(링크는 그대로 둠) 칼럼 목록 표(column/index.json)로 소개 · 카드 · 대상별 안내 · 회원가입 띠를 그립니다.
    글 보기: 제목 위에 갈래 딱지, 본문 오른쪽에 따라 내려오는 상자(이 글의 차례 · 무료로 받기 — 「이 강 보기」는 본문 무료 PDF 상자 바로 아래로 옮김, 사장님 10-30), 아래 함께 보면 좋은 자료.
    표에 없는 글(번호가 없는 글)은 모양만 다듬고 오른쪽 상자는 그리지 않습니다. 글쓰기 · 댓글 · 좋아요는 아임웹 것 그대로입니다. */
@@ -1336,7 +1392,7 @@
     var areas = ['전체'].concat(['어법', '구문', '어휘', '독해'].filter(function (a) { return live.some(function (p) { return p.area === a; }); }));
     var top = live[0];
     var h = '<div class="slc slc-lib">' +
-      '<div class="slc-top"><span>대치동시크릿 › <b>회원용 시크릿자료</b></span><input type="search" placeholder="문법 개념 검색 (예: 관계대명사)" aria-label="칼럼 검색"></div>' +
+      '<div class="slc-top"><span>대치동시크릿 › <b>시크릿 자료실</b></span><input type="search" placeholder="문법 개념 검색 (예: 관계대명사)" aria-label="칼럼 검색"></div>' +
       '<div class="slc-tabs" role="tablist">' + areas.map(function (a, i) { return '<button type="button"' + (i ? '' : ' class="on"') + ' data-a="' + esc(a) + '">' + esc(a) + '</button>'; }).join('') + '</div>' +
       '<section class="slc-hero"><div><div class="slc-eye">SECRET NOTE</div>' +
         '<h2>헷갈리는 영어,<br><em>한 장으로</em> 정리해 드려요</h2>' +

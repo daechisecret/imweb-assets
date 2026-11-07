@@ -137,6 +137,35 @@ if os.path.exists(CATALOG):
     except Exception as e:
         print('⚠ catalog.json 읽기 실패:', e)
 
+# ── 칼럼 처음 올린 날(구조화 데이터 datePublished) → column/published.json ──
+#   board.js 가 글 보기 화면에서 이 표를 읽어 BlogPosting 에 넣습니다.
+#   아임웹 RSS(최근 50개, 정확한 시각) > 이미 적어 둔 값 > git 에서 그 글 번호가 처음 들어간 시각
+PUB = os.path.join(ROOT, 'column', 'published.json')
+pub = json.load(io.open(PUB, encoding='utf-8')) if os.path.exists(PUB) else {}
+pub_old = dict(pub)
+try:
+    time.sleep(2)
+    req = urllib.request.Request(SITE + '/rss', headers={'User-Agent': UA})
+    rss = urllib.request.urlopen(req, timeout=60).read().decode('utf-8', 'replace')
+    from email.utils import parsedate_to_datetime
+    for it in re.findall(r'<item>(.*?)</item>', rss, re.S):
+        lk = re.search(r'<link>(.*?)</link>', it); pd = re.search(r'<pubDate>(.*?)</pubDate>', it)
+        if lk and pd and '/secret-library/' in lk.group(1):
+            n = re.search(r'idx=(\d+)', lk.group(1))
+            if n and n.group(1) not in pub:
+                pub[n.group(1)] = parsedate_to_datetime(pd.group(1)).isoformat()
+except Exception as e:
+    print('⚠ RSS 를 못 받았습니다:', e)
+for u in cols:
+    n = str(board_post(u))
+    if n in pub: continue
+    r = subprocess.run(['git', 'log', '-S' + n, '--reverse', '--format=%cI', '--', 'column/index.json', 'sitemap-all.xml'],
+                       cwd=ROOT, capture_output=True, text=True, encoding='utf-8')
+    first = (r.stdout.strip().splitlines() or [None])[0]
+    pub[n] = first or (TODAY + 'T09:00:00+09:00')
+if pub != pub_old:
+    io.open(PUB, 'w', encoding='utf-8', newline='\n').write(json.dumps(dict(sorted(pub.items())), ensure_ascii=False, indent=1) + '\n')
+
 # ── 쓰기 ──
 def row(u, lm, pr):
     s = '<url><loc>%s</loc>' % escape(u)
@@ -159,7 +188,7 @@ print('sitemap-all.xml — 칼럼 %d · 페이지 %d · 상품 %d (모두 %d, �
 
 if not PUSH:
     raise SystemExit
-if text == old:
+if text == old and pub == pub_old:
     print('바뀐 것이 없어 올리지 않았습니다.')
     raise SystemExit
 
@@ -168,9 +197,9 @@ def git(*a):
     return subprocess.run(('git',) + a, cwd=ROOT, capture_output=True, text=True, encoding='utf-8')
 
 
-git('add', 'sitemap-all.xml')
+git('add', 'sitemap-all.xml', 'column/published.json')
 msg = '사이트맵 자동 갱신: 칼럼 %d · 상품 %d · 페이지 %d\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>' % (len(cols), len(prods), len(pages))
-r = git('commit', '-m', msg, '--', 'sitemap-all.xml')
+r = git('commit', '-m', msg, '--', 'sitemap-all.xml', 'column/published.json')
 if r.returncode:
     print('커밋 못 함:', r.stdout + r.stderr); raise SystemExit(1)
 for i in range(3):
