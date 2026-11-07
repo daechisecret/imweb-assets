@@ -126,7 +126,7 @@
     '#dcs-notes .lb-empty{grid-column:1/-1;text-align:center;padding:56px 0!important;color:var(--sub);font-size:15px;border:1.5px dashed #E6DCE2}',
     '#dcs-notes .lb-more{display:block;margin:32px auto 0!important;background:#fff;border:1.5px solid var(--ink);border-radius:4px;padding:11px 26px!important;font-size:14px;font-weight:700;color:var(--ink)}',
     '.lb-hide{display:none!important}',
-    '@media (max-width:760px){#dcs-notes{padding:0 16px}#dcs-notes .lb-top{padding-top:22px}#dcs-notes .lb-h{font-size:29px}#dcs-notes .lb-eng{font-size:25px}',
+    '@media (max-width:760px){#dcs-notes{padding:0 16px}#dcs-notes .lb-top{padding-top:22px}#dcs-notes .lb-h{font-size:29px}#dcs-notes .lb-eng{font-size:25px!important}',
     '#dcs-notes .lb-tools{width:100%;flex-direction:column;align-items:stretch}#dcs-notes .lb-q{width:100%}#dcs-notes .lb-join{text-align:center}',
     '#dcs-notes .lb-lv{display:flex}#dcs-notes .lb-lv button{flex:1;padding:10px 0!important;font-size:15.5px}',
     '#dcs-notes .lb-chips{flex-wrap:nowrap;overflow-x:auto;margin-right:-16px!important;padding-right:16px!important;-webkit-overflow-scrolling:touch}#dcs-notes .lb-chips button{flex:none}',
