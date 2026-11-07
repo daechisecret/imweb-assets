@@ -730,7 +730,9 @@ function hwpLinks(){
 /* 11-07 사장님: 패키지가 더 눈에 띄게 — 구매 버튼 크게(PDF 분홍 · 한글 파랑), 강별 골라 사기는 그 아래 옅게, 이용 가이드는 교재명 옆 */
 .card.v2 .nm{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .card.v2 .nm h3{margin:0}
-.card.v2 .nm .gd{border:1px solid var(--line);background:var(--panel);color:var(--sub);border-radius:6px;padding:3px 9px;font:700 12px var(--f);cursor:pointer;white-space:nowrap}
+.card.v2 .nm .gd{display:inline-flex;align-items:center;gap:4px;border:1px solid #F6C9D8!important;background:#FFEAF1!important;color:var(--brand-ink)!important;border-radius:6px;padding:4px 10px!important;font:800 12.5px var(--f);cursor:pointer;white-space:nowrap}
+.card.v2 .nm .gd::before{content:'';width:12px;height:12px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2'%3E%3Cpath d='M6 2.5h8.5L19 7v14.5H6z'/%3E%3Cpath d='M9 12h7M9 15.5h7'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2'%3E%3Cpath d='M6 2.5h8.5L19 7v14.5H6z'/%3E%3Cpath d='M9 12h7M9 15.5h7'/%3E%3C/svg%3E") center/contain no-repeat}
+.card.v2 .nm .gd:hover{background:#FFD9E6!important}
 .card.v2 .row2{display:grid!important;grid-template-columns:1fr 1fr;gap:6px}
 .card.v2 .row2 a.bp{display:flex;align-items:center;justify-content:center;text-decoration:none;background:var(--brand);color:#fff;border-radius:8px;padding:13px 8px;font:900 15px var(--f);letter-spacing:-.2px}
 .card.v2 .row2 a.bp.h{background:#2F5C9E}
