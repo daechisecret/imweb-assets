@@ -1282,7 +1282,10 @@
     var l = document.createElement('link');
     l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=4';
     document.head.appendChild(l);
-    [].forEach.call(document.querySelectorAll('img.avatar-image:not([alt]), img.avatar-image[alt=""]'), function (im) { im.alt = '대치동시크릿 프로필'; });
+    function fillAlt() {
+      [].forEach.call(document.querySelectorAll('img.avatar-image:not([alt]), img.avatar-image[alt=""]'), function (im) { im.alt = '대치동시크릿 프로필'; });
+    }
+    fillAlt(); window.addEventListener('load', fillAlt); setTimeout(fillAlt, 3000);
     var idx = (/[?&]idx=(\d+)/.exec(location.search) || [])[1];
     var url = idx ? SITE + '/secret-library/?bmode=view&idx=' + idx : abs(location.href);
     var title = (document.querySelector('meta[property="og:title"]') || {}).content || document.title;

@@ -82,7 +82,7 @@
         '<div class="nt-act">' + get + col + '</div></article>';
     }
     return '<article class="nt-card nt-locked" aria-label="' + esc(it.title) + ', 곧 공개 예정">' +
-      '<div class="nt-thumb"><img src="' + BASE + it.thumb + '_lock.jpg" alt="" loading="lazy">' +
+      '<div class="nt-thumb"><img src="' + BASE + it.thumb + '_lock.jpg" alt="' + esc(it.title) + ' 공개 예정" loading="lazy">' +
       '<span class="nt-lock">' + LOCK_SVG + '</span></div>' +
       '<div class="nt-meta">' + cat + '</div>' +
       '<h3 class="nt-ttl">' + esc(it.title) + '</h3>' +
