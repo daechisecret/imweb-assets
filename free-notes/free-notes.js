@@ -91,7 +91,7 @@
     '#dcs-notes .lb{--hi:#E4587E;--mid:#8B6FD6;--ink:#2E2433;--sub:#7A6C78;--line:#F1E4EA;--ac:#2E2433;color:var(--ink);font-family:"DCS Noto","Noto Sans KR",sans-serif}',
     '#dcs-notes .lb *{box-sizing:border-box;margin:0;padding:0}',
     '#dcs-notes .lb-top{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:34px}',
-    '#dcs-notes .lb-eng{font:400 32px/1 "DCS Playball",cursive;color:var(--hi)}',
+    '#dcs-notes .lb-eng{font-family:"DCS Playball",cursive!important;font-weight:400;font-size:32px;line-height:1;color:var(--hi)}',
     '#dcs-notes .lb-h{font-family:"DCS Paperlogy","Paperlogy",sans-serif!important;font-weight:800;font-size:40px;line-height:1.15;letter-spacing:-1px;margin-top:6px!important}',
     '#dcs-notes .lb-desc{font-size:15.5px;color:var(--sub);margin-top:8px!important}',
     '#dcs-notes .lb-tools{display:flex;gap:10px;align-items:center}',
