@@ -127,3 +127,41 @@
 @media (max-width:900px){.dcs-col .book{grid-template-columns:1fr !important}
 .dcs-col .teacher{grid-template-columns:1fr !important}}
 @media (max-width:900px){.dcs-col .cta{grid-template-columns:1fr !important}}
+/* ── 칼럼 휴대폰 화면 다듬기 (2026-11-07 사장님 「모바일에서 표가 잘리고 안 보여」) ──
+   make_post.py 가 column.css 맨 끝에 그대로 붙인다(MOBILE_ON). 글마다 손대지 않고 모든 칼럼에 걸린다.
+   아임웹은 표 칸에 word-break:break-all 을 걸어 「th/at」「그/러/나」처럼 단어 가운데를 자른다 → PC·휴대폰 모두 단어 단위로 */
+.dcs-col table,.dcs-col table :is(th,td){word-break:keep-all !important;overflow-wrap:break-word !important}
+.dcs-col .ex .ch{white-space:normal !important}
+@media (max-width:640px){
+/* 표 → 한 줄(가로 행)을 「두 칸 + 아래 한 칸」 묶음으로: 2칸 표는 그대로, 3칸 표는 셋째 칸이 아래 줄 전체,
+   4칸(표현·뜻·표현·뜻) 표는 2×2. 머리 줄도 같은 모양이라 어느 칸이 무엇인지 그대로 읽힌다. */
+.dcs-col table{display:block !important;width:100% !important;font-size:14.5px !important;line-height:1.6 !important;margin:16px 0 6px !important;border-top:1.5px solid var(--ink) !important}
+.dcs-col table :is(thead,tbody){display:block !important}
+.dcs-col table tr{display:grid !important;grid-template-columns:minmax(0,40%) minmax(0,1fr) !important;column-gap:14px !important;row-gap:3px !important;padding:11px 4px !important;border-bottom:1px solid var(--line) !important}
+.dcs-col table thead tr{background:var(--soft) !important;padding:8px 4px !important}
+:is(.dcs-col,#dcs-z) table :is(th,td){display:block !important;padding:0 !important;border:0 !important;min-width:0 !important;background:none !important}
+.dcs-col table th{font-size:12.5px !important;font-weight:700 !important;color:var(--sub) !important}
+.dcs-col table :is(th,td):nth-child(3):last-child,.dcs-col table td[colspan]{grid-column:1/-1 !important}
+.dcs-col table tbody td:nth-child(3):last-child{color:var(--sub) !important;font-size:14px !important}
+/* 순위 표(빈출 어휘: 순위·단어·뜻·나온 회차 — 넷째 칸에 굵은 숫자)는 「순위 단어 회차」 한 줄 + 아래에 뜻 */
+.dcs-col table:has(tbody td:nth-child(4) > :is(b,strong)) tr{grid-template-columns:2.2em minmax(0,1fr) auto !important;column-gap:10px !important}
+.dcs-col table:has(tbody td:nth-child(4) > :is(b,strong)) :is(th,td):nth-child(1){grid-area:1/1 !important}
+.dcs-col table:has(tbody td:nth-child(4) > :is(b,strong)) :is(th,td):nth-child(2){grid-area:1/2 !important}
+.dcs-col table:has(tbody td:nth-child(4) > :is(b,strong)) :is(th,td):nth-child(4){grid-area:1/3 !important;text-align:right !important}
+.dcs-col table:has(tbody td:nth-child(4) > :is(b,strong)) :is(th,td):nth-child(3){grid-area:2/2/3/4 !important}
+.dcs-col table:has(tbody td:nth-child(4) > :is(b,strong)) tbody td:nth-child(1){color:var(--sub) !important}
+/* 글 상자 안쪽 여백을 줄여 글 폭을 넓힘 */
+.dcs-col .answer{padding:26px 18px 16px !important}
+:is(.dcs-col,#dcs-z) .answer p{font-size:19px !important}
+:is(.dcs-col,#dcs-z) h2{font-size:22px !important;margin:46px 0 12px !important}
+.dcs-col .toc{padding:16px 18px !important}
+.dcs-col .ex{padding:14px 16px !important}
+.dcs-col .fig{padding:8px !important;margin:24px 0 32px !important}
+.dcs-col .qa-gc{padding:10px 12px !important}
+.dcs-col .qa-gc span{position:static !important;display:inline-block !important;margin-bottom:4px !important}
+.dcs-col .mist li{padding-left:40px !important}
+.dcs-col .cta{padding:18px !important;gap:16px !important}
+.dcs-col .more{grid-template-columns:76px 1fr !important;gap:14px !important;padding:16px !important}
+.dcs-col .more img{width:76px !important}
+.dcs-col .teacher,.dcs-col .book{padding:20px 18px !important}
+}
