@@ -1236,3 +1236,27 @@
     }
   }, 250);
 })();
+
+/* ── 상품 화면 그림 alt 채우기 (2026-11-07, 네이버 서치어드바이저 「Alt 속성 누락」) ──
+   아임웹은 대표 그림(#main-image)을 alt="" 로, 상세 설명 그림(편집기 .fr-dib 등)을 alt 없이 내보냅니다.
+   상품 이름(og:title)으로 채웁니다. 이미 alt 가 있는 그림은 그대로 둡니다. */
+(function () {
+  if (!/^\/shop_view/.test(location.pathname) && !/[?&]idx=\d+/.test(location.search)) return;
+  function name() {
+    var t = (document.querySelector('meta[property="og:title"]') || {}).content || document.title || '';
+    return t.replace(/🩷/g, '').replace(/\s+/g, ' ').trim();
+  }
+  function fill() {
+    var n = name(); if (!n) return;
+    var k = 0;
+    [].forEach.call(document.querySelectorAll('img'), function (im) {
+      if (im.getAttribute('alt')) return;
+      if (im.id === 'main-image') { im.alt = n + ' 표지'; return; }
+      if (im.closest('#prod_detail_content_pc, #prod_detail_content_mobile, .fr-view, ._prod_detail_detail_lazy_load, .goods_summary')) im.alt = n + ' 자료 미리보기 ' + (++k);
+    });
+  }
+  fill();
+  document.addEventListener('DOMContentLoaded', fill);
+  window.addEventListener('load', fill);
+  setTimeout(fill, 3000);
+})();
