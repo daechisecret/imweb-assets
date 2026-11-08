@@ -58,7 +58,7 @@
     { open: true, area: '어휘', title: '고3 수능 빈출 어휘 500', sub: '수능 · 모평 · 학평 10개년 68회 기출 단어 총정리', img: 'https://daechisecret.github.io/imweb-assets/column/voca500_g3/voca500_g3_pdf1.jpg', shop: 'https://www.daechisecret.com/shop_view/?idx=2825', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175472081' },
     /* 중등(보라) */
     { open: true, lv: '중등', area: '어법', title: '헷갈리는 전치사 짝', sub: 'in vs into · above vs over 그림으로', thumb: 'm01', shop: 'https://www.daechisecret.com/shop_view/?idx=2826', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175492499' },
-    { open: false, lv: '중등', area: '어법', title: '헷갈리는 감정 형용사 짝', sub: 'bored vs boring, -ed와 -ing 차이', thumb: 'm02', shop: '', col: '' },
+    { open: true, lv: '중등', area: '어법', title: '헷갈리는 감정 형용사 짝', sub: 'bored vs boring, -ed와 -ing 차이', thumb: 'm02', shop: 'https://www.daechisecret.com/shop_view/?idx=2827', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175495235' },
     { open: false, lv: '중등', area: '어휘', title: '헷갈리는 동사 짝', sub: 'borrow vs lend · look vs see', thumb: 'm03', shop: '', col: '' }
   ];
 
