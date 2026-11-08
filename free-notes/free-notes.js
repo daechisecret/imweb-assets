@@ -59,7 +59,7 @@
     /* 중등(보라) */
     { open: true, lv: '중등', area: '어법', title: '헷갈리는 전치사 짝', sub: 'in vs into · above vs over 그림으로', thumb: 'm01', shop: 'https://www.daechisecret.com/shop_view/?idx=2826', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175492499' },
     { open: true, lv: '중등', area: '어법', title: '헷갈리는 감정 형용사 짝', sub: 'bored vs boring, -ed와 -ing 차이', thumb: 'm02', shop: 'https://www.daechisecret.com/shop_view/?idx=2827', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175495235' },
-    { open: false, lv: '중등', area: '어휘', title: '헷갈리는 동사 짝', sub: 'borrow vs lend · look vs see', thumb: 'm03', shop: '', col: '' }
+    { open: true, lv: '중등', area: '어휘', title: '헷갈리는 동사 짝', sub: 'borrow vs lend · look vs see', thumb: 'm03', shop: 'https://www.daechisecret.com/shop_view/?idx=2828', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175495415' }
   ];
 
   /* 썸네일 폴더 = 이 스크립트가 있는 폴더 + thumbs/ */
