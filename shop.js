@@ -416,7 +416,7 @@ var title = tidy(h2 ? h2.textContent : '');
 var k = kindOf(title), b = bookOf(title);
 el.dataset.slkind = k;
 el.dataset.slbook = b;
-el.dataset.sllesson = lessonOf(title);
+el.dataset.sllesson = lessonKey(lessonOf(title));
 if (k) { if (!kindCount[k]) { kindCount[k] = 0; kinds.push(k); } kindCount[k]++; }
 if (b) bookCount[b] = (bookCount[b] || 0) + 1;
 if (k && !el.querySelector('.sl-kindtag')) {
@@ -454,6 +454,35 @@ v.replace(/"/g, '&quot;') + '">' + v + '<em>' + (count || '미등록') + '</em><
 '</div>';
 bar.appendChild(line);
 }
+var lessonSet = {};
+items.forEach(function (el) { if (el.dataset.sllesson) lessonSet[el.dataset.sllesson] = 1; });
+var lessons = Object.keys(lessonSet).sort(function (a, b) {
+var ta = a.indexOf('TEST') === 0, tb = b.indexOf('TEST') === 0;
+if (ta !== tb) return ta ? 1 : -1;
+return (+a.replace('TEST', '') || 0) - (+b.replace('TEST', '') || 0);
+});
+function lessonLabel(k) {
+if (k.indexOf('TEST') === 0) return k === 'TEST' ? 'TEST' : 'TEST ' + k.slice(4) + '강';
+return k + '강';
+}
+if (lessons.length > 1) {
+any = true;
+var lline = document.createElement('div');
+lline.className = 'sl-pillrow sl-lessonrow';
+lline.innerHTML = '<span class="sl-plab">강</span>' +
+'<div class="sl-pset">' +
+'<button type="button" class="sl-pill on" aria-pressed="true" data-k="lesson" data-v="">전체</button>' +
+lessons.map(function (v) {
+return '<button type="button" class="sl-pill" aria-pressed="false" data-k="lesson" data-v="' + v + '">' +
+lessonLabel(v) + '<em></em></button>';
+}).join('') +
+'</div>';
+bar.appendChild(lline);
+[].forEach.call(document.querySelectorAll('.sla2-chips'), function (set) {
+var row = set.closest('.sla2-row');
+(row || set).style.display = 'none';
+});
+}
 var distinctBooks = Object.keys(bookCount).length;
 if (distinctBooks > 1) {
 any = true;
@@ -484,38 +513,9 @@ var out = document.createElement('div');
 out.className = 'sl-pillcount';
 bar.appendChild(out);
 topBox(bar, host);
+var cntEl = document.querySelector('.sl-top .sl-cnt');
+if (cntEl) cntEl.textContent = items.length + '개';
 var pick = { kind: '', book: '', lesson: '' };
-var chipSets = document.querySelectorAll('.sla2-chips');
-[].forEach.call(chipSets, function (set) {
-[].forEach.call(set.querySelectorAll('.sla2-note'), function (n) { n.remove(); });
-[].forEach.call(set.querySelectorAll('.c > span'), function (sp) {
-var b = sp.querySelector('b');
-var label = (b ? b.textContent : sp.textContent).trim();
-sp.textContent = label;
-sp.dataset.lesson = lessonKey(label);
-sp.setAttribute('role', 'button');
-sp.tabIndex = 0;
-sp.style.cursor = 'pointer';
-});
-set.addEventListener('click', function (e) {
-var sp = e.target.closest('.c > span[data-lesson]');
-if (!sp) return;
-pick.lesson = pick.lesson === sp.dataset.lesson ? '' : sp.dataset.lesson;
-[].forEach.call(document.querySelectorAll('.sla2-chips .c > span[data-lesson]'), function (x) {
-var on = x.dataset.lesson === pick.lesson;
-x.style.background = on ? '#e4587e' : '';
-x.style.color = on ? '#fff' : '';
-x.style.borderColor = on ? '#e4587e' : '';
-});
-apply();
-if (pick.lesson) (document.querySelector('.sl-top') || host).scrollIntoView({ behavior: 'smooth', block: 'start' });
-});
-});
-function lessonOk(el) {
-if (!pick.lesson) return true;
-var l = lessonKey(el.dataset.sllesson);
-return l === pick.lesson || (pick.lesson === 'TEST' && l.indexOf('TEST') === 0);
-}
 var empty;
 if (advancedPage()) {
 empty = document.createElement('p');
@@ -528,10 +528,25 @@ function apply() {
 var n = 0;
 items.forEach(function (el) {
 var ok = true;
-for (var k in pick) if (k !== 'lesson' && pick[k] && el.dataset['sl' + k] !== pick[k]) ok = false;
-if (!lessonOk(el)) ok = false;
+for (var k in pick) if (pick[k] && el.dataset['sl' + k] !== pick[k]) ok = false;
 el.classList.toggle('sl-off', !ok);
 if (ok) n++;
+});
+[].forEach.call(bar.querySelectorAll('.sl-pill[data-k="kind"], .sl-pill[data-k="lesson"]'), function (btn) {
+var key = btn.dataset.k, val = btn.dataset.v;
+var c = 0;
+items.forEach(function (el) {
+for (var k in pick) {
+var want = k === key ? val : pick[k];
+if (want && el.dataset['sl' + k] !== want) return;
+}
+c++;
+});
+var em = btn.querySelector('em');
+if (val && em && !(c === 0 && btn.classList.contains('sl-unlisted'))) em.textContent = c;
+var dead = !!val && !c && pick[key] !== val;
+btn.disabled = dead;
+btn.classList.toggle('sl-dead', dead);
 });
 out.textContent = n === items.length
 ? '모두 ' + items.length + '개'
