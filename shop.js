@@ -346,13 +346,69 @@ links.appendChild(a);
 var anchor = document.querySelector('.shop-tools') || host;
 anchor.parentNode.insertBefore(intro, anchor);
 }
+function pageNoOf(href) {
+var m = /[?&]page=(\d+)/.exec(href || '');
+return m ? +m[1] : 0;
+}
+function loadAllPages(host, items, done) {
+var links = document.querySelectorAll('.pagination a[href*="page="]');
+var max = 1;
+for (var i = 0; i < links.length; i++) max = Math.max(max, pageNoOf(links[i].getAttribute('href')));
+if (max <= 1 || !window.fetch || !window.DOMParser) return done(items);
+var cur = pageNoOf(location.search) || 1;
+var seen = {};
+items.forEach(function (el) { seen[idxOf(el)] = 1; });
+var base = location.pathname, sort = (/[?&]sort=([^&]+)/.exec(location.search) || [])[1] || 'recent';
+var jobs = [];
+for (var p = 1; p <= max; p++) {
+if (p === cur) { jobs.push(Promise.resolve(null)); continue; }
+jobs.push(fetch(base + '?page=' + p + '&sort=' + sort, { credentials: 'same-origin' })
+.then(function (r) { return r.ok ? r.text() : ''; })
+.catch(function () { return ''; }));
+}
+Promise.all(jobs).then(function (pages) {
+var before = [], after = [];
+pages.forEach(function (html, i) {
+if (!html) return;
+var doc = new DOMParser().parseFromString(html, 'text/html');
+var scope = (host.id && doc.getElementById(host.id)) || doc;
+[].forEach.call(scope.querySelectorAll(LIST_SEL), function (el) {
+if (el.closest && el.closest(SLIDER)) return;
+var id = idxOf(el);
+if (!id || seen[id]) return;
+seen[id] = 1;
+var node = document.importNode(el, true);
+(i + 1 < cur ? before : after).push(node);
+});
+});
+var first = items[0];
+before.forEach(function (n) { host.insertBefore(n, first); });
+after.forEach(function (n) { host.appendChild(n); });
+[].forEach.call(document.querySelectorAll('.pagination'), function (pg) {
+(pg.closest('nav') || pg).style.display = 'none';
+});
+done(before.concat(items, after));
+});
+}
+function lessonOf(t) {
+var m = /TEST\s*(\d*)/i.exec(t);
+if (m) return 'TEST' + (m[1] || '');
+m = /(?:^|[^\d])(\d{1,2})\s*강/.exec(t);
+return m ? m[1] : '';
+}
+function lessonKey(s) {
+return String(s || '').replace(/\s|강/g, '').toUpperCase();
+}
 function build() {
 var got = pickHost();
 if (!got) return;
-var host = got.host, items = got.items;
+var host = got.host;
 if (host.dataset.slPills === '1') return;
 host.dataset.slPills = '1';
 host.classList.add('sl-grid', 'sl-lay-c');   /* 사장님이 고르신 목록형 */
+loadAllPages(host, got.items, function (all) { build2(host, all); });
+}
+function build2(host, items) {
 var kindCount = {}, bookCount = {}, kinds = [];
 items.forEach(function (el) {
 var h2 = el.querySelector('.shop-title');
@@ -360,6 +416,7 @@ var title = tidy(h2 ? h2.textContent : '');
 var k = kindOf(title), b = bookOf(title);
 el.dataset.slkind = k;
 el.dataset.slbook = b;
+el.dataset.sllesson = lessonOf(title);
 if (k) { if (!kindCount[k]) { kindCount[k] = 0; kinds.push(k); } kindCount[k]++; }
 if (b) bookCount[b] = (bookCount[b] || 0) + 1;
 if (k && !el.querySelector('.sl-kindtag')) {
@@ -427,7 +484,38 @@ var out = document.createElement('div');
 out.className = 'sl-pillcount';
 bar.appendChild(out);
 topBox(bar, host);
-var pick = { kind: '', book: '' };
+var pick = { kind: '', book: '', lesson: '' };
+var chipSets = document.querySelectorAll('.sla2-chips');
+[].forEach.call(chipSets, function (set) {
+[].forEach.call(set.querySelectorAll('.sla2-note'), function (n) { n.remove(); });
+[].forEach.call(set.querySelectorAll('.c > span'), function (sp) {
+var b = sp.querySelector('b');
+var label = (b ? b.textContent : sp.textContent).trim();
+sp.textContent = label;
+sp.dataset.lesson = lessonKey(label);
+sp.setAttribute('role', 'button');
+sp.tabIndex = 0;
+sp.style.cursor = 'pointer';
+});
+set.addEventListener('click', function (e) {
+var sp = e.target.closest('.c > span[data-lesson]');
+if (!sp) return;
+pick.lesson = pick.lesson === sp.dataset.lesson ? '' : sp.dataset.lesson;
+[].forEach.call(document.querySelectorAll('.sla2-chips .c > span[data-lesson]'), function (x) {
+var on = x.dataset.lesson === pick.lesson;
+x.style.background = on ? '#e4587e' : '';
+x.style.color = on ? '#fff' : '';
+x.style.borderColor = on ? '#e4587e' : '';
+});
+apply();
+if (pick.lesson) (document.querySelector('.sl-top') || host).scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+});
+function lessonOk(el) {
+if (!pick.lesson) return true;
+var l = lessonKey(el.dataset.sllesson);
+return l === pick.lesson || (pick.lesson === 'TEST' && l.indexOf('TEST') === 0);
+}
 var empty;
 if (advancedPage()) {
 empty = document.createElement('p');
@@ -440,7 +528,8 @@ function apply() {
 var n = 0;
 items.forEach(function (el) {
 var ok = true;
-for (var k in pick) if (pick[k] && el.dataset['sl' + k] !== pick[k]) ok = false;
+for (var k in pick) if (k !== 'lesson' && pick[k] && el.dataset['sl' + k] !== pick[k]) ok = false;
+if (!lessonOk(el)) ok = false;
 el.classList.toggle('sl-off', !ok);
 if (ok) n++;
 });
