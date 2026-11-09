@@ -381,6 +381,32 @@ var node = document.importNode(el, true);
 (i + 1 < cur ? before : after).push(node);
 });
 });
+function grab(html) {
+var got = [];
+var doc = new DOMParser().parseFromString(html || '', 'text/html');
+var scope = (host.id && doc.getElementById(host.id)) || doc;
+[].forEach.call(scope.querySelectorAll(LIST_SEL), function (el) {
+if (el.closest && el.closest(SLIDER)) return;
+var id = idxOf(el);
+if (!id || seen[id]) return;
+seen[id] = 1;
+got.push(document.importNode(el, true));
+});
+return got;
+}
+function more(p) {
+if (p > 60) return finish();
+fetch(base + '?page=' + p + '&sort=' + sort, { credentials: 'same-origin' })
+.then(function (r) { return r.ok ? r.text() : ''; })
+.catch(function () { return ''; })
+.then(function (html) {
+var got = grab(html);
+if (!got.length) return finish();
+after.push.apply(after, got);
+more(p + 1);
+});
+}
+function finish() {
 var first = items[0];
 before.forEach(function (n) { host.insertBefore(n, first); });
 after.forEach(function (n) { host.appendChild(n); });
@@ -388,13 +414,16 @@ after.forEach(function (n) { host.appendChild(n); });
 (pg.closest('nav') || pg).style.display = 'none';
 });
 done(before.concat(items, after));
+}
+if (max >= 10) more(max + 1); else finish();
 });
 }
 function lessonOf(t) {
+if (/전범위|패키지|\d\s*강?\s*[~\-]\s*(?:\d|TEST)/i.test(t)) return '';
 var m = /TEST\s*(\d*)/i.exec(t);
 if (m) return 'TEST' + (m[1] || '');
 m = /(?:^|[^\d])(\d{1,2})\s*강/.exec(t);
-return m ? m[1] : '';
+return m ? String(+m[1]) : '';   /* 「04강」 = 「4강」 */
 }
 function lessonKey(s) {
 return String(s || '').replace(/\s|강/g, '').toUpperCase();
