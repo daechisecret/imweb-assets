@@ -18,8 +18,7 @@ return FMT_PAGES.indexOf(location.pathname.replace(/\/$/, '')) >= 0;
 var MID_PAGES = { '/538': 1, '/539': 2, '/540': 3 };
 function midPage() { return MID_PAGES[location.pathname.replace(/\/$/, '')] || 0; }
 var MID_ORDER = ['PDF 강별', 'PDF 패키지', '한글(HWP) 강별', '한글(HWP) 패키지'];
-var MID_PUBS = [['YK', 'YBM 김은형'], ['YP', 'YBM 박준언'], ['NK', '능률 김기택'], ['DY', '동아 윤정미'], ['DL', '동아 이병민'],
-['MM', '미래엔 문영인'], ['VH', '비상 황종배'], ['JS', '지학사 송미정'], ['CS', '천재 소영순'], ['CL', '천재 이상기']];
+var MID_PUBS = ['YK', 'YP', 'NK', 'DY', 'DL', 'MM', 'VH', 'JS', 'CS', 'CL'].map(function (c) { return [c, '교과서 속 문법 ' + c]; });
 var MID_RE = /\[\s*중학교\s*[1-3]\s*학년\s*교과서\s*속\s*문법\s+([A-Z]{2})\s*\]/;
 function midKind(t) {
 var h = HWP_RE.test(t), pk = /패키지/.test(t);
@@ -535,7 +534,7 @@ box.innerHTML =
 '<div class="sl-bhead"><span class="sl-plab">교재</span>' +
 '<button type="button" class="sl-pill on sl-ball" data-k="book" data-v="">전체 보기</button></div>' +
 '<div class="sl-bgrid">' +
-(midPage() ? [{ g: '중학교 ' + midPage() + '학년 교과서 (출판사)', list: MID_PUBS.filter(function (x) { return bookCount[x[0]]; }).map(function (x) { return [x[0], x[1], x[0]]; }) }] : BOOK_GROUPS).map(function (grp) {
+(midPage() ? [{ g: '중학교 ' + midPage() + '학년 교과서 속 문법', list: MID_PUBS.filter(function (x) { return bookCount[x[0]]; }).map(function (x) { return [x[0], x[1], x[0]]; }) }] : BOOK_GROUPS).map(function (grp) {
 return '<div class="sl-bcol"><div class="sl-bgt">' + grp.g + '</div>' +
 grp.list.map(function (b) {
 var n = bookCount[b[0]] || 0;
