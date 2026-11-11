@@ -1,3 +1,4 @@
+
 (function () {
 var LIST_SEL = '.shop-item._shop_item';
 var MANY = 9;            /* 알약이 이보다 많으면 접어 둡니다 */
@@ -14,6 +15,17 @@ var HWP_RE = /교사용\s*HWP|HWP\s*파일|한글\s*파일|HWP/i;
 function fmtPage() {
 return FMT_PAGES.indexOf(location.pathname.replace(/\/$/, '')) >= 0;
 }
+var MID_PAGES = { '/538': 1, '/539': 2, '/540': 3 };
+function midPage() { return MID_PAGES[location.pathname.replace(/\/$/, '')] || 0; }
+var MID_ORDER = ['PDF 강별', 'PDF 패키지', '한글(HWP) 강별', '한글(HWP) 패키지'];
+var MID_PUBS = [['YK', 'YBM 김은형'], ['YP', 'YBM 박준언'], ['NK', '능률 김기택'], ['DY', '동아 윤정미'], ['DL', '동아 이병민'],
+['MM', '미래엔 문영인'], ['VH', '비상 황종배'], ['JS', '지학사 송미정'], ['CS', '천재 소영순'], ['CL', '천재 이상기']];
+var MID_RE = /\[\s*중학교\s*[1-3]\s*학년\s*교과서\s*속\s*문법\s+([A-Z]{2})\s*\]/;
+function midKind(t) {
+var h = HWP_RE.test(t), pk = /패키지/.test(t);
+return h ? (pk ? '한글(HWP) 패키지' : '한글(HWP) 강별') : (pk ? 'PDF 패키지' : 'PDF 강별');
+}
+function midBook(t) { var m = MID_RE.exec(t); return m ? m[1] : ''; }
 var KIND_RULES = [
 ['교사용 한글파일 (편집가능)', /교사용\s*HWP|HWP\s*파일|한글\s*파일|HWP/i],
 ['변형문제 (심화편)', /심화|고난도/],
@@ -92,11 +104,13 @@ return String(s || '')
 .replace(/\s+/g, ' ').trim();
 }
 function kindOf(t) {
+if (midPage()) return midKind(t);
 if (fmtPage()) return HWP_RE.test(t) ? 'HWP (편집가능)' : 'PDF';
 for (var i = 0; i < KIND_RULES.length; i++) if (KIND_RULES[i][1].test(t)) return KIND_RULES[i][0];
 return '';
 }
 function bookOf(t) {
+if (midPage()) return midBook(t);
 for (var i = 0; i < BOOK_RULES.length; i++) if (BOOK_RULES[i][0].test(t)) return BOOK_RULES[i][1](t);
 return '';
 }
@@ -460,7 +474,7 @@ h.parentNode.insertBefore(tag, h);
 addGo(el);
 addActs(el);
 });
-kinds.sort(sortBy(fmtPage() ? FMT_ORDER : KIND_ORDER));
+kinds.sort(sortBy(midPage() ? MID_ORDER : fmtPage() ? FMT_ORDER : KIND_ORDER));
 if (advancedPage()) {
 kinds = ADVANCED_KINDS.concat(kinds.filter(function (k) { return ADVANCED_KINDS.indexOf(k) < 0; }));
 advancedIntro(host, items, kindCount);
@@ -521,7 +535,7 @@ box.innerHTML =
 '<div class="sl-bhead"><span class="sl-plab">교재</span>' +
 '<button type="button" class="sl-pill on sl-ball" data-k="book" data-v="">전체 보기</button></div>' +
 '<div class="sl-bgrid">' +
-BOOK_GROUPS.map(function (grp) {
+(midPage() ? [{ g: '중학교 ' + midPage() + '학년 교과서 (출판사)', list: MID_PUBS.filter(function (x) { return bookCount[x[0]]; }).map(function (x) { return [x[0], x[1], x[0]]; }) }] : BOOK_GROUPS).map(function (grp) {
 return '<div class="sl-bcol"><div class="sl-bgt">' + grp.g + '</div>' +
 grp.list.map(function (b) {
 var n = bookCount[b[0]] || 0;
