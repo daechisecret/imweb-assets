@@ -1,4 +1,3 @@
-
 (function () {
 var LIST_SEL = '.shop-item._shop_item';
 var MANY = 9;            /* 알약이 이보다 많으면 접어 둡니다 */
@@ -18,7 +17,8 @@ return FMT_PAGES.indexOf(location.pathname.replace(/\/$/, '')) >= 0;
 var MID_PAGES = { '/538': 1, '/539': 2, '/540': 3 };
 function midPage() { return MID_PAGES[location.pathname.replace(/\/$/, '')] || 0; }
 var MID_ORDER = ['PDF 강별', 'PDF 패키지', '한글(HWP) 강별', '한글(HWP) 패키지'];
-var MID_PUBS = ['YK', 'YP', 'NK', 'DY', 'DL', 'MM', 'VH', 'JS', 'CS', 'CL'].map(function (c) { return [c, '교과서 속 문법 ' + c]; });
+var MID_PUBS = [['YK', 'YBM (김은형)'], ['YP', 'YBM (박준언)'], ['NK', '능률 (김기택)'], ['DY', '동아 (윤정미)'], ['DL', '동아 (이병민)'],
+['MM', '미래엔 (문영인)'], ['VH', '비상 (황종배)'], ['JS', '지학사 (송미정)'], ['CS', '천재 (소영순)'], ['CL', '천재 (이상기)']];
 var MID_RE = /\[\s*중학교\s*[1-3]\s*학년\s*교과서\s*속\s*문법\s+([A-Z]{2})\s*\]/;
 function midKind(t) {
 var h = HWP_RE.test(t), pk = /패키지/.test(t);
@@ -448,7 +448,122 @@ var host = got.host;
 if (host.dataset.slPills === '1') return;
 host.dataset.slPills = '1';
 host.classList.add('sl-grid', 'sl-lay-c');   /* 사장님이 고르신 목록형 */
-loadAllPages(host, got.items, function (all) { build2(host, all); });
+loadAllPages(host, got.items, function (all) { if (!lessonTable(host, all)) build2(host, all); });
+}
+var PUB_NAME = {};
+MID_PUBS.forEach(function (x) { PUB_NAME[x[0]] = x[1]; });
+function propsOf(el) {
+try { return JSON.parse(el.getAttribute('data-product-properties') || 'null') || {}; } catch (e) { return {}; }
+}
+function won(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
+function genKind(t) {
+for (var i = 1; i < KIND_RULES.length; i++) if (KIND_RULES[i][1].test(t)) return KIND_RULES[i][0];
+return '내신대비 자료';
+}
+function lessonTable(host, items) {
+if (midPage() || advancedPage() || fmtPage()) return false;
+var codes = {}, g = 0, gram = [], other = [];
+items.forEach(function (el) {
+var t = titleOf(el), m = MID_RE.exec(t);
+if (m) { codes[m[1]] = 1; g = +(/중학교\s*([1-3])\s*학년/.exec(t) || [0, 0])[1]; gram.push([el, t]); } else other.push([el, t]);
+});
+var cs = Object.keys(codes);
+if (cs.length !== 1 || gram.length < 8) return false;
+var code = cs[0], pub = PUB_NAME[code] || code;
+var rows = {}, pk = {}, extra = [];
+function row(n) { return rows[n] || (rows[n] = { n: n, gram: '', pdf: null, hwp: null, nsd: [] }); }
+gram.forEach(function (x) {
+var el = x[0], t = x[1], p = propsOf(el), hwp = HWP_RE.test(t);
+var it = { idx: idxOf(el), u: urlOf(el), price: p.price, list: p.original_price, el: el };
+if (/패키지/.test(t)) { pk[hwp ? 'hwp' : 'pdf'] = it; return; }
+var m = /\]\s*(\d{1,2})\s*강\s*([^🩷]*)/.exec(t);
+if (!m) return;
+var r = row(+m[1]);
+r.gram = r.gram || tidy(m[2]);
+r[hwp ? 'hwp' : 'pdf'] = it;
+});
+other.forEach(function (x) {
+var m = /(?:^|[^\d])(\d{1,2})\s*과/.exec(x[1]) || /Lesson\s*(\d{1,2})/i.exec(x[1]);
+var it = { u: urlOf(x[0]), t: x[1], k: genKind(x[1]) };
+if (m) row(+m[1]).nsd.push(it); else extra.push(it);
+});
+var keys = Object.keys(rows).map(Number).sort(function (a, b) { return a - b; });
+var anyNsd = other.length > 0;
+if (!document.getElementById('sl-lt-css')) {
+var st = document.createElement('style');
+st.id = 'sl-lt-css';
+st.textContent =
+'.sl-lt{max-width:1080px;margin:0 auto 40px;padding:0 16px;color:#1d3a5e;font-family:inherit}' +
+'.sl-lt-hd{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 18px;border-bottom:2px solid #1d3a5e;padding:6px 0 12px;margin-bottom:4px}' +
+'.sl-lt-hd h2{font-size:24px;font-weight:800;margin:0}' +
+'.sl-lt-hd .gr{font-size:13px;font-weight:700;color:#6b58a8;background:#efeafc;padding:3px 10px;border-radius:999px}' +
+'.sl-lt-hd p{flex-basis:100%;margin:0;font-size:13px;color:#6b7686}' +
+'.sl-lt-tb{width:100%;border-collapse:collapse;font-size:14px}' +
+'.sl-lt-tb th{font-size:12px;color:#6b7686;font-weight:700;text-align:left;padding:10px 12px;border-bottom:1px solid #d9dee6;background:#f7f8fb}' +
+'.sl-lt-tb td{padding:14px 12px;border-bottom:1px solid #e6e9ef;vertical-align:middle}' +
+'.sl-lt-tb td.no{width:64px;font-size:18px;font-weight:800;white-space:nowrap}' +
+'.sl-lt-tb td.ns{width:34%}' +
+'.sl-lt-tb .nm{font-weight:800;font-size:15px}' +
+'.sl-lt-tb .sub{font-size:12px;color:#6b7686;margin-top:2px}' +
+'.sl-lt-tb .gp{font-weight:700;color:#6b58a8;margin-top:3px}' +
+'.sl-lt-tb .soon{font-size:13px;color:#9aa3b0}' +
+'.sl-lt-tb .nsl a{display:inline-block;margin:2px 6px 2px 0;font-size:13px;font-weight:700;color:#9a6a00;background:#fff7e6;border:1px solid #f3d28a;padding:5px 10px;border-radius:999px;text-decoration:none}' +
+'.sl-lt-f{display:flex;gap:6px;flex-wrap:wrap}' +
+'.sl-lt-f .fm{display:inline-flex;align-items:center;border:1px solid #d9dee6;border-radius:999px;overflow:hidden;background:#fff}' +
+'.sl-lt-f .fm a{padding:6px 10px;font-size:13px;font-weight:800;color:#1d3a5e;text-decoration:none;white-space:nowrap}' +
+'.sl-lt-f .fm a s{color:#9aa3b0;font-weight:500;margin-left:4px;font-size:11px}' +
+'.sl-lt-f .fm a i{font-style:normal;font-weight:600;color:#6b7686;margin-left:4px}' +
+'.sl-lt-f .fm.h a:first-child{color:#2c6a3f}' +
+'.sl-lt-f .fm button{border:0;border-left:1px solid #d9dee6;background:#e85a8a;color:#fff;font:inherit;font-size:12px;font-weight:800;padding:6px 10px;cursor:pointer}' +
+'.sl-lt-f .fm button:hover{background:#c33e6d}' +
+'.sl-lt-tb tr.pk td{background:#faf8ff}' +
+'.sl-lt-sw{display:block;margin:14px 0 0 auto;border:0;background:none;color:#6b7686;font:inherit;font-size:12px;text-decoration:underline;cursor:pointer}' +
+'@media (max-width:760px){.sl-lt-tb thead{display:none}.sl-lt-tb,.sl-lt-tb tbody,.sl-lt-tb tr,.sl-lt-tb td{display:block;width:auto}' +
+'.sl-lt-tb tr{border-bottom:1px solid #d9dee6;padding:10px 0}.sl-lt-tb td{border:0;padding:4px 0}.sl-lt-tb td.no{width:auto;font-size:16px}.sl-lt-tb td.ns{width:auto}.sl-lt-tb td.ns .soon:before{content:"내신대비 자료 · "}.sl-lt-f .fm a{padding:6px 8px}}';
+document.head.appendChild(st);
+}
+function fm(it, label, cls) {
+if (!it) return '';
+return '<span class="fm' + (cls ? ' ' + cls : '') + '"><a href="' + it.u + '">' + label + '<i>' + won(it.price) + '</i>' +
+(it.list && it.list > it.price ? '<s>' + won(it.list) + '</s>' : '') + '</a>' +
+'<button type="button" data-lt-cart="' + it.idx + '">담기</button></span>';
+}
+function nsdCell(list) {
+if (list.length) return '<div class="nsl">' + list.map(function (x) { return '<a href="' + x.u + '" title="' + x.t.replace(/"/g, '&quot;') + '">' + x.k + ' ↗</a>'; }).join('') + '</div>';
+return '<div class="soon">곧 올라와요</div>';
+}
+var html = '<div class="sl-lt-hd"><h2>' + pub + '</h2>' + (g ? '<span class="gr">중학교 ' + g + '학년</span>' : '') +
+'<p>과마다 왼쪽은 이 교과서 내신대비 자료, 오른쪽은 같은 과 문법만 따로 모은 「교과서 속 문법 ' + code + '」예요. PDF · 한글(HWP) 가운데 고르세요.</p></div>' +
+'<table class="sl-lt-tb"><thead><tr><th>과</th><th>' + pub + ' 내신대비 자료</th><th>교과서 속 문법 ' + code + '</th><th>파일 고르기</th></tr></thead><tbody>' +
+keys.map(function (n) {
+var r = rows[n];
+return '<tr><td class="no">' + n + '과</td>' +
+'<td class="ns">' + (anyNsd || r.nsd.length ? nsdCell(r.nsd) : '<div class="soon">곧 올라와요</div>') + '</td>' +
+'<td><div class="nm">교과서 속 문법 ' + code + ' ' + (n < 10 ? '0' : '') + n + '강</div>' + (r.gram ? '<div class="gp">' + r.gram + '</div>' : '') + '</td>' +
+'<td><div class="sl-lt-f">' + fm(r.pdf, 'PDF') + fm(r.hwp, '한글(HWP)', 'h') + '</div></td></tr>';
+}).join('') +
+(pk.pdf || pk.hwp ? '<tr class="pk"><td class="no">전체</td><td class="ns">' + (extra.length ? nsdCell(extra) : '') + '</td>' +
+'<td><div class="nm">교과서 속 문법 ' + code + ' 전범위 패키지</div><div class="sub">' + keys.length + '강 한 번에 · 30% 할인</div></td>' +
+'<td><div class="sl-lt-f">' + fm(pk.pdf, 'PDF') + fm(pk.hwp, '한글(HWP)', 'h') + '</div></td></tr>' : '') +
+'</tbody></table><button type="button" class="sl-lt-sw">상품 사진으로 보기</button>';
+var box = document.createElement('div');
+box.className = 'sl-lt';
+box.innerHTML = html;
+host.parentNode.insertBefore(box, host);
+host.style.display = 'none';
+var cards = {};
+items.forEach(function (el) { cards[idxOf(el)] = el; });
+box.addEventListener('click', function (e) {
+var b = e.target.closest('[data-lt-cart]');
+if (b) { addCart(b.getAttribute('data-lt-cart'), b, cards[b.getAttribute('data-lt-cart')]); return; }
+if (e.target.closest('.sl-lt-sw')) {
+var hid = host.style.display === 'none';
+host.style.display = hid ? '' : 'none';
+e.target.textContent = hid ? '과별 표로 보기' : '상품 사진으로 보기';
+if (hid) { items.forEach(function (el) { addGo(el); addActs(el); }); }
+}
+});
+return true;
 }
 function build2(host, items) {
 var kindCount = {}, bookCount = {}, kinds = [];
@@ -534,7 +649,7 @@ box.innerHTML =
 '<div class="sl-bhead"><span class="sl-plab">교재</span>' +
 '<button type="button" class="sl-pill on sl-ball" data-k="book" data-v="">전체 보기</button></div>' +
 '<div class="sl-bgrid">' +
-(midPage() ? [{ g: '중학교 ' + midPage() + '학년 교과서 속 문법', list: MID_PUBS.filter(function (x) { return bookCount[x[0]]; }).map(function (x) { return [x[0], x[1], x[0]]; }) }] : BOOK_GROUPS).map(function (grp) {
+(midPage() ? [{ g: '중학교 ' + midPage() + '학년 교과서', list: MID_PUBS.filter(function (x) { return bookCount[x[0]]; }).map(function (x) { return [x[0], x[1], x[0]]; }) }] : BOOK_GROUPS).map(function (grp) {
 return '<div class="sl-bcol"><div class="sl-bgt">' + grp.g + '</div>' +
 grp.list.map(function (b) {
 var n = bookCount[b[0]] || 0;
