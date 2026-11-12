@@ -452,6 +452,8 @@ loadAllPages(host, got.items, function (all) { if (!lessonTable(host, all)) buil
 }
 var PUB_NAME = {};
 MID_PUBS.forEach(function (x) { PUB_NAME[x[0]] = x[1]; });
+var MID_PATHS = { 1: [726, 'YK YP NK DY DL MM VH JS CS CL'], 2: [736, 'YK YP NK DY DL MM VH JS CS CL'], 3: [746, 'YK YP NK DY DL MM VH CS CL'] };
+var LINKS_URL = 'https://daechisecret.github.io/imweb-assets/mid-links.json';
 function propsOf(el) {
 try { return JSON.parse(el.getAttribute('data-product-properties') || 'null') || {}; } catch (e) { return {}; }
 }
@@ -460,6 +462,41 @@ function genKind(t) {
 for (var i = 1; i < KIND_RULES.length; i++) if (KIND_RULES[i][1].test(t)) return KIND_RULES[i][0];
 return '내신대비 자료';
 }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+var LT_CSS =
+'.sl-lt{max-width:1080px;margin:0 auto 40px;padding:0 16px;color:#1d3a5e;font-family:inherit}' +
+'.sl-lt .tg{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;vertical-align:middle}' +
+'.sl-lt .lav{background:#efeafc;color:#6b58a8}.sl-lt .sv{background:#fff4e0;color:#9a6a00}.sl-lt .ou{background:#e8edf6;color:#22406b}' +
+'.sl-lt h2.ti{font-size:26px;font-weight:900;margin:4px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}' +
+'.sl-lt .sw{display:flex;gap:6px;overflow-x:auto;padding:12px 0 10px;margin-bottom:14px;border-bottom:1px solid #e6e9ef}' +
+'.sl-lt .sw a{flex:none;font-size:13px;font-weight:700;padding:7px 12px;border-radius:999px;background:#f3f5f9;color:#46617f;text-decoration:none}' +
+'.sl-lt .sw a.on{background:#1d3a5e;color:#fff}' +
+'.sl-lt .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}' +
+'.sl-lt .card{border:1px solid #d9dee6;display:flex;flex-direction:column;background:#fff}' +
+'.sl-lt .hd{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #e6e9ef;background:#f7f8fb}' +
+'.sl-lt .hd b{font-size:20px;font-weight:900;flex:none}' +
+'.sl-lt .hd .gp{font-size:17px;font-weight:900;color:#1d3a5e;line-height:1.35;background:linear-gradient(transparent 58%,#fff09a 58%);padding:0 3px}' +
+'.sl-lt .hd .gp.sl{background:none;font-size:14px;color:#6b58a8}' +
+'.sl-lt .half{display:grid;grid-template-columns:1fr 1.3fr;flex:1}.sl-lt .half>div{padding:12px 14px}.sl-lt .half>div+div{border-left:1px solid #e6e9ef}' +
+'.sl-lt .lb{margin-bottom:8px}' +
+'.sl-lt .covs{display:flex;gap:8px;flex-wrap:wrap}' +
+'.sl-lt .cv{display:flex;flex-direction:column;gap:5px;align-items:center;width:84px}' +
+'.sl-lt .cv img,.sl-lt .ph{width:84px;height:118px;object-fit:cover;display:block;box-shadow:0 3px 8px rgba(29,58,94,.16);background:#f3f5f9}' +
+'.sl-lt .cv i{font-style:normal;font-size:10px;font-weight:700;color:#8a94a3}' +
+'.sl-lt .ph{background:#fbf6ea;color:#b39a63;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.4}' +
+'.sl-lt .gb{display:flex;flex-direction:column;gap:6px;margin-top:8px;max-width:176px}' +
+'.sl-lt .fm{display:flex;gap:8px}.sl-lt .fm a{flex:1}' +
+'.sl-lt .bt{display:inline-flex;align-items:center;justify-content:center;gap:4px;font-weight:800;font-size:12px;padding:7px 8px;border-radius:999px;text-decoration:none;white-space:nowrap;line-height:1.25}' +
+'.sl-lt .b-sv{background:#fff;color:#9a6a00;border:1px solid #f3d28a}.sl-lt .b-sv.off{color:#b8a57a;border-style:dashed;pointer-events:none}' +
+'.sl-lt .b-pk{background:#e85a8a;color:#fff}.sl-lt .b-hw{background:#fff;color:#2c6a3f;border:1px solid #bfdcc6}' +
+'.sl-lt .none{font-size:12px;color:#9aa3b0;line-height:1.6;padding-top:6px}' +
+'.sl-lt .pkb{grid-column:1/-1;border:2px solid #1d3a5e;display:grid;grid-template-columns:1fr 1.3fr}' +
+'.sl-lt .pkb>div{padding:14px 18px}.sl-lt .pkb>div+div{border-left:1px solid #e6e9ef}.sl-lt .pkb h3{margin:0 0 8px;font-size:16px;font-weight:900}' +
+'.sl-lt .sl-lt-sw{display:block;margin:14px 0 0 auto;border:0;background:none;color:#6b7686;font:inherit;font-size:12px;text-decoration:underline;cursor:pointer}' +
+'@media(max-width:760px){.sl-lt .grid{grid-template-columns:1fr}.sl-lt .pkb{grid-template-columns:1fr}.sl-lt .pkb>div+div{border-left:0;border-top:1px solid #e6e9ef}' +
+'.sl-lt .half{grid-template-columns:1fr 1.7fr}.sl-lt .half>div{padding:10px 8px}.sl-lt .hd .gp{font-size:15px}' +
+'.sl-lt .cv{width:72px}.sl-lt .cv img,.sl-lt .ph{width:72px;height:101px}.sl-lt .covs{gap:6px}' +
+'.sl-lt .fm{gap:6px}.sl-lt .fm .bt{flex-direction:column;gap:0;font-size:11px;padding:5px 2px;border-radius:12px}}';
 function lessonTable(host, items) {
 if (midPage() || advancedPage() || fmtPage()) return false;
 var codes = {}, g = 0, gram = [], other = [];
@@ -470,99 +507,104 @@ if (m) { codes[m[1]] = 1; g = +(/중학교\s*([1-3])\s*학년/.exec(t) || [0, 0]
 var cs = Object.keys(codes);
 if (cs.length !== 1 || gram.length < 8) return false;
 var code = cs[0], pub = PUB_NAME[code] || code;
-var rows = {}, pk = {}, extra = [];
+var rows = {}, pk = {}, nAll = [];
 function row(n) { return rows[n] || (rows[n] = { n: n, gram: '', pdf: null, hwp: null, nsd: [] }); }
+function itemOf(el, t) {
+var p = propsOf(el);
+return { idx: idxOf(el), u: urlOf(el), t: t, price: p.price, img: (p.image_url || '').replace(/\?w=\d+/, '?w=300'), k: genKind(t) };
+}
 gram.forEach(function (x) {
-var el = x[0], t = x[1], p = propsOf(el), hwp = HWP_RE.test(t);
-var it = { idx: idxOf(el), u: urlOf(el), price: p.price, list: p.original_price, el: el };
-if (/패키지/.test(t)) { pk[hwp ? 'hwp' : 'pdf'] = it; return; }
-var m = /\]\s*(\d{1,2})\s*강\s*([^🩷]*)/.exec(t);
+var it = itemOf(x[0], x[1]), hwp = HWP_RE.test(x[1]);
+if (/패키지/.test(x[1])) { pk[hwp ? 'hwp' : 'pdf'] = it; return; }
+var m = /\]\s*(\d{1,2})\s*강\s*([^🩷]*)/.exec(x[1]);
 if (!m) return;
 var r = row(+m[1]);
-r.gram = r.gram || tidy(m[2]);
+r.gram = r.gram || tidy(m[2]).split('·').map(function (s) { return s.trim(); }).join(' · ');
 r[hwp ? 'hwp' : 'pdf'] = it;
 });
+var nums = Object.keys(rows).map(Number).sort(function (a, b) { return a - b; });
+var last = nums[nums.length - 1];
 other.forEach(function (x) {
+var it = itemOf(x[0], x[1]);
+if (/\bSL\b|Special\s*Lesson/i.test(x[1])) row('SL').nsd.push(it);
+else {
 var m = /(?:^|[^\d])(\d{1,2})\s*과/.exec(x[1]) || /Lesson\s*(\d{1,2})/i.exec(x[1]);
-var it = { u: urlOf(x[0]), t: x[1], k: genKind(x[1]) };
-if (m) row(+m[1]).nsd.push(it); else extra.push(it);
+if (m) row(+m[1]).nsd.push(it); else nAll.push(it);
+}
 });
-var keys = Object.keys(rows).map(Number).sort(function (a, b) { return a - b; });
-var anyNsd = other.length > 0;
+if (last === 7 || rows.SL) row('SL');          /* 7강 교과서 = 마지막 과 SL */
+var keys = nums.concat(rows.SL ? ['SL'] : []);
+var key = '중' + g + '-' + code;
 if (!document.getElementById('sl-lt-css')) {
 var st = document.createElement('style');
 st.id = 'sl-lt-css';
-st.textContent =
-'.sl-lt{max-width:1080px;margin:0 auto 40px;padding:0 16px;color:#1d3a5e;font-family:inherit}' +
-'.sl-lt-hd{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 18px;border-bottom:2px solid #1d3a5e;padding:6px 0 12px;margin-bottom:4px}' +
-'.sl-lt-hd h2{font-size:24px;font-weight:800;margin:0}' +
-'.sl-lt-hd .gr{font-size:13px;font-weight:700;color:#6b58a8;background:#efeafc;padding:3px 10px;border-radius:999px}' +
-'.sl-lt-hd p{flex-basis:100%;margin:0;font-size:13px;color:#6b7686}' +
-'.sl-lt-tb{width:100%;border-collapse:collapse;font-size:14px}' +
-'.sl-lt-tb th{font-size:12px;color:#6b7686;font-weight:700;text-align:left;padding:10px 12px;border-bottom:1px solid #d9dee6;background:#f7f8fb}' +
-'.sl-lt-tb td{padding:14px 12px;border-bottom:1px solid #e6e9ef;vertical-align:middle}' +
-'.sl-lt-tb td.no{width:64px;font-size:18px;font-weight:800;white-space:nowrap}' +
-'.sl-lt-tb td.ns{width:34%}' +
-'.sl-lt-tb .nm{font-weight:800;font-size:15px}' +
-'.sl-lt-tb .sub{font-size:12px;color:#6b7686;margin-top:2px}' +
-'.sl-lt-tb .gp{font-weight:700;color:#6b58a8;margin-top:3px}' +
-'.sl-lt-tb .soon{font-size:13px;color:#9aa3b0}' +
-'.sl-lt-tb .nsl a{display:inline-block;margin:2px 6px 2px 0;font-size:13px;font-weight:700;color:#9a6a00;background:#fff7e6;border:1px solid #f3d28a;padding:5px 10px;border-radius:999px;text-decoration:none}' +
-'.sl-lt-f{display:flex;gap:6px;flex-wrap:wrap}' +
-'.sl-lt-f .fm{display:inline-flex;align-items:center;border:1px solid #d9dee6;border-radius:999px;overflow:hidden;background:#fff}' +
-'.sl-lt-f .fm a{padding:6px 10px;font-size:13px;font-weight:800;color:#1d3a5e;text-decoration:none;white-space:nowrap}' +
-'.sl-lt-f .fm a s{color:#9aa3b0;font-weight:500;margin-left:4px;font-size:11px}' +
-'.sl-lt-f .fm a i{font-style:normal;font-weight:600;color:#6b7686;margin-left:4px}' +
-'.sl-lt-f .fm.h a:first-child{color:#2c6a3f}' +
-'.sl-lt-f .fm button{border:0;border-left:1px solid #d9dee6;background:#e85a8a;color:#fff;font:inherit;font-size:12px;font-weight:800;padding:6px 10px;cursor:pointer}' +
-'.sl-lt-f .fm button:hover{background:#c33e6d}' +
-'.sl-lt-tb tr.pk td{background:#faf8ff}' +
-'.sl-lt-sw{display:block;margin:14px 0 0 auto;border:0;background:none;color:#6b7686;font:inherit;font-size:12px;text-decoration:underline;cursor:pointer}' +
-'@media (max-width:760px){.sl-lt-tb thead{display:none}.sl-lt-tb,.sl-lt-tb tbody,.sl-lt-tb tr,.sl-lt-tb td{display:block;width:auto}' +
-'.sl-lt-tb tr{border-bottom:1px solid #d9dee6;padding:10px 0}.sl-lt-tb td{border:0;padding:4px 0}.sl-lt-tb td.no{width:auto;font-size:16px}.sl-lt-tb td.ns{width:auto}.sl-lt-tb td.ns .soon:before{content:"내신대비 자료 · "}.sl-lt-f .fm a{padding:6px 8px}}';
+st.textContent = LT_CSS;
 document.head.appendChild(st);
 }
-function fm(it, label, cls) {
-if (!it) return '';
-return '<span class="fm' + (cls ? ' ' + cls : '') + '"><a href="' + it.u + '">' + label + '<i>' + won(it.price) + '</i>' +
-(it.list && it.list > it.price ? '<s>' + won(it.list) + '</s>' : '') + '</a>' +
-'<button type="button" data-lt-cart="' + it.idx + '">담기</button></span>';
-}
-function nsdCell(list) {
-if (list.length) return '<div class="nsl">' + list.map(function (x) { return '<a href="' + x.u + '" title="' + x.t.replace(/"/g, '&quot;') + '">' + x.k + ' ↗</a>'; }).join('') + '</div>';
-return '<div class="soon">곧 올라와요</div>';
-}
-var html = '<div class="sl-lt-hd"><h2>' + pub + '</h2>' + (g ? '<span class="gr">중학교 ' + g + '학년</span>' : '') +
-'<p>과마다 왼쪽은 이 교과서 내신대비 자료, 오른쪽은 같은 과 문법만 따로 모은 「교과서 속 문법 ' + code + '」예요. PDF · 한글(HWP) 가운데 고르세요.</p></div>' +
-'<table class="sl-lt-tb"><thead><tr><th>과</th><th>' + pub + ' 내신대비 자료</th><th>교과서 속 문법 ' + code + '</th><th>파일 고르기</th></tr></thead><tbody>' +
-keys.map(function (n) {
-var r = rows[n];
-return '<tr><td class="no">' + n + '과</td>' +
-'<td class="ns">' + (anyNsd || r.nsd.length ? nsdCell(r.nsd) : '<div class="soon">곧 올라와요</div>') + '</td>' +
-'<td><div class="nm">교과서 속 문법 ' + code + ' ' + (n < 10 ? '0' : '') + n + '강</div>' + (r.gram ? '<div class="gp">' + r.gram + '</div>' : '') + '</td>' +
-'<td><div class="sl-lt-f">' + fm(r.pdf, 'PDF') + fm(r.hwp, '한글(HWP)', 'h') + '</div></td></tr>';
-}).join('') +
-(pk.pdf || pk.hwp ? '<tr class="pk"><td class="no">전체</td><td class="ns">' + (extra.length ? nsdCell(extra) : '') + '</td>' +
-'<td><div class="nm">교과서 속 문법 ' + code + ' 전범위 패키지</div><div class="sub">' + keys.length + '강 한 번에 · 30% 할인</div></td>' +
-'<td><div class="sl-lt-f">' + fm(pk.pdf, 'PDF') + fm(pk.hwp, '한글(HWP)', 'h') + '</div></td></tr>' : '') +
-'</tbody></table><button type="button" class="sl-lt-sw">상품 사진으로 보기</button>';
 var box = document.createElement('div');
 box.className = 'sl-lt';
-box.innerHTML = html;
 host.parentNode.insertBefore(box, host);
+function render(L) {
+L = L || {};
+function solv(u, label) {
+return u ? '<a class="bt b-sv" href="' + esc(u) + '" target="_blank" rel="noopener">' + label + ' ↗</a>'
+: '<span class="bt b-sv off">쏠북 준비 중</span>';
+}
+function cov(it, cap) {
+return '<div class="cv">' + (it && it.img ? '<a href="' + esc(it.u) + '"><img src="' + esc(it.img) + '" alt="" loading="lazy"></a>' : '<div class="ph">표지</div>') +
+(cap ? '<i>' + cap + '</i>' : '') + '</div>';
+}
+function fmtBtn(it, f) {
+if (!it) return '';
+return '<a class="bt ' + (f === 'PDF' ? 'b-pk' : 'b-hw') + '" href="' + esc(it.u) + '">' + f + ' <span>' + won(it.price) + '</span></a>';
+}
+function gramSide(a, b, sv, tag) {
+return '<div class="lb"><span class="tg ou">' + tag + '</span></div><div class="covs">' + cov(a, 'PDF') + cov(b, 'HWP') + '</div>' +
+'<div class="gb">' + solv(sv, '쏠북 구매') + '<div class="fm">' + fmtBtn(a, 'PDF') + fmtBtn(b, 'HWP') + '</div></div>';
+}
+function nsdSide(list, sv) {
+if (!list.length) return '<div class="lb"><span class="tg sv">내신대비 · 쏠북</span></div><div class="covs"><div class="cv"><div class="ph">곧<br>올라와요</div></div></div>';
+return '<div class="lb"><span class="tg sv">내신대비 · 쏠북</span></div><div class="covs">' +
+list.map(function (it) { return cov(it, it.k === '내신대비 자료' ? '' : it.k); }).join('') + '</div>' +
+'<div class="gb">' + solv(sv || '', '쏠북 구매') + '</div>';
+}
+var sw = (MID_PATHS[g] ? MID_PATHS[g][1].split(' ').map(function (c, i) {
+return '<a class="' + (c === code ? 'on' : '') + '" href="/' + (MID_PATHS[g][0] + i) + '">' + esc(PUB_NAME[c]) + '</a>';
+}).join('') : '');
+var html = '<h2 class="ti">' + esc(pub) + (g ? ' <span class="tg lav">중학교 ' + g + '학년</span>' : '') + '</h2>' +
+(sw ? '<div class="sw">' + sw + '</div>' : '') + '<div class="grid">';
+if (pk.pdf || pk.hwp) {
+html += '<div class="pkb"><div><h3>' + esc(pub) + ' 내신대비 전체</h3>' + nsdSide(nAll, L.nall).replace(/<div class="lb">.*?<\/div>/, '') + '</div>' +
+'<div><h3>교과서 속 문법 ' + code + ' 전범위 ' + nums.length + '강 <span class="tg lav">30% 할인</span></h3>' +
+gramSide(pk.pdf, pk.hwp, L.gpkg, '패키지').replace(/<div class="lb">.*?<\/div>/, '') + '</div></div>';
+}
+keys.forEach(function (n) {
+var r = rows[n];
+if (n === 'SL') {
+html += '<div class="card"><div class="hd"><b>SL</b><span class="gp sl">Special Lesson</span></div><div class="half">' +
+'<div>' + nsdSide(r.nsd, L.nSL) + '</div>' +
+'<div><div class="lb"><span class="tg ou">교과서 속 문법 ' + code + '</span></div><div class="none">Special Lesson 은 새 문법이 없어<br>교과서 속 문법은 ' + last + '강까지예요.</div></div></div></div>';
+return;
+}
+html += '<div class="card"><div class="hd"><b>' + n + '과</b><span class="gp">' + esc(r.gram) + '</span></div><div class="half">' +
+'<div>' + nsdSide(r.nsd, L['n' + n]) + '</div>' +
+'<div>' + gramSide(r.pdf, r.hwp, L['g' + n], '교과서 속 문법 ' + code + ' ' + (n < 10 ? '0' : '') + n + '강') + '</div></div></div>';
+});
+html += '</div><button type="button" class="sl-lt-sw">상품 사진으로 보기</button>';
+box.innerHTML = html;
+}
+render(null);
+if (window.fetch) fetch(LINKS_URL + '?t=' + Math.floor(Date.now() / 600000)).then(function (r) { return r.ok ? r.json() : {}; })
+.then(function (j) { if (j && j[key]) render(j[key]); }).catch(function () {});
 if (!host.id) host.id = 'sl-lt-host';
 var hideCss = document.createElement('style');
 hideCss.textContent = '#' + host.id + '{display:none!important}';
 document.head.appendChild(hideCss);
-var cards = {};
-items.forEach(function (el) { cards[idxOf(el)] = el; });
 box.addEventListener('click', function (e) {
-var b = e.target.closest('[data-lt-cart]');
-if (b) { addCart(b.getAttribute('data-lt-cart'), b, cards[b.getAttribute('data-lt-cart')]); return; }
 if (e.target.closest('.sl-lt-sw')) {
 var hid = !hideCss.disabled;
 hideCss.disabled = hid;
-e.target.textContent = hid ? '과별 표로 보기' : '상품 사진으로 보기';
+e.target.textContent = hid ? '과별 카드로 보기' : '상품 사진으로 보기';
 if (hid) { items.forEach(function (el) { addGo(el); addActs(el); }); }
 }
 });
