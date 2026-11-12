@@ -26,6 +26,9 @@
     { open: true, area: '어법', title: '도치 한 장 정리', sub: 'Not only did · Only then · so do 기출 정리', img: 'https://daechisecret.github.io/imweb-assets/column/inversion/inversion_pdf1.jpg', shop: 'https://www.daechisecret.com/shop_view/?idx=3354', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175564838' },
     { open: true, area: '어법', title: '강조 구문 한 장 정리', sub: '강조의 do와 It is ~ that 기출 정리', img: 'https://daechisecret.github.io/imweb-assets/column/emphasis/emphasis_pdf1.jpg', shop: 'https://www.daechisecret.com/shop_view/?idx=3355', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175564846' },
     { open: true, area: '구문', title: '부분부정 · 전체부정 한 장 정리', sub: 'not all · not always · not necessarily 기출 정리', img: 'https://daechisecret.github.io/imweb-assets/column/partneg/partneg_pdf1.jpg', shop: 'https://www.daechisecret.com/shop_view/?idx=3356', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175564851' },
+    { open: true, lv: '공통', area: '어법', title: '헷갈리는 수량 표현 짝', sub: 'many vs much · few vs a few 그림으로', img: 'https://daechisecret.github.io/imweb-assets/column/qtypair/qtypair_pdf1.jpg', shop: 'https://www.daechisecret.com/shop_view/?idx=3357', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175591238' },
+    { open: true, lv: '공통', area: '어법', title: '헷갈리는 조동사 짝', sub: "must not vs don't have to 그림으로", img: 'https://daechisecret.github.io/imweb-assets/column/modalpair/modalpair_pdf1.jpg', shop: 'https://www.daechisecret.com/shop_view/?idx=3358', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175591241' },
+    { open: true, lv: '공통', area: '어법', title: '헷갈리는 부사 짝', sub: 'hard vs hardly · most vs almost 그림으로', img: 'https://daechisecret.github.io/imweb-assets/column/advpair/advpair_pdf1.jpg', shop: 'https://www.daechisecret.com/shop_view/?idx=3359', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175591247' },
     { open: false, area: '어법', title: '영어 문장의 5형식 한 장 정리', thumb: 'n08', shop: '', col: '' },
     { open: false, area: '어법', title: '영어 불규칙 동사표', thumb: 'n09', shop: '', col: '' },
     { open: false, area: '어법', title: '현재완료 한 장 정리', thumb: 'n10', shop: '', col: '' },
@@ -148,7 +151,7 @@
   function card(it) {
     var mid = lvOf(it) === '중등', open = isOpen(it), go = it.col || it.shop, c2 = mid ? '#8B6FD6' : '#E4587E';
     var th = '<div class="lb-th"><img src="' + esc(img(it)) + '" alt="' + esc(it.title) + (open ? ' 정리표 첫 쪽' : '') + '" loading="lazy">' +
-      '<span class="lb-badge' + (mid ? ' mid' : '') + '">' + lvOf(it) + '</span>' + (open ? '' : '<div class="lb-lock"><span>곧 공개</span></div>') + '</div>';
+      (it.lv === '공통' ? '' : '<span class="lb-badge' + (mid ? ' mid' : '') + '">' + lvOf(it) + '</span>') + (open ? '' : '<div class="lb-lock"><span>곧 공개</span></div>') + '</div>';
     var bd = '<div class="lb-bd" style="--c2:' + c2 + '"><div class="lb-area">' + esc(it.area) + '</div><h3 class="lb-tt">' + esc(it.title) + '</h3>' +
       '<p class="lb-sb">' + (it.sub ? esc(it.sub) : '&nbsp;') + '</p>' +
       '<div class="lb-ft"><span class="lb-pdf">무료 PDF</span><span>' + (open ? (go ? '칼럼 읽기 →' : '준비 중') : '공개 예정') + '</span></div></div>';
@@ -172,10 +175,10 @@
     function draw() {
       var mid = S.lv === '중등';
       box.style.setProperty('--ac', mid ? '#8B6FD6' : S.lv === '고등' ? '#E4587E' : '#2E2433');
-      var inLv = all.filter(function (x) { return S.lv === '전체' || lvOf(x) === S.lv; });
+      var inLv = all.filter(function (x) { return S.lv === '전체' || lvOf(x) === S.lv || x.lv === '공통'; });
       var lvs = ['전체', '고등', '중등'], h = '';
       for (i = 0; i < lvs.length; i++) {
-        var n = all.filter(function (x) { return lvs[i] === '전체' || lvOf(x) === lvs[i]; }).length;
+        var n = all.filter(function (x) { return lvs[i] === '전체' || lvOf(x) === lvs[i] || x.lv === '공통'; }).length;
         h += '<button type="button" data-lv="' + lvs[i] + '" class="' + (lvs[i] === S.lv ? 'on ' : '') + (lvs[i] === '고등' ? 'hi' : lvs[i] === '중등' ? 'mid' : '') + '">' + lvs[i] + '<i>' + n + '</i></button>';
       }
       $('.lb-lv').innerHTML = h; h = '';
