@@ -550,15 +550,18 @@ var box = document.createElement('div');
 box.className = 'sl-lt';
 box.innerHTML = html;
 host.parentNode.insertBefore(box, host);
-host.style.display = 'none';
+if (!host.id) host.id = 'sl-lt-host';
+var hideCss = document.createElement('style');
+hideCss.textContent = '#' + host.id + '{display:none!important}';
+document.head.appendChild(hideCss);
 var cards = {};
 items.forEach(function (el) { cards[idxOf(el)] = el; });
 box.addEventListener('click', function (e) {
 var b = e.target.closest('[data-lt-cart]');
 if (b) { addCart(b.getAttribute('data-lt-cart'), b, cards[b.getAttribute('data-lt-cart')]); return; }
 if (e.target.closest('.sl-lt-sw')) {
-var hid = host.style.display === 'none';
-host.style.display = hid ? '' : 'none';
+var hid = !hideCss.disabled;
+hideCss.disabled = hid;
 e.target.textContent = hid ? '과별 표로 보기' : '상품 사진으로 보기';
 if (hid) { items.forEach(function (el) { addGo(el); addActs(el); }); }
 }
