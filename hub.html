@@ -383,7 +383,7 @@
           var rs = rowsTx.filter(function (r) { return r.g === g.g && (st.k === '전체' || r.tags[st.k]) && (!q || r.q.indexOf(q) >= 0); });
           if (!rs.length) return;
           shown += rs.length;
-          out += '<div class="tx-gh">' + esc(g.g) + (g.lv === '중등' ? ' · 교과서 속 문법 <span class="nw">NEW</span>' : '') + '</div>' + rs.map(rowHtml).join('');
+          out += '<div class="tx-gh">' + esc(g.g) + (g.lv === '중등' ? ' 교과서 <span class="nw">NEW</span>' : '') + '</div>' + rs.map(rowHtml).join('');
         });
         list.innerHTML = out || '<div class="tx-none">맞는 교재가 없어요. 다른 말로 찾아 보세요.</div>';
         cnt.textContent = '교재 ' + shown + '종';
