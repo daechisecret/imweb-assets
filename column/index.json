@@ -690,6 +690,42 @@
    "series": "",
    "updated": "2026년 11월 13일",
    "read": 3
+  },
+  {
+   "id": "octconn",
+   "post": null,
+   "area": "독해",
+   "topic": "10월 모의고사 연결사",
+   "title": "2026 10월 모의고사 연결사 정리장",
+   "sub": "고1 · 고2 · 고3 학년별 무료 PDF",
+   "desc": "관계별로 한눈에 보는 연결사(역접 · 결과 · 예시 …) · 지문 속 연결사 문장 · 해석 그대로 · 해석 보고 쓰는 연결사 빈칸 테스트",
+   "thumb": "column/octconn/octconn_cover.jpg",
+   "free": "3425",
+   "freeTitle": "2026 10월 모의고사 연결사 정리장",
+   "lesson": "",
+   "lessonTitle": "",
+   "cover": "column/octconn/octconn_cover.jpg",
+   "series": "",
+   "updated": "2026년 11월 13일",
+   "read": 3
+  },
+  {
+   "id": "octsent",
+   "post": null,
+   "area": "어휘",
+   "topic": "10월 모의고사 해석/배열",
+   "title": "2026 10월 모의고사 해석/배열 연습지",
+   "sub": "고1 · 고2 · 고3 학년별 무료 PDF",
+   "desc": "지문마다 중요한 문장만 2~3개 · 끊어 읽기 표시 보고 해석 쓰기 · 한글 뜻 보고 섞인 덩어리 영문 배열 + 정답",
+   "thumb": "column/octsent/octsent_cover.jpg",
+   "free": "3428",
+   "freeTitle": "2026 10월 모의고사 해석/배열 연습지",
+   "lesson": "",
+   "lessonTitle": "",
+   "cover": "column/octsent/octsent_cover.jpg",
+   "series": "",
+   "updated": "2026년 11월 13일",
+   "read": 3
   }
  ]
 }
