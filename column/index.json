@@ -20,6 +20,24 @@
    "read": 6
   },
   {
+   "id": "grammar_sample",
+   "post": 175715971,
+   "area": "공부법",
+   "topic": "겨울방학 시리즈 01",
+   "title": "겨울방학 시리즈 01 · 영문법 무료 샘플북 PDF",
+   "sub": "중1~고3 학년별 · 시크릿어법 01강",
+   "desc": "개념 요약 · 연습 문제 · 실전 문제 · 어법 정리 노트 · 테스트지",
+   "thumb": "column/grammar_sample/grammar_sample_pdf1.jpg",
+   "free": "#sample-list",
+   "freeTitle": "학년별 영문법 무료 샘플북 PDF",
+   "lesson": "https://www.daechisecret.com/special-lecture?utm_source=daechisecret&utm_medium=column&utm_campaign=free_sample_grammar",
+   "lessonTitle": "방학특강 영문법 패키지",
+   "cover": "column/grammar_sample/grammar_sample_pkg.jpg",
+   "series": "https://www.daechisecret.com/special-lecture?utm_source=daechisecret&utm_medium=column&utm_campaign=free_sample_grammar",
+   "updated": "2026년 11월 18일",
+   "read": 5
+  },
+  {
    "id": "prepconj",
    "post": 175381579,
    "area": "어법",
@@ -888,24 +906,6 @@
    "series": "https://www.daechisecret.com/special-lecture?utm_source=daechisecret&utm_medium=column&utm_campaign=free_nounclause",
    "updated": "2026년 11월 15일",
    "read": 6
-  },
-  {
-   "id": "grammar_sample",
-   "post": 175715971,
-   "area": "어법",
-   "topic": "겨울방학 시리즈 01",
-   "title": "겨울방학 시리즈 01 · 영문법 무료 샘플북 PDF",
-   "sub": "중1~고3 학년별 · 시크릿어법 01강",
-   "desc": "개념 요약 · 연습 문제 · 실전 문제 · 어법 정리 노트 · 테스트지",
-   "thumb": "column/grammar_sample/grammar_sample_pdf1.jpg",
-   "free": "#sample-list",
-   "freeTitle": "학년별 영문법 무료 샘플북 PDF",
-   "lesson": "https://www.daechisecret.com/special-lecture?utm_source=daechisecret&utm_medium=column&utm_campaign=free_sample_grammar",
-   "lessonTitle": "방학특강 영문법 패키지",
-   "cover": "column/grammar_sample/grammar_sample_pkg.jpg",
-   "series": "https://www.daechisecret.com/special-lecture?utm_source=daechisecret&utm_medium=column&utm_campaign=free_sample_grammar",
-   "updated": "2026년 11월 18일",
-   "read": 5
   }
  ]
 }

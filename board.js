@@ -1392,7 +1392,7 @@
   function list(posts, lb) {
     document.body.classList.add('slc-list');
     var live = posts.filter(function (p) { return p.post; });
-    var areas = ['전체'].concat(['어법', '구문', '어휘', '독해'].filter(function (a) { return live.some(function (p) { return p.area === a; }); }));
+    var areas = ['전체'].concat(['어법', '구문', '어휘', '독해', '공부법'].filter(function (a) { return live.some(function (p) { return p.area === a; }); }));
     var top = live[0];
     var h = '<div class="slc slc-lib">' +
       '<div class="slc-top"><span>대치동시크릿 › <b>시크릿 자료실</b></span><input type="search" placeholder="문법 개념 검색 (예: 관계대명사)" aria-label="칼럼 검색"></div>' +
