@@ -17,6 +17,7 @@
    */
   /* 폴더 번호 순서(2026-11-02 사장님). 공개하는 날: 그 편 open:true · shop(0원 상품) · col(칼럼) */
   var NOTES = [
+    { open: true, lv: '공통', area: '공부·정보', title: '겨울방학 시리즈 02 · 영단어 무료 샘플북', sub: '중1~고3 학년별 · 시크릿보카 01강 다의어 · 혼동 어휘 · 동의어 · 노트 · 테스트', img: 'https://daechisecret.github.io/imweb-assets/free-notes/dm/voca_sample.png', shop: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175716665#sample-list', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175716665' },
     { open: true, lv: '공통', area: '공부·정보', title: '겨울방학 시리즈 01 · 영문법 무료 샘플북', sub: '중1~고3 학년별 · 시크릿어법 01강 개념 · 연습 · 노트 · 테스트', img: 'https://daechisecret.github.io/imweb-assets/free-notes/dm/grammar_sample.png', shop: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175715971#sample-list', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175715971' },
     { open: true, area: '어법', title: '관계대명사 · 관계부사 한 장 정리', sub: 'that과 which 차이부터 생략까지', thumb: 'n01', shop: 'https://www.daechisecret.com/shop_view/?idx=2218', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175348213' },
     { open: true, area: '어법', title: '전치사 vs 접속사 구별표', sub: 'because와 because of 차이부터 시간 전치사까지', thumb: 'n02', shop: 'https://www.daechisecret.com/shop_view/?idx=2267', col: 'https://www.daechisecret.com/secret-library/?bmode=view&idx=175381579' },

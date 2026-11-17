@@ -20,6 +20,24 @@
    "read": 6
   },
   {
+   "id": "voca_sample",
+   "post": 175716665,
+   "area": "공부법",
+   "topic": "겨울방학 시리즈 02",
+   "title": "겨울방학 시리즈 02 · 영단어 무료 샘플북 PDF",
+   "sub": "중1~고3 학년별 · 시크릿보카 01강",
+   "desc": "핵심 어휘 · 다의어 · 혼동 어휘 · 동의어 · 반의어 · 암기노트 · 테스트지",
+   "thumb": "column/voca_sample/voca_sample_pdf1.jpg",
+   "free": "#sample-list",
+   "freeTitle": "학년별 영단어 무료 샘플북 PDF",
+   "lesson": "https://www.daechisecret.com/special-lecture?utm_source=daechisecret&utm_medium=column&utm_campaign=free_sample_voca",
+   "lessonTitle": "방학특강 영단어 패키지",
+   "cover": "column/voca_sample/voca_sample_pkg.jpg",
+   "series": "https://www.daechisecret.com/special-lecture?utm_source=daechisecret&utm_medium=column&utm_campaign=free_sample_voca",
+   "updated": "2026년 11월 18일",
+   "read": 5
+  },
+  {
    "id": "grammar_sample",
    "post": 175715971,
    "area": "공부법",
