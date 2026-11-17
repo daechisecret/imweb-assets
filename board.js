@@ -1280,12 +1280,28 @@
     if (!col) return;
     done = true;
     var l = document.createElement('link');
-    l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=4';
+    l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=5';
     document.head.appendChild(l);
     function fillAlt() {
       [].forEach.call(document.querySelectorAll('img.avatar-image:not([alt]), img.avatar-image[alt=""]'), function (im) { im.alt = '대치동시크릿 프로필'; });
     }
     fillAlt(); window.addEventListener('load', fillAlt); setTimeout(fillAlt, 3000);
+    /* 교사용 HWP 칸 — 한 강 상품 하나 대신 학년별 전범위 패키지 버튼(2026-11-18 사장님).
+       글 안 링크의 상품 번호로 과목을 찾고(column/hwp_map.json), 그 과목의 학년별 패키지를 모두 보여 줍니다. */
+    [].forEach.call(col.querySelectorAll('.teacher'), function (t) {
+      var a = t.querySelector('a[href*="idx="]'); if (!a) return;
+      var href = a.getAttribute('href') || '';
+      var hid = (/idx=(\d+)/.exec(href) || [])[1];
+      var utm = (/(utm_[^#]*)/.exec(href) || [])[1] || 'utm_source=daechisecret&utm_medium=column&utm_campaign=column_hwp';
+      getJSON(BASE + 'column/hwp_map.json').then(function (d) {
+        var s = d && d.map && d.map[hid], list = s && d.pkg && d.pkg[s];
+        if (!list || !list.length || !a.parentNode) return;
+        var box = document.createElement('div'); box.className = 'hwp-grades';
+        box.innerHTML = '<span class="hg-t">학년별 교사용 한글(HWP) · ' + s + ' 전범위 패키지</span><div class="hg-b">' +
+          list.map(function (x) { return '<a class="btn o" href="' + SITE + '/shop_view/?idx=' + x[1] + '&' + utm + '">' + x[0] + ' →</a>'; }).join('') + '</div>';
+        a.parentNode.replaceChild(box, a);
+      });
+    });
     var idx = (/[?&]idx=(\d+)/.exec(location.search) || [])[1];
     var url = idx ? SITE + '/secret-library/?bmode=view&idx=' + idx : abs(location.href);
     var title = (document.querySelector('meta[property="og:title"]') || {}).content || document.title;
@@ -1367,7 +1383,7 @@
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
   var VIEW = /[?&]bmode=view/.test(location.search);
   var JOIN = '/site_join_pattern_choice?back_url=' + btoa('/secret-library');
-  ['column/column.css?v=4', 'column/library.css?v=4'].forEach(function (f) {
+  ['column/column.css?v=5', 'column/library.css?v=4'].forEach(function (f) {
     var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = BASE + f; document.head.appendChild(l);
   });
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
