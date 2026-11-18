@@ -118,7 +118,7 @@
 
 (function () {
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
-  var V = '1b85608c';
+  var V = '8ebf0c16';
   var done = false;
   function go() {
     if (done || !document.getElementById('prod_detail')) return;
@@ -680,7 +680,15 @@
     '.sl-og .d{display:block;margin-top:2px;font-size:12px;color:#5b7189;line-height:1.45;word-break:keep-all}' +
     '.sl-og mark{background:linear-gradient(transparent 55%,#ffe766 55%);color:inherit;font-weight:700;padding:0 1px}' +
     '.sl-og .a{flex:0 0 auto;font-size:16px;color:#2f6fd6}' +
-    '.sl-og.det{margin:16px 0}';
+    '.sl-og.det{margin:16px 0}' +
+    '.sl-og a.kk{background:#fee500;border-color:#fee500;margin-top:4px}' +
+    '.sl-og a.kk:hover{border-color:#e6cf00}' +
+    '.sl-og a.kk .n{background:#191919;color:#fee500;font-size:13px}' +
+    '.sl-og a.kk .t,.sl-og a.kk .a{color:#191919}' +
+    '.sl-og a.kk .d{color:#3c3a1e}';
+
+  var KAKAO_ID = '_xjJSxbn';
+  var KAKAO_ADD = 'https://pf.kakao.com/' + KAKAO_ID + '/friend';
 
   function html() {
     return '<h3>구매해 주셔서 감사합니다</h3>' +
@@ -690,8 +698,24 @@
           '<span class="n">' + (i + 1) + '</span>' +
           '<span class="b"><span class="t">' + it.t + '</span><span class="d">' + it.d + '</span></span>' +
           '<span class="a">›</span></a>';
-      }).join('');
+      }).join('') +
+      '<a class="kk" href="' + KAKAO_ADD + '" target="_blank" rel="noopener" data-kk-add>' +
+        '<span class="n">+</span>' +
+        '<span class="b"><span class="t">카카오톡 채널 추가하기</span>' +
+        '<span class="d">새 자료 · 할인 소식을 카톡으로 가장 먼저 받아요</span></span>' +
+        '<span class="a">›</span></a>';
   }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest && e.target.closest('.sl-og [data-kk-add]');
+    if (!a) return;
+    try {
+      if (window.Kakao && Kakao.Channel && Kakao.Channel.addChannel) {
+        e.preventDefault();
+        Kakao.Channel.addChannel({ channelPublicId: KAKAO_ID });
+      }
+    } catch (err) { /* 링크로 열립니다 */ }
+  });
 
   function anchor() {
     if (COMPLETE) {
@@ -742,4 +766,64 @@
     if (COMPLETE && ++n >= 20) clearInterval(timer);
   }, COMPLETE ? 500 : 1000);
   place();
+})();
+
+(function () {
+  'use strict';
+  if (/^\/admin/.test(location.pathname)) return;
+  var ID = '_xjJSxbn';
+  var URL_ADD = 'https://pf.kakao.com/' + ID + '/friend';
+  var KEY = 'dcs-kk-add-hide';
+  try { var until = +localStorage.getItem(KEY) || 0; if (until > Date.now()) return; } catch (e) {}
+
+  var CSS =
+    '#dcs-kk-add{position:fixed;z-index:998;display:none;align-items:center;gap:2px;height:36px;padding:0 4px 0 12px;' +
+      'background:#fee500;color:#191919;border-radius:18px;box-shadow:0 6px 18px -6px rgba(24,39,75,.28);' +
+      'font:700 13px/1 "Noto Sans KR",sans-serif;letter-spacing:-.02em;white-space:nowrap}' +
+    '#dcs-kk-add a{color:#191919!important;text-decoration:none!important;display:flex;align-items:center;gap:5px;height:36px}' +
+    '#dcs-kk-add a b{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;' +
+      'background:#191919;color:#fee500;font-size:14px;line-height:1}' +
+    '#dcs-kk-add button{border:0;background:none;color:#5f5a1a;font:600 15px/1 sans-serif;width:26px;height:36px;cursor:pointer;padding:0}' +
+    '#dcs-kk-add a:focus-visible,#dcs-kk-add button:focus-visible{outline:2px solid #191919;outline-offset:2px;border-radius:12px}';
+
+  var box = null;
+  function build() {
+    var st = document.createElement('style'); st.textContent = CSS; document.head.appendChild(st);
+    box = document.createElement('div'); box.id = 'dcs-kk-add';
+    box.innerHTML = '<a href="' + URL_ADD + '" target="_blank" rel="noopener"><b>+</b>채널 추가</a>' +
+      '<button type="button" aria-label="채널 추가 버튼 7일 동안 숨기기">×</button>';
+    document.body.appendChild(box);
+    box.querySelector('a').addEventListener('click', function (e) {
+      try {
+        if (window.Kakao && Kakao.Channel && Kakao.Channel.addChannel) {
+          e.preventDefault(); Kakao.Channel.addChannel({ channelPublicId: ID });
+        }
+      } catch (err) { /* 링크로 열립니다 */ }
+    });
+    box.querySelector('button').addEventListener('click', function () {
+      try { localStorage.setItem(KEY, String(Date.now() + 7 * 864e5)); } catch (e) {}
+      box.style.display = 'none'; box = null;
+    });
+  }
+
+  function place() {
+    if (!box) return;
+    var chat = document.getElementById('kakao-talk-channel-chat-button');
+    var r = chat && chat.getBoundingClientRect();
+    if (!r || !r.width || getComputedStyle(chat).display === 'none') { box.style.display = 'none'; return; }
+    box.style.display = 'flex';
+    box.style.right = Math.max(8, window.innerWidth - r.left + 10) + 'px';
+    box.style.top = Math.round(r.top + r.height / 2 - 18) + 'px';
+  }
+
+  function start() {
+    if (!document.getElementById('kakao-talk-channel-chat-button')) return false;
+    if (!box) build();
+    place();
+    return true;
+  }
+  var n = 0;
+  var t = setInterval(function () { if (start() || ++n > 20) clearInterval(t); }, 500);
+  window.addEventListener('resize', place);
+  window.addEventListener('load', place);
 })();
