@@ -1300,13 +1300,9 @@
         box.innerHTML = '<span class="hg-t">학년별 교사용 한글(HWP) · ' + s + ' 전범위 패키지</span><div class="hg-b">' +
           list.map(function (x) { return '<a class="btn o" href="' + SITE + '/shop_view/?idx=' + x[1] + '&' + utm + '">' + x[0] + ' →</a>'; }).join('') + '</div>';
         a.parentNode.replaceChild(box, a);
-        /* 옆 그림도 한 강 표지 대신 패키지 표지로 — 처음엔 고1(없으면 첫 학년), 학년 버튼에 마우스를 올리면 그 학년 표지 */
-        var im = t.querySelector('img'), def = list.filter(function (x) { return x[0] === '고1'; })[0] || list[0];
-        function show(x) { if (im && x && x[2]) { im.src = x[2]; im.alt = '교사용 한글(HWP) ' + x[0] + ' ' + s + ' 전범위 패키지 표지'; } }
-        show(def);
-        [].forEach.call(box.querySelectorAll('.hg-b a'), function (el, k) {
-          el.addEventListener('mouseenter', function () { show(list[k]); });
-        });
+        /* 옆 그림도 한 강 표지 대신 학년 표시 없는 과목 공통 패키지 표지로(column/hwp_pkg/, 2026-11-18 사장님) */
+        var im = t.querySelector('img'), cu = d.common && d.common[s];
+        if (im && cu) { im.src = cu; im.alt = '교사용 한글(HWP) ' + s + ' 학년별 전범위 패키지 표지'; }
       });
     });
     var idx = (/[?&]idx=(\d+)/.exec(location.search) || [])[1];
