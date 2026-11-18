@@ -1280,7 +1280,7 @@
     if (!col) return;
     done = true;
     var l = document.createElement('link');
-    l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=5';
+    l.rel = 'stylesheet'; l.href = BASE + 'column/column.css?v=6';
     document.head.appendChild(l);
     function fillAlt() {
       [].forEach.call(document.querySelectorAll('img.avatar-image:not([alt]), img.avatar-image[alt=""]'), function (im) { im.alt = '대치동시크릿 프로필'; });
@@ -1305,6 +1305,22 @@
         if (im && cu) { im.src = cu; im.alt = '교사용 한글(HWP) ' + s + ' 학년별 전범위 패키지 표지'; }
       });
     });
+    /* 방학특강 샘플북 칼럼 — 「쏠북에서도 구매 가능」 안내 + 쏠북 방학특강 공지 링크 (2026-11-18 사장님).
+       칼럼은 다시 발행하면 새 글이 되므로 여기서 붙입니다. 교과서 속 문법도 쏠북 판매(사장님 11-18). */
+    (function () {
+      /* 아임웹이 data-col 을 지우므로 글 번호로 알아봅니다 */
+      var SV = { '175715971': 'grammar_sample', '175716665': 'voca_sample', '175719772': 'syntax_sample', '175719778': 'type_sample', '175719786': 'theme_sample', '175719796': 'rank_sample', '175719806': 'mock_sample', '175719872': 'textbook_m1', '175719887': 'textbook_m2', '175719898': 'textbook_m3' };
+      var pid = (/[?&]idx=(\d+)/.exec(location.search) || [])[1] || '';
+      var id = SV[pid] || col.getAttribute('data-col') || '';
+      if (!id || col.querySelector('.solvook')) return;
+      var url = 'https://solvook.com/@daechisecret/notices/62aa3a55-0708-42d7-9817-f0a870128192?referral=3553&utm_source=daechisecret&utm_medium=column&utm_campaign=solvook_' + id;
+      var box = document.createElement('div'); box.className = 'solvook';
+      box.innerHTML = '<div><span class="k">SOLVOOK</span><b>쏠북에서도 구매할 수 있어요</b>' +
+        '<p>이 칼럼의 자료는 쏠북에서도 구매할 수 있어요. 쏠북 안내 페이지에서 학년별 자료를 확인해 보세요.</p>' +
+        '<a class="btn" href="' + url + '" target="_blank" rel="noopener">쏠북에서 구매하기 →</a></div>';
+      var at = col.querySelector('.book') || col.querySelector('.teacher');
+      if (at && at.parentNode) at.parentNode.insertBefore(box, at.nextSibling); else col.appendChild(box);
+    })();
     var idx = (/[?&]idx=(\d+)/.exec(location.search) || [])[1];
     var url = idx ? SITE + '/secret-library/?bmode=view&idx=' + idx : abs(location.href);
     var title = (document.querySelector('meta[property="og:title"]') || {}).content || document.title;
@@ -1386,7 +1402,7 @@
   var BASE = 'https://daechisecret.github.io/imweb-assets/';
   var VIEW = /[?&]bmode=view/.test(location.search);
   var JOIN = '/site_join_pattern_choice?back_url=' + btoa('/secret-library');
-  ['column/column.css?v=5', 'column/library.css?v=4'].forEach(function (f) {
+  ['column/column.css?v=6', 'column/library.css?v=4'].forEach(function (f) {
     var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = BASE + f; document.head.appendChild(l);
   });
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }

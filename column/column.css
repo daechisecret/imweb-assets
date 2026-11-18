@@ -170,3 +170,10 @@
 .dcs-col .hwp-grades .hg-t{display:block !important;font-weight:700 !important;font-size:14px !important;color:var(--ink) !important;margin:2px 0 10px !important}
 .dcs-col .hwp-grades .hg-b{display:flex !important;flex-wrap:wrap !important;gap:8px !important}
 .dcs-col .hwp-grades .hg-b a.btn{padding:9px 14px !important;font-size:14px !important;margin:0 !important}
+
+/* 쏠북에서도 구매 가능 안내 (board.js 가 넣음 · 2026-11-18) */
+.dcs-col .solvook{background:#F3F6FF !important;border:1.5px solid #C9D5FF !important;padding:20px 22px !important;margin:26px 0 !important}
+.dcs-col .solvook .k{display:block !important;font-size:12px !important;font-weight:800 !important;letter-spacing:.12em !important;color:#4B63C9 !important;margin-bottom:4px !important}
+.dcs-col .solvook b{display:block !important;font-size:17px !important;color:var(--ink) !important}
+.dcs-col .solvook p{font-size:14.5px !important;color:var(--sub) !important;margin:6px 0 12px !important}
+.dcs-col .solvook .btn{background:#3D5AFE !important;border-color:#3D5AFE !important;color:#fff !important}
