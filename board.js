@@ -1305,6 +1305,16 @@
         if (im && cu) { im.src = cu; im.alt = '교사용 한글(HWP) ' + s + ' 학년별 전범위 패키지 표지'; }
       });
     });
+    /* 겨울방학 시리즈 01 어법 · 02 어휘 칼럼 — 부록 문구를 「패키지 구매 시 증정」으로 (2026-11-18 사장님, 글 재발행 없이) */
+    (function () {
+      var pid = (/[?&]idx=(\d+)/.exec(location.search) || [])[1] || '';
+      if (pid !== '175715971' && pid !== '175716665') return;
+      var w = document.createTreeWalker(col, NodeFilter.SHOW_TEXT), n, hit = [];
+      while ((n = w.nextNode())) if (n.nodeValue.indexOf('패키지에는 Appendix') > -1 || n.nodeValue.indexOf('진도표가 함께 들어 있어요') > -1) hit.push(n);
+      hit.forEach(function (t) {
+        t.nodeValue = t.nodeValue.replace('패키지에는 Appendix', 'Appendix').replace('진도표가 함께 들어 있어요', '진도표는 패키지 구매 시 증정해요');
+      });
+    })();
     /* 방학특강 샘플북 칼럼 — 「쏠북에서도 구매 가능」 안내 + 쏠북 방학특강 공지 링크 (2026-11-18 사장님).
        칼럼은 다시 발행하면 새 글이 되므로 여기서 붙입니다. 교과서 속 문법도 쏠북 판매(사장님 11-18). */
     (function () {
