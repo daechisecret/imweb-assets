@@ -167,7 +167,7 @@ if pub != pub_old:
     io.open(PUB, 'w', encoding='utf-8', newline='\n').write(json.dumps(dict(sorted(pub.items())), ensure_ascii=False, indent=1) + '\n')
 
 # 지운 페이지 — 지난 목록·아임웹 sitemap 에 남아 있어도 넣지 않음
-#   2026-11-07 사장님 승인으로 지운 숨김 광고 랜딩 9개(캡처: 바탕화면 [찌꺼기지우세요]\삭제한_랜딩페이지_20261107)
+#   2026-11-07 지운 숨김 광고 랜딩 9개
 REMOVED = {'step1landing', 'step2landing', 'step3landing', 'step4landing', 'step5landing',
            '98step3landing', '103landing', '104', '105',
            # 2026-11-07 옛 주소 19개 → 숨김 메뉴(메뉴 링크)로 알맞은 메뉴에 301. 주소 자체는 목록에 넣지 않음
